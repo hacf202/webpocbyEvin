@@ -9,7 +9,7 @@ import RelicDetail from "./pages/relicDetail";
 import Powers from "./pages/powers";
 import PowerDetail from "./pages/powerDetail";
 import Items from "./pages/Items";
-import ItemDetail from "./pages/ItemDetail";
+import ItemDetail from "./pages/itemDetail";
 import Builds from "./pages/builds";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
