@@ -19,7 +19,7 @@ function Footer() {
 					</a>
 				</p>
 				<p className='text-sm mt-2'>
-					&copy; 2025 LoR Guide. All rights reserved.
+					<h4>donate: MB 011220040126</h4>
 				</p>
 			</div>
 		</footer>

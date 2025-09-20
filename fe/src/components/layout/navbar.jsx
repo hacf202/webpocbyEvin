@@ -11,13 +11,14 @@ function Navbar() {
 	};
 
 	return (
-		<header className='bg-gray-700 text-white p-4 shadow-md'>
+		<header className='bg-gray-700 text-white p-4 shadow-xl'>
 			<div className='container mx-auto flex justify-between items-center'>
 				<NavLink to='/champions' className='text-2xl font-bold'>
 					Web POC
 				</NavLink>
+
 				<button
-					className='md:hidden focus:outline-none'
+					className='xl:hidden focus:outline-none'
 					onClick={toggleMenu}
 					aria-label='Toggle menu'
 				>
@@ -39,13 +40,13 @@ function Navbar() {
 				<div
 					className={`${
 						isOpen ? "block" : "hidden"
-					} md:flex md:items-center md:gap-4 absolute md:static top-16 left-0 w-full md:w-auto bg-gray-700 md:bg-transparent z-10`}
+					} xl:flex xl:items-center xl:gap-4 absolute xl:static top-16 left-0 w-full xl:w-auto bg-gray-700 xl:bg-transparent z-10`}
 				>
-					<nav className='flex flex-col md:flex-row md:items-center p-4 md:p-0'>
+					<nav className='flex flex-col xl:flex-row xl:items-center p-4 xl:p-0'>
 						<NavLink
 							to='/champions'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -56,7 +57,7 @@ function Navbar() {
 						<NavLink
 							to='/relics'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -67,7 +68,7 @@ function Navbar() {
 						<NavLink
 							to='/powers'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -78,7 +79,7 @@ function Navbar() {
 						<NavLink
 							to='/items'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -89,7 +90,7 @@ function Navbar() {
 						<NavLink
 							to='/builds'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -100,7 +101,7 @@ function Navbar() {
 						<NavLink
 							to='/comments'
 							className={({ isActive }) =>
-								`py-2 md:py-0 md:mr-4 hover:underline ${
+								`py-2 xl:py-0 xl:mr-4 hover:underline ${
 									isActive ? "underline font-bold" : ""
 								}`
 							}
@@ -110,7 +111,7 @@ function Navbar() {
 						</NavLink>
 					</nav>
 					{user ? (
-						<div className='flex flex-col md:flex-row md:items-center gap-2 p-4 md:p-0'>
+						<div className='flex flex-col xl:flex-row xl:items-center gap-2 p-4 xl:p-0'>
 							<span className='text-sm'>Xin chào, {user.username}</span>
 							<button
 								onClick={() => {
@@ -123,11 +124,11 @@ function Navbar() {
 							</button>
 						</div>
 					) : (
-						<div className='flex flex-col md:flex-row md:items-center gap-2 p-4 md:p-0'>
+						<div className='flex flex-col xl:flex-row xl:items-center gap-2 p-4 xl:p-0'>
 							<NavLink
 								to='/login'
 								className={({ isActive }) =>
-									`py-2 md:py-0 md:mr-2 hover:underline ${
+									`py-2 xl:py-0 xl:mr-2 hover:underline ${
 										isActive ? "underline font-bold" : ""
 									}`
 								}
@@ -138,7 +139,7 @@ function Navbar() {
 							<NavLink
 								to='/register'
 								className={({ isActive }) =>
-									`py-2 md:py-0 hover:underline ${
+									`py-2 xl:py-0 hover:underline ${
 										isActive ? "underline font-bold" : ""
 									}`
 								}
