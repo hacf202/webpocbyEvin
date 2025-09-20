@@ -83,7 +83,7 @@ function Items() {
 							<Link
 								key={index}
 								to={`/item/${encodeURIComponent(item.itemCode)}`}
-								className='p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
+								className='p-1 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
 							>
 								<img
 									src={item.assetFullAbsolutePath || "/images/placeholder.png"}

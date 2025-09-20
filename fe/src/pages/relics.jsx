@@ -82,7 +82,7 @@ function Relics() {
 							<Link
 								key={index}
 								to={`/relic/${encodeURIComponent(relic.relicCode)}`}
-								className='p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
+								className='p-1 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
 							>
 								<img
 									src={relic.assetFullAbsolutePath || "/images/placeholder.png"}

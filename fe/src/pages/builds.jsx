@@ -200,7 +200,7 @@ const Builds = () => {
 					className='modal fixed inset-0 flex items-center justify-center'
 					style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 50 }}
 				>
-					<div className='modal-content bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-[800px]'>
+					<div className='modal-content bg-gray-800 p-2 rounded-lg shadow-lg w-full max-w-[800px]'>
 						<button
 							onClick={() => setShowModal(false)}
 							className='bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 mb-4'

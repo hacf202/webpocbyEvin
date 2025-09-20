@@ -82,7 +82,7 @@ function Powers() {
 							<Link
 								key={index}
 								to={`/power/${encodeURIComponent(power.powerCode)}`}
-								className='p-4 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
+								className='p-1 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
 							>
 								<img
 									src={power.assetFullAbsolutePath || "/images/placeholder.png"}

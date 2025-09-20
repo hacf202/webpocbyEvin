@@ -122,7 +122,7 @@ const BuildCreation = ({ onConfirm }) => {
 				<button
 					type='button'
 					onClick={() => handleToggleDropdown(dropdownId)}
-					className='p-2 rounded-md text-black bg-white w-full text-left flex items-center justify-between shadow-sm border border-gray-300 hover:bg-gray-50 transition duration-150'
+					className='p-1 rounded-md text-black bg-white w-full text-left flex items-center justify-between shadow-sm border border-gray-300 hover:bg-gray-50 transition duration-150'
 				>
 					<span className='truncate flex-1'>
 						{index !== null
@@ -150,7 +150,7 @@ const BuildCreation = ({ onConfirm }) => {
 							placeholder='Search...'
 							value={searchTerm}
 							onChange={e => setSearchTerm(e.target.value)}
-							className='p-2 m-2 rounded-md text-white w-[calc(100%-16px)] text-sm'
+							className='p-1 m-2 rounded-md text-white w-[calc(100%-16px)] text-sm'
 						/>
 						<ul className='py-1'>
 							{filteredOptions(options).map((option, idx) => (
@@ -180,8 +180,8 @@ const BuildCreation = ({ onConfirm }) => {
 	};
 
 	return (
-		<div className='build-creation bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-[1400px]'>
-			<h1 className='text-2xl font-bold text-white mb-4'>Create a Build</h1>
+		<div className='build-creation bg-gray-900 p-2 rounded-lg shadow-lg w-full max-w-[1400px]'>
+			<h1 className='text-md font-bold text-white mb-1'>Create a Build</h1>
 			<div className='mb-4'>
 				<label className='block text-sm font-medium text-gray-300'>
 					Champion:
@@ -199,7 +199,7 @@ const BuildCreation = ({ onConfirm }) => {
 				<label className='block text-sm font-medium text-gray-300'>
 					Relics:
 				</label>
-				<div className='grid grid-cols-3 gap-2'>
+				<div className='grid md:grid-cols-3 gap-2'>
 					{formData.relics.map((artifact, index) => (
 						<div key={`relic-${index}`}>
 							{renderDropdown(
@@ -219,7 +219,7 @@ const BuildCreation = ({ onConfirm }) => {
 				<label className='block text-sm font-medium text-gray-300'>
 					Powers:
 				</label>
-				<div className='grid grid-cols-3 gap-2'>
+				<div className='grid md:grid-cols-3 gap-2 grid-cols-2'>
 					{formData.powers.map((power, index) => (
 						<div key={`power-${index}`}>
 							{renderDropdown(
