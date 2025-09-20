@@ -33,12 +33,12 @@ if (missingEnvVars.length > 0) {
 }
 
 // Debug: In ra tất cả biến môi trường để kiểm tra
-console.log("Biến môi trường đã tải:", {
-	AWS_REGION: process.env.AWS_REGION,
-	COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
-	FRONTEND_URL: process.env.FRONTEND_URL,
-});
+// console.log("Biến môi trường đã tải:", {
+// 	AWS_REGION: process.env.AWS_REGION,
+// 	COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+// 	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
+// 	FRONTEND_URL: process.env.FRONTEND_URL,
+// });
 
 const client = new DynamoDBClient({
 	region: process.env.AWS_REGION || "us-east-1",
@@ -59,15 +59,30 @@ const verifier = CognitoJwtVerifier.create({
 
 const app = express();
 app.use(morgan("dev"));
+
+// Cấu hình CORS để hỗ trợ nhiều nguồn gốc
+const allowedOrigins = [
+	"https://webpocby-evin.vercel.app",
+	"http://localhost:5173",
+	// Thêm các nguồn gốc khác nếu cần
+];
 app.use(
 	cors({
-		origin: process.env.FRONTEND_URL || "http://localhost:5173",
+		origin: (origin, callback) => {
+			// Cho phép yêu cầu không có origin (như curl hoặc Postman)
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, origin || "*");
+			} else {
+				callback(new Error(`Nguồn gốc ${origin} không được phép`));
+			}
+		},
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		allowedHeaders: ["Content-Type", "Authorization"],
 		exposedHeaders: ["Content-Type"],
 		credentials: false,
 	})
 );
+
 app.use(express.json());
 
 // Middleware để đảm bảo phản hồi JSON
