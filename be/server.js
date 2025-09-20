@@ -39,6 +39,12 @@ if (missingEnvVars.length > 0) {
 // 	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
 // 	FRONTEND_URL: process.env.FRONTEND_URL,
 // });
+// console.log("Biến môi trường đã tải:", {
+// 	AWS_REGION: process.env.AWS_REGION,
+// 	COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+// 	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
+// 	FRONTEND_URL: process.env.FRONTEND_URL,
+// });
 
 const client = new DynamoDBClient({
 	region: process.env.AWS_REGION || "us-east-1",
@@ -69,6 +75,14 @@ const allowedOrigins = [
 ];
 app.use(
 	cors({
+		origin: (origin, callback) => {
+			// Cho phép yêu cầu không có origin (như curl hoặc Postman)
+			if (!origin || allowedOrigins.includes(origin)) {
+				callback(null, origin || "*");
+			} else {
+				callback(new Error(`Nguồn gốc ${origin} không được phép`));
+			}
+		},
 		origin: (origin, callback) => {
 			// Cho phép yêu cầu không có origin (như curl hoặc Postman)
 			if (!origin || allowedOrigins.includes(origin)) {
