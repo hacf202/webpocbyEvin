@@ -2,7 +2,7 @@ import { memo } from "react";
 
 function ChampionCard({ champion }) {
 	return (
-		<div className='bg-transparent w-[140px] h-[210px] relative overflow-hidden cursor-pointer hover:brightness-90 transition-all'>
+		<div className='bg-transparent w-[270px] h-[400px] relative overflow-hidden cursor-pointer hover:brightness-90 transition-all'>
 			<img
 				className='absolute object-cover w-full h-full'
 				src={

@@ -12,7 +12,6 @@ function CommentsPage() {
 	const [filterCreator, setFilterCreator] = useState("");
 	const [filterChampion, setFilterChampion] = useState("");
 	const [searchContent, setSearchContent] = useState("");
-	const [newComment, setNewComment] = useState("");
 	const [editingCommentId, setEditingCommentId] = useState(null);
 	const [editContent, setEditContent] = useState("");
 	const [deletingCommentId, setDeletingCommentId] = useState(null);
@@ -25,8 +24,11 @@ function CommentsPage() {
 				);
 				const data = await response.json();
 				if (response.ok) {
-					setComments(data.items || []);
-					setFilteredComments(data.items || []);
+					const sortedComments = (data.items || []).sort(
+						(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+					);
+					setComments(sortedComments);
+					setFilteredComments(sortedComments);
 				} else {
 					setError(data.error || "Không thể tải bình luận");
 				}
@@ -40,141 +42,31 @@ function CommentsPage() {
 	}, []);
 
 	useEffect(() => {
-		let tempComments = [...comments];
-
-		if (filterCreator) {
-			tempComments = tempComments.filter(comment =>
-				comment.creator.toLowerCase().includes(filterCreator.toLowerCase())
-			);
-		}
-
-		if (filterChampion) {
-			tempComments = tempComments.filter(comment =>
-				comment.championName
-					.toLowerCase()
-					.includes(filterChampion.toLowerCase())
-			);
-		}
-
+		let result = [...comments];
 		if (searchContent) {
-			tempComments = tempComments.filter(comment =>
-				comment.content.toLowerCase().includes(searchContent.toLowerCase())
+			result = result.filter(c =>
+				c.content.toLowerCase().includes(searchContent.toLowerCase())
 			);
 		}
-
-		tempComments.sort((a, b) => {
-			const dateA = new Date(a.createdAt);
-			const dateB = new Date(b.createdAt);
-			return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-		});
-
-		setFilteredComments(tempComments);
-	}, [comments, sortOrder, filterCreator, filterChampion, searchContent]);
-
-	const handleCommentSubmit = async e => {
-		e.preventDefault();
-		if (!newComment.trim()) {
-			setError("Bình luận không được để trống");
-			return;
-		}
-
-		if (!token) {
-			setError("Vui lòng đăng nhập để bình luận");
-			return;
-		}
-
-		const payload = {
-			championName: "",
-			content: newComment,
-		};
-
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/api/comments`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify(payload),
-				}
+		if (filterCreator) {
+			result = result.filter(c =>
+				c.creator.toLowerCase().includes(filterCreator.toLowerCase())
 			);
-			const data = await response.json();
-			if (response.ok) {
-				setComments([...comments, data.comment]);
-				setNewComment("");
-				setError(null);
-			} else {
-				setError(data.error || "Không thể gửi bình luận");
-			}
-		} catch (err) {
-			setError("Lỗi kết nối server");
 		}
-	};
-
-	const handleEditComment = async commentid => {
-		if (!editContent.trim()) {
-			setError("Bình luận không được để trống");
-			return;
-		}
-
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/api/comments/${commentid}`,
-				{
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify({ content: editContent }),
-				}
+		if (filterChampion) {
+			result = result.filter(
+				c =>
+					c.championName &&
+					c.championName.toLowerCase().includes(filterChampion.toLowerCase())
 			);
-			const data = await response.json();
-			if (response.ok) {
-				setComments(
-					comments.map(comment =>
-						comment.commentid === commentid ? data.comment : comment
-					)
-				);
-				setEditingCommentId(null);
-				setEditContent("");
-				setError(null);
-			} else {
-				setError(data.error || "Không thể cập nhật bình luận");
-			}
-		} catch (err) {
-			setError("Lỗi kết nối server");
 		}
-	};
-
-	const handleDeleteComment = async commentid => {
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/api/comments/${commentid}`,
-				{
-					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
-			const data = await response.json();
-			if (response.ok) {
-				setComments(
-					comments.filter(comment => comment.commentid !== commentid)
-				);
-				setError(null);
-			} else {
-				setError(data.error || "Không thể xóa bình luận");
-			}
-		} catch (err) {
-			setError("Lỗi kết nối server");
-		} finally {
-			setDeletingCommentId(null);
-		}
-	};
+		result.sort((a, b) =>
+			sortOrder === "desc"
+				? new Date(b.createdAt) - new Date(a.createdAt)
+				: new Date(a.createdAt) - new Date(b.createdAt)
+		);
+		setFilteredComments(result);
+	}, [searchContent, filterCreator, filterChampion, sortOrder, comments]);
 
 	const startEditing = comment => {
 		setEditingCommentId(comment.commentid);
@@ -184,182 +76,182 @@ function CommentsPage() {
 	const cancelEditing = () => {
 		setEditingCommentId(null);
 		setEditContent("");
-		setError(null);
 	};
 
-	const startDeleting = commentid => {
-		setDeletingCommentId(commentid);
+	const handleEditSubmit = async commentId => {
+		if (!editContent.trim()) {
+			alert("Bình luận không được để trống.");
+			return;
+		}
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/api/comments/update/${commentId}`,
+				{
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify({ content: editContent }),
+				}
+			);
+			if (response.ok) {
+				const updatedComment = await response.json();
+				setComments(
+					comments.map(c =>
+						c.commentid === commentId
+							? { ...c, content: updatedComment.content, isEdited: true }
+							: c
+					)
+				);
+				cancelEditing();
+			} else {
+				alert("Lỗi khi cập nhật bình luận.");
+			}
+		} catch (error) {
+			alert("Lỗi kết nối khi cập nhật bình luận.");
+		}
 	};
 
-	const cancelDeleting = () => {
-		setDeletingCommentId(null);
-		setError(null);
+	const startDeleting = commentId => {
+		if (window.confirm("Bạn có chắc chắn muốn xóa bình luận này?")) {
+			handleDelete(commentId);
+		}
 	};
 
-	if (loading) {
-		return (
-			<div className='text-center text-white text-lg py-4'>
-				Đang tải bình luận...
-			</div>
-		);
-	}
+	const handleDelete = async commentId => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/api/comments/delete/${commentId}`,
+				{
+					method: "DELETE",
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+			if (response.ok) {
+				setComments(comments.filter(c => c.commentid !== commentId));
+			} else {
+				alert("Lỗi khi xóa bình luận.");
+			}
+		} catch (error) {
+			alert("Lỗi kết nối khi xóa bình luận.");
+		}
+	};
 
-	if (error) {
-		return <div className='text-center text-red-500 text-lg py-4'>{error}</div>;
-	}
+	if (loading) return <p className='text-center'>Đang tải bình luận...</p>;
+	if (error)
+		return <p className='text-center text-[var(--color-danger)]'>{error}</p>;
 
 	return (
-		<div className='p-4 sm:p-6 bg-gray-900 text-white min-h-screen'>
-			<h1 className='text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left'>
+		<div className='max-w-4xl mx-auto'>
+			<h1 className='text-3xl sm:text-5xl font-bold text-center mb-8'>
 				Tất cả bình luận
 			</h1>
-			<div className='mb-4 sm:mb-6 flex flex-col sm:flex-row gap-2 sm:gap-4 flex-wrap'>
-				<input
-					type='text'
-					placeholder='Lọc theo người tạo'
-					value={filterCreator}
-					onChange={e => setFilterCreator(e.target.value)}
-					className='p-2 bg-gray-800 text-white rounded w-full sm:w-auto flex-grow'
-				/>
-				<input
-					type='text'
-					placeholder='Lọc theo tướng'
-					value={filterChampion}
-					onChange={e => setFilterChampion(e.target.value)}
-					className='p-2 bg-gray-800 text-white rounded w-full sm:w-auto flex-grow'
-				/>
-				<input
-					type='text'
-					placeholder='Tìm nội dung bình luận'
-					value={searchContent}
-					onChange={e => setSearchContent(e.target.value)}
-					className='p-2 bg-gray-800 text-white rounded w-full sm:w-auto flex-grow'
-				/>
-				<select
-					value={sortOrder}
-					onChange={e => setSortOrder(e.target.value)}
-					className='p-2 bg-gray-800 text-white rounded w-full sm:w-auto'
-				>
-					<option value='desc'>Mới nhất trước</option>
-					<option value='asc'>Cũ nhất trước</option>
-				</select>
-			</div>
-			<div className='mb-4 sm:mb-6'>
-				{user ? (
-					<div className='mb-4'>
-						<form onSubmit={handleCommentSubmit}>
-							<textarea
-								className='w-full p-3 bg-gray-800 text-white rounded-md text-sm sm:text-base resize-y'
-								rows='4'
-								value={newComment}
-								onChange={e => setNewComment(e.target.value)}
-								placeholder='Viết bình luận của bạn...'
-							></textarea>
-							{error && <p className='text-red-500 mt-2 text-sm'>{error}</p>}
-							<button
-								type='submit'
-								className='mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm sm:text-base w-full sm:w-auto'
-							>
-								Gửi bình luận
-							</button>
-						</form>
-					</div>
-				) : (
-					<p className='text-yellow-400 mb-4 text-sm sm:text-base text-center sm:text-left'>
-						Vui lòng{" "}
-						<Link to='/login' className='underline text-blue-400'>
-							đăng nhập
-						</Link>{" "}
-						để bình luận.
-					</p>
-				)}
-			</div>
-			{filteredComments.length > 0 ? (
-				<div className='flex flex-col gap-4'>
-					{filteredComments.map(comment => (
-						<div key={comment.commentid} className='p-4 bg-gray-800 rounded-lg'>
-							{editingCommentId === comment.commentid ? (
-								<div>
-									<textarea
-										className='w-full p-3 bg-gray-900 text-white rounded-md text-sm sm:text-base resize-y mb-2'
-										rows='4'
-										value={editContent}
-										onChange={e => setEditContent(e.target.value)}
-									></textarea>
-									<div className='flex gap-2 flex-wrap'>
-										<button
-											onClick={() => handleEditComment(comment.commentid)}
-											className='px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm sm:text-base'
-										>
-											Lưu
-										</button>
-										<button
-											onClick={cancelEditing}
-											className='px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm sm:text-base'
-										>
-											Hủy
-										</button>
-									</div>
-								</div>
-							) : deletingCommentId === comment.commentid ? (
-								<div>
-									<p className='text-red-400 mb-2 text-sm sm:text-base'>
-										Bạn có chắc muốn xóa bình luận này?
-									</p>
-									<div className='flex gap-2 flex-wrap'>
-										<button
-											onClick={() => handleDeleteComment(comment.commentid)}
-											className='px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm sm:text-base'
-										>
-											Xác nhận
-										</button>
-										<button
-											onClick={cancelDeleting}
-											className='px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm sm:text-base'
-										>
-											Hủy
-										</button>
-									</div>
-								</div>
-							) : (
-								<div>
-									<p className='font-bold text-sm sm:text-base'>
-										{comment.creator}
-									</p>
-									<p className='text-sm sm:text-base'>{comment.content}</p>
-									<p className='text-xs sm:text-sm text-gray-400'>
-										{new Date(comment.createdAt).toLocaleString("vi-VN")}
-										{comment.isEdited && " (Bình luận này đã được chỉnh sửa)"}
-									</p>
-									<p className='text-xs sm:text-sm text-blue-400'>
-										Tướng: {comment.championName || "Không có tướng"}
-									</p>
-									{user && user.username === comment.creator && (
-										<div className='flex gap-2 mt-2 flex-wrap'>
-											<button
-												onClick={() => startEditing(comment)}
-												className='px-3 py-1 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 text-sm sm:text-base'
-											>
-												Sửa
-											</button>
-											<button
-												onClick={() => startDeleting(comment.commentid)}
-												className='px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm sm:text-base'
-											>
-												Xóa
-											</button>
-										</div>
-									)}
-								</div>
-							)}
-						</div>
-					))}
+			<div className='p-4 bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] mb-8'>
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+					<input
+						type='text'
+						placeholder='Tìm theo nội dung...'
+						value={searchContent}
+						onChange={e => setSearchContent(e.target.value)}
+						className='p-2 rounded-md bg-white border border-[var(--color-border)] w-full'
+					/>
+					<input
+						type='text'
+						placeholder='Lọc theo người tạo...'
+						value={filterCreator}
+						onChange={e => setFilterCreator(e.target.value)}
+						className='p-2 rounded-md bg-white border border-[var(--color-border)] w-full'
+					/>
+					<input
+						type='text'
+						placeholder='Lọc theo tướng...'
+						value={filterChampion}
+						onChange={e => setFilterChampion(e.target.value)}
+						className='p-2 rounded-md bg-white border border-[var(--color-border)] w-full'
+					/>
+					<select
+						value={sortOrder}
+						onChange={e => setSortOrder(e.target.value)}
+						className='p-2 rounded-md bg-white border border-[var(--color-border)] w-full'
+					>
+						<option value='desc'>Mới nhất</option>
+						<option value='asc'>Cũ nhất</option>
+					</select>
 				</div>
-			) : (
-				<p className='text-sm sm:text-base text-center'>
-					Chưa có bình luận nào.
-				</p>
-			)}
+			</div>
+
+			<div className='space-y-4'>
+				{filteredComments.map(comment => (
+					<div
+						key={comment.commentid}
+						className='bg-[var(--color-surface)] p-4 rounded-lg border border-[var(--color-border)]'
+					>
+						{editingCommentId === comment.commentid ? (
+							<div>
+								<textarea
+									value={editContent}
+									onChange={e => setEditContent(e.target.value)}
+									className='w-full p-2 rounded-md bg-white border border-[var(--color-border)] mb-2'
+									rows='3'
+								></textarea>
+								<div className='flex gap-2'>
+									<button
+										onClick={() => handleEditSubmit(comment.commentid)}
+										className='px-3 py-1 bg-[var(--color-primary)] text-white rounded-md hover:bg-[var(--color-primary-hover)] text-sm'
+									>
+										Lưu
+									</button>
+									<button
+										onClick={cancelEditing}
+										className='px-3 py-1 bg-gray-300 text-black rounded-md hover:bg-gray-400 text-sm'
+									>
+										Hủy
+									</button>
+								</div>
+							</div>
+						) : (
+							<div>
+								<p className='font-bold text-base'>{comment.creator}</p>
+								<p className='text-base my-1'>{comment.content}</p>
+								<p className='text-xs text-[var(--color-text-secondary)]'>
+									{new Date(comment.createdAt).toLocaleString("vi-VN")}
+									{comment.isEdited && " (đã sửa)"}
+								</p>
+								{comment.championName && (
+									<p className='text-xs text-[var(--color-text-link)] mt-1'>
+										Trong bài:{" "}
+										<Link
+											to={`/champion/${encodeURIComponent(
+												comment.championName
+											)}`}
+											className='hover:underline'
+										>
+											{comment.championName}
+										</Link>
+									</p>
+								)}
+								{user && user.username === comment.creator && (
+									<div className='flex gap-2 mt-2'>
+										<button
+											onClick={() => startEditing(comment)}
+											className='px-3 py-1 bg-[var(--color-warning)] text-black rounded-md text-sm font-semibold'
+										>
+											Sửa
+										</button>
+										<button
+											onClick={() => startDeleting(comment.commentid)}
+											className='px-3 py-1 bg-[var(--color-danger)] text-white rounded-md hover:bg-[var(--color-danger-hover)] text-sm font-semibold'
+										>
+											Xóa
+										</button>
+									</div>
+								)}
+							</div>
+						)}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 }

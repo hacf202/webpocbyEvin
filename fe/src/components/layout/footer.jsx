@@ -18,9 +18,8 @@ function Footer() {
 						https://www.youtube.com/@Evin0126/
 					</a>
 				</p>
-				<p className='text-sm mt-2'>
-					<h4>donate: MB 011220040126</h4>
-				</p>
+
+				<p className='text-sm mt-2 font-bold'>donate: MB 011220040126</p>
 			</div>
 		</footer>
 	);

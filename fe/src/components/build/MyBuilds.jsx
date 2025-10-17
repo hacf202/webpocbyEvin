@@ -1,182 +1,230 @@
-import React, { useState, useEffect, useRef } from "react";
-import BuildSummary from "./BuildSummary";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
+// src/components/build/MyBuilds.jsx
 
+import React, { useEffect, useState, useMemo, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import BuildSummary from "./BuildSummary";
+import BuildEdit from "./BuildEdit";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import Button from "../common/Button";
+
+// Component này nhận các props từ cha để lọc và hiển thị dữ liệu
 const MyBuilds = ({
-	token,
-	onDeleteBuild,
-	onEditBuild,
-	onUpdateBuild,
-	championsList = [],
-	relicsList = [],
-	itemsList = [],
-	powersList = [],
+	searchTerm,
+	selectedStarLevel,
+	selectedRegion,
+	championsList,
+	relicsList,
+	powersList,
+	runesList,
 }) => {
+	const { user, token } = useContext(AuthContext);
 	const [myBuilds, setMyBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+
+	// State cho các modal chỉnh sửa và xóa
+	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [editingBuild, setEditingBuild] = useState(null);
 	const [buildToDelete, setBuildToDelete] = useState(null);
-	const updateRef = useRef(null);
 
-	const normalizeBuild = build => ({
-		...build,
-		championName:
-			typeof build.championName === "object" && build.championName?.S
-				? build.championName.S
-				: build.championName || "",
-		artifacts: Array.isArray(build.artifacts)
-			? build.artifacts.map(artifact =>
-					typeof artifact === "object" && artifact?.S
-						? artifact.S
-						: artifact || ""
-			  )
-			: [],
-		items: Array.isArray(build.items)
-			? build.items.map(item =>
-					typeof item === "object" && item?.S ? item.S : item || ""
-			  )
-			: [],
-		powers: Array.isArray(build.powers)
-			? build.powers.map(power =>
-					typeof power === "object" && power?.S ? power.S : power || ""
-			  )
-			: [],
-		description:
-			typeof build.description === "object" && build.description?.S
-				? build.description.S
-				: build.description || "",
-		creator:
-			typeof build.creator === "object" && build.creator?.S
-				? build.creator.S
-				: build.creator || "",
-		creator_name:
-			typeof build.creator_name === "object" && build.creator_name?.S
-				? build.creator_name.S
-				: build.creator_name || "",
-	});
+	// Dữ liệu được tính toán trước để tối ưu hóa việc lọc
+	const powerMap = useMemo(
+		() => new Map(powersList.map(p => [p.id, p.name])),
+		[powersList]
+	);
+	const championNameToRegionsMap = useMemo(() => {
+		const map = new Map();
+		championsList.forEach(champion => map.set(champion.name, champion.regions));
+		return map;
+	}, [championsList]);
 
+	// Effect để fetch dữ liệu build của người dùng
 	useEffect(() => {
-		if (token) {
-			const fetchMyBuilds = async () => {
-				try {
-					setIsLoading(true);
-					const response = await fetch(
-						`${import.meta.env.VITE_API_URL}/api/my-builds`,
-						{
-							headers: { Authorization: `Bearer ${token}` },
-						}
-					);
-					if (!response.ok) {
-						throw new Error(`HTTP error! Status: ${response.status}`);
+		const fetchMyBuilds = async () => {
+			if (!user || !token) {
+				setError("Bạn cần đăng nhập để xem các build của mình.");
+				setIsLoading(false);
+				return;
+			}
+			setIsLoading(true);
+			setError(null);
+			try {
+				const response = await fetch(
+					`${import.meta.env.VITE_API_URL}/api/my-builds`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
 					}
-					const data = await response.json();
-					setMyBuilds(
-						Array.isArray(data.items) ? data.items.map(normalizeBuild) : []
-					);
-					setError(null);
-				} catch (err) {
-					console.error("Lỗi khi lấy my builds:", err);
-					setError("Không thể tải dữ liệu my builds.");
-				} finally {
-					setIsLoading(false);
-				}
-			};
-			fetchMyBuilds();
-		}
-	}, [token]);
+				);
+				if (!response.ok)
+					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
+				const data = await response.json();
+				setMyBuilds(data.items);
+			} catch (err) {
+				setError(err.message);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		fetchMyBuilds();
+	}, [user, token]); // Chỉ fetch lại khi user hoặc token thay đổi
 
-	const handleDelete = async id => {
+	// Logic lọc được áp dụng trên `myBuilds`
+	const filteredBuilds = useMemo(() => {
+		const toLowerSafe = val => String(val || "").toLowerCase();
+		let tempFiltered = [...myBuilds];
+
+		if (selectedStarLevel) {
+			tempFiltered = tempFiltered.filter(
+				build => build.star === parseInt(selectedStarLevel)
+			);
+		}
+		if (selectedRegion) {
+			tempFiltered = tempFiltered.filter(build => {
+				const championRegions = championNameToRegionsMap.get(
+					build.championName
+				);
+				return championRegions
+					? championRegions.includes(selectedRegion)
+					: false;
+			});
+		}
+		if (searchTerm) {
+			const lowercasedTerm = toLowerSafe(searchTerm);
+			tempFiltered = tempFiltered.filter(build => {
+				const descriptionMatch = toLowerSafe(build.description).includes(
+					lowercasedTerm
+				);
+				const championMatch = toLowerSafe(build.championName).includes(
+					lowercasedTerm
+				);
+				const creatorMatch = toLowerSafe(build.creator).includes(
+					lowercasedTerm
+				);
+				const artifactMatch = build.artifacts?.some(artifact =>
+					toLowerSafe(artifact).includes(lowercasedTerm)
+				);
+				const powerMatch = build.powers?.some(powerId =>
+					toLowerSafe(powerMap.get(powerId)).includes(lowercasedTerm)
+				);
+				const runeMatch = build.rune?.some(runeName =>
+					toLowerSafe(runeName).includes(lowercasedTerm)
+				);
+				return (
+					descriptionMatch ||
+					championMatch ||
+					creatorMatch ||
+					artifactMatch ||
+					powerMatch ||
+					runeMatch
+				);
+			});
+		}
+		return tempFiltered;
+	}, [
+		myBuilds,
+		searchTerm,
+		selectedStarLevel,
+		selectedRegion,
+		powerMap,
+		championNameToRegionsMap,
+	]);
+
+	// Các hàm xử lý sự kiện sửa, xóa
+	const handleUpdateBuild = updatedBuild => {
+		setMyBuilds(prev =>
+			prev.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+		);
+		setShowEditModal(false);
+		setEditingBuild(null);
+	};
+
+	const handleDeleteBuild = async buildId => {
 		try {
 			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/api/builds/${id}`,
+				`${import.meta.env.VITE_API_URL}/api/builds/${buildId}`,
 				{
 					method: "DELETE",
 					headers: { Authorization: `Bearer ${token}` },
 				}
 			);
-			if (response.ok) {
-				setMyBuilds(prev => prev.filter(b => b.id !== id));
-				setShowDeleteModal(false);
-				setBuildToDelete(null);
-				onDeleteBuild(id); // Cập nhật Builds.jsx
-			} else {
-				setError("Không thể xóa build");
-			}
-		} catch (err) {
-			setError("Lỗi kết nối server");
+			if (!response.ok) throw new Error("Xóa không thành công");
+			setMyBuilds(prev => prev.filter(b => b.id !== buildId));
+		} catch (error) {
+			setError("Không thể xóa build này.");
+		} finally {
+			setShowDeleteModal(false);
+			setBuildToDelete(null);
 		}
 	};
 
-	const handleUpdate = updatedBuild => {
-		setMyBuilds(prev =>
-			prev.map(b =>
-				b.id === updatedBuild.id ? normalizeBuild(updatedBuild) : b
-			)
-		);
+	const handleEditBuild = build => {
+		setEditingBuild(build);
+		setShowEditModal(true);
 	};
 
-	useEffect(() => {
-		if (onUpdateBuild) {
-			onUpdateBuild.current = handleUpdate; // Đăng ký hàm cập nhật
-		}
-	}, [onUpdateBuild]);
-
-	const openDeleteModal = id => {
-		setBuildToDelete(id);
+	const confirmDelete = buildId => {
+		setBuildToDelete(buildId);
 		setShowDeleteModal(true);
 	};
 
-	if (isLoading) {
-		return <p className='text-white'>Đang tải my builds...</p>;
-	}
-
-	if (error) {
-		return <p className='text-red-500'>{error}</p>;
-	}
+	// Render
+	if (isLoading) return <p className='text-center mt-8'>Đang tải dữ liệu...</p>;
+	if (error)
+		return (
+			<p className='text-[var(--color-danger)] text-center mt-8'>{error}</p>
+		);
 
 	return (
-		<div className='my-builds'>
-			<h2 className='text-xl font-bold text-white mb-4'>Build Của Tôi</h2>
-			{myBuilds.length === 0 ? (
-				<p className='text-gray-300'>Bạn chưa có build nào.</p>
-			) : (
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-					{myBuilds.map(build => (
-						<div key={build.id}>
-							<BuildSummary
-								build={build}
-								championsList={championsList}
-								relicsList={relicsList}
-								itemsList={itemsList}
-								powersList={powersList}
-								style={{ zIndex: 10 }}
-							/>
-							<button
-								onClick={() => onEditBuild(build)}
-								className='bg-yellow-600 text-white px-2 py-1 rounded mt-2'
-							>
-								Sửa
-							</button>
-							<button
-								onClick={() => openDeleteModal(build.id)}
-								className='bg-red-600 text-white px-2 py-1 rounded mt-2 ml-2'
-							>
-								Xóa
-							</button>
-						</div>
-					))}
-				</div>
+		<>
+			{showEditModal && editingBuild && (
+				<BuildEdit
+					build={editingBuild}
+					onConfirm={handleUpdateBuild}
+					onClose={() => setShowEditModal(false)}
+				/>
 			)}
 			{showDeleteModal && (
 				<ConfirmDeleteModal
-					isOpen={showDeleteModal}
 					onClose={() => setShowDeleteModal(false)}
-					onConfirm={handleDelete}
-					buildId={buildToDelete}
+					onConfirm={() => handleDeleteBuild(buildToDelete)}
 				/>
 			)}
-		</div>
+
+			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
+				{filteredBuilds.map(build => (
+					<div key={build.id} className='flex flex-col'>
+						<BuildSummary
+							build={build}
+							championsList={championsList}
+							relicsList={relicsList}
+							powersList={powersList}
+							runesList={runesList}
+						/>
+						{/* Nút Sửa và Xóa luôn hiển thị vì đây là tab "My Builds" */}
+						<div className='flex gap-2 mt-2 self-end'>
+							<Button
+								variant='warning'
+								size='sm'
+								onClick={() => handleEditBuild(build)}
+							>
+								Sửa
+							</Button>
+							<Button
+								variant='danger'
+								size='sm'
+								onClick={() => confirmDelete(build.id)}
+							>
+								Xóa
+							</Button>
+						</div>
+					</div>
+				))}
+			</div>
+		</>
 	);
 };
 

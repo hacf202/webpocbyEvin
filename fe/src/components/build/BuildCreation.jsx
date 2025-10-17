@@ -1,81 +1,218 @@
-import React, {
-	useState,
-	useEffect,
-	useMemo,
-	useCallback,
-	useRef,
-	useContext,
-} from "react";
+import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
 import championsData from "../../assets/data/champions.json";
 import relicsData from "../../assets/data/relics-vi_vn.json";
 import powersData from "../../assets/data/powers-vi_vn.json";
-import { v4 as uuidv4 } from "uuid";
+import runesData from "../../assets/data/runes-vi_vn.json";
 import { AuthContext } from "../../context/AuthContext";
+import { Star, X, ChevronDown } from "lucide-react";
 
-const BuildCreation = ({ onConfirm }) => {
-	const { user, token } = useContext(AuthContext);
-	const [champions, setChampions] = useState([]);
-	const [relics, setRelics] = useState([]);
-	const [powers, setPowers] = useState([]);
-	const [formData, setFormData] = useState({
-		championName: "",
-		championImage: "",
-		relics: [null, null, null],
-		powers: [null, null, null, null, null, null],
-		notes: "",
-	});
+// --- Searchable Dropdown Component with Icons ---
+const SearchableDropdown = ({
+	options,
+	selectedValue,
+	onChange,
+	placeholder,
+	disabled = false,
+}) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
-	const [openDropdownId, setOpenDropdownId] = useState(null);
-	const [loading, setLoading] = useState(false);
-	const [submitting, setSubmitting] = useState(false);
-	const [message, setMessage] = useState("");
-	const isSubmittingRef = useRef(false);
+	const dropdownRef = useRef(null);
 
-	useEffect(() => {
-		setChampions(championsData);
-		setRelics(relicsData);
-		setPowers(powersData);
-	}, []);
-
-	const handleInputChange = useCallback(
-		(name, value, index = null) => {
-			if ((name === "relics" || name === "powers") && index !== null) {
-				const updatedArray = [...formData[name]];
-				updatedArray[index] = value;
-				setFormData({ ...formData, [name]: updatedArray });
-			} else {
-				setFormData({ ...formData, [name]: value });
-			}
-		},
-		[formData]
+	const selectedOption = useMemo(
+		() => options.find(option => option.name === selectedValue),
+		[options, selectedValue]
 	);
 
-	const handleConfirm = async () => {
-		if (isSubmittingRef.current) return;
-		isSubmittingRef.current = true;
-		setSubmitting(true);
+	const filteredOptions = useMemo(
+		() =>
+			options.filter(option =>
+				option.name.toLowerCase().includes(searchTerm.toLowerCase())
+			),
+		[options, searchTerm]
+	);
 
-		if (!token || !user) {
-			setMessage("❌ Vui lòng đăng nhập để tạo build");
-			isSubmittingRef.current = false;
-			setSubmitting(false);
+	useEffect(() => {
+		const handleClickOutside = event => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, []);
+
+	const handleSelect = value => {
+		onChange(value);
+		setIsOpen(false);
+		setSearchTerm("");
+	};
+
+	return (
+		<div className='relative' ref={dropdownRef}>
+			<button
+				type='button'
+				onClick={() => !disabled && setIsOpen(!isOpen)}
+				className={`w-full bg-gray-700 border border-gray-600 rounded-md p-2 flex justify-between items-center text-left ${
+					disabled ? "opacity-50 cursor-not-allowed" : ""
+				}`}
+				disabled={disabled}
+			>
+				<div className='flex items-center truncate'>
+					{selectedOption?.icon && (
+						<img
+							src={selectedOption.icon}
+							alt={selectedOption.name}
+							className='w-6 h-6 mr-2 rounded-full object-cover flex-shrink-0'
+						/>
+					)}
+					<span
+						className={`truncate ${
+							selectedValue ? "text-white" : "text-gray-400"
+						}`}
+					>
+						{selectedValue || placeholder}
+					</span>
+				</div>
+				<ChevronDown
+					size={20}
+					className={`transition-transform flex-shrink-0 ${
+						isOpen ? "rotate-180" : ""
+					}`}
+				/>
+			</button>
+
+			{isOpen && (
+				<div className='absolute z-20 top-full mt-1 w-full bg-gray-800 border border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto'>
+					<div className='p-2 sticky top-0 bg-gray-800'>
+						<input
+							type='text'
+							placeholder='Tìm kiếm...'
+							className='w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white'
+							value={searchTerm}
+							onChange={e => setSearchTerm(e.target.value)}
+							autoFocus
+						/>
+					</div>
+					<ul className='overflow-y-auto'>
+						{filteredOptions.length > 0 ? (
+							filteredOptions.map(opt => (
+								<li
+									key={opt.name}
+									onClick={() => handleSelect(opt.name)}
+									className='p-2 hover:bg-cyan-600 cursor-pointer flex items-center'
+								>
+									{opt.icon && (
+										<img
+											src={opt.icon}
+											alt={opt.name}
+											className='w-6 h-6 mr-2 rounded-full object-cover flex-shrink-0'
+										/>
+									)}
+									<span className='truncate'>{opt.name}</span>
+								</li>
+							))
+						) : (
+							<li className='p-2 text-gray-500'>Không tìm thấy</li>
+						)}
+					</ul>
+				</div>
+			)}
+		</div>
+	);
+};
+
+// --- Main Build Creation Component ---
+const BuildCreation = ({ onConfirm, onClose }) => {
+	const { token } = useContext(AuthContext);
+
+	const [formData, setFormData] = useState({
+		championName: "",
+		artifacts: [null, null, null],
+		powers: [null, null, null, null, null, null],
+		rune: [null], // Only one rune
+		star: 3,
+		description: "",
+	});
+	const [selectedChampion, setSelectedChampion] = useState(null);
+	const [submitting, setSubmitting] = useState(false);
+	const [message, setMessage] = useState("");
+
+	// Memoize options to prevent re-computation on every render
+	const championOptions = useMemo(
+		() =>
+			championsData.map(c => ({
+				name: c.name,
+				icon: c.assets?.[0]?.M?.avatar?.S,
+				regions: c.regions,
+			})),
+		[]
+	);
+	const relicOptions = useMemo(
+		() => relicsData.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
+		[]
+	);
+	const runeOptions = useMemo(
+		() => runesData.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
+		[]
+	);
+	const powerOptions = useMemo(
+		() => powersData.map(p => ({ name: p.name, icon: p.assetAbsolutePath })),
+		[]
+	);
+
+	const isChampionSelected = !!formData.championName;
+	const isHoaLinhChampion =
+		selectedChampion?.regions?.includes("Hoa Linh Lục Địa");
+
+	const handleChampionChange = championName => {
+		const champion = championOptions.find(c => c.name === championName) || null;
+		setSelectedChampion(champion);
+		setFormData(prev => ({
+			...prev,
+			championName: championName,
+			// Reset rune if the new champion is not from Hoa Linh
+			rune: champion?.regions?.includes("Hoa Linh Lục Địa")
+				? prev.rune
+				: [null],
+		}));
+	};
+
+	const handleStarChange = newRating => {
+		setFormData(prev => ({ ...prev, star: newRating }));
+	};
+
+	const handleDropdownChange = (type, value, index) => {
+		const newValues = [...formData[type]];
+		newValues[index] = value;
+		setFormData(prev => ({ ...prev, [type]: newValues }));
+	};
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+		setMessage("");
+
+		if (
+			!isChampionSelected ||
+			formData.artifacts.filter(Boolean).length === 0
+		) {
+			setMessage("Vui lòng chọn Tướng và ít nhất một Cổ vật.");
 			return;
 		}
 
-		const payload = {
-			id: uuidv4(),
+		setSubmitting(true);
+
+		const buildData = {
 			championName: formData.championName,
-			description: formData.notes,
-			artifacts: formData.relics.filter(Boolean),
+			description: formData.description,
+			star: formData.star,
+			artifacts: formData.artifacts.filter(Boolean),
 			powers: formData.powers.filter(Boolean),
+			rune: formData.rune.filter(Boolean),
+			like: 0,
+			favorite: [],
 		};
 
-		// console.log("Token before sending:", token);
-		// console.log("Payload sent:", payload);
-
 		try {
-			setLoading(true);
-			setMessage("");
 			const response = await fetch(
 				`${import.meta.env.VITE_API_URL}/api/builds`,
 				{
@@ -84,178 +221,161 @@ const BuildCreation = ({ onConfirm }) => {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${token}`,
 					},
-					body: JSON.stringify(payload),
+					body: JSON.stringify(buildData),
 				}
 			);
-			const data = await response.json();
+			const result = await response.json();
 			if (response.ok) {
-				setMessage("✅ Build đã được lưu thành công!");
-				if (onConfirm) onConfirm(data.build);
+				setMessage("Build đã được tạo thành công!");
+				setTimeout(() => onConfirm(result.build), 1000);
 			} else {
-				setMessage("❌ Lỗi: " + (data.error || "Không thể lưu build"));
+				setMessage(`Lỗi: ${result.error || "Không thể tạo build"}`);
 			}
 		} catch (error) {
-			console.error("Fetch error:", error);
-			setMessage("❌ Lỗi kết nối server");
+			setMessage("Lỗi kết nối đến server.");
+			console.error("Error creating build:", error);
 		} finally {
-			isSubmittingRef.current = false;
-			setLoading(false);
 			setSubmitting(false);
 		}
 	};
 
-	const handleToggleDropdown = useCallback(dropdownId => {
-		setOpenDropdownId(prev => (prev === dropdownId ? null : dropdownId));
-	}, []);
-
-	const filteredOptions = useMemo(() => {
-		return options =>
-			options.filter(option =>
-				option.name.toLowerCase().includes(searchTerm.toLowerCase())
-			);
-	}, [searchTerm]);
-
-	const renderDropdown = (name, options, placeholder, index = null) => {
-		const dropdownId = `${name}-${index !== null ? index : "single"}`;
-		return (
-			<div className='relative w-full'>
-				<button
-					type='button'
-					onClick={() => handleToggleDropdown(dropdownId)}
-					className='p-1 rounded-md text-black bg-white w-full text-left flex items-center justify-between shadow-sm border border-gray-300 hover:bg-gray-50 transition duration-150'
-				>
-					<span className='truncate flex-1'>
-						{index !== null
-							? formData[name][index] || placeholder
-							: formData[name] || placeholder}
-					</span>
-					<svg
-						className='w-4 h-4 text-gray-600'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth='2'
-							d='M19 9l-7 7-7-7'
-						/>
-					</svg>
-				</button>
-				{openDropdownId === dropdownId && (
-					<div className='absolute z-20 mt-1 w-full bg-gray-800 rounded-md shadow-lg max-h-60 overflow-y-auto overflow-x-hidden border border-gray-600'>
-						<input
-							type='text'
-							placeholder='Search...'
-							value={searchTerm}
-							onChange={e => setSearchTerm(e.target.value)}
-							className='p-1 m-2 rounded-md text-white w-[calc(100%-16px)] text-sm'
-						/>
-						<ul className='py-1'>
-							{filteredOptions(options).map((option, idx) => (
-								<li
-									key={idx}
-									className='flex items-center px-3 py-2 text-white hover:bg-gray-700 cursor-pointer'
-									onClick={() => {
-										handleInputChange(name, option.name, index);
-										handleToggleDropdown(dropdownId);
-									}}
-								>
-									{option.image && (
-										<img
-											src={option.image}
-											alt={option.name}
-											className='w-6 h-6 mr-2 object-cover rounded'
-										/>
-									)}
-									<span>{option.name}</span>
-								</li>
-							))}
-						</ul>
-					</div>
-				)}
-			</div>
-		);
-	};
-
 	return (
-		<div className='build-creation bg-gray-900 p-2 rounded-lg shadow-lg w-full max-w-[1400px]'>
-			<h1 className='text-md font-bold text-white mb-1'>Create a Build</h1>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Champion:
-				</label>
-				{renderDropdown(
-					"championName",
-					champions.map(champion => ({
-						name: champion.name,
-						image: champion.assets[0].M.avatar.S,
-					})),
-					"Select a Champion"
-				)}
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Relics:
-				</label>
-				<div className='grid md:grid-cols-3 gap-2'>
-					{formData.relics.map((artifact, index) => (
-						<div key={`relic-${index}`}>
-							{renderDropdown(
-								"relics",
-								relics.map(relic => ({
-									name: relic.name,
-									image: relic.assetAbsolutePath,
-								})),
-								`Relic ${index + 1}`,
-								index
-							)}
-						</div>
-					))}
+		<div className='fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50'>
+			<div className='bg-gray-800 text-white rounded-lg p-6 w-full max-w-3xl max-h-[95vh] overflow-y-auto'>
+				<div className='flex justify-between items-center mb-4'>
+					<h2 className='text-2xl font-bold text-cyan-400'>Tạo Build Mới</h2>
+					<button onClick={onClose} className='text-gray-400 hover:text-white'>
+						<X size={24} />
+					</button>
 				</div>
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Powers:
-				</label>
-				<div className='grid md:grid-cols-3 gap-2 grid-cols-2'>
-					{formData.powers.map((power, index) => (
-						<div key={`power-${index}`}>
-							{renderDropdown(
-								"powers",
-								powers.map(p => ({
-									name: p.name,
-									image: p.assetAbsolutePath,
-								})),
-								`Power ${index + 1}`,
-								index
-							)}
+				<form onSubmit={handleSubmit}>
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300 mb-1'>
+							Tướng (Bắt buộc):
+						</label>
+						<SearchableDropdown
+							options={championOptions}
+							selectedValue={formData.championName}
+							onChange={handleChampionChange}
+							placeholder='Chọn hoặc tìm kiếm tướng...'
+						/>
+					</div>
+
+					<fieldset disabled={!isChampionSelected} className='space-y-4'>
+						<div>
+							<label className='block text-sm font-medium text-gray-300 mb-2'>
+								Xếp hạng sao:
+							</label>
+							<div className='flex items-center'>
+								{[1, 2, 3, 4, 5].map(s => (
+									<Star
+										key={s}
+										size={30}
+										className={`cursor-pointer transition-colors ${
+											formData.star >= s
+												? "text-yellow-400"
+												: "text-gray-600 hover:text-gray-500"
+										}`}
+										fill={formData.star >= s ? "currentColor" : "none"}
+										onClick={() => handleStarChange(s)}
+									/>
+								))}
+							</div>
 						</div>
-					))}
-				</div>
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Gameplay Notes:
-				</label>
-				<textarea
-					name='notes'
-					value={formData.notes}
-					onChange={e => handleInputChange("notes", e.target.value)}
-					placeholder='Enter gameplay notes...'
-					className='mt-1 block w-full bg-gray-800 text-white rounded-md h-30'
-				></textarea>
-			</div>
-			<div className='mt-4'>
-				<button
-					onClick={handleConfirm}
-					disabled={loading || submitting}
-					className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50'
-				>
-					{loading ? "Saving..." : "Confirm Build"}
-				</button>
-				{message && <p className='mt-2 text-white'>{message}</p>}
+
+						<div>
+							<label className='block text-sm font-medium text-gray-300'>
+								Cổ vật (Bắt buộc ít nhất 1):
+							</label>
+							<div className='grid grid-cols-3 gap-2 mt-1'>
+								{formData.artifacts.map((_, index) => (
+									<div key={`artifact-${index}`}>
+										<SearchableDropdown
+											options={relicOptions}
+											selectedValue={formData.artifacts[index]}
+											onChange={value =>
+												handleDropdownChange("artifacts", value, index)
+											}
+											placeholder={`Cổ vật ${index + 1}`}
+										/>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{isHoaLinhChampion && (
+							<div>
+								<label className='block text-sm font-medium text-gray-300'>
+									Ngọc bổ trợ (Chỉ dành cho tướng Hoa Linh):
+								</label>
+								<div className='mt-1'>
+									<SearchableDropdown
+										options={runeOptions}
+										selectedValue={formData.rune[0]}
+										onChange={value => handleDropdownChange("rune", value, 0)}
+										placeholder={`Ngọc bổ trợ`}
+									/>
+								</div>
+							</div>
+						)}
+
+						<div>
+							<label className='block text-sm font-medium text-gray-300'>
+								Sức mạnh:
+							</label>
+							<div className='grid grid-cols-3 gap-2 mt-1'>
+								{formData.powers.map((_, index) => (
+									<div key={`power-${index}`}>
+										<SearchableDropdown
+											options={powerOptions}
+											selectedValue={formData.powers[index]}
+											onChange={value =>
+												handleDropdownChange("powers", value, index)
+											}
+											placeholder={`Sức mạnh ${index + 1}`}
+										/>
+									</div>
+								))}
+							</div>
+						</div>
+
+						<div>
+							<label className='block text-sm font-medium text-gray-300'>
+								Ghi chú:
+							</label>
+							<textarea
+								value={formData.description}
+								onChange={e =>
+									setFormData(prev => ({
+										...prev,
+										description: e.target.value,
+									}))
+								}
+								placeholder='Mô tả lối chơi, mẹo...'
+								className='mt-1 block w-full bg-gray-700 text-white rounded-md h-24 p-2 border border-gray-600'
+							></textarea>
+						</div>
+					</fieldset>
+
+					<div className='mt-6'>
+						<button
+							type='submit'
+							disabled={submitting || !isChampionSelected}
+							className='w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded disabled:bg-gray-500 transition-colors'
+						>
+							{submitting ? "Đang tạo..." : "Tạo Build"}
+						</button>
+					</div>
+					{message && (
+						<p
+							className={`mt-4 text-center ${
+								message.startsWith("Lỗi") ? "text-red-500" : "text-green-500"
+							}`}
+						>
+							{message}
+						</p>
+					)}
+				</form>
 			</div>
 		</div>
 	);

@@ -14,14 +14,13 @@ import Builds from "./pages/builds";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Footer from "./components/layout/footer";
-import CommentsPage from "./pages/CommentsPage"; // Import component mới
+import CommentsPage from "./pages/CommentsPage";
 
 function App() {
-	// console.log("All env vars:", import.meta.env); // Debug env variables
 	return (
 		<AuthProvider>
 			<BrowserRouter>
-				<div className='flex flex-col min-h-screen bg-gray-950'>
+				<div className='flex flex-col min-h-screen bg-[var(--color-background)] text-[var(--color-text-primary)]'>
 					<Navbar />
 					<main className='flex-grow container mx-auto p-4'>
 						<Routes>
@@ -35,8 +34,7 @@ function App() {
 							<Route path='/items' element={<Items />} />
 							<Route path='/item/:itemCode' element={<ItemDetail />} />
 							<Route path='/builds' element={<Builds />} />
-							<Route path='/comments' element={<CommentsPage />} />{" "}
-							{/* Route mới */}
+							<Route path='/comments' element={<CommentsPage />} />
 							<Route
 								path='/login'
 								element={<Login onClose={() => window.history.back()} />}

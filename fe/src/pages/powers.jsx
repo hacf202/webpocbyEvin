@@ -1,102 +1,172 @@
-import { memo, useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import PowerRarityFilter from "../components/power/PowerRarityFilter";
-import PowerSortFilter from "../components/power/PowerSortFilter";
-import PowerFilter from "../components/power/PowerFilter";
+import { usePersistentState } from "../hooks/usePersistentState";
+import InputField from "../components/common/InputField";
+import DropdownFilter from "../components/common/DropdownFilter";
+import Button from "../components/common/Button";
 import powersData from "../assets/data/powers-vi_vn.json";
+import { Search, XCircle, RotateCw } from "lucide-react";
 
 function Powers() {
-	const [searchTerm, setSearchTerm] = useState(
-		() => localStorage.getItem("powersSearchTerm") || ""
+	const [searchInput, setSearchInput] = usePersistentState(
+		"powersSearchInput",
+		""
 	);
-	const [selectedRarity, setSelectedRarity] = useState(
-		() => localStorage.getItem("powersSelectedRarity") || ""
+	const [searchTerm, setSearchTerm] = usePersistentState(
+		"powersSearchTerm",
+		""
 	);
-	const [sortOrder, setSortOrder] = useState(
-		() => localStorage.getItem("powersSortOrder") || "asc"
+	const [selectedRarity, setSelectedRarity] = usePersistentState(
+		"powersSelectedRarity",
+		""
+	);
+	const [sortOrder, setSortOrder] = usePersistentState(
+		"powersSortOrder",
+		"asc"
 	);
 
-	const uniqueRarities = useMemo(() => {
-		const rarities = [...new Set(powersData.map(power => power.rarity))];
-		return rarities.sort();
+	const filterOptions = useMemo(() => {
+		const rarities = [...new Set(powersData.map(power => power.rarity))].sort();
+		return {
+			rarities: [
+				{ value: "", label: "Tất cả độ hiếm" },
+				...rarities.map(r => ({ value: r, label: r })),
+			],
+			sort: [
+				{ value: "asc", label: "A-Z" },
+				{ value: "desc", label: "Z-A" },
+				{ value: "rarityAsc", label: "Độ hiếm tăng dần" },
+				{ value: "rarityDesc", label: "Độ hiếm giảm dần" },
+			],
+		};
 	}, []);
 
-	const rarityOrder = useMemo(
-		() => ({
-			THƯỜNG: 0,
-			HIẾM: 1,
-			"SỬ THI": 2,
-		}),
+	const rarityOrderMap = useMemo(
+		() => ({ THƯỜNG: 0, HIẾM: 1, "SỬ THI": 2 }),
 		[]
 	);
 
-	const filteredPowers = useMemo(() => {
-		return powersData.filter(power => {
-			const matchesSearch = (power.name || "")
-				.toLowerCase()
-				.includes(searchTerm.toLowerCase());
-			const matchesRarity = !selectedRarity || power.rarity === selectedRarity;
-			return matchesSearch && matchesRarity;
-		});
-	}, [searchTerm, selectedRarity]);
-
 	const sortedPowers = useMemo(() => {
-		return [...filteredPowers].sort((a, b) => {
-			const rarityA = rarityOrder[a.rarity] || 0;
-			const rarityB = rarityOrder[b.rarity] || 0;
-			if (sortOrder === "asc") {
-				return (a.name || "").localeCompare(b.name || "");
-			} else if (sortOrder === "desc") {
-				return (b.name || "").localeCompare(a.name || "");
-			} else if (sortOrder === "rarityAsc") {
-				return rarityA - rarityB;
-			} else if (sortOrder === "rarityDesc") {
-				return rarityB - rarityA;
-			}
-			return 0;
-		});
-	}, [filteredPowers, sortOrder, rarityOrder]);
+		let powers = powersData.filter(power =>
+			power.name.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+		if (selectedRarity) {
+			powers = powers.filter(power => power.rarity === selectedRarity);
+		}
+		switch (sortOrder) {
+			case "asc":
+				return powers.sort((a, b) => a.name.localeCompare(b.name));
+			case "desc":
+				return powers.sort((a, b) => b.name.localeCompare(a.name));
+			case "rarityAsc":
+				return powers.sort(
+					(a, b) => rarityOrderMap[a.rarity] - rarityOrderMap[b.rarity]
+				);
+			case "rarityDesc":
+				return powers.sort(
+					(a, b) => rarityOrderMap[b.rarity] - rarityOrderMap[a.rarity]
+				);
+			default:
+				return powers;
+		}
+	}, [searchTerm, selectedRarity, sortOrder, rarityOrderMap]);
+
+	const handleSearchSubmit = e => {
+		e.preventDefault();
+		setSearchTerm(searchInput);
+	};
+
+	const handleClearSearch = () => {
+		setSearchInput("");
+		setSearchTerm("");
+	};
+
+	const handleResetFilters = () => {
+		handleClearSearch();
+		setSelectedRarity("");
+		setSortOrder("asc");
+	};
 
 	return (
-		<div className='relative mx-auto max-w-[1200px] p-4 sm:p-6 bg-gray-900 rounded-lg mt-10 text-white'>
-			<h1 className='text-2xl sm:text-4xl font-bold mb-6 text-center'>
-				Danh sách sức mạnh
+		<div className='container mx-auto p-4'>
+			<h1 className='text-3xl font-bold mb-6 text-[var(--color-primary)]'>
+				Năng Lực
 			</h1>
-			<div className='mt-6 p-4 sm:p-6'>
-				{/* Bộ lọc và tìm kiếm */}
-				<div className='mb-6 flex flex-col gap-4 bg-gray-800 p-4 rounded-lg'>
-					<div className='flex flex-col sm:flex-row gap-4'>
-						<PowerFilter onSearchChange={setSearchTerm} />
-						<PowerRarityFilter
-							uniqueRarities={uniqueRarities}
-							onRarityChange={setSelectedRarity}
+			<div className='mb-6 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]'>
+				<form onSubmit={handleSearchSubmit} className='mb-4'>
+					<div className='relative flex items-center gap-4'>
+						<InputField
+							value={searchInput}
+							onChange={e => setSearchInput(e.target.value)}
+							placeholder='Tìm theo tên năng lực...'
+							className='flex-grow pr-10'
 						/>
-						<PowerSortFilter onSortChange={setSortOrder} />
-					</div>
-				</div>
-
-				{/* Danh sách sức mạnh */}
-				<div className='pt-4 flex flex-wrap rounded-lg bg-gray-800 items-center justify-center'>
-					<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4 w-full'>
-						{sortedPowers.map((power, index) => (
-							<Link
-								key={index}
-								to={`/power/${encodeURIComponent(power.powerCode)}`}
-								className='p-1 bg-gray-800 rounded-lg hover:bg-gray-700 transition'
+						{searchInput && (
+							<button
+								type='button'
+								onClick={handleClearSearch}
+								className='absolute right-[calc(6rem+1rem)] mr-2 text-gray-500 hover:text-gray-800'
 							>
-								<img
-									src={power.assetFullAbsolutePath || "/images/placeholder.png"}
-									alt={power.name || "Unknown Power"}
-									className='w-full h-auto object-cover rounded-md'
-									loading='lazy'
-								/>
-							</Link>
-						))}
+								<XCircle size={20} />
+							</button>
+						)}
+						<Button
+							type='submit'
+							variant='primary'
+							iconLeft={<Search size={18} />}
+						>
+							Tìm
+						</Button>
 					</div>
+				</form>
+				<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+					<DropdownFilter
+						options={filterOptions.rarities}
+						selectedValue={selectedRarity}
+						onChange={setSelectedRarity}
+						placeholder='Tất cả độ hiếm'
+					/>
+					<DropdownFilter
+						options={filterOptions.sort}
+						selectedValue={sortOrder}
+						onChange={setSortOrder}
+						placeholder='Sắp xếp theo'
+					/>
+					<Button
+						variant='outline'
+						onClick={handleResetFilters}
+						iconLeft={<RotateCw size={16} />}
+					>
+						Đặt lại
+					</Button>
 				</div>
+			</div>
+
+			<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4'>
+				{sortedPowers.map(power => (
+					<Link
+						key={power.powerCode}
+						to={`/power/${encodeURIComponent(power.powerCode)}`}
+						className='flex items-center gap-4 bg-[var(--color-surface)] p-4 rounded-lg hover:bg-gray-200 transition border border-[var(--color-border)]'
+					>
+						<img
+							src={power.assetAbsolutePath}
+							alt={power.name}
+							className='w-16 h-16 object-cover rounded-md border border-[var(--color-border)]'
+						/>
+						<div className='flex-grow'>
+							<h3 className='font-bold text-lg text-[var(--color-text-primary)]'>
+								{power.name}
+							</h3>
+							<p className='text-sm text-[var(--color-text-secondary)]'>
+								{power.rarity}
+							</p>
+						</div>
+					</Link>
+				))}
 			</div>
 		</div>
 	);
 }
 
-export default memo(Powers);
+export default Powers;

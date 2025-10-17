@@ -1,206 +1,346 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Star, Eye, EyeOff, Heart, ThumbsUp } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import Modal from "../common/Modal";
+import Button from "../common/Button";
 
 const BuildSummary = ({
 	build,
 	championsList = [],
 	relicsList = [],
-	itemsList = [],
 	powersList = [],
+	runesList = [],
 	style,
+	onBuildUpdate, // Callback to update the build in the parent list
 }) => {
-	// Helper để chuẩn hóa tên
+	const { user, token } = useAuth();
+	const navigate = useNavigate();
+	const apiUrl = import.meta.env.VITE_API_URL;
+
+	// State for Like functionality
+	const [likeCount, setLikeCount] = useState(build.like || 0);
+	const [isLiked, setIsLiked] = useState(false);
+
+	// State for Favorite functionality
+	const [isFavorite, setIsFavorite] = useState(false);
+	const [favoriteList, setFavoriteList] = useState(build.favorite || []);
+
+	// State for modals and UI
+	const [showLoginModal, setShowLoginModal] = useState(false);
+
+	// Check if the build was already liked in the current session
+	useEffect(() => {
+		const likedInSession = sessionStorage.getItem(`liked_${build.id}`);
+		if (likedInSession) {
+			setIsLiked(true);
+		}
+	}, [build.id]);
+
+	// Check if the current user has favorited this build
+	useEffect(() => {
+		if (user && favoriteList.includes(user.sub)) {
+			setIsFavorite(true);
+		} else {
+			setIsFavorite(false);
+		}
+	}, [user, favoriteList]);
+
+	const isOwner = useMemo(
+		() => user && build.sub === user.sub,
+		[user, build.sub]
+	);
+
+	const creatorDisplayName = isOwner
+		? user.name || build.creator
+		: build.creator;
+
+	const handleLike = async e => {
+		e.stopPropagation();
+		if (isLiked) return; // Prevent multiple likes in the same session
+
+		try {
+			const response = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (response.ok) {
+				const updatedBuild = await response.json();
+				setLikeCount(updatedBuild.like);
+				setIsLiked(true);
+				sessionStorage.setItem(`liked_${build.id}`, "true");
+				if (onBuildUpdate) {
+					onBuildUpdate(updatedBuild);
+				}
+			} else {
+				console.error("Failed to like the build");
+			}
+		} catch (error) {
+			console.error("Error liking build:", error);
+		}
+	};
+
+	const handleToggleFavorite = async e => {
+		e.stopPropagation();
+
+		if (!user) {
+			setShowLoginModal(true);
+			return;
+		}
+
+		try {
+			const response = await fetch(
+				`${apiUrl}/api/builds/${build.id}/favorite`,
+				{
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			);
+
+			if (response.ok) {
+				const updatedBuild = await response.json();
+				setFavoriteList(updatedBuild.favorite);
+				if (onBuildUpdate) {
+					onBuildUpdate(updatedBuild);
+				}
+			} else {
+				console.error("Failed to update favorite status");
+			}
+		} catch (error) {
+			console.error("Error toggling favorite:", error);
+		}
+	};
+
 	const normalizeName = val => {
 		if (!val) return "";
 		if (typeof val === "string") return val;
 		if (typeof val === "object" && val !== null && "S" in val)
 			return val.S || "";
-		console.warn("Unexpected value in normalizeName:", val);
-		return String(val); // Fallback to string conversion
+		return String(val); // Fallback
 	};
 
-	// Memoize champion lookup
 	const championImage = useMemo(() => {
 		const championName = normalizeName(build?.championName);
-		return (
-			(Array.isArray(championsList) &&
-				championsList.find(champ => champ?.name === championName)?.image) ||
-			"/images/placeholder.png"
-		);
+		const champion = Array.isArray(championsList)
+			? championsList.find(champ => champ?.name === championName)
+			: null;
+		return champion?.assets?.[0]?.M?.avatar?.S || "/images/placeholder.png";
 	}, [championsList, build?.championName]);
 
-	// Memoize artifacts, items, and powers lookups
-	const artifactImages = useMemo(() => {
-		return Array.isArray(build?.artifacts)
-			? build.artifacts.map((artifact, index) => {
-					const artifactName = normalizeName(artifact);
-					return artifactName
-						? (Array.isArray(relicsList) &&
-								relicsList.find(relic => relic?.name === artifactName)
-									?.image) ||
-								"/images/placeholder.png"
-						: null;
-			  })
-			: [];
-	}, [relicsList, build?.artifacts]);
-
-	const itemImages = useMemo(() => {
-		return Array.isArray(build?.items)
-			? build.items.map((item, index) => {
-					const itemName = normalizeName(item);
-					return itemName
-						? (Array.isArray(itemsList) &&
-								itemsList.find(i => i?.name === itemName)?.image) ||
-								"/images/placeholder.png"
-						: null;
-			  })
-			: [];
-	}, [itemsList, build?.items]);
-
-	const powerImages = useMemo(() => {
-		return Array.isArray(build?.powers)
-			? build.powers.map((power, index) => {
-					const powerName = normalizeName(power);
-					return powerName
-						? (Array.isArray(powersList) &&
-								powersList.find(p => p?.name === powerName)?.image) ||
-								"/images/placeholder.png"
-						: null;
-			  })
-			: [];
-	}, [powersList, build?.powers]);
-
-	// Kiểm tra build hợp lệ
-	if (!build || !build.championName) {
+	const findImage = (list, name) => {
+		const normalized = normalizeName(name);
 		return (
-			<div
-				className='build-summary bg-gray-600 p-4 sm:p-5 rounded-lg shadow-md text-white transition duration-200'
-				style={style}
-			>
-				Invalid build data
+			list.find(item => item?.name === normalized)?.assetAbsolutePath || null
+		);
+	};
+
+	const artifactImages = useMemo(
+		() =>
+			(build.artifacts || []).map(artifact => findImage(relicsList, artifact)),
+		[relicsList, build.artifacts]
+	);
+	const powerImages = useMemo(
+		() => (build.powers || []).map(power => findImage(powersList, power)),
+		[powersList, build.powers]
+	);
+	const runeImages = useMemo(
+		() => (build.rune || []).map(rune => findImage(runesList, rune)),
+		[runesList, build.rune]
+	);
+
+	const renderImageWithTooltip = (name, src, buildId, type, index) => {
+		const key = `${buildId}-${type}-${name}-${index}`;
+		const normalizedName = normalizeName(name);
+		if (!src) {
+			return (
+				<div
+					key={key}
+					className='w-10 h-10 bg-gray-700 border-2 border-gray-500 rounded-md flex items-center justify-center'
+					title={normalizedName}
+				>
+					<span className='text-xs text-red-400'>?</span>
+				</div>
+			);
+		}
+		return (
+			<div key={key} className='group relative'>
+				<img
+					src={src}
+					alt={normalizedName}
+					className='w-10 h-10 rounded-md border-2 border-gray-500'
+					onError={e => {
+						e.target.onerror = null;
+						e.target.src = "/images/placeholder.png";
+					}}
+				/>
+				<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'>
+					{normalizedName}
+				</div>
 			</div>
 		);
-	}
+	};
 
 	return (
-		<div
-			className='build-summary bg-gray-600 p-4 sm:p-5 rounded-lg shadow-md text-white transition duration-200 h-125'
-			style={style}
-		>
-			<div className='flex items-center gap-3 mb-3 h-16 bg-gray-500 rounded-md'>
-				<div className='relative group'>
-					<img
-						src={championImage}
-						alt={normalizeName(build.championName) || "Champion"}
-						className='w-16 h-16 object-contain rounded'
-						loading='lazy'
-						aria-label={normalizeName(build.championName) || "Champion"}
-					/>
-					<span className='text-center w-[110px] absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 bg-opacity-30 text-white text-xs rounded px-2 py-1 transition-opacity duration-200 opacity-0 group-hover:opacity-100'>
-						{normalizeName(build.championName) || "Unknown Champion"}
-					</span>
-				</div>
-				<h2 className='text-base sm:text-lg font-bold truncate'>
-					{normalizeName(build.championName) || "Unknown Champion"}
-				</h2>
-			</div>
-
-			{Array.isArray(build.artifacts) &&
-				build.artifacts.some(artifact => artifact) && (
-					<div className='mb-3'>
-						<p className='text-gray-300 text-sm sm:text-base'>Cổ vật:</p>
-						<div className='flex gap-2 mt-1'>
-							{build.artifacts.map((artifact, index) => {
-								const artifactName = normalizeName(artifact);
-								return artifactName ? (
-									<div
-										key={`${build.id}-artifact-${index}`}
-										className='relative group'
-									>
-										<img
-											src={artifactImages[index]}
-											alt={artifactName}
-											className='w-10 h-10 sm:w-12 sm:h-12 object-cover bg-gray-500 rounded-md'
-											loading='lazy'
-											aria-label={artifactName}
-										/>
-										<span className='text-center w-[140px] absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 bg-opacity-30 text-white text-xs rounded px-2 py-1 transition-opacity duration-200 opacity-0 group-hover:opacity-100'>
-											{artifactName}
-										</span>
-									</div>
-								) : null;
-							})}
+		<>
+			<div
+				style={style}
+				className='relative bg-gray-800 border-2 border-gray-700 p-4 rounded-lg shadow-lg hover:border-yellow-500 transition-colors duration-200 flex flex-col gap-3'
+			>
+				<div className='flex items-start justify-between'>
+					<div className='flex items-center gap-3'>
+						<img
+							src={championImage}
+							alt={normalizeName(build.championName)}
+							className='w-16 h-16 rounded-full border-4 border-gray-600'
+						/>
+						<div>
+							<h3 className='font-bold text-lg text-white'>
+								{normalizeName(build.championName)}
+							</h3>
+							<p className='text-xs text-gray-400'>
+								Tạo bởi: {creatorDisplayName || "Vô danh"}
+							</p>
 						</div>
 					</div>
+					<div className='flex items-center gap-2'>
+						{/* Like Button and Count */}
+						<div className='flex items-center gap-1.5 text-gray-300'>
+							<button
+								onClick={handleLike}
+								disabled={isLiked}
+								className={`p-1.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 ${
+									isLiked
+										? "text-cyan-400 cursor-not-allowed"
+										: "hover:bg-gray-700"
+								}`}
+								aria-label='Thích build này'
+							>
+								<ThumbsUp size={20} />
+							</button>
+							<span className='font-semibold text-lg'>{likeCount}</span>
+						</div>
+
+						{/* Favorite Button */}
+						<button
+							onClick={handleToggleFavorite}
+							className='p-1.5 rounded-full hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500'
+							aria-label='Thêm vào yêu thích'
+						>
+							<Heart
+								size={22}
+								className={`transition-all duration-300 ${
+									isFavorite
+										? "text-red-500 fill-current"
+										: "text-gray-400 hover:text-red-400"
+								}`}
+							/>
+						</button>
+						{build.hasOwnProperty("display") && (
+							<div
+								className={`text-xs ${
+									build.display ? "text-green-400" : "text-red-400"
+								}`}
+								title={build.display ? "Công khai" : "Riêng tư"}
+							>
+								{build.display ? <Eye size={18} /> : <EyeOff size={18} />}
+							</div>
+						)}
+					</div>
+				</div>
+				{/* Rest of the component remains the same */}
+				<div className='flex flex-col gap-3'>
+					{Array.isArray(build.artifacts) && build.artifacts.length > 0 && (
+						<div>
+							<p className='text-gray-300 text-sm font-semibold mb-1'>
+								Thánh tích:
+							</p>
+							<div className='flex flex-wrap gap-2'>
+								{build.artifacts.map((artifact, index) =>
+									renderImageWithTooltip(
+										artifact,
+										artifactImages[index],
+										build.id,
+										"artifact",
+										index
+									)
+								)}
+							</div>
+						</div>
+					)}
+					{Array.isArray(build.rune) && build.rune.length > 0 && (
+						<div>
+							<p className='text-gray-300 text-sm font-semibold mb-1'>
+								Ngọc bổ trợ:
+							</p>
+							<div className='flex flex-wrap gap-2'>
+								{build.rune.map((rune, index) =>
+									renderImageWithTooltip(
+										rune,
+										runeImages[index],
+										build.id,
+										"rune",
+										index
+									)
+								)}
+							</div>
+						</div>
+					)}
+					{Array.isArray(build.powers) && build.powers.length > 0 && (
+						<div>
+							<p className='text-gray-300 text-sm font-semibold mb-1'>
+								Sức mạnh:
+							</p>
+							<div className='flex flex-wrap gap-2'>
+								{build.powers.map((power, index) =>
+									renderImageWithTooltip(
+										power,
+										powerImages[index],
+										build.id,
+										"power",
+										index
+									)
+								)}
+							</div>
+						</div>
+					)}
+				</div>
+				{build.description && (
+					<p className='text-gray-400 text-sm mt-4 italic'>
+						"{build.description}"
+					</p>
 				)}
-
-			{Array.isArray(build.items) && build.items.some(item => item) && (
-				<div className='mb-3'>
-					<p className='text-gray-300 text-sm sm:text-base'>Vật phẩm:</p>
-					<div className='flex flex-wrap gap-2 mt-1'>
-						{build.items.map((item, index) => {
-							const itemName = normalizeName(item);
-							return itemName ? (
-								<div
-									key={`${build.id}-item-${index}`}
-									className='relative group'
-								>
-									<img
-										src={itemImages[index]}
-										alt={itemName}
-										className='w-10 h-10 sm:w-12 sm:h-12 object-cover bg-gray-500 rounded-md'
-										loading='lazy'
-										aria-label={itemName}
-									/>
-									<span className='text-center w-[140px] absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 bg-opacity-30 text-white text-xs rounded px-2 py-1 transition-opacity duration-200 opacity-0 group-hover:opacity-100'>
-										{itemName}
-									</span>
-								</div>
-							) : null;
-						})}
-					</div>
-				</div>
-			)}
-
-			{Array.isArray(build.powers) && build.powers.some(power => power) && (
-				<div className='mb-3'>
-					<p className='text-gray-300 text-sm sm:text-base'>Sức mạnh:</p>
-					<div className='flex flex-wrap gap-2 mt-1'>
-						{build.powers.map((power, index) => {
-							const powerName = normalizeName(power);
-							return powerName ? (
-								<div
-									key={`${build.id}-power-${index}`}
-									className='relative group'
-								>
-									<img
-										src={powerImages[index]}
-										alt={powerName}
-										className='w-10 h-10 sm:w-12 sm:h-12 object-cover bg-gray-500 rounded-md'
-										loading='lazy'
-										aria-label={powerName}
-									/>
-									<span className='text-center w-[140px] absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 bg-opacity-30 text-white text-xs rounded px-2 py-1 transition-opacity duration-200 opacity-0 group-hover:opacity-100'>
-										{powerName}
-									</span>
-								</div>
-							) : null;
-						})}
-					</div>
-				</div>
-			)}
-
-			{build.description && (
-				<p className='text-gray-300 text-sm sm:text-base mb-2 bg-gray-500 rounded-md p-2 max-h-40 overflow-y-auto'>
-					Mô tả: {normalizeName(build.description)}
+			</div>
+			{/* Login Modal */}
+			<Modal
+				isOpen={showLoginModal}
+				onClose={() => setShowLoginModal(false)}
+				title='Yêu cầu đăng nhập'
+			>
+				<p className='text-gray-300 mb-6'>
+					Bạn cần đăng nhập để thực hiện hành động này.
 				</p>
-			)}
-
-			{build.creator && (
-				<p className='text-gray-300 text-sm sm:text-base mb-2 bg-gray-500 rounded-md p-2'>
-					Chủ sở hữu: {normalizeName(build.creator)}
-				</p>
-			)}
-		</div>
+				<div className='flex justify-end gap-4'>
+					<Button variant='ghost' onClick={() => setShowLoginModal(false)}>
+						Hủy
+					</Button>
+					<Button
+						variant='primary'
+						onClick={() => {
+							setShowLoginModal(false);
+							navigate("/login");
+						}}
+					>
+						Đến trang đăng nhập
+					</Button>
+				</div>
+			</Modal>
+		</>
 	);
 };
 

@@ -1,102 +1,62 @@
-import React, {
-	useState,
-	useEffect,
-	useMemo,
-	useCallback,
-	useRef,
-	useContext,
-} from "react";
+import React, { useState, useContext } from "react";
 import championsData from "../../assets/data/champions.json";
 import relicsData from "../../assets/data/relics-vi_vn.json";
 import powersData from "../../assets/data/powers-vi_vn.json";
+import runesData from "../../assets/data/runes-vi_vn.json";
 import { AuthContext } from "../../context/AuthContext";
+import { Star, Eye, EyeOff, X } from "lucide-react";
 
 const BuildEdit = ({ build, onConfirm, onClose }) => {
-	const { user, token } = useContext(AuthContext);
-	const [champions, setChampions] = useState([]);
-	const [relics, setRelics] = useState([]);
-	const [powers, setPowers] = useState([]);
+	const { token } = useContext(AuthContext);
+
 	const [formData, setFormData] = useState({
 		championName: build.championName || "",
-		championImage: "",
-		relics: build.artifacts
-			? [
-					...build.artifacts,
-					...Array(3 - (build.artifacts.length || 0)).fill(null),
-			  ]
+		description: build.description || "",
+		star: build.star || 0,
+		display: build.display !== undefined ? build.display : true,
+		artifacts: build.artifacts
+			? [...build.artifacts, ...Array(3 - build.artifacts.length).fill(null)]
 			: [null, null, null],
 		powers: build.powers
-			? [...build.powers, ...Array(6 - (build.powers.length || 0)).fill(null)]
-			: [null, null, null, null, null, null],
-		notes: build.description || "",
+			? [...build.powers, ...Array(6 - build.powers.length).fill(null)]
+			: Array(6).fill(null),
+		rune: build.rune
+			? [...build.rune, ...Array(2 - build.rune.length).fill(null)]
+			: [null, null],
 	});
-	const [searchTerm, setSearchTerm] = useState("");
-	const [openDropdownId, setOpenDropdownId] = useState(null);
-	const [loading, setLoading] = useState(false);
+
 	const [submitting, setSubmitting] = useState(false);
 	const [message, setMessage] = useState("");
-	const isSubmittingRef = useRef(false);
 
-	useEffect(() => {
-		setChampions(championsData);
-		setRelics(relicsData);
-		setPowers(powersData);
-	}, []);
+	const handleInputChange = (field, value) => {
+		setFormData(prev => ({ ...prev, [field]: value }));
+	};
 
-	const handleInputChange = useCallback(
-		(name, value, index = null) => {
-			if ((name === "relics" || name === "powers") && index !== null) {
-				const updatedArray = [...formData[name]];
-				updatedArray[index] = value;
-				setFormData({ ...formData, [name]: updatedArray });
-			} else {
-				setFormData({ ...formData, [name]: value });
-			}
-		},
-		[formData]
-	);
+	const handleDropdownChange = (type, value, index) => {
+		const newValues = [...formData[type]];
+		newValues[index] = value;
+		setFormData(prev => ({ ...prev, [type]: newValues }));
+	};
 
-	const handleConfirm = async () => {
-		if (isSubmittingRef.current) return;
-		isSubmittingRef.current = true;
+	const handleConfirm = async e => {
+		e.preventDefault();
+		if (formData.artifacts.filter(Boolean).length === 0) {
+			setMessage("Phải có ít nhất một cổ vật.");
+			return;
+		}
 		setSubmitting(true);
+		setMessage("");
 
-		if (!token || !user) {
-			setMessage("❌ Vui lòng đăng nhập để chỉnh sửa build");
-			isSubmittingRef.current = false;
-			setSubmitting(false);
-			return;
-		}
-
-		// Kiểm tra bắt buộc chọn champion
-		if (!formData.championName) {
-			setMessage("❌ Vui lòng chọn một tướng");
-			isSubmittingRef.current = false;
-			setSubmitting(false);
-			return;
-		}
-
-		// Kiểm tra ít nhất một relic được chọn
-		const selectedRelics = formData.relics.filter(Boolean);
-		if (selectedRelics.length === 0) {
-			setMessage("❌ Vui lòng chọn ít nhất một cổ vật");
-			isSubmittingRef.current = false;
-			setSubmitting(false);
-			return;
-		}
-
-		const payload = {
-			id: build.id,
-			championName: formData.championName,
-			description: formData.notes || "",
-			artifacts: selectedRelics,
+		const updatedData = {
+			description: formData.description,
+			star: formData.star,
+			display: formData.display,
+			artifacts: formData.artifacts.filter(Boolean),
 			powers: formData.powers.filter(Boolean),
-			creator_name: user.username,
+			rune: formData.rune.filter(Boolean),
 		};
 
 		try {
-			setLoading(true);
-			setMessage("");
 			const response = await fetch(
 				`${import.meta.env.VITE_API_URL}/api/builds/${build.id}`,
 				{
@@ -105,178 +65,207 @@ const BuildEdit = ({ build, onConfirm, onClose }) => {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${token}`,
 					},
-					body: JSON.stringify(payload),
+					body: JSON.stringify(updatedData),
 				}
 			);
-			const data = await response.json();
+
+			const result = await response.json();
 			if (response.ok) {
-				setMessage("✅ Build đã được cập nhật thành công!");
-				if (onConfirm) onConfirm({ ...data.build, id: build.id });
-				onClose();
+				setMessage("Cập nhật build thành công!");
+				setTimeout(() => {
+					onConfirm(result.build);
+				}, 1000);
 			} else {
-				setMessage("❌ Lỗi: " + (data.error || "Không thể cập nhật build"));
+				setMessage(`Lỗi: ${result.error || "Không thể cập nhật"}`);
 			}
 		} catch (error) {
-			console.error("Fetch error:", error);
-			setMessage("❌ Lỗi kết nối server");
+			setMessage("Lỗi kết nối đến server.");
 		} finally {
-			isSubmittingRef.current = false;
-			setLoading(false);
 			setSubmitting(false);
 		}
 	};
 
-	const handleToggleDropdown = useCallback(dropdownId => {
-		setOpenDropdownId(prev => (prev === dropdownId ? null : dropdownId));
-	}, []);
+	const handleStarChange = newRating => {
+		setFormData(prev => ({ ...prev, star: newRating }));
+	};
 
-	const filteredOptions = useMemo(() => {
-		return options =>
-			options.filter(option =>
-				option.name.toLowerCase().includes(searchTerm.toLowerCase())
-			);
-	}, [searchTerm]);
+	const handleToggleDisplay = () => {
+		setFormData(prev => ({ ...prev, display: !prev.display }));
+	};
 
-	const renderDropdown = (name, options, placeholder, index = null) => {
-		const dropdownId = `${name}-${index !== null ? index : "single"}`;
+	const renderDropdown = (type, options, placeholder, index) => {
+		const selectedValue = formData[type][index];
 		return (
-			<div key={`${dropdownId}`} className='relative w-full'>
-				<button
-					type='button'
-					onClick={() => handleToggleDropdown(dropdownId)}
-					className='p-2 rounded-md text-black bg-white w-full text-left flex items-center justify-between shadow-sm border border-gray-300 hover:bg-gray-50 transition duration-150'
+			<div className='relative'>
+				<select
+					value={selectedValue || ""}
+					onChange={e => handleDropdownChange(type, e.target.value, index)}
+					className='w-full bg-gray-700 border border-gray-600 rounded-md p-2 appearance-none'
 				>
-					<span className='truncate flex-1'>
-						{index !== null
-							? formData[name][index] || placeholder
-							: formData[name] || placeholder}
-					</span>
-					<svg
-						className='w-4 h-4 text-gray-600'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth='2'
-							d='M19 9l-7 7-7-7'
-						/>
-					</svg>
-				</button>
-				{openDropdownId === dropdownId && (
-					<div className='absolute z-20 mt-1 w-full bg-gray-800 rounded-md shadow-lg max-h-60 overflow-y-auto overflow-x-hidden border border-gray-600'>
-						<input
-							type='text'
-							placeholder='Search...'
-							value={searchTerm}
-							onChange={e => setSearchTerm(e.target.value)}
-							className='p-2 m-2 rounded-md text-white w-[calc(100%-16px)] text-sm'
-						/>
-						<ul className='py-1'>
-							{filteredOptions(options).map((option, idx) => (
-								<li
-									key={option.id || `${dropdownId}-${option.name}-${idx}`} // Sử dụng id nếu có
-									className='flex items-center px-3 py-2 text-white hover:bg-gray-700 cursor-pointer'
-									onClick={() => {
-										handleInputChange(name, option.name, index);
-										handleToggleDropdown(dropdownId);
-									}}
-								>
-									{option.image && (
-										<img
-											src={option.image}
-											alt={option.name}
-											className='w-6 h-6 mr-2 object-cover rounded'
-										/>
-									)}
-									<span>{option.name}</span>
-								</li>
-							))}
-						</ul>
-					</div>
-				)}
+					<option value=''>{placeholder}</option>
+					{options.map((opt, optIndex) => (
+						<option key={`${opt.name}-${optIndex}`} value={opt.name}>
+							{opt.name}
+						</option>
+					))}
+				</select>
 			</div>
 		);
 	};
 
 	return (
-		<div className='build-creation bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-[1400px]'>
-			<h1 className='text-2xl font-bold text-white mb-4'>Chỉnh Sửa Build</h1>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Tướng:
-				</label>
-				{renderDropdown(
-					"championName",
-					champions.map(champion => ({
-						id: champion.id || champion.name, // Sử dụng id nếu có
-						name: champion.name,
-						image: champion.assets[0].M.avatar.S,
-					})),
-					"Chọn một tướng"
-				)}
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Cổ Vật:
-				</label>
-				<div className='grid grid-cols-3 gap-2'>
-					{formData.relics.map((artifact, index) =>
-						renderDropdown(
-							"relics",
-							relics.map(relic => ({
-								id: relic.id || relic.name, // Sử dụng id nếu có
-								name: relic.name,
-								image: relic.assetAbsolutePath,
-							})),
-							`Cổ vật ${index + 1}`,
-							index
-						)
-					)}
+		<div className='fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50'>
+			<div className='bg-gray-800 text-white rounded-lg p-6 w-full max-w-3xl max-h-[95vh] overflow-y-auto'>
+				<div className='flex justify-between items-center mb-4'>
+					<h2 className='text-2xl font-bold text-cyan-400'>Chỉnh Sửa Build</h2>
+					<button onClick={onClose} className='text-gray-400 hover:text-white'>
+						<X size={24} />
+					</button>
 				</div>
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Sức Mạnh:
-				</label>
-				<div className='grid grid-cols-3 gap-2'>
-					{formData.powers.map((power, index) =>
-						renderDropdown(
-							"powers",
-							powers.map(p => ({
-								id: p.id || p.name, // Sử dụng id nếu có
-								name: p.name,
-								image: p.assetAbsolutePath,
-							})),
-							`Sức mạnh ${index + 1}`,
-							index
-						)
+
+				<form onSubmit={handleConfirm}>
+					{/* Champion Name (Read-only) */}
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300 mb-1'>
+							Tướng:
+						</label>
+						<input
+							type='text'
+							readOnly
+							value={formData.championName}
+							className='w-full bg-gray-700 p-2 rounded-md cursor-not-allowed'
+						/>
+					</div>
+
+					{/* Star Rating */}
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300 mb-2'>
+							Xếp hạng sao:
+						</label>
+						<div className='flex items-center'>
+							{[1, 2, 3, 4, 5].map(s => (
+								<Star
+									key={s}
+									size={30}
+									className={`cursor-pointer transition-colors ${
+										formData.star >= s
+											? "text-yellow-400"
+											: "text-gray-600 hover:text-gray-500"
+									}`}
+									fill={formData.star >= s ? "currentColor" : "none"}
+									onClick={() => handleStarChange(s)}
+								/>
+							))}
+						</div>
+					</div>
+
+					{/* Artifacts, Runes, Powers... */}
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300'>
+							Cổ vật (Bắt buộc ít nhất 1):
+						</label>
+						<div className='grid grid-cols-3 gap-2 mt-1'>
+							{formData.artifacts.map((_, index) => (
+								<div key={`artifact-${index}`}>
+									{renderDropdown(
+										"artifacts",
+										relicsData,
+										`Cổ vật ${index + 1}`,
+										index
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300'>
+							Ngọc bổ trợ:
+						</label>
+						<div className='grid grid-cols-2 gap-2 mt-1'>
+							{formData.rune.map((_, index) => (
+								<div key={`rune-${index}`}>
+									{renderDropdown(
+										"rune",
+										runesData,
+										`Ngọc ${index + 1}`,
+										index
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300'>
+							Sức mạnh:
+						</label>
+						<div className='grid grid-cols-3 gap-2 mt-1'>
+							{formData.powers.map((_, index) => (
+								<div key={`power-${index}`}>
+									{renderDropdown(
+										"powers",
+										powersData,
+										`Sức mạnh ${index + 1}`,
+										index
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+
+					{/* Display Toggle */}
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300 mb-2'>
+							Trạng thái hiển thị:
+						</label>
+						<button
+							type='button'
+							onClick={handleToggleDisplay}
+							className='flex items-center gap-2 px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 transition-colors'
+						>
+							{formData.display ? <Eye size={20} /> : <EyeOff size={20} />}
+							{formData.display ? "Công khai" : "Riêng tư"}
+						</button>
+					</div>
+
+					{/* Description */}
+					<div className='mb-4'>
+						<label className='block text-sm font-medium text-gray-300'>
+							Ghi chú:
+						</label>
+						<textarea
+							name='description'
+							value={formData.description}
+							onChange={e => handleInputChange("description", e.target.value)}
+							className='mt-1 block w-full bg-gray-700 text-white rounded-md h-24 p-2 border border-gray-600'
+						></textarea>
+					</div>
+
+					<div className='flex justify-end gap-4 mt-6'>
+						<button
+							type='button'
+							onClick={onClose}
+							className='px-4 py-2 rounded bg-gray-600 hover:bg-gray-700 transition-colors'
+						>
+							Hủy
+						</button>
+						<button
+							type='submit'
+							disabled={submitting}
+							className='px-4 py-2 rounded bg-cyan-600 hover:bg-cyan-700 disabled:bg-gray-500 transition-colors'
+						>
+							{submitting ? "Đang lưu..." : "Lưu thay đổi"}
+						</button>
+					</div>
+					{message && (
+						<p
+							className={`mt-4 text-center ${
+								message.startsWith("Lỗi") ? "text-red-500" : "text-green-500"
+							}`}
+						>
+							{message}
+						</p>
 					)}
-				</div>
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-medium text-gray-300'>
-					Ghi Chú Gameplay:
-				</label>
-				<textarea
-					name='notes'
-					value={formData.notes}
-					onChange={e => handleInputChange("notes", e.target.value)}
-					placeholder='Nhập ghi chú gameplay...'
-					className='mt-1 block w-full bg-gray-800 text-white rounded-md h-30'
-				></textarea>
-			</div>
-			<div className='mt-4'>
-				<button
-					onClick={handleConfirm}
-					disabled={loading || submitting}
-					className='px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50'
-				>
-					{loading ? "Đang lưu..." : "Cập Nhật Build"}
-				</button>
-				{message && <p className='mt-2 text-white'>{message}</p>}
+				</form>
 			</div>
 		</div>
 	);

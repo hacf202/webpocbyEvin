@@ -1,0 +1,22 @@
+:root {
+	/* Nền & Bề mặt */
+	--color-background: #ffffff;
+	--color-surface: #f8f9fa;
+	--color-border: #dee2e6;
+
+	/* Thanh điều hướng (Navbar) */
+	--color-navbar-bg: #0d3b66;
+	--color-navbar-text: #ffffff;
+
+	/* Văn bản */
+	--color-text-primary: #212529;
+	--color-text-secondary: #6c757d;
+	--color-text-link: #007bff;
+
+	/* Màu hành động (Buttons, v.v.) */
+	--color-primary: #007bff;
+	--color-primary-hover: #0056b3;
+	--color-danger: #dc3545;
+	--color-danger-hover: #c82333;
+	--color-warning: #ffc107;
+}

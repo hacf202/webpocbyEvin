@@ -1,6 +1,15 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react"; // THÊM: useContext
 
 export const AuthContext = createContext();
+
+// THÊM: Custom hook để sử dụng AuthContext dễ dàng hơn
+export const useAuth = () => {
+	const context = useContext(AuthContext);
+	if (context === undefined) {
+		throw new Error("useAuth must be used within an AuthProvider");
+	}
+	return context;
+};
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
@@ -39,6 +48,7 @@ export const AuthProvider = ({ children }) => {
 		});
 	};
 
+	// GIỮ LẠI: Hàm logout đầy đủ hơn, xóa cả refresh_token
 	const logout = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("refresh_token");

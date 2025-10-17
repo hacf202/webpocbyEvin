@@ -17,7 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
-// Kiểm tra biến môi trường
+// Check for required environment variables
 const requiredEnvVars = [
 	"AWS_REGION",
 	"AWS_ACCESS_KEY_ID",
@@ -28,154 +28,125 @@ const requiredEnvVars = [
 ];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 if (missingEnvVars.length > 0) {
-	console.error("Thiếu biến môi trường:", missingEnvVars.join(", "));
+	console.error("Missing environment variables:", missingEnvVars.join(", "));
 	process.exit(1);
 }
 
-// Debug: In ra tất cả biến môi trường để kiểm tra
-// console.log("Biến môi trường đã tải:", {
-// 	AWS_REGION: process.env.AWS_REGION,
-// 	COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-// 	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
-// 	FRONTEND_URL: process.env.FRONTEND_URL,
-// });
-// console.log("Biến môi trường đã tải:", {
-// 	AWS_REGION: process.env.AWS_REGION,
-// 	COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-// 	COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
-// 	FRONTEND_URL: process.env.FRONTEND_URL,
-// });
-
-const client = new DynamoDBClient({
-	region: process.env.AWS_REGION || "us-east-1",
-	credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	},
-});
+const {
+	AWS_REGION,
+	COGNITO_USER_POOL_ID,
+	COGNITO_APP_CLIENT_ID,
+	FRONTEND_URL,
+} = process.env;
 
 const BUILDS_TABLE = "Builds";
 const COMMENTS_TABLE = "wpocComment";
+const WISHLIST_TABLE = "Wishlist"; // Bảng mới cho Wishlist
 
+const client = new DynamoDBClient({ region: AWS_REGION });
+
+// --- FIX: Changed tokenUse to 'id' ---
 const verifier = CognitoJwtVerifier.create({
-	userPoolId: process.env.COGNITO_USER_POOL_ID,
-	tokenUse: "id",
-	clientId: process.env.COGNITO_APP_CLIENT_ID,
+	userPoolId: COGNITO_USER_POOL_ID,
+	tokenUse: "id", // Chấp nhận ID Token thay vì Access Token
+	clientId: COGNITO_APP_CLIENT_ID,
 });
 
 const app = express();
-app.use(morgan("dev"));
+const port = process.env.PORT || 3000;
 
-// Cấu hình CORS để hỗ trợ nhiều nguồn gốc
+// Middleware
+app.use(morgan("dev"));
 const allowedOrigins = [
-	"https://webpocby-evin.vercel.app",
+	FRONTEND_URL,
 	"http://localhost:5173",
-	"https://guidepoc.vercel.app",
-	// Thêm các nguồn gốc khác nếu cần
+	"https://webpocby-evin.vercel.app",
 ];
 app.use(
 	cors({
-		origin: (origin, callback) => {
-			// Cho phép yêu cầu không có origin (như curl hoặc Postman)
-			if (!origin || allowedOrigins.includes(origin)) {
-				callback(null, origin || "*");
+		origin: function (origin, callback) {
+			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+				callback(null, true);
 			} else {
-				callback(new Error(`Nguồn gốc ${origin} không được phép`));
+				callback(new Error("Not allowed by CORS"));
 			}
 		},
-		origin: (origin, callback) => {
-			// Cho phép yêu cầu không có origin (như curl hoặc Postman)
-			if (!origin || allowedOrigins.includes(origin)) {
-				callback(null, origin || "*");
-			} else {
-				callback(new Error(`Nguồn gốc ${origin} không được phép`));
-			}
-		},
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		exposedHeaders: ["Content-Type"],
-		credentials: false,
 	})
 );
-
 app.use(express.json());
 
-// Middleware để đảm bảo phản hồi JSON
-app.use((req, res, next) => {
-	res.setHeader("Content-Type", "application/json");
-	next();
-});
-
-// Middleware để verify Cognito JWT
+// Authentication Middleware
 const authenticateCognitoToken = async (req, res, next) => {
-	const authHeader = req.headers["authorization"];
-	const token = authHeader && authHeader.split(" ")[1];
+	const authHeader = req.headers.authorization;
+	if (!authHeader) {
+		return res.status(401).json({ error: "Authorization header is missing" });
+	}
+	const token = authHeader.split(" ")[1];
 	if (!token) {
-		return res.status(401).json({ error: "Token không hợp lệ: Thiếu token" });
+		return res.status(401).json({ error: "Token is missing" });
 	}
 
 	try {
 		const payload = await verifier.verify(token);
 		req.user = payload;
 		next();
-	} catch (err) {
-		console.error("Lỗi xác thực token:", {
-			message: err.message,
-			stack: err.stack,
-			userPoolId: process.env.COGNITO_USER_POOL_ID,
-			clientId: process.env.COGNITO_APP_CLIENT_ID,
-		});
-		res.status(403).json({
-			error: "Token không hợp lệ",
-			details: err.message,
-		});
+	} catch (error) {
+		console.error("Token verification error:", error.message);
+		return res.status(403).json({ error: "Invalid or expired token" });
 	}
 };
+
+// --- API Routes ---
 
 // Health check
 app.get("/api/checkheal", async (req, res) => {
 	try {
-		const command = new DescribeTableCommand({ TableName: BUILDS_TABLE });
-		await client.send(command);
+		await client.send(new DescribeTableCommand({ TableName: BUILDS_TABLE }));
 		res.status(200).json({
-			status: "healthy",
-			message: "Server và DynamoDB đang hoạt động bình thường",
-			timestamp: new Date().toISOString(),
+			status: "OK",
+			message: "Server is running and connected to DynamoDB",
 		});
 	} catch (error) {
-		console.error("Lỗi health check:", error);
 		res.status(500).json({
-			status: "unhealthy",
-			message: "Lỗi khi kết nối đến DynamoDB",
+			status: "ERROR",
+			message: "Failed to connect to DynamoDB",
 			error: error.message,
 		});
 	}
 });
 
-// Load all builds (public)
+// --- Builds API ---
+
+// Get all builds (public)
 app.get("/api/builds", async (req, res) => {
 	try {
-		const command = new ScanCommand({ TableName: BUILDS_TABLE });
+		const command = new ScanCommand({
+			TableName: BUILDS_TABLE,
+			// --- FILTER START ---
+			FilterExpression: "#display = :display",
+			ExpressionAttributeNames: { "#display": "display" },
+			ExpressionAttributeValues: marshall({ ":display": true }),
+			// --- FILTER END ---
+		});
 		const response = await client.send(command);
 		const items = response.Items
 			? response.Items.map(item => unmarshall(item))
 			: [];
 		res.json({ items });
 	} catch (error) {
-		console.error("Lỗi:", error);
-		res.status(500).json({ error: "Không thể tải xuống builds" });
+		console.error("Error getting all public builds:", error);
+		res.status(500).json({ error: "Could not retrieve builds" });
 	}
 });
 
-// Load user's builds (require auth)
+// Get builds for the current user (requires auth)
 app.get("/api/my-builds", authenticateCognitoToken, async (req, res) => {
+	const creator = req.user["cognito:username"];
 	try {
 		const command = new ScanCommand({
 			TableName: BUILDS_TABLE,
 			FilterExpression: "creator = :creator",
-			ExpressionAttributeValues: marshall({
-				":creator": req.user["cognito:username"],
-			}),
+			ExpressionAttributeValues: marshall({ ":creator": creator }),
 		});
 		const response = await client.send(command);
 		const items = response.Items
@@ -183,51 +154,52 @@ app.get("/api/my-builds", authenticateCognitoToken, async (req, res) => {
 			: [];
 		res.json({ items });
 	} catch (error) {
-		console.error("Lỗi:", error);
-		res.status(500).json({ error: "Không thể tải my builds" });
+		console.error("Error getting user's builds:", error);
+		res.status(500).json({ error: "Could not retrieve your builds" });
 	}
 });
 
-// Add new build (require auth)
+// Create a new build (requires auth)
 app.post("/api/builds", authenticateCognitoToken, async (req, res) => {
-	console.log("Received payload:", req.body);
+	console.log("Received payload for new build:", req.body);
 	const {
-		id,
 		championName,
-		description,
+		description = "",
 		artifacts = [],
 		powers = [],
+		rune = [],
+		star = 0,
 	} = req.body;
 
-	if (!id || !championName || !description) {
+	// Updated validation for required fields
+	if (!championName || !Array.isArray(artifacts) || artifacts.length === 0) {
 		return res.status(400).json({
-			error: `Thiếu các trường bắt buộc: ${!id ? "id, " : ""}${
+			error: `Thiếu các trường bắt buộc: ${
 				!championName ? "championName, " : ""
-			}${!description ? "description" : ""}`,
+			}${
+				!Array.isArray(artifacts) || artifacts.length === 0
+					? "artifacts (phải là một mảng không rỗng)"
+					: ""
+			}`,
 		});
 	}
 
 	const build = {
-		id: { S: id },
+		id: { S: uuidv4() }, // Auto-generate a unique ID
+		sub: { S: req.user.sub }, // Add 'sub' from Cognito token
 		creator: { S: req.user["cognito:username"] },
 		description: { S: description },
 		championName: { S: championName },
-		artifacts: {
-			L: Array.isArray(artifacts) ? artifacts.map(a => ({ S: a })) : [],
-		},
-		powers: { L: Array.isArray(powers) ? powers.map(p => ({ S: p })) : [] },
+		artifacts: { L: artifacts.map(a => ({ S: a })) },
+		powers: { L: powers.map(p => ({ S: p })) },
+		rune: { L: rune.map(r => ({ S: r })) },
+		like: { N: "0" }, // Add 'like', DynamoDB expects numbers as strings
+		star: { N: star.toString() }, // Add 'star'
+		display: { BOOL: true }, // Add 'display'
 	};
 
 	try {
-		const getBuild = new GetItemCommand({
-			TableName: BUILDS_TABLE,
-			Key: marshall({ id: id }),
-		});
-		const { Item } = await client.send(getBuild);
-		if (Item) {
-			return res.status(400).json({ error: "ID build đã tồn tại" });
-		}
-
+		// No need to check for existing ID as we now generate a unique one
 		const command = new PutItemCommand({
 			TableName: BUILDS_TABLE,
 			Item: build,
@@ -242,15 +214,11 @@ app.post("/api/builds", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// Update a build (require auth, only owner)
+// Update a build (requires auth)
 app.put("/api/builds/:id", authenticateCognitoToken, async (req, res) => {
 	const { id } = req.params;
-	const { championName, description, artifacts, powers } = req.body;
-	if (!championName || !description) {
-		return res.status(400).json({
-			error: "Thiếu các trường bắt buộc: championName, description",
-		});
-	}
+	const { description, artifacts, powers, rune, star, display } = req.body;
+	const username = req.user["cognito:username"];
 
 	try {
 		const getBuild = new GetItemCommand({
@@ -258,43 +226,87 @@ app.put("/api/builds/:id", authenticateCognitoToken, async (req, res) => {
 			Key: marshall({ id }),
 		});
 		const { Item } = await client.send(getBuild);
-		if (!Item || unmarshall(Item).creator !== req.user["cognito:username"]) {
-			return res.status(403).json({ error: "Không có quyền sửa build này" });
+
+		if (!Item) {
+			return res.status(404).json({ error: "Build không tồn tại" });
+		}
+
+		const build = unmarshall(Item);
+		if (build.creator !== username) {
+			return res
+				.status(403)
+				.json({ error: "Bạn không có quyền chỉnh sửa build này" });
+		}
+
+		// Construct update expression
+		let updateExpression = "SET";
+		let expressionAttributeValues = {};
+		let expressionAttributeNames = {};
+		let first = true;
+
+		const fieldsToUpdate = {
+			description,
+			artifacts,
+			powers,
+			rune,
+			star,
+			display,
+		};
+
+		for (const [key, value] of Object.entries(fieldsToUpdate)) {
+			if (value !== undefined) {
+				if (!first) updateExpression += ",";
+				updateExpression += ` #${key} = :${key}`;
+				expressionAttributeNames[`#${key}`] = key;
+				expressionAttributeValues[`:${key}`] = value;
+				first = false;
+			}
+		}
+
+		if (Object.keys(expressionAttributeValues).length === 0) {
+			return res.status(400).json({ error: "Không có trường nào để cập nhật" });
 		}
 
 		const command = new UpdateItemCommand({
 			TableName: BUILDS_TABLE,
 			Key: marshall({ id }),
-			UpdateExpression:
-				"SET championName = :c, description = :d, artifacts = :a, powers = :p",
-			ExpressionAttributeValues: marshall({
-				":c": championName,
-				":d": description,
-				":a": Array.isArray(artifacts) ? artifacts.map(a => ({ S: a })) : [],
-				":p": Array.isArray(powers) ? powers.map(p => ({ S: p })) : [],
-			}),
+			UpdateExpression: updateExpression,
+			ExpressionAttributeNames: expressionAttributeNames,
+			ExpressionAttributeValues: marshall(expressionAttributeValues),
 			ReturnValues: "ALL_NEW",
 		});
-		const response = await client.send(command);
-		const updatedItem = unmarshall(response.Attributes);
-		res.json({ message: "Build đã được cập nhật", build: updatedItem });
+
+		const { Attributes } = await client.send(command);
+		res.json({
+			message: "Build đã được cập nhật",
+			build: unmarshall(Attributes),
+		});
 	} catch (error) {
 		console.error("Lỗi cập nhật build:", error);
 		res.status(500).json({ error: "Không thể cập nhật build" });
 	}
 });
 
-// Delete a build (require auth, only owner)
+// Delete a build (requires auth)
 app.delete("/api/builds/:id", authenticateCognitoToken, async (req, res) => {
 	const { id } = req.params;
+	const username = req.user["cognito:username"];
+
 	try {
 		const getBuild = new GetItemCommand({
 			TableName: BUILDS_TABLE,
 			Key: marshall({ id }),
 		});
 		const { Item } = await client.send(getBuild);
-		if (!Item || unmarshall(Item).creator !== req.user["cognito:username"]) {
-			return res.status(403).json({ error: "Không có quyền xóa build này" });
+
+		if (!Item) {
+			return res.status(404).json({ error: "Build không tồn tại" });
+		}
+		const build = unmarshall(Item);
+		if (build.creator !== username) {
+			return res
+				.status(403)
+				.json({ error: "Bạn không có quyền xóa build này" });
 		}
 
 		const command = new DeleteItemCommand({
@@ -309,16 +321,102 @@ app.delete("/api/builds/:id", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// Load comments for a champion (public)
+// --- Wishlist API ---
+
+// Lấy danh sách build yêu thích của người dùng hiện tại (yêu cầu xác thực)
+app.get("/api/wishlist", authenticateCognitoToken, async (req, res) => {
+	const { sub } = req.user;
+	try {
+		const command = new GetItemCommand({
+			TableName: WISHLIST_TABLE,
+			Key: marshall({ sub }),
+		});
+		const { Item } = await client.send(command);
+		if (Item) {
+			const wishlist = unmarshall(Item);
+			res.json({ builds: wishlist.builds || [] });
+		} else {
+			// Nếu người dùng chưa có wishlist, trả về mảng rỗng
+			res.json({ builds: [] });
+		}
+	} catch (error) {
+		console.error("Lỗi lấy wishlist:", error);
+		res.status(500).json({ error: "Không thể lấy danh sách yêu thích" });
+	}
+});
+
+// Thêm một build vào danh sách yêu thích (yêu cầu xác thực)
+app.post("/api/wishlist", authenticateCognitoToken, async (req, res) => {
+	const { sub } = req.user;
+	const { buildId } = req.body;
+
+	if (!buildId) {
+		return res.status(400).json({ error: "buildId là bắt buộc" });
+	}
+
+	try {
+		// Sử dụng ADD để thêm vào một Set, tự động xử lý trùng lặp
+		const command = new UpdateItemCommand({
+			TableName: WISHLIST_TABLE,
+			Key: marshall({ sub }),
+			UpdateExpression: "ADD builds :buildId",
+			ExpressionAttributeValues: {
+				":buildId": { SS: [buildId] }, // Sử dụng String Set (SS)
+			},
+			ReturnValues: "ALL_NEW",
+		});
+		const { Attributes } = await client.send(command);
+		res.status(200).json({
+			message: "Đã thêm vào danh sách yêu thích",
+			wishlist: unmarshall(Attributes),
+		});
+	} catch (error) {
+		console.error("Lỗi thêm vào wishlist:", error);
+		res.status(500).json({ error: "Không thể thêm vào danh sách yêu thích" });
+	}
+});
+
+// Xóa một build khỏi danh sách yêu thích (yêu cầu xác thực)
+app.delete(
+	"/api/wishlist/:buildId",
+	authenticateCognitoToken,
+	async (req, res) => {
+		const { sub } = req.user;
+		const { buildId } = req.params;
+
+		try {
+			// Sử dụng DELETE để xóa một item khỏi Set
+			const command = new UpdateItemCommand({
+				TableName: WISHLIST_TABLE,
+				Key: marshall({ sub }),
+				UpdateExpression: "DELETE builds :buildId",
+				ExpressionAttributeValues: {
+					":buildId": { SS: [buildId] },
+				},
+				ReturnValues: "ALL_NEW",
+			});
+			const { Attributes } = await client.send(command);
+			res.status(200).json({
+				message: "Đã xóa khỏi danh sách yêu thích",
+				wishlist: Attributes ? unmarshall(Attributes) : { sub, builds: [] },
+			});
+		} catch (error) {
+			console.error("Lỗi xóa khỏi wishlist:", error);
+			res.status(500).json({ error: "Không thể xóa khỏi danh sách yêu thích" });
+		}
+	}
+);
+
+// --- Comments API ---
+
+// Get comments for a champion (public)
 app.get("/api/comments/:championName", async (req, res) => {
 	const { championName } = req.params;
 	try {
 		const command = new ScanCommand({
 			TableName: COMMENTS_TABLE,
 			FilterExpression: "championName = :championName",
-			ExpressionAttributeValues: marshall({
-				":championName": championName,
-			}),
+			ExpressionAttributeValues: marshall({ ":championName": championName }),
 		});
 		const response = await client.send(command);
 		const items = response.Items
@@ -326,132 +424,84 @@ app.get("/api/comments/:championName", async (req, res) => {
 			: [];
 		res.json({ items });
 	} catch (error) {
-		console.error("Lỗi lấy bình luận:", error);
-		res.status(500).json({ error: "Không thể tải bình luận" });
+		console.error("Error getting comments:", error);
+		res.status(500).json({ error: "Could not retrieve comments" });
 	}
 });
 
-// Add new comment (require auth)
+// Create a new comment (requires auth)
 app.post("/api/comments", authenticateCognitoToken, async (req, res) => {
-	const { championName, content } = req.body;
-
-	if (!content) {
-		return res.status(400).json({
-			error: "Thiếu trường bắt buộc: content",
-		});
+	const { championName, text } = req.body;
+	if (!championName || !text) {
+		return res
+			.status(400)
+			.json({ error: "championName and text are required" });
 	}
-
-	const commentid = uuidv4();
-	if (typeof commentid !== "string") {
-		console.error("Generated commentid is not a string:", commentid);
-		return res.status(500).json({ error: "Lỗi tạo commentid" });
-	}
-
 	const comment = {
-		commentid: commentid,
-		championName: championName || "",
-		creator: req.user["cognito:username"],
-		content: content,
-		createdAt: new Date().toISOString(),
-		isEdited: false,
+		commentid: { S: uuidv4() },
+		creator: { S: req.user["cognito:username"] },
+		championName: { S: championName },
+		text: { S: text },
+		createdAt: { S: new Date().toISOString() },
 	};
-
-	const marshalledComment = {
-		commentid: { S: comment.commentid },
-		championName: { S: comment.championName },
-		creator: { S: comment.creator },
-		content: { S: comment.content },
-		createdAt: { S: comment.createdAt },
-		isEdited: { BOOL: comment.isEdited },
-	};
-
 	try {
-		const getComment = new GetItemCommand({
-			TableName: COMMENTS_TABLE,
-			Key: { commentid: { S: commentid } },
-		});
-		const { Item } = await client.send(getComment);
-		if (Item) {
-			return res.status(400).json({ error: "ID bình luận đã tồn tại" });
-		}
-
 		const command = new PutItemCommand({
 			TableName: COMMENTS_TABLE,
-			Item: marshalledComment,
+			Item: comment,
 		});
 		await client.send(command);
-		res.status(201).json({
-			message: "Bình luận đã được tạo",
-			comment: unmarshall(marshalledComment),
-		});
+		res
+			.status(201)
+			.json({ message: "Comment created", comment: unmarshall(comment) });
 	} catch (error) {
-		console.error("Lỗi tạo bình luận:", {
-			message: error.message,
-			stack: error.stack,
-			code: error.code,
-			payload: req.body,
-			commentid,
-		});
-		if (error.code === "ResourceNotFoundException") {
-			return res.status(500).json({
-				error: "Bảng wpocComment không tồn tại trong DynamoDB",
-				details: error.message,
-			});
-		}
-		res.status(500).json({
-			error: "Không thể tạo bình luận",
-			details: error.message || "Lỗi không xác định",
-		});
+		console.error("Error creating comment:", error);
+		res.status(500).json({ error: "Could not create comment" });
 	}
 });
 
-// Update a comment (require auth, only owner)
+// Update a comment (requires auth)
 app.put(
 	"/api/comments/:commentid",
 	authenticateCognitoToken,
 	async (req, res) => {
 		const { commentid } = req.params;
-		const { content } = req.body;
-
-		if (!content) {
-			return res.status(400).json({
-				error: "Thiếu trường bắt buộc: content",
-			});
+		const { text } = req.body;
+		if (!text) {
+			return res.status(400).json({ error: "Text field is required" });
 		}
-
 		try {
 			const getComment = new GetItemCommand({
 				TableName: COMMENTS_TABLE,
 				Key: marshall({ commentid }),
 			});
 			const { Item } = await client.send(getComment);
-			if (!Item || unmarshall(Item).creator !== req.user["cognito:username"]) {
+			if (!Item) {
+				return res.status(404).json({ error: "Comment not found" });
+			}
+			const comment = unmarshall(Item);
+			if (comment.creator !== req.user["cognito:username"]) {
 				return res
 					.status(403)
-					.json({ error: "Không có quyền sửa bình luận này" });
+					.json({ error: "You are not authorized to edit this comment" });
 			}
-
 			const command = new UpdateItemCommand({
 				TableName: COMMENTS_TABLE,
 				Key: marshall({ commentid }),
-				UpdateExpression: "SET content = :c, isEdited = :e",
-				ExpressionAttributeValues: marshall({
-					":c": content,
-					":e": true,
-				}),
+				UpdateExpression: "SET #text = :text",
+				ExpressionAttributeNames: { "#text": "text" },
+				ExpressionAttributeValues: marshall({ ":text": text }),
 				ReturnValues: "ALL_NEW",
 			});
-			const response = await client.send(command);
-			const updatedItem = unmarshall(response.Attributes);
-			res.json({ message: "Bình luận đã được cập nhật", comment: updatedItem });
+			const { Attributes } = await client.send(command);
+			res.json({ message: "Comment updated", comment: unmarshall(Attributes) });
 		} catch (error) {
-			console.error("Lỗi cập nhật bình luận:", error);
-			res.status(500).json({ error: "Không thể cập nhật bình luận" });
+			console.error("Error updating comment:", error);
+			res.status(500).json({ error: "Could not update comment" });
 		}
 	}
 );
 
-// Delete a comment (require auth, only owner)
+// Delete a comment (requires auth)
 app.delete(
 	"/api/comments/:commentid",
 	authenticateCognitoToken,
@@ -463,12 +513,15 @@ app.delete(
 				Key: marshall({ commentid }),
 			});
 			const { Item } = await client.send(getComment);
-			if (!Item || unmarshall(Item).creator !== req.user["cognito:username"]) {
+			if (!Item) {
+				return res.status(404).json({ error: "Bình luận không tồn tại" });
+			}
+			const comment = unmarshall(Item);
+			if (comment.creator !== req.user["cognito:username"]) {
 				return res
 					.status(403)
-					.json({ error: "Không có quyền xóa bình luận này" });
+					.json({ error: "Bạn không có quyền xóa bình luận này" });
 			}
-
 			const command = new DeleteItemCommand({
 				TableName: COMMENTS_TABLE,
 				Key: marshall({ commentid }),
@@ -482,7 +535,7 @@ app.delete(
 	}
 );
 
-// Load all comments (public, no auth required)
+// Get all comments (public)
 app.get("/api/all-comments", async (req, res) => {
 	try {
 		const command = new ScanCommand({
@@ -505,20 +558,152 @@ app.get("/api/all-comments", async (req, res) => {
 				details: error.message,
 			});
 		}
-		res.status(500).json({
-			error: "Không thể tải tất cả bình luận",
-			details: error.message || "Lỗi không xác định",
-		});
+		res.status(500).json({ error: "Không thể lấy danh sách bình luận" });
 	}
 });
 
-// Xử lý lỗi 404
+app.patch("/api/builds/:id/like", async (req, res) => {
+	const { id } = req.params;
+
+	const params = {
+		TableName: BUILDS_TABLE,
+		Key: marshall({ id }),
+		UpdateExpression: "SET #likeAttr = if_not_exists(#likeAttr, :start) + :inc",
+		ExpressionAttributeNames: {
+			"#likeAttr": "like",
+		},
+		ExpressionAttributeValues: marshall({
+			":inc": 1,
+			":start": 0,
+		}),
+		ReturnValues: "ALL_NEW",
+	};
+
+	try {
+		const command = new UpdateItemCommand(params);
+		const { Attributes } = await client.send(command);
+		res.json(unmarshall(Attributes));
+	} catch (error) {
+		console.error("Error liking build:", error);
+		res.status(500).json({ error: "Could not like build" });
+	}
+});
+
+app.patch("/api/builds/:id/like", async (req, res) => {
+	const { id } = req.params;
+
+	const params = {
+		TableName: BUILDS_TABLE,
+		Key: marshall({ id }),
+		UpdateExpression: "SET #likeAttr = if_not_exists(#likeAttr, :start) + :inc",
+		ExpressionAttributeNames: {
+			"#likeAttr": "like",
+		},
+		ExpressionAttributeValues: marshall({
+			":inc": 1,
+			":start": 0,
+		}),
+		ReturnValues: "ALL_NEW",
+	};
+
+	try {
+		const command = new UpdateItemCommand(params);
+		const { Attributes } = await client.send(command);
+		res.json(unmarshall(Attributes));
+	} catch (error) {
+		console.error("Error liking build:", error);
+		res.status(500).json({ error: "Could not like build" });
+	}
+});
+
+// PATCH to toggle favorite status for a build
+app.patch(
+	"/api/builds/:id/favorite",
+	authenticateCognitoToken,
+	async (req, res) => {
+		const { id } = req.params;
+		const userSub = req.user.sub;
+
+		try {
+			// 1. Get the current build to check its favorite list
+			const getCommand = new GetItemCommand({
+				TableName: BUILDS_TABLE,
+				Key: marshall({ id }),
+			});
+			const { Item } = await client.send(getCommand);
+
+			if (!Item) {
+				return res.status(404).json({ error: "Build not found" });
+			}
+
+			const build = unmarshall(Item);
+			let favorites = build.favorite || [];
+
+			// 2. Add or remove the user's sub from the list
+			const userIndex = favorites.indexOf(userSub);
+			if (userIndex > -1) {
+				// User already favorited, so remove them
+				favorites.splice(userIndex, 1);
+			} else {
+				// User has not favorited, so add them
+				favorites.push(userSub);
+			}
+
+			// 3. Update the build with the new favorite list
+			const updateCommand = new UpdateItemCommand({
+				TableName: BUILDS_TABLE,
+				Key: marshall({ id }),
+				UpdateExpression: "SET #favAttr = :newList",
+				ExpressionAttributeNames: {
+					"#favAttr": "favorite",
+				},
+				ExpressionAttributeValues: marshall({
+					":newList": favorites,
+				}),
+				ReturnValues: "ALL_NEW",
+			});
+
+			const { Attributes } = await client.send(updateCommand);
+			res.json(unmarshall(Attributes));
+		} catch (error) {
+			console.error("Error toggling favorite:", error);
+			res.status(500).json({ error: "Could not toggle favorite status" });
+		}
+	}
+);
+
+// GET favorite builds for the logged-in user
+app.get("/api/builds/favorites", authenticateCognitoToken, async (req, res) => {
+	const userSub = req.user.sub;
+
+	try {
+		const params = {
+			TableName: BUILDS_TABLE,
+			FilterExpression: "contains(#favoriteAttr, :userSub)",
+			ExpressionAttributeNames: {
+				"#favoriteAttr": "favorite",
+			},
+			ExpressionAttributeValues: marshall({
+				":userSub": userSub,
+			}),
+		};
+
+		const command = new ScanCommand(params);
+		const response = await client.send(command);
+		const favoriteBuilds = response.Items.map(item => unmarshall(item));
+
+		res.json(favoriteBuilds);
+	} catch (error) {
+		console.error("Error fetching favorite builds:", error);
+		res.status(500).json({ error: "Could not fetch favorite builds" });
+	}
+});
+
+// 404 handler
 app.use((req, res) => {
-	console.log(`Route không tồn tại: ${req.method} ${req.url}`);
 	res.status(404).json({ error: "Route không tồn tại" });
 });
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`Server đang chạy tại http://localhost:${port}`);
+	console.log(`Server is running on http://localhost:${port}`);
 });
