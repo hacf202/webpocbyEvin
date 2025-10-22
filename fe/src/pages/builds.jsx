@@ -5,14 +5,16 @@ import championsData from "../assets/data/champions.json";
 import relicsData from "../assets/data/relics-vi_vn.json";
 import powersData from "../assets/data/powers-vi_vn.json";
 import runesData from "../assets/data/runes-vi_vn.json";
-import BuildSummary from "../components/build/BuildSummary";
 import BuildCreation from "../components/build/BuildCreation";
-import MyBuilds from "../components/build/MyBuilds"; // <-- IMPORT COMPONENT MỚI
+import MyBuilds from "../components/build/MyBuilds";
+import MyFavorite from "../components/build/MyFavorite";
+import CommunityBuilds from "../components/build/CommunityBuilds"; // <-- IMPORT COMPONENT MỚI
 import { AuthContext } from "../context/AuthContext";
 import {
 	PlusCircle,
 	Globe,
 	Shield,
+	Heart,
 	Search,
 	XCircle,
 	RotateCw,
@@ -22,27 +24,24 @@ import DropdownFilter from "../components/common/DropdownFilter";
 import InputField from "../components/common/InputField";
 
 const Builds = () => {
-	const { user, token } = useContext(AuthContext);
-	const [communityBuilds, setCommunityBuilds] = useState([]); // <-- Đổi tên state
+	const { user } = useContext(AuthContext);
 	const [showCreateModal, setShowCreateModal] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
 	const [activeTab, setActiveTab] = useState("community");
-	const [refreshKey, setRefreshKey] = useState(0); // <-- State để trigger refresh
+	const [refreshKey, setRefreshKey] = useState(0);
 
-	// State cho các bộ lọc và tìm kiếm (dùng chung cho cả 2 tab)
+	// State cho các bộ lọc và tìm kiếm (dùng chung cho các tab)
 	const [searchInput, setSearchInput] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedStarLevel, setSelectedStarLevel] = useState("");
 	const [selectedRegion, setSelectedRegion] = useState("");
 
-	// Dữ liệu gốc từ các tệp JSON
+	// Dữ liệu gốc
 	const championsList = useMemo(() => championsData, []);
 	const relicsList = useMemo(() => relicsData, []);
 	const powersList = useMemo(() => powersData, []);
 	const runesList = useMemo(() => runesData || [], []);
 
-	// Dữ liệu được tính toán trước để tối ưu hóa việc lọc
+	// Dữ liệu được tính toán trước
 	const powerMap = useMemo(
 		() => new Map(powersList.map(p => [p.id, p.name])),
 		[powersList]
@@ -53,7 +52,7 @@ const Builds = () => {
 		return map;
 	}, [championsList]);
 
-	// Tùy chọn cho các bộ lọc dropdown
+	// Tùy chọn cho bộ lọc
 	const regionOptions = useMemo(() => {
 		const allRegions = championsList.flatMap(c => c.regions);
 		const uniqueRegions = [...new Set(allRegions)];
@@ -76,92 +75,6 @@ const Builds = () => {
 		[]
 	);
 
-	// Tìm nạp dữ liệu builds CỘNG ĐỒNG
-	useEffect(() => {
-		// Chỉ fetch khi tab cộng đồng được chọn
-		if (activeTab !== "community") return;
-
-		const fetchCommunityBuilds = async () => {
-			setIsLoading(true);
-			setError(null);
-			setCommunityBuilds([]);
-			const url = `${import.meta.env.VITE_API_URL}/api/builds`;
-			try {
-				const response = await fetch(url);
-				if (!response.ok)
-					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
-				const data = await response.json();
-				setCommunityBuilds(data.items);
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchCommunityBuilds();
-	}, [activeTab, refreshKey]); // Fetch lại khi đổi tab hoặc khi có build mới được tạo
-
-	// Logic lọc cho build CỘNG ĐỒNG
-	const filteredCommunityBuilds = useMemo(() => {
-		const toLowerSafe = val => String(val || "").toLowerCase();
-		let tempFiltered = [...communityBuilds];
-
-		if (selectedStarLevel) {
-			tempFiltered = tempFiltered.filter(
-				build => build.star === parseInt(selectedStarLevel)
-			);
-		}
-		if (selectedRegion) {
-			tempFiltered = tempFiltered.filter(build => {
-				const championRegions = championNameToRegionsMap.get(
-					build.championName
-				);
-				return championRegions
-					? championRegions.includes(selectedRegion)
-					: false;
-			});
-		}
-		if (searchTerm) {
-			const lowercasedTerm = toLowerSafe(searchTerm);
-			tempFiltered = tempFiltered.filter(build => {
-				const descriptionMatch = toLowerSafe(build.description).includes(
-					lowercasedTerm
-				);
-				const championMatch = toLowerSafe(build.championName).includes(
-					lowercasedTerm
-				);
-				const creatorMatch = toLowerSafe(build.creator).includes(
-					lowercasedTerm
-				);
-				const artifactMatch = build.artifacts?.some(artifact =>
-					toLowerSafe(artifact).includes(lowercasedTerm)
-				);
-				const powerMatch = build.powers?.some(powerId =>
-					toLowerSafe(powerMap.get(powerId)).includes(lowercasedTerm)
-				);
-				const runeMatch = build.rune?.some(runeName =>
-					toLowerSafe(runeName).includes(lowercasedTerm)
-				);
-				return (
-					descriptionMatch ||
-					championMatch ||
-					creatorMatch ||
-					artifactMatch ||
-					powerMatch ||
-					runeMatch
-				);
-			});
-		}
-		return tempFiltered;
-	}, [
-		communityBuilds,
-		searchTerm,
-		selectedStarLevel,
-		selectedRegion,
-		powerMap,
-		championNameToRegionsMap,
-	]);
-
 	// Các hàm xử lý sự kiện
 	const handleSearchSubmit = e => {
 		e.preventDefault();
@@ -180,52 +93,47 @@ const Builds = () => {
 	};
 
 	const handleCreateBuild = () => {
-		// Sau khi tạo thành công, đóng modal và trigger refresh cho tab hiện tại
 		setShowCreateModal(false);
 		setRefreshKey(prevKey => prevKey + 1);
-		// Chuyển người dùng về tab "My Builds" để họ thấy build vừa tạo
 		setActiveTab("my-builds");
 	};
 
-	// Hàm render nội dung chính dựa trên tab
+	const handleFavoriteToggle = () => {
+		// Khi người dùng yêu thích/bỏ yêu thích một build, trigger refresh
+		// để cập nhật lại danh sách ở tab "Yêu thích" và trạng thái ở các tab khác
+		setRefreshKey(prevKey => prevKey + 1);
+	};
+
+	// Render nội dung chính dựa trên tab đang hoạt động
 	const renderContent = () => {
-		if (activeTab === "community") {
-			if (isLoading)
-				return <p className='text-center mt-8'>Đang tải dữ liệu...</p>;
-			if (error)
+		const commonProps = {
+			searchTerm,
+			selectedStarLevel,
+			selectedRegion,
+			championsList,
+			relicsList,
+			powersList,
+			runesList,
+			onFavoriteToggle: handleFavoriteToggle,
+			refreshKey, // Truyền refreshKey để component con tự fetch lại khi cần
+		};
+
+		switch (activeTab) {
+			case "community":
 				return (
-					<p className='text-[var(--color-danger)] text-center mt-8'>{error}</p>
+					<CommunityBuilds
+						{...commonProps}
+						powerMap={powerMap}
+						championNameToRegionsMap={championNameToRegionsMap}
+					/>
 				);
-			return (
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
-					{filteredCommunityBuilds.map(build => (
-						<div key={build.id}>
-							<BuildSummary
-								build={build}
-								championsList={championsList}
-								relicsList={relicsList}
-								powersList={powersList}
-								runesList={runesList}
-							/>
-							{/* Component cộng đồng không có nút Sửa/Xóa */}
-						</div>
-					))}
-				</div>
-			);
+			case "my-builds":
+				return <MyBuilds {...commonProps} />;
+			case "my-favorites":
+				return <MyFavorite {...commonProps} />;
+			default:
+				return null;
 		}
-		// Render component MyBuilds cho tab "Build Của Tôi"
-		return (
-			<MyBuilds
-				key={refreshKey} // <-- Dùng key để re-mount và fetch lại dữ liệu khi cần
-				searchTerm={searchTerm}
-				selectedStarLevel={selectedStarLevel}
-				selectedRegion={selectedRegion}
-				championsList={championsList}
-				relicsList={relicsList}
-				powersList={powersList}
-				runesList={runesList}
-			/>
-		);
 	};
 
 	return (
@@ -245,7 +153,7 @@ const Builds = () => {
 				)}
 			</div>
 
-			<div className='flex space-x-2 border-b border-[var(--color-border)] mb-6'>
+			<div className='flex flex-wrap items-center space-x-2 border-b border-[var(--color-border)] mb-6'>
 				<Button
 					variant={activeTab === "community" ? "primary" : "ghost"}
 					onClick={() => setActiveTab("community")}
@@ -254,13 +162,22 @@ const Builds = () => {
 					Cộng Đồng
 				</Button>
 				{user && (
-					<Button
-						variant={activeTab === "my-builds" ? "primary" : "ghost"}
-						onClick={() => setActiveTab("my-builds")}
-						iconLeft={<Shield size={18} />}
-					>
-						Build Của Tôi
-					</Button>
+					<>
+						<Button
+							variant={activeTab === "my-builds" ? "primary" : "ghost"}
+							onClick={() => setActiveTab("my-builds")}
+							iconLeft={<Shield size={18} />}
+						>
+							Build Của Tôi
+						</Button>
+						<Button
+							variant={activeTab === "my-favorites" ? "primary" : "ghost"}
+							onClick={() => setActiveTab("my-favorites")}
+							iconLeft={<Heart size={18} />}
+						>
+							Yêu Thích
+						</Button>
+					</>
 				)}
 			</div>
 
@@ -278,6 +195,7 @@ const Builds = () => {
 								type='button'
 								onClick={handleClearSearch}
 								className='absolute right-[calc(6rem+1rem)] mr-2 text-gray-500 hover:text-gray-800'
+								aria-label='Xóa tìm kiếm'
 							>
 								<XCircle size={20} />
 							</button>

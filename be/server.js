@@ -41,7 +41,7 @@ const {
 
 const BUILDS_TABLE = "Builds";
 const COMMENTS_TABLE = "wpocComment";
-const WISHLIST_TABLE = "Wishlist"; // Bảng mới cho Wishlist
+const FAVORITE_TABLE = "Favorite";
 
 const client = new DynamoDBClient({ region: AWS_REGION });
 
@@ -159,9 +159,11 @@ app.get("/api/my-builds", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// Create a new build (requires auth)
 app.post("/api/builds", authenticateCognitoToken, async (req, res) => {
 	console.log("Received payload for new build:", req.body);
+
+	// Destructure all properties from the request body.
+	// 'display' will default to 'false' if it's not provided in the request.
 	const {
 		championName,
 		description = "",
@@ -169,48 +171,54 @@ app.post("/api/builds", authenticateCognitoToken, async (req, res) => {
 		powers = [],
 		rune = [],
 		star = 0,
+		display = false,
 	} = req.body;
 
-	// Updated validation for required fields
+	// Validation for required fields remains the same.
 	if (!championName || !Array.isArray(artifacts) || artifacts.length === 0) {
+		let missingFields = [];
+		if (!championName) {
+			missingFields.push("championName");
+		}
+		if (!Array.isArray(artifacts) || artifacts.length === 0) {
+			missingFields.push("artifacts (must be a non-empty array)");
+		}
 		return res.status(400).json({
-			error: `Thiếu các trường bắt buộc: ${
-				!championName ? "championName, " : ""
-			}${
-				!Array.isArray(artifacts) || artifacts.length === 0
-					? "artifacts (phải là một mảng không rỗng)"
-					: ""
-			}`,
+			error: `Missing required fields: ${missingFields.join(", ")}`,
 		});
 	}
 
+	// Construct the build item for DynamoDB.
 	const build = {
-		id: { S: uuidv4() }, // Auto-generate a unique ID
-		sub: { S: req.user.sub }, // Add 'sub' from Cognito token
+		id: { S: uuidv4() },
+		sub: { S: req.user.sub },
 		creator: { S: req.user["cognito:username"] },
 		description: { S: description },
 		championName: { S: championName },
 		artifacts: { L: artifacts.map(a => ({ S: a })) },
 		powers: { L: powers.map(p => ({ S: p })) },
 		rune: { L: rune.map(r => ({ S: r })) },
-		like: { N: "0" }, // Add 'like', DynamoDB expects numbers as strings
-		star: { N: star.toString() }, // Add 'star'
-		display: { BOOL: true }, // Add 'display'
+		like: { N: "0" },
+		star: { N: star.toString() },
+		// Use the 'display' value from the request body.
+		display: { BOOL: display },
 	};
 
 	try {
-		// No need to check for existing ID as we now generate a unique one
 		const command = new PutItemCommand({
 			TableName: BUILDS_TABLE,
 			Item: build,
 		});
 		await client.send(command);
-		res
-			.status(201)
-			.json({ message: "Build đã được tạo", build: unmarshall(build) });
+
+		// Return a success message and the created build data.
+		res.status(201).json({
+			message: "Build created successfully",
+			build: unmarshall(build),
+		});
 	} catch (error) {
-		console.error("Lỗi tạo build:", error);
-		res.status(500).json({ error: "Không thể tạo build" });
+		console.error("Error creating build:", error);
+		res.status(500).json({ error: "Could not create build" });
 	}
 });
 
@@ -321,32 +329,32 @@ app.delete("/api/builds/:id", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// --- Wishlist API ---
+// --- Favorite API ---
 
-// Lấy danh sách build yêu thích của người dùng hiện tại (yêu cầu xác thực)
-app.get("/api/wishlist", authenticateCognitoToken, async (req, res) => {
+// Lấy danh sách build ưa thích của người dùng hiện tại (yêu cầu xác thực)
+app.get("/api/favorites", authenticateCognitoToken, async (req, res) => {
 	const { sub } = req.user;
 	try {
 		const command = new GetItemCommand({
-			TableName: WISHLIST_TABLE,
+			TableName: FAVORITE_TABLE,
 			Key: marshall({ sub }),
 		});
 		const { Item } = await client.send(command);
 		if (Item) {
-			const wishlist = unmarshall(Item);
-			res.json({ builds: wishlist.builds || [] });
+			const favoriteList = unmarshall(Item);
+			res.json({ builds: favoriteList.builds || [] });
 		} else {
-			// Nếu người dùng chưa có wishlist, trả về mảng rỗng
+			// Nếu người dùng chưa có danh sách ưa thích, trả về mảng rỗng
 			res.json({ builds: [] });
 		}
 	} catch (error) {
-		console.error("Lỗi lấy wishlist:", error);
-		res.status(500).json({ error: "Không thể lấy danh sách yêu thích" });
+		console.error("Lỗi lấy danh sách ưa thích:", error);
+		res.status(500).json({ error: "Không thể lấy danh sách ưa thích" });
 	}
 });
 
-// Thêm một build vào danh sách yêu thích (yêu cầu xác thực)
-app.post("/api/wishlist", authenticateCognitoToken, async (req, res) => {
+// Thêm một build vào danh sách ưa thích (yêu cầu xác thực)
+app.post("/api/favorites", authenticateCognitoToken, async (req, res) => {
 	const { sub } = req.user;
 	const { buildId } = req.body;
 
@@ -357,7 +365,7 @@ app.post("/api/wishlist", authenticateCognitoToken, async (req, res) => {
 	try {
 		// Sử dụng ADD để thêm vào một Set, tự động xử lý trùng lặp
 		const command = new UpdateItemCommand({
-			TableName: WISHLIST_TABLE,
+			TableName: FAVORITE_TABLE,
 			Key: marshall({ sub }),
 			UpdateExpression: "ADD builds :buildId",
 			ExpressionAttributeValues: {
@@ -367,18 +375,18 @@ app.post("/api/wishlist", authenticateCognitoToken, async (req, res) => {
 		});
 		const { Attributes } = await client.send(command);
 		res.status(200).json({
-			message: "Đã thêm vào danh sách yêu thích",
-			wishlist: unmarshall(Attributes),
+			message: "Đã thêm vào danh sách ưa thích",
+			favorites: unmarshall(Attributes),
 		});
 	} catch (error) {
-		console.error("Lỗi thêm vào wishlist:", error);
-		res.status(500).json({ error: "Không thể thêm vào danh sách yêu thích" });
+		console.error("Lỗi thêm vào danh sách ưa thích:", error);
+		res.status(500).json({ error: "Không thể thêm vào danh sách ưa thích" });
 	}
 });
 
-// Xóa một build khỏi danh sách yêu thích (yêu cầu xác thực)
+// Xóa một build khỏi danh sách ưa thích (yêu cầu xác thực)
 app.delete(
-	"/api/wishlist/:buildId",
+	"/api/favorites/:buildId",
 	authenticateCognitoToken,
 	async (req, res) => {
 		const { sub } = req.user;
@@ -387,7 +395,7 @@ app.delete(
 		try {
 			// Sử dụng DELETE để xóa một item khỏi Set
 			const command = new UpdateItemCommand({
-				TableName: WISHLIST_TABLE,
+				TableName: FAVORITE_TABLE,
 				Key: marshall({ sub }),
 				UpdateExpression: "DELETE builds :buildId",
 				ExpressionAttributeValues: {
@@ -397,12 +405,12 @@ app.delete(
 			});
 			const { Attributes } = await client.send(command);
 			res.status(200).json({
-				message: "Đã xóa khỏi danh sách yêu thích",
-				wishlist: Attributes ? unmarshall(Attributes) : { sub, builds: [] },
+				message: "Đã xóa khỏi danh sách ưa thích",
+				favorites: Attributes ? unmarshall(Attributes) : { sub, builds: [] },
 			});
 		} catch (error) {
-			console.error("Lỗi xóa khỏi wishlist:", error);
-			res.status(500).json({ error: "Không thể xóa khỏi danh sách yêu thích" });
+			console.error("Lỗi xóa khỏi danh sách ưa thích:", error);
+			res.status(500).json({ error: "Không thể xóa khỏi danh sách ưa thích" });
 		}
 	}
 );
@@ -559,33 +567,6 @@ app.get("/api/all-comments", async (req, res) => {
 			});
 		}
 		res.status(500).json({ error: "Không thể lấy danh sách bình luận" });
-	}
-});
-
-app.patch("/api/builds/:id/like", async (req, res) => {
-	const { id } = req.params;
-
-	const params = {
-		TableName: BUILDS_TABLE,
-		Key: marshall({ id }),
-		UpdateExpression: "SET #likeAttr = if_not_exists(#likeAttr, :start) + :inc",
-		ExpressionAttributeNames: {
-			"#likeAttr": "like",
-		},
-		ExpressionAttributeValues: marshall({
-			":inc": 1,
-			":start": 0,
-		}),
-		ReturnValues: "ALL_NEW",
-	};
-
-	try {
-		const command = new UpdateItemCommand(params);
-		const { Attributes } = await client.send(command);
-		res.json(unmarshall(Attributes));
-	} catch (error) {
-		console.error("Error liking build:", error);
-		res.status(500).json({ error: "Could not like build" });
 	}
 });
 

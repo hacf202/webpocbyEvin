@@ -1,11 +1,9 @@
-// src/components/build/MyBuilds.jsx
+// src/components/build/CommunityBuilds.jsx
 
-import React, { useEffect, useState, useMemo, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useEffect, useState, useMemo } from "react";
 import BuildSummary from "./BuildSummary";
 
-// Component này nhận các props từ cha để lọc và hiển thị dữ liệu
-const MyBuilds = ({
+const CommunityBuilds = ({
 	searchTerm,
 	selectedStarLevel,
 	selectedRegion,
@@ -15,43 +13,21 @@ const MyBuilds = ({
 	runesList,
 	onFavoriteToggle,
 	refreshKey,
+	powerMap,
+	championNameToRegionsMap,
 }) => {
-	const { user, token } = useContext(AuthContext);
-	const [myBuilds, setMyBuilds] = useState([]);
+	const [communityBuilds, setCommunityBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// Dữ liệu được tính toán trước để tối ưu hóa việc lọc
-	const powerMap = useMemo(
-		() => new Map(powersList.map(p => [p.id, p.name])),
-		[powersList]
-	);
-	const championNameToRegionsMap = useMemo(() => {
-		const map = new Map();
-		championsList.forEach(champion => map.set(champion.name, champion.regions));
-		return map;
-	}, [championsList]);
-
-	// Effect để fetch dữ liệu build của người dùng
+	// Fetch builds cộng đồng
 	useEffect(() => {
-		const fetchMyBuilds = async () => {
-			if (!user || !token) {
-				setError("Bạn cần đăng nhập để xem các build của mình.");
-				setIsLoading(false);
-				return;
-			}
+		const fetchCommunityBuilds = async () => {
 			setIsLoading(true);
 			setError(null);
+			const url = `${import.meta.env.VITE_API_URL}/api/builds`;
 			try {
-				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/api/my-builds`,
-					{
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
+				const response = await fetch(url);
 				if (!response.ok)
 					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
 				const data = await response.json();
@@ -59,20 +35,19 @@ const MyBuilds = ({
 				const sortedData = data.items.sort(
 					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 				);
-				setMyBuilds(sortedData);
+				setCommunityBuilds(sortedData);
 			} catch (err) {
 				setError(err.message);
 			} finally {
 				setIsLoading(false);
 			}
 		};
-		fetchMyBuilds();
-	}, [user, token, refreshKey]); // Fetch lại khi user, token, hoặc refreshKey thay đổi
+		fetchCommunityBuilds();
+	}, [refreshKey]);
 
-	// Logic lọc được áp dụng trên `myBuilds`
-	const filteredBuilds = useMemo(() => {
-		let tempFiltered = [...myBuilds];
-
+	// Logic lọc cho builds cộng đồng
+	const filteredCommunityBuilds = useMemo(() => {
+		let tempFiltered = [...communityBuilds];
 		if (selectedStarLevel) {
 			tempFiltered = tempFiltered.filter(
 				build => build.star === parseInt(selectedStarLevel)
@@ -104,7 +79,7 @@ const MyBuilds = ({
 		}
 		return tempFiltered;
 	}, [
-		myBuilds,
+		communityBuilds,
 		searchTerm,
 		selectedStarLevel,
 		selectedRegion,
@@ -112,42 +87,34 @@ const MyBuilds = ({
 		championNameToRegionsMap,
 	]);
 
-	// Render
 	if (isLoading) return <p className='text-center mt-8'>Đang tải dữ liệu...</p>;
 	if (error)
 		return (
 			<p className='text-[var(--color-danger)] text-center mt-8'>{error}</p>
 		);
-
-	if (myBuilds.length === 0) {
-		return (
-			<p className='text-center mt-8 text-gray-500'>Bạn chưa tạo build nào.</p>
-		);
-	}
-
-	if (filteredBuilds.length === 0) {
+	if (filteredCommunityBuilds.length === 0)
 		return (
 			<p className='text-center mt-8 text-gray-500'>
-				Không tìm thấy build nào phù hợp với tiêu chí của bạn.
+				Không tìm thấy build nào.
 			</p>
 		);
-	}
+
+	// Props cần truyền xuống BuildSummary
+	const summaryProps = {
+		championsList,
+		relicsList,
+		powersList,
+		runesList,
+		onFavoriteToggle,
+	};
 
 	return (
 		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
-			{filteredBuilds.map(build => (
-				<BuildSummary
-					key={build.id}
-					build={build}
-					championsList={championsList}
-					relicsList={relicsList}
-					powersList={powersList}
-					runesList={runesList}
-					onFavoriteToggle={onFavoriteToggle}
-				/>
+			{filteredCommunityBuilds.map(build => (
+				<BuildSummary key={build.id} build={build} {...summaryProps} />
 			))}
 		</div>
 	);
 };
 
-export default MyBuilds;
+export default CommunityBuilds;

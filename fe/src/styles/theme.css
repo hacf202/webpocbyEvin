@@ -1,7 +1,7 @@
 :root {
-	/* Nền & Bề mặt */
-	--color-background: #ffffff;
-	--color-surface: #f8f9fa;
+	/* Nền & Bề mặt chung */
+	--color-background: #f0f2f5; /* Một màu nền hơi xám nhẹ */
+	--color-surface: #ffffff;
 	--color-border: #dee2e6;
 
 	/* Thanh điều hướng (Navbar) */
@@ -10,7 +10,7 @@
 
 	/* Văn bản */
 	--color-text-primary: #212529;
-	--color-text-secondary: #6c757d;
+	--color-text-secondary: #333638;
 	--color-text-link: #007bff;
 
 	/* Màu hành động (Buttons, v.v.) */
@@ -19,4 +19,26 @@
 	--color-danger: #dc3545;
 	--color-danger-hover: #c82333;
 	--color-warning: #ffc107;
+	--color-star: #ecb100;
+
+	/* =========================================
+    Màu chủ đề cho BuildSummary
+    =========================================
+    */
+
+	/* Nền và viền cho thẻ BuildSummary */
+	--color-build-summary-bg: #d8d9da; /* Nền xám để nổi bật */
+	--color-build-summary-border: #5d9bd88f; /* Viền xám rất nhạt */
+	--color-primary-build-summary-border: #042bd6ea;
+
+	/* Hiệu ứng khi hover */
+	--color-build-summary-hover-border: var(
+		--color-primary
+	); /* Viền chuyển sang màu primary khi hover */
+	--color-build-summary-shadow: rgba(
+		0,
+		0,
+		0,
+		0.1
+	); /* Bóng mờ nhẹ để tạo chiều sâu */
 }

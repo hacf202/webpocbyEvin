@@ -8,50 +8,42 @@ import { X } from "lucide-react";
  * @param {function} props.onClose - Function to call when the modal should be closed.
  * @param {string} props.title - The title of the modal.
  * @param {React.ReactNode} props.children - The content of the modal.
+ * @param {string} [props.maxWidth="max-w-md"] - TailwindCSS class for max-width.
  */
-const Modal = ({ isOpen, onClose, title, children }) => {
+const Modal = ({ isOpen, onClose, title, children, maxWidth = "max-w-md" }) => {
 	if (!isOpen) return null;
 
 	return (
-		// Modal overlay
+		// Lớp phủ (overlay)
 		<div
-			className='fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4 transition-opacity duration-300'
-			onClick={onClose} // Close modal on overlay click
+			className='fixed inset-0 bg-black/10 backdrop-blur-sm z-50 flex justify-center items-center p-4 transition-opacity duration-300' // <--- THÊM `bg-black/10` VÀO ĐÂY
+			onClick={onClose}
 			aria-modal='true'
 			role='dialog'
 		>
-			{/* Modal content */}
+			{/* Nội dung Modal */}
 			<div
-				className='bg-gray-800 rounded-lg shadow-xl w-full max-w-md p-6 relative border border-gray-700 transform transition-transform duration-300 scale-95'
-				onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal content
+				className={`bg-[var(--color-surface)] text-[var(--color-text-primary)] rounded-lg shadow-xl w-full ${maxWidth} relative border border-[var(--color-border)] transform transition-transform duration-300 scale-95 max-h-[95vh] flex flex-col`}
+				onClick={e => e.stopPropagation()}
 				style={{ animation: "scaleUp 0.3s ease-out forwards" }}
 			>
-				<div className='flex justify-between items-center mb-4 border-b border-gray-700 pb-3'>
-					<h3 className='text-xl font-bold text-white'>{title}</h3>
+				{/* Header */}
+				<div className='flex justify-between items-center p-4 border-b border-[var(--color-border)] flex-shrink-0'>
+					<h3 className='text-xl font-bold text-[var(--color-primary)]'>
+						{title}
+					</h3>
 					<button
 						onClick={onClose}
-						className='text-gray-400 hover:text-white transition-colors rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500'
+						className='text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--color-surface)] focus:ring-[var(--color-primary)]'
 						aria-label='Close modal'
 					>
 						<X size={24} />
 					</button>
 				</div>
-				<div>{children}</div>
+
+				{/* Body (có thể cuộn) */}
+				<div className='p-6 overflow-y-auto'>{children}</div>
 			</div>
-			<style>
-				{`
-          @keyframes scaleUp {
-            from {
-              transform: scale(0.95);
-              opacity: 0;
-            }
-            to {
-              transform: scale(1);
-              opacity: 1;
-            }
-          }
-        `}
-			</style>
 		</div>
 	);
 };
