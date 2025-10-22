@@ -60,7 +60,7 @@ app.use(morgan("dev"));
 const allowedOrigins = [
 	FRONTEND_URL,
 	"http://localhost:5173",
-	"https://webpocby-evin.vercel.app",
+	"https://guidepoc.vercel.app/",
 ];
 app.use(
 	cors({
