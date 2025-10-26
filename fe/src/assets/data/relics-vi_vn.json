@@ -1,5 +1,41 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0147.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0147-full.png",
+		"description": "Ban +0|+3 <br><link=vocab.PathPower><style=Vocab>Sức Mạnh</style></link>: Khi ngươi xuất trận hoặc biến đổi 1 Darkin, bài quân đó <link=vocab.Strike><style=Vocab>Ra Đòn</style></link> lên kẻ địch <link=keyword.Weakest><style=Keyword>yếu nhất</style></link>.",
+		"descriptionRaw": "Ban +0|+3 Sức Mạnh: Khi ngươi xuất trận hoặc biến đổi 1 Darkin, bài quân đó Ra Đòn lên kẻ địch yếu nhất.",
+		"name": "Quỷ Kiếm Darkin",
+		"relicCode": "R0147",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0143.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0143-full.png",
+		"description": "<link=keyword.Tough><sprite name=Tough><style=Keyword>Kiên Cường</style></link><br><link=vocab.Play><style=Vocab>Xuất Trận</style></link>: <link=keyword.Frostbite><sprite name=Frostbite><style=Keyword>Đóng Băng</style></link> kẻ địch <link=vocab.Strongest><style=Vocab>mạnh nhất</style></link>. Nếu ta là <link=card.self><style=AssociatedCard>Anivia</style></link>, thì <link=keyword.Frostbite><sprite name=Frostbite><style=Keyword>Đóng Băng</style></link> TẤT CẢ kẻ địch.<br>",
+		"descriptionRaw": "Kiên CườngXuất Trận: Đóng Băng kẻ địch mạnh nhất. Nếu ta là Anivia, thì Đóng Băng TẤT CẢ kẻ địch.",
+		"name": "Hơi Thở Băng Giá",
+		"relicCode": "R0143",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0144.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0144-full.png",
+		"description": "<link=vocab.PathPower><style=Vocab>Sức Mạnh</style></link>: Bắt Đầu Trận Đấu: Tráo 3 lá <link=card.self><style=AssociatedCard>Tibbers</style></link> vào bộ bài của ngươi.<br><link=card.self><style=AssociatedCard>Tibbers</style></link> của ngươi giảm 2 tiêu hao và có +5|+5.",
+		"descriptionRaw": "Sức Mạnh: Bắt Đầu Trận Đấu: Tráo 3 lá Tibbers vào bộ bài của ngươi.Tibbers của ngươi giảm 2 tiêu hao và có +5|+5.",
+		"name": "Gấu Hỗ Trợ Tinh Thần",
+		"relicCode": "R0144",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0003.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0003-full.png",
 		"description": "+2|+1",
@@ -7,7 +43,9 @@
 		"name": "Búa Chiến Caulfield",
 		"relicCode": "R0003",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0104.png",
@@ -17,7 +55,9 @@
 		"name": "Đội Quân Quạ Của Swain",
 		"relicCode": "R0104",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0016.png",
@@ -27,7 +67,9 @@
 		"name": "Rìu Mãng Xà",
 		"relicCode": "R0016",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0130.png",
@@ -37,7 +79,9 @@
 		"name": "Hộ Vệ Của Demacia",
 		"relicCode": "R0130",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0113.png",
@@ -47,7 +91,9 @@
 		"name": "Sách Ẩn",
 		"relicCode": "R0113",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0126.png",
@@ -57,7 +103,9 @@
 		"name": "Móng Vuốt Vĩ Đại",
 		"relicCode": "R0126",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0014.png",
@@ -67,7 +115,9 @@
 		"name": "Xẻng Của Kẻ Đào Mộ",
 		"relicCode": "R0014",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0062.png",
@@ -77,7 +127,9 @@
 		"name": "Tìm Thấy Thần Tài",
 		"relicCode": "R0062",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0058.png",
@@ -87,7 +139,9 @@
 		"name": "Lựa Chọn Của Tinh Tú",
 		"relicCode": "R0058",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0082.png",
@@ -97,7 +151,9 @@
 		"name": "Găng Tinh Vân Sư",
 		"relicCode": "R0082",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0035.png",
@@ -107,7 +163,9 @@
 		"name": "Canh Bạc Của Thần Bài",
 		"relicCode": "R0035",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0101.png",
@@ -117,7 +175,9 @@
 		"name": "Phước Lành Vũ Trụ (Tiêu Thụ)",
 		"relicCode": "R0101",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "N"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0102.png",
@@ -127,7 +187,9 @@
 		"name": "Siêu Phước Lành Vũ Trụ (Tiêu Thụ)",
 		"relicCode": "R0102",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "N"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0080.png",
@@ -137,7 +199,9 @@
 		"name": "Quái Thú Bên Trong",
 		"relicCode": "R0080",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0017.png",
@@ -147,7 +211,9 @@
 		"name": "Bão Tố Luden",
 		"relicCode": "R0017",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0081.png",
@@ -157,7 +223,9 @@
 		"name": "Máy Biến Hình",
 		"relicCode": "R0081",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0098.png",
@@ -167,7 +235,9 @@
 		"name": "Gậy Bức Xạ Nhiệt Của Lux",
 		"relicCode": "R0098",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0010.png",
@@ -177,7 +247,9 @@
 		"name": "Trái Tim Vàng",
 		"relicCode": "R0010",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0084.png",
@@ -187,7 +259,9 @@
 		"name": "Ngọc Trai Vũ Trụ (Tiêu Thụ)",
 		"relicCode": "R0084",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "N"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0090.png",
@@ -197,7 +271,9 @@
 		"name": "Thu Thập Cái Ác",
 		"relicCode": "R0090",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0132.png",
@@ -207,7 +283,9 @@
 		"name": "Thợ Săn Kẻ Vô Lại",
 		"relicCode": "R0132",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0021.png",
@@ -217,7 +295,9 @@
 		"name": "Pháo Mũi Tàu Dreadway",
 		"relicCode": "R0021",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0033.png",
@@ -227,7 +307,9 @@
 		"name": "Khiên Trụ",
 		"relicCode": "R0033",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0002.png",
@@ -237,7 +319,9 @@
 		"name": "Máy Nghiền Vua Troll",
 		"relicCode": "R0002",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0114.png",
@@ -247,7 +331,9 @@
 		"name": "Khiên Đen",
 		"relicCode": "R0114",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0049.png",
@@ -257,7 +343,9 @@
 		"name": "Mai Giáp Hóa Hư Không",
 		"relicCode": "R0049",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0024.png",
@@ -267,7 +355,9 @@
 		"name": "Cuồng Đao Guinsoo",
 		"relicCode": "R0024",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0142.png",
@@ -277,7 +367,9 @@
 		"name": "Găng Tay Linh Hồn",
 		"relicCode": "R0142",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0079.png",
@@ -287,7 +379,9 @@
 		"name": "Linh Hồn Buhru",
 		"relicCode": "R0079",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0000.png",
@@ -297,7 +391,9 @@
 		"name": "Lưỡi Kiếm Của Đại Kiếm Sư",
 		"relicCode": "R0000",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0004.png",
@@ -307,7 +403,9 @@
 		"name": "Nắm Đấm Của Jaurim",
 		"relicCode": "R0004",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0099.png",
@@ -317,7 +415,9 @@
 		"name": "Biểu Tượng Valhir",
 		"relicCode": "R0099",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0128.png",
@@ -327,7 +427,9 @@
 		"name": "Kho Báu Dưới Biển Sâu",
 		"relicCode": "R0128",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0026.png",
@@ -337,7 +439,9 @@
 		"name": "Ngọc Sáng Chói",
 		"relicCode": "R0026",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0011.png",
@@ -347,7 +451,9 @@
 		"name": "Huy Hiệu Của Kẻ Lừa Đảo",
 		"relicCode": "R0011",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0092.png",
@@ -357,7 +463,9 @@
 		"name": "Kéo Cắt Ma Quái",
 		"relicCode": "R0092",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0123.png",
@@ -367,7 +475,9 @@
 		"name": "Hào Quang Rực Rỡ",
 		"relicCode": "R0123",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0120.png",
@@ -377,7 +487,9 @@
 		"name": "Đao Xích Long Khuyển",
 		"relicCode": "R0120",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0022.png",
@@ -387,7 +499,9 @@
 		"name": "Quyền Trượng Tinh Nữ",
 		"relicCode": "R0022",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0045.png",
@@ -397,7 +511,9 @@
 		"name": "Mảnh Sao Biến Đổi",
 		"relicCode": "R0045",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0038.png",
@@ -407,7 +523,9 @@
 		"name": "Nhà Thông Thái Phá Thành",
 		"relicCode": "R0038",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0131.png",
@@ -417,7 +535,9 @@
 		"name": "Mũ Giáp Chiến Tướng",
 		"relicCode": "R0131",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0141.png",
@@ -427,7 +547,9 @@
 		"name": "Cây Cung Sát Thủ",
 		"relicCode": "R0141",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0050.png",
@@ -437,7 +559,9 @@
 		"name": "Cung Phong Linh",
 		"relicCode": "R0050",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0111.png",
@@ -447,7 +571,9 @@
 		"name": "Đại Bác",
 		"relicCode": "R0111",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0100.png",
@@ -457,7 +583,9 @@
 		"name": "Choáng Váng & Kinh Ngạc",
 		"relicCode": "R0100",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0005.png",
@@ -467,7 +595,9 @@
 		"name": "Phong Thần Kiếm",
 		"relicCode": "R0005",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0127.png",
@@ -477,7 +607,9 @@
 		"name": "Cán Cân Phán Quyết",
 		"relicCode": "R0127",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0107.png",
@@ -487,7 +619,9 @@
 		"name": "Súng Máy Công Nghệ",
 		"relicCode": "R0107",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0043.png",
@@ -497,7 +631,9 @@
 		"name": "Ngọc Tinh Tú",
 		"relicCode": "R0043",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0052.png",
@@ -507,7 +643,9 @@
 		"name": "Băng Cầu",
 		"relicCode": "R0052",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0051.png",
@@ -517,7 +655,9 @@
 		"name": "Xẻng Vàng Ròng",
 		"relicCode": "R0051",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0027.png",
@@ -527,7 +667,9 @@
 		"name": "Danh Tiếng Của Thợ Săn Tiền Thưởng",
 		"relicCode": "R0027",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0075.png",
@@ -537,7 +679,9 @@
 		"name": "Ngưng Tụ",
 		"relicCode": "R0075",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0013.png",
@@ -547,7 +691,9 @@
 		"name": "Quyền Trượng Thiên Thần",
 		"relicCode": "R0013",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0065.png",
@@ -557,7 +703,9 @@
 		"name": "Thuốc Nổ Nén Chặt",
 		"relicCode": "R0065",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0028.png",
@@ -567,7 +715,9 @@
 		"name": "Chuỗi Kiềng Của Hóa Hình Sư",
 		"relicCode": "R0028",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0136.png",
@@ -577,7 +727,9 @@
 		"name": "Cây Sáo Tinh Ranh",
 		"relicCode": "R0136",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0040.png",
@@ -587,7 +739,9 @@
 		"name": "Gươm Truy Tung",
 		"relicCode": "R0040",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0044.png",
@@ -597,7 +751,9 @@
 		"name": "Phụ Kiện Vệ Binh",
 		"relicCode": "R0044",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0140.png",
@@ -607,7 +763,9 @@
 		"name": "Linh Hồn Hỗ Trợ",
 		"relicCode": "R0140",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0012.png",
@@ -617,7 +775,9 @@
 		"name": "Kho Tàng Hiểm Họa",
 		"relicCode": "R0012",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0097.png",
@@ -627,7 +787,9 @@
 		"name": "Rìu Tăng Sĩ Khí",
 		"relicCode": "R0097",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0029.png",
@@ -637,7 +799,9 @@
 		"name": "Nhà Sưu Tầm",
 		"relicCode": "R0029",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0091.png",
@@ -647,7 +811,9 @@
 		"name": "Sức Mạnh Khỉ Đá",
 		"relicCode": "R0091",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0103.png",
@@ -657,7 +823,9 @@
 		"name": "Phong Kiếm của Yasuo",
 		"relicCode": "R0103",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0054.png",
@@ -667,7 +835,9 @@
 		"name": "Lồng Đèn Wriggle",
 		"relicCode": "R0054",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0053.png",
@@ -677,7 +847,9 @@
 		"name": "Dấu Ấn Yêu Nữ",
 		"relicCode": "R0053",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0018.png",
@@ -687,7 +859,9 @@
 		"name": "Băng Trượng Vĩnh Cửu",
 		"relicCode": "R0018",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0109.png",
@@ -697,7 +871,9 @@
 		"name": "Hàn Băng Mộ",
 		"relicCode": "R0109",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0030.png",
@@ -707,7 +883,9 @@
 		"name": "Vảy Tê Tê",
 		"relicCode": "R0030",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0112.png",
@@ -717,7 +895,9 @@
 		"name": "Chỉ Số Thích Nghi",
 		"relicCode": "R0112",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0061.png",
@@ -727,7 +907,9 @@
 		"name": "Linh Hồn Vang Vọng",
 		"relicCode": "R0061",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0083.png",
@@ -737,7 +919,9 @@
 		"name": "Ngọc Trai Vũ Trụ Tuyệt Đỉnh (Tiêu Thụ)",
 		"relicCode": "R0083",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "N"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0006.png",
@@ -747,7 +931,9 @@
 		"name": "Giáp Máu Warmog",
 		"relicCode": "R0006",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0015.png",
@@ -757,7 +943,9 @@
 		"name": "Bí Chương Thất Truyền",
 		"relicCode": "R0015",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0039.png",
@@ -767,7 +955,9 @@
 		"name": "Chùy Chân Băng",
 		"relicCode": "R0039",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0019.png",
@@ -777,7 +967,9 @@
 		"name": "Thắt Lưng Cuồng Binh",
 		"relicCode": "R0019",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0036.png",
@@ -787,7 +979,9 @@
 		"name": "Hỏa Lực Của Khẩu Pháo Nổi Loạn",
 		"relicCode": "R0036",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0086.png",
@@ -797,7 +991,9 @@
 		"name": "Hòa Khí Ma Pháp",
 		"relicCode": "R0086",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0138.png",
@@ -807,7 +1003,9 @@
 		"name": "Nỗi Buồn Xuyên Thấu",
 		"relicCode": "R0138",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0137.png",
@@ -817,7 +1015,9 @@
 		"name": "Lời Thì Thầm",
 		"relicCode": "R0137",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0135.png",
@@ -827,7 +1027,9 @@
 		"name": "Túi Tiền Anh Hùng",
 		"relicCode": "R0135",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0139.png",
@@ -837,7 +1039,9 @@
 		"name": "Đèn Lồng Linh Hồn",
 		"relicCode": "R0139",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0020.png",
@@ -847,7 +1051,9 @@
 		"name": "Kế Đối Phó Của Đại Tướng",
 		"relicCode": "R0020",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0059.png",
@@ -857,7 +1063,9 @@
 		"name": "Dấu Vết Tử Thần",
 		"relicCode": "R0059",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0094.png",
@@ -867,7 +1075,9 @@
 		"name": "Cổng Gia Tốc Của Norra",
 		"relicCode": "R0094",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0069.png",
@@ -877,7 +1087,9 @@
 		"name": "Tôi Luyện Linh Hồn (Tiêu Thụ)",
 		"relicCode": "R0069",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "n"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0106.png",
@@ -887,7 +1099,9 @@
 		"name": "Móc Lao Chí Tử",
 		"relicCode": "R0106",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0001.png",
@@ -897,7 +1111,9 @@
 		"name": "Di Sản Crownguard",
 		"relicCode": "R0001",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0118.png",
@@ -907,7 +1123,9 @@
 		"name": "Chi Tiêu Phòng Thủ",
 		"relicCode": "R0118",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0008.png",
@@ -917,7 +1135,9 @@
 		"name": "Bản Mẫu Động Cơ Z",
 		"relicCode": "R0008",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0034.png",
@@ -927,7 +1147,9 @@
 		"name": "Năng Lượng Thủy Triều",
 		"relicCode": "R0034",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0037.png",
@@ -937,7 +1159,9 @@
 		"name": "Anh Hùng Ca",
 		"relicCode": "R0037",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0116.png",
@@ -947,7 +1171,9 @@
 		"name": "Bộ Bài Đầy Ắp",
 		"relicCode": "R0116",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0048.png",
@@ -957,7 +1183,9 @@
 		"name": "Máy Sao Chép Hóa Kỹ",
 		"relicCode": "R0048",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0117.png",
@@ -967,7 +1195,9 @@
 		"name": "Tiếng Gọi Của Tiên Cá",
 		"relicCode": "R0117",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0046.png",
@@ -987,7 +1217,9 @@
 		"name": "Bí Kỹ",
 		"relicCode": "R0085",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0119.png",
@@ -997,7 +1229,9 @@
 		"name": "Kẻ Cắp Tinh Hoa",
 		"relicCode": "R0119",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0041.png",
@@ -1007,7 +1241,9 @@
 		"name": "Chiếc Lá Nương Bóng Greenglade",
 		"relicCode": "R0041",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0025.png",
@@ -1017,7 +1253,9 @@
 		"name": "Vương Miện Của Vua Troll",
 		"relicCode": "R0025",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0047.png",
@@ -1027,7 +1265,9 @@
 		"name": "Tìm Kiếm Sự Thông Thái",
 		"relicCode": "R0047",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "N"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0089.png",
@@ -1037,7 +1277,9 @@
 		"name": "Trang Bị Hoàn Chỉnh",
 		"relicCode": "R0089",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0133.png",
@@ -1047,7 +1289,9 @@
 		"name": "Khiên Mặt Trời",
 		"relicCode": "R0133",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0125.png",
@@ -1057,7 +1301,9 @@
 		"name": "Lõi Công Nghệ Hoàn Hảo",
 		"relicCode": "R0125",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0064.png",
@@ -1067,7 +1313,9 @@
 		"name": "Lời Thề Hộ Vệ",
 		"relicCode": "R0064",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0066.png",
@@ -1077,7 +1325,9 @@
 		"name": "Bằng Hữu Dịch Chuyển",
 		"relicCode": "R0066",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0009.png",
@@ -1087,7 +1337,9 @@
 		"name": "Dây Chuyền Chữ Thập",
 		"relicCode": "R0009",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0096.png",
@@ -1097,7 +1349,9 @@
 		"name": "Giấc Mơ Của Yordle",
 		"relicCode": "R0096",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0124.png",
@@ -1107,7 +1361,9 @@
 		"name": "Kiếm Tinh Hỏa",
 		"relicCode": "R0124",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0121.png",
@@ -1117,7 +1373,9 @@
 		"name": "Bù Nhìn Vô Hại",
 		"relicCode": "R0121",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0122.png",
@@ -1127,7 +1385,9 @@
 		"name": "Thí Nghiệm Tàn Nhẫn",
 		"relicCode": "R0122",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0108.png",
@@ -1137,7 +1397,9 @@
 		"name": "Tả Xung Hữu Đột ",
 		"relicCode": "R0108",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0105.png",
@@ -1147,7 +1409,9 @@
 		"name": "Pin Hextech Của Jayce",
 		"relicCode": "R0105",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0145.png",
@@ -1157,7 +1421,9 @@
 		"name": "Lưỡi Dao Cổ Xưa",
 		"relicCode": "R0145",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0023.png",
@@ -1167,7 +1433,9 @@
 		"name": "Giá Đỡ Gươm Laurent",
 		"relicCode": "R0023",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0031.png",
@@ -1177,7 +1445,9 @@
 		"name": "Lưỡi Kiếm Cuồng Nộ",
 		"relicCode": "R0031",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0095.png",
@@ -1187,7 +1457,9 @@
 		"name": "Tuyệt Vọng Tột Cùng",
 		"relicCode": "R0095",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0060.png",
@@ -1197,7 +1469,9 @@
 		"name": "Đệ Tử Bóng Đêm",
 		"relicCode": "R0060",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0134.png",
@@ -1207,7 +1481,9 @@
 		"name": "Bộ Bài Định Mệnh",
 		"relicCode": "R0134",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0007.png",
@@ -1217,7 +1493,9 @@
 		"name": "Thiên Thần Hộ Mệnh",
 		"relicCode": "R0007",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": "Relic",
+		"stack": "3"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0115.png",
@@ -1227,7 +1505,9 @@
 		"name": "Gian Lận",
 		"relicCode": "R0115",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0032.png",
@@ -1237,6 +1517,8 @@
 		"name": "Ngọn Giáo Linh Hồn",
 		"relicCode": "R0032",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": "Relic",
+		"stack": "1"
 	}
 ]

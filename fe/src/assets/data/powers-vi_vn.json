@@ -1,5 +1,82 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0897.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0897-full.png",
+		"description": "Khi ngươi xuất trận hoặc biến đổi 1 Darkin, bài quân đó sẽ <link=vocab.Strike><style=Vocab>Ra Đòn</style></link> lên kẻ địch <link=keyword.Weakest><style=Keyword>yếu nhất</style></link>.",
+		"descriptionRaw": "Khi ngươi xuất trận hoặc biến đổi 1 Darkin, bài quân đó sẽ Ra Đòn lên kẻ địch yếu nhất.",
+		"name": "Quỷ Kiếm Darkin",
+		"powerCode": "P0897",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0863.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0863-full.png",
+		"description": "Bắt Đầu Trận Đấu: Tráo 3 lá <link=card.self><style=AssociatedCard>Tibbers</style></link> vào bộ bài của ngươi.<br><link=card.self><style=AssociatedCard>Tibbers</style></link> của ngươi giảm 2 tiêu hao và có +5|+5.",
+		"descriptionRaw": "Bắt Đầu Trận Đấu: Tráo 3 lá Tibbers vào bộ bài của ngươi.Tibbers của ngươi giảm 2 tiêu hao và có +5|+5.",
+		"name": "Gấu Hỗ Trợ Tinh Thần",
+		"powerCode": "P0863",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0846.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0846-full.png",
+		"description": "<link=keyword.Skill><sprite name=SkillMark><style=Keyword>Kỹ Năng</style></link> đồng minh kích hoạt thêm 1 lần nữa.",
+		"descriptionRaw": "Kỹ Năng đồng minh kích hoạt thêm 1 lần nữa.",
+		"name": "Đứa Trẻ Bóng Tối",
+		"powerCode": "P0846",
+		"rarity": "HUYỀN THOẠI",
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0766.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0766-full.png",
+		"description": "+1 Năng Lượng Khởi Điểm. Nếu ngươi được <link=keyword.Enlightened><style=Keyword>Khai Sáng</style></link>, thay vì việc ngươi nhận được 1 ngọc năng lượng thì đồng minh sẽ nhận được +1|+1.<br>",
+		"descriptionRaw": "+1 Năng Lượng Khởi Điểm. Nếu ngươi được Khai Sáng, thay vì việc ngươi nhận được 1 ngọc năng lượng thì đồng minh sẽ nhận được +1|+1.",
+		"name": "Băng Giá Tràn Trề",
+		"powerCode": "P0766",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0764.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0764-full.png",
+		"description": "Khi kẻ địch tấn công, <link=keyword.Frostbite><sprite name=Frostbite><style=Keyword>Đóng Băng</style></link> bài quân tấn công <link=vocab.Strongest><style=Vocab>mạnh nhất</style></link>.<br>Kẻ địch với sức mạnh bằng 0 nhận gấp đôi sát thương.",
+		"descriptionRaw": "Khi kẻ địch tấn công, Đóng Băng bài quân tấn công mạnh nhất.Kẻ địch với sức mạnh bằng 0 nhận gấp đôi sát thương.",
+		"name": "Tường Băng",
+		"powerCode": "P0764",
+		"rarity": "HUYỀN THOẠI",
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0765.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0765-full.png",
+		"description": "Khi ngươi sử dụng 1 bài phép Nguyên Tố hoặc 1 <link=keyword.Elemental Skill><sprite name=ElementalSkill><style=Keyword>Kỹ Năng</style></link>, ngươi được nhận một ngọc năng lượng tạm thời trong vòng tiếp theo.",
+		"descriptionRaw": "Khi ngươi sử dụng 1 bài phép Nguyên Tố hoặc 1 Kỹ Năng, ngươi được nhận một ngọc năng lượng tạm thời trong vòng tiếp theo.",
+		"name": "Ân Huệ Mùa Đông",
+		"powerCode": "P0765",
+		"rarity": "THƯỜNG",
+		"rarityRef": "Common",
+		"type": ["Star Power"]
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0767.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/powers/P0767-full.png",
+		"description": "Khi ngươi sử dụng 1 <link=keyword.Elemental Skill><sprite name=ElementalSkill><style=Keyword>Kỹ Năng</style></link> hoặc bài phép Nguyên Tố, ngươi sẽ nhận được một ngọc năng lượng rỗng.",
+		"descriptionRaw": "Khi ngươi sử dụng 1 Kỹ Năng hoặc bài phép Nguyên Tố, ngươi sẽ nhận được một ngọc năng lượng rỗng.",
+		"name": "Ân Huệ Mùa Đông II",
+		"powerCode": "P0767",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0642.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0642-full.png",
 		"description": "Khi một trong những bẫy của ngươi được kích hoạt, tạo ra bản sao <link=keyword.Fleeting><sprite name=Fleeting><style=Keyword>Phù Du</style></link> chính xác của lá bài bị bẫy trên tay và giảm tiêu hao của nó bằng gấp đôi lượng bẫy trên đó.",
@@ -7,7 +84,8 @@
 		"name": "Để Ta Lấy Nó Nốt",
 		"powerCode": "P0642",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0643.png",
@@ -17,7 +95,8 @@
 		"name": "Để Ta Lấy Nó",
 		"powerCode": "P0643",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0641.png",
@@ -27,7 +106,8 @@
 		"name": "Hehehe",
 		"powerCode": "P0641",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0696.png",
@@ -37,7 +117,8 @@
 		"name": "Hohohoho",
 		"powerCode": "P0696",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0176.png",
@@ -47,7 +128,8 @@
 		"name": "Lừa Lọc Chí Tử II",
 		"powerCode": "P0176",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0174.png",
@@ -57,7 +139,8 @@
 		"name": "Lừa Lọc Chí Tử",
 		"powerCode": "P0174",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0175.png",
@@ -67,7 +150,8 @@
 		"name": "Vô Định, Vô Ngã",
 		"powerCode": "P0175",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0131.png",
@@ -77,7 +161,8 @@
 		"name": "Chào Buổi Sáng, Đồ Cau Có II",
 		"powerCode": "P0131",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0130.png",
@@ -87,7 +172,8 @@
 		"name": "Đá Tái Chế",
 		"powerCode": "P0130",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0440.png",
@@ -97,7 +183,8 @@
 		"name": "Ném Thêm Đá Tảng!",
 		"powerCode": "P0440",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0129.png",
@@ -107,7 +194,8 @@
 		"name": "Chào Buổi Sáng, Đồ Cau Có",
 		"powerCode": "P0129",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0586.png",
@@ -117,7 +205,8 @@
 		"name": "Sức Mạnh & Chiến Thuật",
 		"powerCode": "P0586",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0585.png",
@@ -127,7 +216,8 @@
 		"name": "Hy Sinh Cho Sự Tiến Bộ II",
 		"powerCode": "P0585",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0584.png",
@@ -137,7 +227,8 @@
 		"name": "Hy Sinh Cho Sự Tiến Bộ",
 		"powerCode": "P0584",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0599.png",
@@ -147,7 +238,8 @@
 		"name": "Ảnh Chiếu Của Tâm Hồn",
 		"powerCode": "P0599",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0142.png",
@@ -157,7 +249,8 @@
 		"name": "Không Khoan Nhượng",
 		"powerCode": "P0142",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0143.png",
@@ -167,7 +260,8 @@
 		"name": "Ánh Sáng Cuối Cùng Của Icathia II",
 		"powerCode": "P0143",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0141.png",
@@ -177,7 +271,8 @@
 		"name": "Ánh Sáng Cuối Cùng Của Icathia",
 		"powerCode": "P0141",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0208.png",
@@ -187,7 +282,8 @@
 		"name": "Ra Đây Chơi Đi",
 		"powerCode": "P0208",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0207.png",
@@ -197,7 +293,8 @@
 		"name": "Tận Hưởng Tiếng Hét",
 		"powerCode": "P0207",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0209.png",
@@ -207,7 +304,8 @@
 		"name": "Tận Hưởng Tiếng Hét II",
 		"powerCode": "P0209",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0738.png",
@@ -217,7 +315,8 @@
 		"name": "Con Đường Tăm Tối",
 		"powerCode": "P0738",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0032.png",
@@ -227,7 +326,8 @@
 		"name": "Lưỡi Kiếm Sắc Bén",
 		"powerCode": "P0032",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0473.png",
@@ -237,7 +337,8 @@
 		"name": "Bão Tố",
 		"powerCode": "P0473",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0036.png",
@@ -247,7 +348,8 @@
 		"name": "Cuốn Theo Chiều Gió II",
 		"powerCode": "P0036",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0033.png",
@@ -257,7 +359,8 @@
 		"name": "Cuốn Theo Chiều Gió",
 		"powerCode": "P0033",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0461.png",
@@ -267,7 +370,8 @@
 		"name": "Nổ Hoa!",
 		"powerCode": "P0461",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0188.png",
@@ -277,7 +381,8 @@
 		"name": "Tự Nhiên Dung Hòa II",
 		"powerCode": "P0188",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0187.png",
@@ -287,7 +392,8 @@
 		"name": "Đâu Phải Neeko",
 		"powerCode": "P0187",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0186.png",
@@ -297,7 +403,8 @@
 		"name": "Tự Nhiên Dung Hòa",
 		"powerCode": "P0186",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0532.png",
@@ -307,7 +414,8 @@
 		"name": "Tinh Linh Phù Hộ",
 		"powerCode": "P0532",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0531.png",
@@ -317,7 +425,8 @@
 		"name": "Lời Thì Thầm Từ Kiếp Trước",
 		"powerCode": "P0531",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0530.png",
@@ -327,7 +436,8 @@
 		"name": "Tinh Linh Phù Hộ II",
 		"powerCode": "P0530",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0547.png",
@@ -337,7 +447,8 @@
 		"name": "Quà Chia Tay",
 		"powerCode": "P0547",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0656.png",
@@ -347,17 +458,19 @@
 		"name": "Hiệp Ước Huyết Thống",
 		"powerCode": "P0656",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0658.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0658-full.png",
 		"description": "+1 năng lượng khởi đầu<br>Khi đồng minh tấn công, ban +1|+1 cho đồng minh trong bộ bài.<br>",
-		"descriptionRaw": "+1 năng lượng khởi đầuKhi đồng minh tấn công, ban +1|+1 cho đồng minh trong bộ bài.",
+		"descriptionRaw": "+1 năng lượng khởi đầu Khi đồng minh tấn công, ban +1|+1 cho đồng minh trong bộ bài.",
 		"name": "Say Máu",
 		"powerCode": "P0658",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0657.png",
@@ -367,7 +480,8 @@
 		"name": "Lời Thề Chiến Tướng",
 		"powerCode": "P0657",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0659.png",
@@ -377,7 +491,8 @@
 		"name": "Lời Thề Chiến Tướng II",
 		"powerCode": "P0659",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0153.png",
@@ -387,7 +502,8 @@
 		"name": "Trang Bị Đầy Đủ Và Sẵn Sàng",
 		"powerCode": "P0153",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0155.png",
@@ -397,7 +513,8 @@
 		"name": "Trang Bị Đầy Đủ Và Sẵn Sàng II",
 		"powerCode": "P0155",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0154.png",
@@ -407,7 +524,8 @@
 		"name": "Nhanh Như Chớp",
 		"powerCode": "P0154",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0027.png",
@@ -417,7 +535,8 @@
 		"name": "Tất Tay Với Khỉ Đuôi Nổ",
 		"powerCode": "P0027",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0434.png",
@@ -427,7 +546,8 @@
 		"name": "Xả Đạn",
 		"powerCode": "P0434",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0028.png",
@@ -437,7 +557,8 @@
 		"name": "Tất Tay Với Khỉ Đuôi Nổ II",
 		"powerCode": "P0028",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0029.png",
@@ -447,7 +568,8 @@
 		"name": "Truy Nã Đỏ",
 		"powerCode": "P0029",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0210.png",
@@ -457,7 +579,8 @@
 		"name": "Phước Lành Tàn Lụi",
 		"powerCode": "P0210",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0212.png",
@@ -467,7 +590,8 @@
 		"name": "Phước Lành Tàn Lụi II",
 		"powerCode": "P0212",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0211.png",
@@ -477,7 +601,8 @@
 		"name": "Món Quà Tai Ương",
 		"powerCode": "P0211",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0127.png",
@@ -487,7 +612,8 @@
 		"name": "Chạm Vào Hư Không",
 		"powerCode": "P0127",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0126.png",
@@ -497,7 +623,8 @@
 		"name": "Con Mồi Thành Kẻ Đi Săn",
 		"powerCode": "P0126",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0454.png",
@@ -507,7 +634,8 @@
 		"name": "Vận Dụng Hư Không",
 		"powerCode": "P0454",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0474.png",
@@ -517,7 +645,8 @@
 		"name": "Chạm Vào Hư Không II",
 		"powerCode": "P0474",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0128.png",
@@ -527,7 +656,8 @@
 		"name": "Con Mồi Thành Kẻ Đi Săn II",
 		"powerCode": "P0128",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0140.png",
@@ -537,7 +667,8 @@
 		"name": "Lưỡi Kiếm Lưu Lạc II",
 		"powerCode": "P0140",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0139.png",
@@ -547,7 +678,8 @@
 		"name": "Vật Tế Hoàng Hôn",
 		"powerCode": "P0139",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0138.png",
@@ -557,7 +689,8 @@
 		"name": "Lưỡi Kiếm Lưu Lạc",
 		"powerCode": "P0138",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0455.png",
@@ -567,7 +700,8 @@
 		"name": "Darkin Thức Tỉnh",
 		"powerCode": "P0455",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0157.png",
@@ -577,7 +711,8 @@
 		"name": "Vũ Khí Tha Hóa",
 		"powerCode": "P0157",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0156.png",
@@ -587,7 +722,8 @@
 		"name": "Xiềng Xích Địa Ngục",
 		"powerCode": "P0156",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0158.png",
@@ -597,7 +733,8 @@
 		"name": "Xiềng Xích Địa Ngục II",
 		"powerCode": "P0158",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0218.png",
@@ -607,7 +744,8 @@
 		"name": "Ta Là Ác Nhân II",
 		"powerCode": "P0218",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0216.png",
@@ -617,7 +755,8 @@
 		"name": "Ta Là Ác Nhân",
 		"powerCode": "P0216",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0217.png",
@@ -627,7 +766,8 @@
 		"name": "Bừng Bừng Sức Mạnh",
 		"powerCode": "P0217",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0320.png",
@@ -637,7 +777,8 @@
 		"name": "Hiện Thân Của Niềm Vui II",
 		"powerCode": "P0320",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0318.png",
@@ -647,7 +788,8 @@
 		"name": "Hiện Thân Của Niềm Vui",
 		"powerCode": "P0318",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0319.png",
@@ -657,7 +799,8 @@
 		"name": "Tuần Hoàn Nước Bất Tận",
 		"powerCode": "P0319",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0364.png",
@@ -667,7 +810,8 @@
 		"name": "Ba Lần Sinh",
 		"powerCode": "P0364",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0363.png",
@@ -677,7 +821,8 @@
 		"name": "Hai Lần Tử",
 		"powerCode": "P0363",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0365.png",
@@ -687,7 +832,8 @@
 		"name": "Hai Lần Tử II",
 		"powerCode": "P0365",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0563.png",
@@ -697,7 +843,8 @@
 		"name": "Bội Thu",
 		"powerCode": "P0563",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0559.png",
@@ -707,7 +854,8 @@
 		"name": "Không Chốn Dung Thân II",
 		"powerCode": "P0559",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0560.png",
@@ -717,7 +865,8 @@
 		"name": "Trong Gang Tấc",
 		"powerCode": "P0560",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0561.png",
@@ -727,7 +876,8 @@
 		"name": "Không Chốn Dung Thân",
 		"powerCode": "P0561",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0025.png",
@@ -737,7 +887,8 @@
 		"name": "Cố Gắng Hết Mình",
 		"powerCode": "P0025",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0024.png",
@@ -747,7 +898,8 @@
 		"name": "Ánh Sáng Dẫn Lối II",
 		"powerCode": "P0024",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0026.png",
@@ -757,7 +909,8 @@
 		"name": "Ánh Sáng Dẫn Lối",
 		"powerCode": "P0026",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0639.png",
@@ -767,7 +920,8 @@
 		"name": "Tinh Vân Vĩnh Hằng",
 		"powerCode": "P0639",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0178.png",
@@ -777,7 +931,8 @@
 		"name": "Emai",
 		"powerCode": "P0178",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0179.png",
@@ -787,7 +942,8 @@
 		"name": "Tâm Hồn Và Thể Xác II",
 		"powerCode": "P0179",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0177.png",
@@ -797,7 +953,8 @@
 		"name": "Tâm Hồn Và Thể Xác",
 		"powerCode": "P0177",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0171.png",
@@ -807,7 +964,8 @@
 		"name": "Cát Bụi Lại Trở Về Cát Bụi",
 		"powerCode": "P0171",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0173.png",
@@ -817,7 +975,8 @@
 		"name": "Cát Bụi Lại Trở Về Cát Bụi II",
 		"powerCode": "P0173",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0172.png",
@@ -827,7 +986,8 @@
 		"name": "Vòng Luân Hồi",
 		"powerCode": "P0172",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0621.png",
@@ -837,7 +997,8 @@
 		"name": "Tiếng Vọng Sâu Thẳm II",
 		"powerCode": "P0621",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0624.png",
@@ -847,7 +1008,8 @@
 		"name": "Thủy Triều Dâng",
 		"powerCode": "P0624",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0620.png",
@@ -857,7 +1019,8 @@
 		"name": "Cuộc Hành Quân Bất Tận",
 		"powerCode": "P0620",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0622.png",
@@ -867,7 +1030,8 @@
 		"name": "Tiếng Vọng Sâu Thẳm",
 		"powerCode": "P0622",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0021.png",
@@ -877,7 +1041,8 @@
 		"name": "Điều Tồi Tệ Nhất Có Thể Xảy Ra Là Gì Chứ? II",
 		"powerCode": "P0021",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0444.png",
@@ -887,7 +1052,8 @@
 		"name": "Get Jinxed!",
 		"powerCode": "P0444",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0017.png",
@@ -897,7 +1063,8 @@
 		"name": "San Bằng Tất Cả",
 		"powerCode": "P0017",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0018.png",
@@ -907,7 +1074,8 @@
 		"name": "Điều Tồi Tệ Nhất Có Thể Xảy Ra Là Gì Chứ?",
 		"powerCode": "P0018",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0167.png",
@@ -917,7 +1085,8 @@
 		"name": "Giận Hóa Rồ II",
 		"powerCode": "P0167",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0166.png",
@@ -927,7 +1096,8 @@
 		"name": "Quái Thú Bên Trong",
 		"powerCode": "P0166",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0165.png",
@@ -937,7 +1107,8 @@
 		"name": "Giận Hóa Rồ",
 		"powerCode": "P0165",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0887.png",
@@ -947,7 +1118,8 @@
 		"name": "Bài Học Cuối Cùng",
 		"powerCode": "P0887",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0889.png",
@@ -957,7 +1129,8 @@
 		"name": "Bài Học Số Một",
 		"powerCode": "P0889",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0888.png",
@@ -967,7 +1140,8 @@
 		"name": "Bài Học Số Hai",
 		"powerCode": "P0888",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0890.png",
@@ -977,7 +1151,8 @@
 		"name": "Kết Quả Của Tri Thức",
 		"powerCode": "P0890",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0030.png",
@@ -987,7 +1162,8 @@
 		"name": "Đệ Nhất Piltover",
 		"powerCode": "P0030",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0510.png",
@@ -997,7 +1173,8 @@
 		"name": "Chúng Ta Thống Trị Phố Phường",
 		"powerCode": "P0510",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0031.png",
@@ -1007,7 +1184,8 @@
 		"name": "Đấm Không Thương Tiếc",
 		"powerCode": "P0031",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0034.png",
@@ -1017,7 +1195,8 @@
 		"name": "Đấm Không Thương Tiếc II",
 		"powerCode": "P0034",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0215.png",
@@ -1027,7 +1206,8 @@
 		"name": "Cái Này Phải Có Tác Dụng Gì Đó... II",
 		"powerCode": "P0215",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0213.png",
@@ -1037,7 +1217,8 @@
 		"name": "Cái này phải có tác dụng gì đó...",
 		"powerCode": "P0213",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0445.png",
@@ -1047,7 +1228,8 @@
 		"name": "Thanh Tẩy Bằng Bạc",
 		"powerCode": "P0445",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0214.png",
@@ -1057,7 +1239,8 @@
 		"name": "Thợ Săn Bóng Đêm",
 		"powerCode": "P0214",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0011.png",
@@ -1067,7 +1250,8 @@
 		"name": "Tiên Tri Thượng Thần",
 		"powerCode": "P0011",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0013.png",
@@ -1077,7 +1261,8 @@
 		"name": "Tiên Tri Thượng Thần II",
 		"powerCode": "P0013",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0014.png",
@@ -1087,7 +1272,8 @@
 		"name": "Thử Thách Linh Hồn",
 		"powerCode": "P0014",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0571.png",
@@ -1097,7 +1283,8 @@
 		"name": "Đói Khát III",
 		"powerCode": "P0571",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0448.png",
@@ -1107,7 +1294,8 @@
 		"name": "Gầm Thét",
 		"powerCode": "P0448",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0447.png",
@@ -1117,7 +1305,8 @@
 		"name": "Đói Khát",
 		"powerCode": "P0447",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0446.png",
@@ -1127,7 +1316,8 @@
 		"name": "Đói Khát II",
 		"powerCode": "P0446",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0529.png",
@@ -1137,7 +1327,8 @@
 		"name": "Nụ Hôn Của Đêm",
 		"powerCode": "P0529",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0123.png",
@@ -1147,7 +1338,8 @@
 		"name": "Ngây Ngất Tột Đỉnh",
 		"powerCode": "P0123",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0125.png",
@@ -1157,7 +1349,8 @@
 		"name": "Ngây Ngất Tột Đỉnh II",
 		"powerCode": "P0125",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0124.png",
@@ -1167,7 +1360,8 @@
 		"name": "Yêu Đến Thiên Thu",
 		"powerCode": "P0124",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0667.png",
@@ -1177,7 +1371,8 @@
 		"name": "Chức Trách Của Vệ Binh",
 		"powerCode": "P0667",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0669.png",
@@ -1187,7 +1382,8 @@
 		"name": "Len Lén Báo Thù",
 		"powerCode": "P0669",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0668.png",
@@ -1197,7 +1393,8 @@
 		"name": "Giải Thoát",
 		"powerCode": "P0668",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0666.png",
@@ -1207,7 +1404,8 @@
 		"name": "Len Lén Báo Thù II",
 		"powerCode": "P0666",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0022.png",
@@ -1217,7 +1415,8 @@
 		"name": "Ý Chí Rồng Thiêng II",
 		"powerCode": "P0022",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0023.png",
@@ -1227,7 +1426,8 @@
 		"name": "Khai Mở Giác Quan",
 		"powerCode": "P0023",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0020.png",
@@ -1237,7 +1437,8 @@
 		"name": "Ý Chí Rồng Thiêng",
 		"powerCode": "P0020",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0346.png",
@@ -1247,7 +1448,8 @@
 		"name": "Thần Thánh Can Thiệp",
 		"powerCode": "P0346",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0347.png",
@@ -1257,7 +1459,8 @@
 		"name": "Sẻ Chia Phước Lành II",
 		"powerCode": "P0347",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0601.png",
@@ -1267,7 +1470,8 @@
 		"name": "Ngày Phán Quyết",
 		"powerCode": "P0601",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0345.png",
@@ -1277,7 +1481,8 @@
 		"name": "Sẻ Chia Phước Lành",
 		"powerCode": "P0345",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0145.png",
@@ -1287,7 +1492,8 @@
 		"name": "Vật Chủ Phù Hợp",
 		"powerCode": "P0145",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0144.png",
@@ -1297,7 +1503,8 @@
 		"name": "Tinh Hoa Chết Chóc",
 		"powerCode": "P0144",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0146.png",
@@ -1307,7 +1514,8 @@
 		"name": "Tinh Hoa Chết Chóc II",
 		"powerCode": "P0146",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0317.png",
@@ -1317,7 +1525,8 @@
 		"name": "Thổi Bay II",
 		"powerCode": "P0317",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0316.png",
@@ -1327,7 +1536,8 @@
 		"name": "Mắt Bão",
 		"powerCode": "P0316",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0315.png",
@@ -1337,7 +1547,8 @@
 		"name": "Thổi Bay",
 		"powerCode": "P0315",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0191.png",
@@ -1347,7 +1558,8 @@
 		"name": "Chọn Lọc Tự Nhiên II",
 		"powerCode": "P0191",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0189.png",
@@ -1357,7 +1569,8 @@
 		"name": "Chọn Lọc Tự Nhiên",
 		"powerCode": "P0189",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0190.png",
@@ -1367,7 +1580,8 @@
 		"name": "Trận Đấu Nguy Hiểm Nhất",
 		"powerCode": "P0190",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0003.png",
@@ -1377,7 +1591,8 @@
 		"name": "Bụt Chúc Phúc",
 		"powerCode": "P0003",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0005.png",
@@ -1387,7 +1602,8 @@
 		"name": "Tinh Vũ Hiện Diện",
 		"powerCode": "P0005",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0004.png",
@@ -1397,7 +1613,8 @@
 		"name": "Bụt Chúc Phúc II",
 		"powerCode": "P0004",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0149.png",
@@ -1407,7 +1624,8 @@
 		"name": "Năng Lượng Mặt Trời II",
 		"powerCode": "P0149",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0148.png",
@@ -1417,7 +1635,8 @@
 		"name": "Phần Thưởng Cho Kẻ Mộ Đạo",
 		"powerCode": "P0148",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0147.png",
@@ -1427,7 +1646,8 @@
 		"name": "Năng Lượng Mặt Trời",
 		"powerCode": "P0147",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0618.png",
@@ -1437,7 +1657,8 @@
 		"name": "Thượng Nhân Mặt Trời",
 		"powerCode": "P0618",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0197.png",
@@ -1447,7 +1668,8 @@
 		"name": "Hợp Lực Sẽ Mạnh Hơn II",
 		"powerCode": "P0197",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0195.png",
@@ -1457,7 +1679,8 @@
 		"name": "Hợp Lực Sẽ Mạnh Hơn",
 		"powerCode": "P0195",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0196.png",
@@ -1467,7 +1690,8 @@
 		"name": "Phò Tá Đức Vua!",
 		"powerCode": "P0196",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0160.png",
@@ -1477,7 +1701,8 @@
 		"name": "Động Cơ Z Cộng Hưởng",
 		"powerCode": "P0160",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0161.png",
@@ -1487,7 +1712,8 @@
 		"name": "Thực Tại Phân Tách II",
 		"powerCode": "P0161",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0453.png",
@@ -1497,7 +1723,8 @@
 		"name": "Hỏa Lực Tương Lai",
 		"powerCode": "P0453",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0159.png",
@@ -1507,7 +1734,8 @@
 		"name": "Thực Tại Phân Tách",
 		"powerCode": "P0159",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0367.png",
@@ -1517,7 +1745,8 @@
 		"name": "Tội Lỗi Nặng Nề",
 		"powerCode": "P0367",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0432.png",
@@ -1527,7 +1756,8 @@
 		"name": "Chia Sẻ Đọa Đày",
 		"powerCode": "P0432",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0366.png",
@@ -1537,7 +1767,8 @@
 		"name": "Đôi Cánh Trói Buộc",
 		"powerCode": "P0366",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0368.png",
@@ -1547,7 +1778,8 @@
 		"name": "Đôi Cánh Trói Buộc II",
 		"powerCode": "P0368",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0122.png",
@@ -1557,7 +1789,8 @@
 		"name": "Bài Ca Cắt Xén II",
 		"powerCode": "P0122",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0450.png",
@@ -1567,7 +1800,8 @@
 		"name": "Điệu Nhảy Cuối",
 		"powerCode": "P0450",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0121.png",
@@ -1577,7 +1811,8 @@
 		"name": "Xe Chỉ Luồn Kim",
 		"powerCode": "P0121",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0120.png",
@@ -1587,7 +1822,8 @@
 		"name": "Bài Ca Cắt Xén",
 		"powerCode": "P0120",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0184.png",
@@ -1597,7 +1833,8 @@
 		"name": "Bảo Tồn Shurima",
 		"powerCode": "P0184",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0185.png",
@@ -1607,7 +1844,8 @@
 		"name": "Ân Huệ Thể Thăng Hoa II",
 		"powerCode": "P0185",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0617.png",
@@ -1617,7 +1855,8 @@
 		"name": "Thu Hoạch Linh Hồn",
 		"powerCode": "P0617",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0183.png",
@@ -1627,7 +1866,8 @@
 		"name": "Ân Huệ Thể Thăng Hoa",
 		"powerCode": "P0183",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0424.png",
@@ -1637,7 +1877,8 @@
 		"name": "Ánh Sáng Dẫn Lối Ta",
 		"powerCode": "P0424",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0421.png",
@@ -1647,7 +1888,8 @@
 		"name": "Hiện Diện Truyền Cảm Hứng",
 		"powerCode": "P0421",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0467.png",
@@ -1657,7 +1899,8 @@
 		"name": "Quý Cô Ánh Sáng",
 		"powerCode": "P0467",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0416.png",
@@ -1667,7 +1910,8 @@
 		"name": "Ánh Sáng Dẫn Lối Ta II",
 		"powerCode": "P0416",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0002.png",
@@ -1677,7 +1921,8 @@
 		"name": "Trò Đùa Tinh Nghịch",
 		"powerCode": "P0002",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0001.png",
@@ -1687,7 +1932,8 @@
 		"name": "Hỏa Cuồng II",
 		"powerCode": "P0001",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0000.png",
@@ -1697,7 +1943,8 @@
 		"name": "Hỏa Cuồng",
 		"powerCode": "P0000",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0180.png",
@@ -1707,7 +1954,8 @@
 		"name": "Đón Nhận Thời Thế",
 		"powerCode": "P0180",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0182.png",
@@ -1717,7 +1965,8 @@
 		"name": "Đón Nhận Thời Thế II",
 		"powerCode": "P0182",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0181.png",
@@ -1727,7 +1976,8 @@
 		"name": "Triệu Gọi Thủy Triều",
 		"powerCode": "P0181",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0016.png",
@@ -1737,7 +1987,8 @@
 		"name": "Nét Đẹp Chết Chóc",
 		"powerCode": "P0016",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0705.png",
@@ -1747,7 +1998,8 @@
 		"name": "Chết Trong Bốn Hồi",
 		"powerCode": "P0705",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0019.png",
@@ -1757,7 +2009,8 @@
 		"name": "Nét Đẹp Chết Chóc II",
 		"powerCode": "P0019",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0015.png",
@@ -1767,7 +2020,8 @@
 		"name": "Dàn Dựng Sân Khấu",
 		"powerCode": "P0015",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0405.png",
@@ -1777,7 +2031,8 @@
 		"name": "Lãnh Thổ Sương Đen",
 		"powerCode": "P0405",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0404.png",
@@ -1787,7 +2042,8 @@
 		"name": "Bên Kia Màn Sương",
 		"powerCode": "P0404",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0406.png",
@@ -1797,7 +2053,8 @@
 		"name": "Bên Kia Màn Sương II",
 		"powerCode": "P0406",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0470.png",
@@ -1807,7 +2064,8 @@
 		"name": "Tất Cả Phải Phục Tùng",
 		"powerCode": "P0470",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0422.png",
@@ -1817,7 +2075,8 @@
 		"name": "Nỗi Buồn Lan Tỏa II",
 		"powerCode": "P0422",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0465.png",
@@ -1827,7 +2086,8 @@
 		"name": "Cuộc Đời Thật Đau Khổ",
 		"powerCode": "P0465",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0420.png",
@@ -1837,7 +2097,8 @@
 		"name": "Nỗi Buồn Lan Tỏa",
 		"powerCode": "P0420",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0418.png",
@@ -1847,7 +2108,8 @@
 		"name": "Chiến Tranh Tâm Lý",
 		"powerCode": "P0418",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0441.png",
@@ -1857,7 +2119,8 @@
 		"name": "KHOA HỌC!!! II",
 		"powerCode": "P0441",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0535.png",
@@ -1867,7 +2130,8 @@
 		"name": "Ah Đây Rồi!!!!",
 		"powerCode": "P0535",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0443.png",
@@ -1877,7 +2141,8 @@
 		"name": "KHOA HỌC!",
 		"powerCode": "P0443",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0442.png",
@@ -1887,7 +2152,8 @@
 		"name": "Theo Đuổi Tiến Trình",
 		"powerCode": "P0442",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0151.png",
@@ -1897,7 +2163,8 @@
 		"name": "Giao Kèo Dài Hạn",
 		"powerCode": "P0151",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0150.png",
@@ -1907,7 +2174,8 @@
 		"name": "Dã Tâm Trừng Phạt",
 		"powerCode": "P0150",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0152.png",
@@ -1917,7 +2185,8 @@
 		"name": "Dã Tâm Trừng Phạt II",
 		"powerCode": "P0152",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0202.png",
@@ -1927,7 +2196,8 @@
 		"name": "Cho Chúng Hiểu",
 		"powerCode": "P0202",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0201.png",
@@ -1937,7 +2207,8 @@
 		"name": "Nhận Tiền Thưởng",
 		"powerCode": "P0201",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0460.png",
@@ -1947,7 +2218,8 @@
 		"name": "Xinh Đẹp & Tàn Nhẫn",
 		"powerCode": "P0460",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0203.png",
@@ -1957,7 +2229,8 @@
 		"name": "Nhận Tiền Thưởng II",
 		"powerCode": "P0203",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0690.png",
@@ -1967,7 +2240,8 @@
 		"name": "Lá Bài Bí Ẩn",
 		"powerCode": "P0690",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0691.png",
@@ -1977,7 +2251,8 @@
 		"name": "Lá Bài Bí Ẩn II",
 		"powerCode": "P0691",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0692.png",
@@ -1987,7 +2262,8 @@
 		"name": "Rút Thăm May Mắn",
 		"powerCode": "P0692",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0693.png",
@@ -1997,7 +2273,8 @@
 		"name": "Định Mệnh",
 		"powerCode": "P0693",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0200.png",
@@ -2007,7 +2284,8 @@
 		"name": "Sức Mạnh Vực Thẳm II",
 		"powerCode": "P0200",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0479.png",
@@ -2017,7 +2295,8 @@
 		"name": "Cửa Tử Ở Mọi Phương",
 		"powerCode": "P0479",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0198.png",
@@ -2027,7 +2306,8 @@
 		"name": "Sức Mạnh Vực Thẳm",
 		"powerCode": "P0198",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0199.png",
@@ -2037,7 +2317,8 @@
 		"name": "Lôi Ma",
 		"powerCode": "P0199",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0322.png",
@@ -2047,7 +2328,8 @@
 		"name": "Xé Toạc Bầu Trời",
 		"powerCode": "P0322",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0321.png",
@@ -2057,7 +2339,8 @@
 		"name": "Sấm Ngầm",
 		"powerCode": "P0321",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0323.png",
@@ -2067,7 +2350,8 @@
 		"name": "Sấm Ngầm II",
 		"powerCode": "P0323",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0456.png",
@@ -2077,7 +2361,8 @@
 		"name": "Tận Thế Cho Tất Cả",
 		"powerCode": "P0456",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0136.png",
@@ -2087,7 +2372,8 @@
 		"name": "Thần Avarosa",
 		"powerCode": "P0136",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0135.png",
@@ -2097,7 +2383,8 @@
 		"name": "Băng Tiễn",
 		"powerCode": "P0135",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0449.png",
@@ -2107,7 +2394,8 @@
 		"name": "Món Quà Của Avarosa",
 		"powerCode": "P0449",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0137.png",
@@ -2117,7 +2405,8 @@
 		"name": "Băng Tiễn II",
 		"powerCode": "P0137",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0743.png",
@@ -2127,7 +2416,8 @@
 		"name": "Bình Yên Trước Cơn Bão II",
 		"powerCode": "P0743",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0740.png",
@@ -2137,7 +2427,8 @@
 		"name": "Bình Yên Trước Cơn Bão",
 		"powerCode": "P0740",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0741.png",
@@ -2147,7 +2438,8 @@
 		"name": "Ngọn Gió Phản Chiếu",
 		"powerCode": "P0741",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0742.png",
@@ -2157,7 +2449,8 @@
 		"name": "Vinh Danh Trong Bão Tố",
 		"powerCode": "P0742",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0194.png",
@@ -2167,7 +2460,8 @@
 		"name": "Sự Cô Độc Ngọt Ngào II",
 		"powerCode": "P0194",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0192.png",
@@ -2177,7 +2471,8 @@
 		"name": "Sự Cô Độc Ngọt Ngào",
 		"powerCode": "P0192",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0193.png",
@@ -2187,7 +2482,8 @@
 		"name": "Một Tay Ta Làm Nên",
 		"powerCode": "P0193",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0438.png",
@@ -2197,7 +2493,8 @@
 		"name": "Huấn Luyện Quân Đội II",
 		"powerCode": "P0438",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0568.png",
@@ -2207,7 +2504,8 @@
 		"name": "Tránh đường!",
 		"powerCode": "P0568",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0435.png",
@@ -2217,7 +2515,8 @@
 		"name": "Huấn Luyện Quân Đội ",
 		"powerCode": "P0435",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0436.png",
@@ -2227,7 +2526,8 @@
 		"name": "Củng Cố Đội Hình",
 		"powerCode": "P0436",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0332.png",
@@ -2237,7 +2537,8 @@
 		"name": "Hơi Thở Hỏa Tinh",
 		"powerCode": "P0332",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0330.png",
@@ -2247,7 +2548,8 @@
 		"name": "Khởi Lập Vũ Trụ",
 		"powerCode": "P0330",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0329.png",
@@ -2257,7 +2559,8 @@
 		"name": "Tinh Vân Rạng Ngời",
 		"powerCode": "P0329",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0331.png",
@@ -2267,7 +2570,8 @@
 		"name": "Tinh Vân Rạng Ngời II",
 		"powerCode": "P0331",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0360.png",
@@ -2277,7 +2581,8 @@
 		"name": "Long Lực",
 		"powerCode": "P0360",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0362.png",
@@ -2287,7 +2592,8 @@
 		"name": "Long Lực II",
 		"powerCode": "P0362",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0361.png",
@@ -2297,7 +2603,8 @@
 		"name": "Thượng Long",
 		"powerCode": "P0361",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0603.png",
@@ -2307,7 +2614,8 @@
 		"name": "Linh Hồn Rồng",
 		"powerCode": "P0603",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0730.png",
@@ -2317,7 +2625,8 @@
 		"name": "Sự Cám Dỗ",
 		"powerCode": "P0730",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0728.png",
@@ -2327,7 +2636,8 @@
 		"name": "Ngai Vàng Tâm Huyết",
 		"powerCode": "P0728",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0731.png",
@@ -2337,7 +2647,8 @@
 		"name": "Hãy Thuộc Về Ta",
 		"powerCode": "P0731",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0729.png",
@@ -2347,7 +2658,8 @@
 		"name": "Hãy Thuộc Về Ta II",
 		"powerCode": "P0729",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0409.png",
@@ -2357,7 +2669,8 @@
 		"name": "Trạng Thái Bất Ổn",
 		"powerCode": "P0409",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0494.png",
@@ -2367,7 +2680,8 @@
 		"name": "Áp Dụng Công Nghệ Hextech",
 		"powerCode": "P0494",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0408.png",
@@ -2377,7 +2691,8 @@
 		"name": "Tích Tụ",
 		"powerCode": "P0408",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0407.png",
@@ -2387,7 +2702,8 @@
 		"name": "Tích Tụ II",
 		"powerCode": "P0407",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0164.png",
@@ -2397,7 +2713,8 @@
 		"name": "Nữ Hoàng Nhền Nhện II",
 		"powerCode": "P0164",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0163.png",
@@ -2407,7 +2724,8 @@
 		"name": "Kẹt Trong Tơ Nhện",
 		"powerCode": "P0163",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0162.png",
@@ -2417,7 +2735,8 @@
 		"name": "Nữ Hoàng Nhền Nhện",
 		"powerCode": "P0162",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0452.png",
@@ -2427,7 +2746,8 @@
 		"name": "Triệu Gọi Bất Ngờ",
 		"powerCode": "P0452",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0350.png",
@@ -2437,7 +2757,8 @@
 		"name": "6 Viên Đường",
 		"powerCode": "P0350",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0348.png",
@@ -2447,7 +2768,8 @@
 		"name": "3 Viên Đường",
 		"powerCode": "P0348",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0349.png",
@@ -2457,7 +2779,8 @@
 		"name": "Tìm Được Bạn Nè",
 		"powerCode": "P0349",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0471.png",
@@ -2467,7 +2790,8 @@
 		"name": "Hóa Quỷ",
 		"powerCode": "P0471",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0411.png",
@@ -2477,7 +2801,8 @@
 		"name": "Đạn Nổ Thần Công",
 		"powerCode": "P0411",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0410.png",
@@ -2487,7 +2812,8 @@
 		"name": "Nghiền Nát Kẻ Yếu II",
 		"powerCode": "P0410",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0412.png",
@@ -2497,7 +2823,8 @@
 		"name": "Nghiền Nát Kẻ Yếu ",
 		"powerCode": "P0412",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0414.png",
@@ -2507,7 +2834,8 @@
 		"name": "Nhập Cuộc Điều Tra",
 		"powerCode": "P0414",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0413.png",
@@ -2517,7 +2845,8 @@
 		"name": "Kẹt Trong Bẫy Sập II",
 		"powerCode": "P0413",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0509.png",
@@ -2527,7 +2856,8 @@
 		"name": "Thiện Xạ",
 		"powerCode": "P0509",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0415.png",
@@ -2537,7 +2867,8 @@
 		"name": "Kẹt Trong Bẫy Sập",
 		"powerCode": "P0415",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0726.png",
@@ -2547,7 +2878,8 @@
 		"name": "Tinh Hoa Lấp Lánh",
 		"powerCode": "P0726",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0725.png",
@@ -2567,7 +2899,8 @@
 		"name": "Tinh Hoa Lấp Lánh II",
 		"powerCode": "P0724",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0727.png",
@@ -2577,7 +2910,8 @@
 		"name": "Vòng Luân Hồi",
 		"powerCode": "P0727",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0417.png",
@@ -2587,7 +2921,8 @@
 		"name": "Giấc Mơ Ngọt Ngào",
 		"powerCode": "P0417",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0423.png",
@@ -2597,7 +2932,8 @@
 		"name": "Quá Buồn Ngủ",
 		"powerCode": "P0423",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0468.png",
@@ -2607,7 +2943,8 @@
 		"name": "Linh Hồn Dệt Mộng",
 		"powerCode": "P0468",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0419.png",
@@ -2617,7 +2954,8 @@
 		"name": "Giấc Mơ Ngọt Ngào II",
 		"powerCode": "P0419",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0007.png",
@@ -2627,7 +2965,8 @@
 		"name": "Sức Mạnh Noxus",
 		"powerCode": "P0007",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0009.png",
@@ -2637,7 +2976,8 @@
 		"name": "Sức Mạnh Noxus II",
 		"powerCode": "P0009",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0439.png",
@@ -2647,7 +2987,8 @@
 		"name": "Đại Tướng Noxus",
 		"powerCode": "P0439",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0006.png",
@@ -2657,7 +2998,8 @@
 		"name": "Mở Đường",
 		"powerCode": "P0006",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0133.png",
@@ -2667,7 +3009,8 @@
 		"name": "Đông Đảo Bạn Bè",
 		"powerCode": "P0133",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0134.png",
@@ -2677,7 +3020,8 @@
 		"name": "Chúng Ta Làm Được II",
 		"powerCode": "P0134",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0457.png",
@@ -2687,7 +3031,8 @@
 		"name": "Sức Mạnh Tình Bạn!",
 		"powerCode": "P0457",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0132.png",
@@ -2697,7 +3042,8 @@
 		"name": "Chúng Ta Làm Được",
 		"powerCode": "P0132",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0562.png",
@@ -2707,7 +3053,8 @@
 		"name": "Năng Lượng Dâng Trào",
 		"powerCode": "P0562",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0401.png",
@@ -2717,7 +3064,8 @@
 		"name": "Bước Nhảy Công Nghệ II",
 		"powerCode": "P0401",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0402.png",
@@ -2727,7 +3075,8 @@
 		"name": "Bước Nhảy Công Nghệ",
 		"powerCode": "P0402",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0403.png",
@@ -2737,7 +3086,8 @@
 		"name": "Cuộc Hành Quân Của Máy Móc",
 		"powerCode": "P0403",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0744.png",
@@ -2747,7 +3097,8 @@
 		"name": "Đồng Nguyên Ấn I",
 		"powerCode": "P0744",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0746.png",
@@ -2757,7 +3108,8 @@
 		"name": "Bàn Tay Thần Chết",
 		"powerCode": "P0746",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0747.png",
@@ -2767,7 +3119,8 @@
 		"name": "Sợ Hãi Dâng Trào",
 		"powerCode": "P0747",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0745.png",
@@ -2777,7 +3130,8 @@
 		"name": "Đồng Nguyên Ấn II",
 		"powerCode": "P0745",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0012.png",
@@ -2787,7 +3141,8 @@
 		"name": "Sức Mạnh Demacia II",
 		"powerCode": "P0012",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0010.png",
@@ -2797,7 +3152,8 @@
 		"name": "Công Lý",
 		"powerCode": "P0010",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0008.png",
@@ -2807,7 +3163,8 @@
 		"name": "Sức Mạnh Demacia",
 		"powerCode": "P0008",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0169.png",
@@ -2817,7 +3174,8 @@
 		"name": "Ngủ Với Lũ Cá",
 		"powerCode": "P0169",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0170.png",
@@ -2827,7 +3185,8 @@
 		"name": "Yếu Tố Quyết Định II",
 		"powerCode": "P0170",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0168.png",
@@ -2837,7 +3196,8 @@
 		"name": "Yếu Tố Quyết Định",
 		"powerCode": "P0168",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0697.png",
@@ -2847,7 +3207,8 @@
 		"name": "Lính Đánh Thuê",
 		"powerCode": "P0697",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0204.png",
@@ -2857,7 +3218,8 @@
 		"name": "Hùng Hổ",
 		"powerCode": "P0204",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0205.png",
@@ -2867,7 +3229,8 @@
 		"name": "Cược Vào Sett",
 		"powerCode": "P0205",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0206.png",
@@ -2877,7 +3240,8 @@
 		"name": "Hùng Hổ II",
 		"powerCode": "P0206",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0718.png",
@@ -2887,7 +3251,8 @@
 		"name": "Sát Thủ Ẩn Mình",
 		"powerCode": "P0718",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0709.png",
@@ -2897,7 +3262,8 @@
 		"name": "Cai Ngục Giam Hãm",
 		"powerCode": "P0709",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0720.png",
@@ -2907,7 +3273,8 @@
 		"name": "Thay Đổi Nhanh Chóng!",
 		"powerCode": "P0720",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0708.png",
@@ -2917,7 +3284,8 @@
 		"name": "Tội Ác Độc Địa",
 		"powerCode": "P0708",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0719.png",
@@ -2927,7 +3295,8 @@
 		"name": "Bảo Vệ Thành Phố",
 		"powerCode": "P0719",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0714.png",
@@ -2937,7 +3306,8 @@
 		"name": "Giám Hộ Thời Gian",
 		"powerCode": "P0714",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0712.png",
@@ -2947,7 +3317,8 @@
 		"name": "Chạy Đua Với Tàn Tích",
 		"powerCode": "P0712",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0508.png",
@@ -2957,7 +3328,8 @@
 		"name": "Công Thành Vô Tận",
 		"powerCode": "P0508",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0710.png",
@@ -2967,7 +3339,8 @@
 		"name": "Tăng Tiền Cược",
 		"powerCode": "P0710",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0716.png",
@@ -2977,7 +3350,8 @@
 		"name": "Tay Buôn Vũ Khí",
 		"powerCode": "P0716",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0713.png",
@@ -2987,7 +3361,8 @@
 		"name": "Hỗn Chiến Hung Thần Cát",
 		"powerCode": "P0713",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0707.png",
@@ -2997,7 +3372,8 @@
 		"name": "Tri Thức Bị Nguyền Rủa",
 		"powerCode": "P0707",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0706.png",
@@ -3007,7 +3383,8 @@
 		"name": "Đạo Tặc Tấn Công",
 		"powerCode": "P0706",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0553.png",
@@ -3017,7 +3394,8 @@
 		"name": "Chung Sức Đồng Lòng",
 		"powerCode": "P0553",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0715.png",
@@ -3027,7 +3405,8 @@
 		"name": "Bí Ẩn Ngầm",
 		"powerCode": "P0715",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0711.png",
@@ -3037,7 +3416,8 @@
 		"name": "Thất Bại Được Báo Trước",
 		"powerCode": "P0711",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0824.png",
@@ -3047,7 +3427,8 @@
 		"name": "Trò Đùa Tinh Nghịch",
 		"powerCode": "P0824",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0302.png",
@@ -3057,7 +3438,8 @@
 		"name": "Những Người Bạn Nhỏ",
 		"powerCode": "P0302",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0268.png",
@@ -3067,7 +3449,8 @@
 		"name": "Sức Mạnh Demacia",
 		"powerCode": "P0268",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0873.png",
@@ -3077,7 +3460,8 @@
 		"name": "Uất Hận",
 		"powerCode": "P0873",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0872.png",
@@ -3087,7 +3471,8 @@
 		"name": "Không Tương Xứng",
 		"powerCode": "P0872",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0813.png",
@@ -3097,7 +3482,8 @@
 		"name": "Bí Ẩn Kinh Hoàng",
 		"powerCode": "P0813",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0814.png",
@@ -3107,7 +3493,8 @@
 		"name": "Bị Bắt Nạt",
 		"powerCode": "P0814",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0883.png",
@@ -3117,7 +3504,8 @@
 		"name": "Kiệt Sức Hoàn Toàn",
 		"powerCode": "P0883",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0869.png",
@@ -3127,7 +3515,8 @@
 		"name": "Ngờ Vực",
 		"powerCode": "P0869",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0818.png",
@@ -3137,7 +3526,8 @@
 		"name": "Nuông Chiều Quá Mức",
 		"powerCode": "P0818",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0871.png",
@@ -3147,7 +3537,8 @@
 		"name": "Thiếu Động Lực",
 		"powerCode": "P0871",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0881.png",
@@ -3157,7 +3548,8 @@
 		"name": "Gây Hấn",
 		"powerCode": "P0881",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0886.png",
@@ -3167,7 +3559,8 @@
 		"name": "Ghen Tị",
 		"powerCode": "P0886",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0877.png",
@@ -3177,7 +3570,8 @@
 		"name": "Thiếu Chuẩn Bị",
 		"powerCode": "P0877",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0879.png",
@@ -3187,7 +3581,8 @@
 		"name": "Kẻ Ngốc Xun Xoe",
 		"powerCode": "P0879",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0874.png",
@@ -3197,7 +3592,8 @@
 		"name": "Lo Lắng",
 		"powerCode": "P0874",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0810.png",
@@ -3207,7 +3603,8 @@
 		"name": "Lãng Phí Tiềm Năng",
 		"powerCode": "P0810",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0882.png",
@@ -3217,7 +3614,8 @@
 		"name": "Tự Tin Thái Quá",
 		"powerCode": "P0882",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0880.png",
@@ -3227,7 +3625,8 @@
 		"name": "Yêu Đơn Phương",
 		"powerCode": "P0880",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0809.png",
@@ -3237,7 +3636,8 @@
 		"name": "Những Người Bạn Bị Quên Lãng",
 		"powerCode": "P0809",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0811.png",
@@ -3247,7 +3647,8 @@
 		"name": "Thiếu Năng Suất",
 		"powerCode": "P0811",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0817.png",
@@ -3257,7 +3658,8 @@
 		"name": "Kẻ Sùng Bái",
 		"powerCode": "P0817",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0815.png",
@@ -3267,7 +3669,8 @@
 		"name": "Thiếu Hiệu Quả",
 		"powerCode": "P0815",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0875.png",
@@ -3277,7 +3680,8 @@
 		"name": "Cô Lập",
 		"powerCode": "P0875",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0868.png",
@@ -3287,7 +3691,8 @@
 		"name": "Bối rối",
 		"powerCode": "P0868",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power", "Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0816.png",
@@ -3297,7 +3702,8 @@
 		"name": "Cả Tin",
 		"powerCode": "P0816",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power", "Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0885.png",
@@ -3307,7 +3713,8 @@
 		"name": "Ngu Dốt",
 		"powerCode": "P0885",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0867.png",
@@ -3317,7 +3724,8 @@
 		"name": "Lãng Phí Cơ Hội",
 		"powerCode": "P0867",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power", "Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0865.png",
@@ -3327,7 +3735,8 @@
 		"name": "Tự Hủy Diệt",
 		"powerCode": "P0865",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0870.png",
@@ -3337,7 +3746,8 @@
 		"name": "Yếu Đuối",
 		"powerCode": "P0870",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0866.png",
@@ -3347,7 +3757,8 @@
 		"name": "Sợ Cứng Đơ Người",
 		"powerCode": "P0866",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0884.png",
@@ -3357,7 +3768,8 @@
 		"name": "Hàng Giả",
 		"powerCode": "P0884",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0876.png",
@@ -3367,7 +3779,8 @@
 		"name": "Ngờ Vực Đến Tê Liệt",
 		"powerCode": "P0876",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0812.png",
@@ -3377,7 +3790,8 @@
 		"name": "Liều Lĩnh",
 		"powerCode": "P0812",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0878.png",
@@ -3387,7 +3801,8 @@
 		"name": "Vụng Về",
 		"powerCode": "P0878",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Debuff Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0082.png",
@@ -3397,7 +3812,8 @@
 		"name": "Gan Góc",
 		"powerCode": "P0082",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0537.png",
@@ -3407,7 +3823,8 @@
 		"name": "Hù Dọa II",
 		"powerCode": "P0537",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0375.png",
@@ -3417,7 +3834,8 @@
 		"name": "Túi Chứa Nấm Lùn",
 		"powerCode": "P0375",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0377.png",
@@ -3427,7 +3845,8 @@
 		"name": "Trò Đùa Ma Mãnh",
 		"powerCode": "P0377",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0376.png",
@@ -3437,7 +3856,8 @@
 		"name": "Quân Đoàn Bất Diệt",
 		"powerCode": "P0376",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0380.png",
@@ -3447,7 +3867,8 @@
 		"name": "Con Mồi Thơm Ngon",
 		"powerCode": "P0380",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0378.png",
@@ -3457,7 +3878,8 @@
 		"name": "Di Sản Để Lại",
 		"powerCode": "P0378",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0379.png",
@@ -3467,7 +3889,8 @@
 		"name": "Vết Cắt Sâu Thẳm",
 		"powerCode": "P0379",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0381.png",
@@ -3477,7 +3900,8 @@
 		"name": "Quyền Năng Vô Hạn",
 		"powerCode": "P0381",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0067.png",
@@ -3487,7 +3911,8 @@
 		"name": "Dòng Chảy Năng Lượng",
 		"powerCode": "P0067",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0629.png",
@@ -3497,7 +3922,8 @@
 		"name": "Theo Đuổi Tiến Trình",
 		"powerCode": "P0629",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0864.png",
@@ -3507,7 +3933,8 @@
 		"name": "Bí Thuật Cường Hóa",
 		"powerCode": "P0864",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0107.png",
@@ -3517,7 +3944,8 @@
 		"name": "Cầm Chân Đối Thủ",
 		"powerCode": "P0107",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0787.png",
@@ -3527,7 +3955,8 @@
 		"name": "Đau Khổ",
 		"powerCode": "P0787",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0843.png",
@@ -3537,7 +3966,8 @@
 		"name": "Củng Cố Đội Hình",
 		"powerCode": "P0843",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0616.png",
@@ -3547,7 +3977,8 @@
 		"name": "Vùng Đất Người Khổng Lồ",
 		"powerCode": "P0616",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0089.png",
@@ -3557,7 +3988,8 @@
 		"name": "Bền Bỉ",
 		"powerCode": "P0089",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0224.png",
@@ -3567,7 +3999,8 @@
 		"name": "Đặc Ân Người Thợ",
 		"powerCode": "P0224",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0734.png",
@@ -3577,7 +4010,8 @@
 		"name": "Món Quà Từ Cõi Xa: Evelynn II",
 		"powerCode": "P0734",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0325.png",
@@ -3587,7 +4021,8 @@
 		"name": "Thiền Định Huyền Bí",
 		"powerCode": "P0325",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0326.png",
@@ -3597,7 +4032,8 @@
 		"name": "Luồng Gió Nguyên Tố",
 		"powerCode": "P0326",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0327.png",
@@ -3607,7 +4043,8 @@
 		"name": "Khổng Lồ Thức Tỉnh",
 		"powerCode": "P0327",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0324.png",
@@ -3617,7 +4054,8 @@
 		"name": "Khiên Roi",
 		"powerCode": "P0324",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0058.png",
@@ -3627,7 +4065,8 @@
 		"name": "Kẻ Tiếp Sức",
 		"powerCode": "P0058",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0059.png",
@@ -3637,7 +4076,8 @@
 		"name": "Hỏa Thuật",
 		"powerCode": "P0059",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0061.png",
@@ -3647,7 +4087,8 @@
 		"name": "Sĩ Quan Yểm Trợ",
 		"powerCode": "P0061",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0065.png",
@@ -3657,7 +4098,8 @@
 		"name": "Trong tầm ngắm",
 		"powerCode": "P0065",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0062.png",
@@ -3667,7 +4109,8 @@
 		"name": "Ổn Định Đội Hình",
 		"powerCode": "P0062",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0057.png",
@@ -3677,7 +4120,8 @@
 		"name": "Nguồn Năng Lượng Thay Thế",
 		"powerCode": "P0057",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0055.png",
@@ -3687,7 +4131,8 @@
 		"name": "Bị cấm đánh",
 		"powerCode": "P0055",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0056.png",
@@ -3697,7 +4142,8 @@
 		"name": "Rút Nhanh",
 		"powerCode": "P0056",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0054.png",
@@ -3707,7 +4153,8 @@
 		"name": "Đoàn tụ",
 		"powerCode": "P0054",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0064.png",
@@ -3717,7 +4164,8 @@
 		"name": "Khoan Đã!",
 		"powerCode": "P0064",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0060.png",
@@ -3727,7 +4175,8 @@
 		"name": "Tái Lập Thực Tại",
 		"powerCode": "P0060",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0053.png",
@@ -3737,7 +4186,8 @@
 		"name": "Trang Bị Đầy Đủ",
 		"powerCode": "P0053",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0063.png",
@@ -3747,7 +4197,8 @@
 		"name": "Sự Xuất Hiện Bùng Nổ",
 		"powerCode": "P0063",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0096.png",
@@ -3757,7 +4208,8 @@
 		"name": "Địa Vị Quyền Lực",
 		"powerCode": "P0096",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0116.png",
@@ -3767,7 +4219,8 @@
 		"name": "Phần Thưởng Chào Đón",
 		"powerCode": "P0116",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0549.png",
@@ -3777,7 +4230,8 @@
 		"name": "Chi Tiêu Phòng Thủ",
 		"powerCode": "P0549",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0085.png",
@@ -3787,7 +4241,8 @@
 		"name": "Tổ Đội Công Kích",
 		"powerCode": "P0085",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0043.png",
@@ -3797,7 +4252,8 @@
 		"name": "Luật Nhà",
 		"powerCode": "P0043",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0050.png",
@@ -3807,7 +4263,8 @@
 		"name": "Chớ Vội",
 		"powerCode": "P0050",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0051.png",
@@ -3817,7 +4274,8 @@
 		"name": "Kỳ Lân Biển Ban Phước",
 		"powerCode": "P0051",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0038.png",
@@ -3827,7 +4285,8 @@
 		"name": "Không Thể Cản Phá",
 		"powerCode": "P0038",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0232.png",
@@ -3837,7 +4296,8 @@
 		"name": "Thể Thăng Hoa Phẫn Nộ",
 		"powerCode": "P0232",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0235.png",
@@ -3847,7 +4307,8 @@
 		"name": "Cười Lăn Quay",
 		"powerCode": "P0235",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0041.png",
@@ -3857,7 +4318,8 @@
 		"name": "Phép Thuật Tự Nhiên",
 		"powerCode": "P0041",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0042.png",
@@ -3867,7 +4329,8 @@
 		"name": "Lo Lắng Khôn Nguôi",
 		"powerCode": "P0042",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0225.png",
@@ -3877,7 +4340,8 @@
 		"name": "Baccai Nhụt Chí",
 		"powerCode": "P0225",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0230.png",
@@ -3887,7 +4351,8 @@
 		"name": "Tri thức",
 		"powerCode": "P0230",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0044.png",
@@ -3897,7 +4362,8 @@
 		"name": "Tàn Sát Nhân Đạo",
 		"powerCode": "P0044",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0228.png",
@@ -3907,7 +4373,8 @@
 		"name": "Máu",
 		"powerCode": "P0228",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0233.png",
@@ -3917,7 +4384,8 @@
 		"name": "Ký Ức Quần Đảo",
 		"powerCode": "P0233",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0234.png",
@@ -3927,7 +4395,8 @@
 		"name": "Di Tích Helia",
 		"powerCode": "P0234",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0231.png",
@@ -3937,7 +4406,8 @@
 		"name": "Dấu Ấn Phàm Trần",
 		"powerCode": "P0231",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0049.png",
@@ -3947,7 +4417,8 @@
 		"name": "Hỗn Loạn Ven Biển",
 		"powerCode": "P0049",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0040.png",
@@ -3957,7 +4428,8 @@
 		"name": "Kháng Ma Thạch Hiện Diện",
 		"powerCode": "P0040",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0048.png",
@@ -3967,7 +4439,8 @@
 		"name": "Cái Giá Của Tiến Bộ",
 		"powerCode": "P0048",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0229.png",
@@ -3977,7 +4450,8 @@
 		"name": "Sức mạnh",
 		"powerCode": "P0229",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0037.png",
@@ -3987,7 +4461,8 @@
 		"name": "Đế Chế Muôn Năm",
 		"powerCode": "P0037",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0052.png",
@@ -3997,7 +4472,8 @@
 		"name": "Chạy Đua Vũ Trang",
 		"powerCode": "P0052",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0035.png",
@@ -4007,7 +4483,8 @@
 		"name": "Giao Chiến Cuồng Loạn",
 		"powerCode": "P0035",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0039.png",
@@ -4017,7 +4494,8 @@
 		"name": "Giáp Nhu Động",
 		"powerCode": "P0039",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0045.png",
@@ -4027,7 +4505,8 @@
 		"name": "Tiếp Tế Đều Đặn",
 		"powerCode": "P0045",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0046.png",
@@ -4037,7 +4516,8 @@
 		"name": "Thẩm Vấn",
 		"powerCode": "P0046",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0047.png",
@@ -4047,7 +4527,8 @@
 		"name": "Giấy Phép Tầm Pháp",
 		"powerCode": "P0047",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0227.png",
@@ -4057,7 +4538,8 @@
 		"name": "Thử Thách Thăng Hoa",
 		"powerCode": "P0227",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Encounter Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0226.png",
@@ -4067,7 +4549,8 @@
 		"name": "Sa Mạc Kiên Cường",
 		"powerCode": "P0226",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0383.png",
@@ -4077,7 +4560,8 @@
 		"name": "Vút!",
 		"powerCode": "P0383",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0068.png",
@@ -4087,7 +4571,8 @@
 		"name": "Thiên Tài Yipp",
 		"powerCode": "P0068",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0686.png",
@@ -4097,7 +4582,8 @@
 		"name": "Đã Châm Ngòi Nổ",
 		"powerCode": "P0686",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0836.png",
@@ -4107,7 +4593,8 @@
 		"name": "Đệ Nhất Piltover",
 		"powerCode": "P0836",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0623.png",
@@ -4117,7 +4604,8 @@
 		"name": "Cơn Thịnh Nộ Của Rồng",
 		"powerCode": "P0623",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0575.png",
@@ -4127,7 +4615,8 @@
 		"name": "Phối Hợp Đồng Đội",
 		"powerCode": "P0575",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0895.png",
@@ -4137,7 +4626,8 @@
 		"name": "Món Quà Từ Cõi Xa: Yasuo",
 		"powerCode": "P0895",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0841.png",
@@ -4147,7 +4637,8 @@
 		"name": "Khởi Lập Vũ Trụ",
 		"powerCode": "P0841",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0699.png",
@@ -4157,7 +4648,8 @@
 		"name": "Khiên Mặt Trời",
 		"powerCode": "P0699",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0832.png",
@@ -4167,7 +4659,8 @@
 		"name": "Mở Đường",
 		"powerCode": "P0832",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0893.png",
@@ -4177,7 +4670,8 @@
 		"name": "Món Quà Từ Cõi Xa: Master Yi II",
 		"powerCode": "P0893",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0701.png",
@@ -4187,7 +4681,8 @@
 		"name": "Món Quà Từ Cõi Xa: Teemo",
 		"powerCode": "P0701",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0072.png",
@@ -4197,7 +4692,8 @@
 		"name": "Chờ Đợi Thời Cơ",
 		"powerCode": "P0072",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0451.png",
@@ -4207,7 +4703,8 @@
 		"name": "Đại Đại Quảng Trường",
 		"powerCode": "P0451",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0856.png",
@@ -4217,7 +4714,8 @@
 		"name": "Nếm Mùi Ma Thuật",
 		"powerCode": "P0856",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0523.png",
@@ -4227,7 +4725,8 @@
 		"name": "Rơi Tự Do",
 		"powerCode": "P0523",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0894.png",
@@ -4237,7 +4736,8 @@
 		"name": "Món Quà Từ Cõi Xa: Yasuo II",
 		"powerCode": "P0894",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0786.png",
@@ -4247,7 +4747,8 @@
 		"name": "Qua Mặt",
 		"powerCode": "P0786",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0113.png",
@@ -4257,7 +4758,8 @@
 		"name": "Xả Phép Hàng Loạt",
 		"powerCode": "P0113",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0848.png",
@@ -4267,7 +4769,8 @@
 		"name": "Món Quà Từ Cõi Xa: Kindred",
 		"powerCode": "P0848",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0806.png",
@@ -4277,7 +4780,8 @@
 		"name": "Pháo hoa rực rỡ!",
 		"powerCode": "P0806",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0825.png",
@@ -4287,7 +4791,8 @@
 		"name": "Đông Đảo Bạn Bè",
 		"powerCode": "P0825",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0083.png",
@@ -4297,7 +4802,8 @@
 		"name": "Đòn Đánh Suy Nhược",
 		"powerCode": "P0083",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0736.png",
@@ -4307,7 +4813,8 @@
 		"name": "Thức Tỉnh Linh Hồn",
 		"powerCode": "P0736",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0634.png",
@@ -4317,7 +4824,8 @@
 		"name": "Vật Tế Thích Hợp",
 		"powerCode": "P0634",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0823.png",
@@ -4327,7 +4835,8 @@
 		"name": "Vật Chủ Phù Hợp",
 		"powerCode": "P0823",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0850.png",
@@ -4337,7 +4846,8 @@
 		"name": "Quà Gia Nhập",
 		"powerCode": "P0850",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0506.png",
@@ -4347,7 +4857,8 @@
 		"name": "Năng Lượng & Bài Phép II",
 		"powerCode": "P0506",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0681.png",
@@ -4357,7 +4868,8 @@
 		"name": "Vấn Đề Kỹ Năng",
 		"powerCode": "P0681",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0807.png",
@@ -4367,7 +4879,8 @@
 		"name": "Bài Thơ Xúc Động",
 		"powerCode": "P0807",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0831.png",
@@ -4377,7 +4890,8 @@
 		"name": "Gầm Thét",
 		"powerCode": "P0831",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0533.png",
@@ -4387,7 +4901,8 @@
 		"name": "Kẻ Bất Tử Tàn Nhẫn",
 		"powerCode": "P0533",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0733.png",
@@ -4397,7 +4912,8 @@
 		"name": "Món Quà Từ Cõi Xa: Evelynn",
 		"powerCode": "P0733",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0492.png",
@@ -4407,7 +4923,8 @@
 		"name": "Chí tử",
 		"powerCode": "P0492",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0822.png",
@@ -4417,7 +4934,8 @@
 		"name": "Tuần Hoàn Nước Bất Tận",
 		"powerCode": "P0822",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0670.png",
@@ -4427,7 +4945,8 @@
 		"name": "Ta Sẽ Lập Một Đội",
 		"powerCode": "P0670",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0103.png",
@@ -4437,7 +4956,8 @@
 		"name": "Đặt Đồng Hồ",
 		"powerCode": "P0103",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0852.png",
@@ -4447,7 +4967,8 @@
 		"name": "Sức Mạnh Anh Hùng",
 		"powerCode": "P0852",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0835.png",
@@ -4457,7 +4978,8 @@
 		"name": "Kẹt Trong Tơ Nhện",
 		"powerCode": "P0835",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0833.png",
@@ -4467,7 +4989,8 @@
 		"name": "Tìm Được Bạn Nè",
 		"powerCode": "P0833",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0386.png",
@@ -4477,7 +5000,8 @@
 		"name": "Đội Hình Phalanx",
 		"powerCode": "P0386",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0854.png",
@@ -4487,7 +5011,8 @@
 		"name": "Kẻ Xâm Nhập",
 		"powerCode": "P0854",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0688.png",
@@ -4497,7 +5022,8 @@
 		"name": "Bữa Tiệc Chào Sân",
 		"powerCode": "P0688",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0844.png",
@@ -4507,7 +5033,8 @@
 		"name": "Say Máu",
 		"powerCode": "P0844",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0689.png",
@@ -4517,7 +5044,8 @@
 		"name": "Lực Lưỡng Lên Nào",
 		"powerCode": "P0689",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0694.png",
@@ -4527,7 +5055,8 @@
 		"name": "Trộm Đêm",
 		"powerCode": "P0694",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0504.png",
@@ -4537,7 +5066,8 @@
 		"name": "Thiêu Sống",
 		"powerCode": "P0504",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0788.png",
@@ -4547,7 +5077,8 @@
 		"name": "Săn Lùng Linh Hồn",
 		"powerCode": "P0788",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0839.png",
@@ -4557,7 +5088,8 @@
 		"name": "Món Quà Tai Ương",
 		"powerCode": "P0839",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0387.png",
@@ -4567,7 +5099,8 @@
 		"name": "Tập Đoàn Địa Trắc",
 		"powerCode": "P0387",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0859.png",
@@ -4577,7 +5110,8 @@
 		"name": "Thông Suốt",
 		"powerCode": "P0859",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0222.png",
@@ -4587,7 +5121,8 @@
 		"name": "Hợp Lực Tiến Công",
 		"powerCode": "P0222",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0219.png",
@@ -4597,7 +5132,8 @@
 		"name": "Kiếp Sau Tai Ương",
 		"powerCode": "P0219",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0515.png",
@@ -4607,7 +5143,8 @@
 		"name": "Sách Ẩn",
 		"powerCode": "P0515",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0700.png",
@@ -4617,7 +5154,8 @@
 		"name": "Món Quà Từ Cõi Xa: Teemo II",
 		"powerCode": "P0700",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0628.png",
@@ -4627,7 +5165,8 @@
 		"name": "Chọn Lọc Phi Tự Nhiên",
 		"powerCode": "P0628",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0484.png",
@@ -4637,7 +5176,8 @@
 		"name": "Vật Thể Bất Động ",
 		"powerCode": "P0484",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0636.png",
@@ -4647,7 +5187,8 @@
 		"name": "Ba Lần Ràng Buộc",
 		"powerCode": "P0636",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0501.png",
@@ -4657,7 +5198,8 @@
 		"name": "Siêu Bự!",
 		"powerCode": "P0501",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0834.png",
@@ -4667,7 +5209,8 @@
 		"name": "Lãnh Thổ Sương Đen",
 		"powerCode": "P0834",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0849.png",
@@ -4677,7 +5220,8 @@
 		"name": "Món Quà Từ Cõi Xa: Kindred II",
 		"powerCode": "P0849",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0110.png",
@@ -4687,7 +5231,8 @@
 		"name": "Tập Luyện Trên Chiến Trường",
 		"powerCode": "P0110",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0476.png",
@@ -4697,7 +5242,8 @@
 		"name": "Choáng Váng & Kinh Ngạc",
 		"powerCode": "P0476",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0749.png",
@@ -4707,7 +5253,8 @@
 		"name": "Món Quà Từ Cõi Xa: Ahri",
 		"powerCode": "P0749",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0466.png",
@@ -4717,7 +5264,8 @@
 		"name": "Hồi Kết Bùng Nổ",
 		"powerCode": "P0466",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power", "General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0695.png",
@@ -4727,7 +5275,8 @@
 		"name": "Kế Hoạch Đánh Cắp",
 		"powerCode": "P0695",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0102.png",
@@ -4737,7 +5286,8 @@
 		"name": "Giảm Giá Chợ Đen",
 		"powerCode": "P0102",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0820.png",
@@ -4747,7 +5297,8 @@
 		"name": "Công Lý",
 		"powerCode": "P0820",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0477.png",
@@ -4757,7 +5308,8 @@
 		"name": "Gậy Bức Xạ Nhiệt Của Lux",
 		"powerCode": "P0477",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0078.png",
@@ -4767,7 +5319,8 @@
 		"name": "Sức Mạnh Áp Đảo",
 		"powerCode": "P0078",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0385.png",
@@ -4777,7 +5330,8 @@
 		"name": "Dòng Thời Gian Hội Tụ",
 		"powerCode": "P0385",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0071.png",
@@ -4787,7 +5341,8 @@
 		"name": "Nghiền Nát",
 		"powerCode": "P0071",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0496.png",
@@ -4797,7 +5352,8 @@
 		"name": "Sự Đón Tiếp Nồng Ấm",
 		"powerCode": "P0496",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0519.png",
@@ -4817,7 +5373,8 @@
 		"name": "Thí Nghiệm Tàn Nhẫn",
 		"powerCode": "P0569",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0091.png",
@@ -4827,7 +5384,8 @@
 		"name": "Nộ Long Cước",
 		"powerCode": "P0091",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0802.png",
@@ -4837,7 +5395,8 @@
 		"name": "Trò Đùa Xấu Xa",
 		"powerCode": "P0802",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0615.png",
@@ -4847,7 +5406,8 @@
 		"name": "Trận Chiến Gian Nan",
 		"powerCode": "P0615",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0857.png",
@@ -4857,7 +5417,8 @@
 		"name": "Giáp Linh Hồn",
 		"powerCode": "P0857",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0475.png",
@@ -4867,7 +5428,8 @@
 		"name": "Địa Hình Hiểm Trở",
 		"powerCode": "P0475",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0084.png",
@@ -4877,7 +5439,8 @@
 		"name": "Cảm Hứng Dữ Dội",
 		"powerCode": "P0084",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power", "Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0105.png",
@@ -4887,7 +5450,8 @@
 		"name": "Thỏa Thuận Chớp Nhoáng",
 		"powerCode": "P0105",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0573.png",
@@ -4897,7 +5461,8 @@
 		"name": "Mệnh Lệnh Của Hoàng Đế",
 		"powerCode": "P0573",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0117.png",
@@ -4907,7 +5472,8 @@
 		"name": "Lấy Mạng Chúng",
 		"powerCode": "P0117",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0517.png",
@@ -4917,7 +5483,8 @@
 		"name": "Đại Bác",
 		"powerCode": "P0517",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0073.png",
@@ -4927,7 +5494,8 @@
 		"name": "Phú Quý Bất Tận",
 		"powerCode": "P0073",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Rune Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0098.png",
@@ -4937,7 +5505,8 @@
 		"name": "Môn Sinh Mới",
 		"powerCode": "P0098",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0827.png",
@@ -4947,7 +5516,8 @@
 		"name": "Cuộc Hành Quân Của Máy Móc",
 		"powerCode": "P0827",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0785.png",
@@ -4957,7 +5527,8 @@
 		"name": "Hồ Ly Tinh",
 		"powerCode": "P0785",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0855.png",
@@ -4967,7 +5538,8 @@
 		"name": "Trung Thành Giả Tạo",
 		"powerCode": "P0855",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0626.png",
@@ -4977,7 +5549,8 @@
 		"name": "Cơn Thịnh Nộ Của Rồng",
 		"powerCode": "P0626",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0221.png",
@@ -4987,7 +5560,8 @@
 		"name": "Tiên Tri Buốt Giá",
 		"powerCode": "P0221",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0541.png",
@@ -4997,7 +5571,8 @@
 		"name": "Chết Chóc",
 		"powerCode": "P0541",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0220.png",
@@ -5007,7 +5582,8 @@
 		"name": "Chuẩn Bị Kỹ Lưỡng",
 		"powerCode": "P0220",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0612.png",
@@ -5017,7 +5593,8 @@
 		"name": "Hơn Cả Sự Sống",
 		"powerCode": "P0612",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0495.png",
@@ -5027,7 +5604,8 @@
 		"name": "Đội Quân Đá",
 		"powerCode": "P0495",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0862.png",
@@ -5037,7 +5615,8 @@
 		"name": "Cây Cung Sát Thủ",
 		"powerCode": "P0862",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0732.png",
@@ -5047,7 +5626,8 @@
 		"name": "Tắm Máu",
 		"powerCode": "P0732",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0683.png",
@@ -5057,7 +5637,8 @@
 		"name": "Hoàn Hảo",
 		"powerCode": "P0683",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0539.png",
@@ -5067,7 +5648,8 @@
 		"name": "Kẻ Cắn Xé",
 		"powerCode": "P0539",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0819.png",
@@ -5077,7 +5659,8 @@
 		"name": "Hoàn thành Chu Kỳ Tuần Hoàn",
 		"powerCode": "P0819",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0534.png",
@@ -5087,7 +5670,8 @@
 		"name": "Hoang Dã Cuồng Nộ",
 		"powerCode": "P0534",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0542.png",
@@ -5097,7 +5681,8 @@
 		"name": "Kẻ Bất Tử Tàn Nhẫn",
 		"powerCode": "P0542",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0106.png",
@@ -5107,7 +5692,8 @@
 		"name": "Sản Phẩm Giả Mạo",
 		"powerCode": "P0106",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0111.png",
@@ -5117,7 +5703,8 @@
 		"name": "Pháp Thuật",
 		"powerCode": "P0111",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0076.png",
@@ -5127,7 +5714,8 @@
 		"name": "Thăng Cấp",
 		"powerCode": "P0076",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0514.png",
@@ -5137,7 +5725,8 @@
 		"name": "Khiên Đen",
 		"powerCode": "P0514",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0112.png",
@@ -5147,7 +5736,8 @@
 		"name": "Thống Trị",
 		"powerCode": "P0112",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0544.png",
@@ -5167,7 +5757,8 @@
 		"name": "Kho Đồ Bất Ổn",
 		"powerCode": "P0077",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0094.png",
@@ -5177,7 +5768,8 @@
 		"name": "Sức sống",
 		"powerCode": "P0094",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0845.png",
@@ -5187,7 +5779,8 @@
 		"name": "Bảo Tồn Shurima",
 		"powerCode": "P0845",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0748.png",
@@ -5197,7 +5790,8 @@
 		"name": "Món Quà Từ Cõi Xa: Ahri II",
 		"powerCode": "P0748",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0828.png",
@@ -5207,7 +5801,8 @@
 		"name": "Chiến Tranh Tâm Lý",
 		"powerCode": "P0828",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0388.png",
@@ -5217,7 +5812,8 @@
 		"name": "Hành Lang Ma Ám",
 		"powerCode": "P0388",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0826.png",
@@ -5227,7 +5823,8 @@
 		"name": "Thần Thánh Can Thiệp",
 		"powerCode": "P0826",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0069.png",
@@ -5237,7 +5834,8 @@
 		"name": "Sức Mạnh Trifarix",
 		"powerCode": "P0069",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0384.png",
@@ -5247,7 +5845,8 @@
 		"name": "Đá Dẻo",
 		"powerCode": "P0384",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0114.png",
@@ -5257,7 +5856,8 @@
 		"name": "Chậm Mà Chắc",
 		"powerCode": "P0114",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0485.png",
@@ -5267,7 +5867,8 @@
 		"name": "Phát Minh Không Hợp Pháp",
 		"powerCode": "P0485",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0518.png",
@@ -5277,7 +5878,8 @@
 		"name": "Bộ Bài Đầy Ắp",
 		"powerCode": "P0518",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0101.png",
@@ -5287,7 +5889,8 @@
 		"name": "Khởi Điểm",
 		"powerCode": "P0101",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0840.png",
@@ -5297,7 +5900,8 @@
 		"name": "Đạn Nổ Thần Công",
 		"powerCode": "P0840",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0808.png",
@@ -5307,7 +5911,8 @@
 		"name": "Buồn Bã Và Khổ Đau",
 		"powerCode": "P0808",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0390.png",
@@ -5317,7 +5922,8 @@
 		"name": "Cổng Gia Tốc Của Norra",
 		"powerCode": "P0390",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0684.png",
@@ -5327,7 +5933,8 @@
 		"name": "Sát lực",
 		"powerCode": "P0684",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0540.png",
@@ -5337,7 +5944,8 @@
 		"name": "Hạt Nấm Lùn ",
 		"powerCode": "P0540",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Rune Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0070.png",
@@ -5347,7 +5955,8 @@
 		"name": "Dòng Chảy Năng Lượng Bất Ổn",
 		"powerCode": "P0070",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Remove Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0527.png",
@@ -5357,7 +5966,8 @@
 		"name": "Bóng Đêm Bất Tận",
 		"powerCode": "P0527",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0524.png",
@@ -5367,7 +5977,8 @@
 		"name": "Kẻ Cắn Xé",
 		"powerCode": "P0524",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0803.png",
@@ -5377,7 +5988,8 @@
 		"name": "Tàn Tích Gió",
 		"powerCode": "P0803",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0104.png",
@@ -5387,7 +5999,8 @@
 		"name": "Dao Nảy",
 		"powerCode": "P0104",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0100.png",
@@ -5397,7 +6010,8 @@
 		"name": "Lính Canh Tiên Phong",
 		"powerCode": "P0100",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0109.png",
@@ -5407,7 +6021,8 @@
 		"name": "Những Người Bạn Nhỏ",
 		"powerCode": "P0109",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0837.png",
@@ -5417,7 +6032,8 @@
 		"name": "Phò Tá Đức Vua!",
 		"powerCode": "P0837",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0393.png",
@@ -5427,7 +6043,8 @@
 		"name": "Hòa Khí Ma Pháp",
 		"powerCode": "P0393",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0108.png",
@@ -5437,7 +6054,8 @@
 		"name": "Giác Quan Hoang Dã",
 		"powerCode": "P0108",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0080.png",
@@ -5447,7 +6065,8 @@
 		"name": "Quyết Tâm Bất Diệt",
 		"powerCode": "P0080",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0526.png",
@@ -5457,7 +6076,8 @@
 		"name": "Nỗi Sợ Cái Chết",
 		"powerCode": "P0526",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0490.png",
@@ -5467,7 +6087,8 @@
 		"name": "Tàn Kiếm",
 		"powerCode": "P0490",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0099.png",
@@ -5477,7 +6098,8 @@
 		"name": "Bất Tử",
 		"powerCode": "P0099",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0891.png",
@@ -5487,7 +6109,8 @@
 		"name": "Bí Mật Linh Hồn",
 		"powerCode": "P0891",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0086.png",
@@ -5497,7 +6120,8 @@
 		"name": "Cách Phòng Thủ Tốt Nhất...",
 		"powerCode": "P0086",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0861.png",
@@ -5507,7 +6131,8 @@
 		"name": "Để Thuỷ Triều Lên",
 		"powerCode": "P0861",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0118.png",
@@ -5517,7 +6142,8 @@
 		"name": "Chia Sẻ Phú Quý",
 		"powerCode": "P0118",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0604.png",
@@ -5527,7 +6153,8 @@
 		"name": "Cú Mèo Bắt Sâu",
 		"powerCode": "P0604",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power", "General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0853.png",
@@ -5537,7 +6164,8 @@
 		"name": "Khách Hàng Thông Thái",
 		"powerCode": "P0853",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0625.png",
@@ -5547,7 +6175,8 @@
 		"name": "Gia Cố",
 		"powerCode": "P0625",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0389.png",
@@ -5557,7 +6186,8 @@
 		"name": "Trang Bị Tận Răng",
 		"powerCode": "P0389",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0570.png",
@@ -5567,7 +6197,8 @@
 		"name": "Con Mồi Bị Thương",
 		"powerCode": "P0570",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0860.png",
@@ -5577,7 +6208,8 @@
 		"name": "Nấm Độc Sinh Sôi",
 		"powerCode": "P0860",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0521.png",
@@ -5587,7 +6219,8 @@
 		"name": "Đôi Mắt Trong Bóng Tối",
 		"powerCode": "P0521",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0394.png",
@@ -5597,7 +6230,8 @@
 		"name": "Bí Kỹ",
 		"powerCode": "P0394",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0682.png",
@@ -5607,7 +6241,8 @@
 		"name": "Chế Tạo Ngọc",
 		"powerCode": "P0682",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Rune Power", "General"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0093.png",
@@ -5617,7 +6252,8 @@
 		"name": "Không Thể Dừng Lại",
 		"powerCode": "P0093",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power", "Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0842.png",
@@ -5627,7 +6263,8 @@
 		"name": "Nhập Cuộc Điều Tra",
 		"powerCode": "P0842",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0847.png",
@@ -5637,7 +6274,8 @@
 		"name": "Sức Mạnh & Chiến Thuật",
 		"powerCode": "P0847",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0074.png",
@@ -5647,7 +6285,8 @@
 		"name": "Nhân Đôi",
 		"powerCode": "P0074",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0391.png",
@@ -5657,7 +6296,8 @@
 		"name": "Sức Mạnh Khỉ Đá",
 		"powerCode": "P0391",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0090.png",
@@ -5667,7 +6307,8 @@
 		"name": "Tiến Hoá",
 		"powerCode": "P0090",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0115.png",
@@ -5677,7 +6318,8 @@
 		"name": "Quan Tâm Chia Sẻ",
 		"powerCode": "P0115",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0538.png",
@@ -5687,7 +6329,8 @@
 		"name": "Nỗi Sợ Cái Chết",
 		"powerCode": "P0538",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0522.png",
@@ -5697,7 +6340,8 @@
 		"name": "Chết Khiếp",
 		"powerCode": "P0522",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0830.png",
@@ -5707,7 +6351,8 @@
 		"name": "Cược Vào Sett",
 		"powerCode": "P0830",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0505.png",
@@ -5717,7 +6362,8 @@
 		"name": "Lồng Đấu",
 		"powerCode": "P0505",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0763.png",
@@ -5727,7 +6373,8 @@
 		"name": "Vượt Trội",
 		"powerCode": "P0763",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Star Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0858.png",
@@ -5737,7 +6384,8 @@
 		"name": "Đội Trinh Thám",
 		"powerCode": "P0858",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0805.png",
@@ -5747,7 +6395,8 @@
 		"name": "Ăn Ngoan Nào Cưng!",
 		"powerCode": "P0805",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0838.png",
@@ -5757,7 +6406,8 @@
 		"name": "Cho Chúng Hiểu",
 		"powerCode": "P0838",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0525.png",
@@ -5767,7 +6417,8 @@
 		"name": "Máu Trong Nước",
 		"powerCode": "P0525",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0680.png",
@@ -5777,7 +6428,8 @@
 		"name": "Đào Thoát Sử Thi",
 		"powerCode": "P0680",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0469.png",
@@ -5787,7 +6439,8 @@
 		"name": "Biểu Tượng Valhir",
 		"powerCode": "P0469",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0614.png",
@@ -5797,7 +6450,8 @@
 		"name": "Cơn Thịnh Nộ Của Bão Tố",
 		"powerCode": "P0614",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0087.png",
@@ -5807,7 +6461,8 @@
 		"name": "Học Vấn Nâng Cao",
 		"powerCode": "P0087",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0829.png",
@@ -5817,7 +6472,8 @@
 		"name": "Trận Đấu Nguy Hiểm Nhất",
 		"powerCode": "P0829",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Arcane Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0892.png",
@@ -5827,7 +6483,8 @@
 		"name": "Món Quà Từ Cõi Xa: Master Yi",
 		"powerCode": "P0892",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["SpiritBlossom Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0735.png",
@@ -5837,7 +6494,8 @@
 		"name": "Hấp Dẫn Khó Cưỡng",
 		"powerCode": "P0735",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["Rune Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0081.png",
@@ -5847,7 +6505,8 @@
 		"name": "Kẻ Đối Đầu",
 		"powerCode": "P0081",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0543.png",
@@ -5857,7 +6516,8 @@
 		"name": "Đôi Mắt Trong Bóng Tối",
 		"powerCode": "P0543",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0079.png",
@@ -5867,7 +6527,8 @@
 		"name": "Ngón Tay Nhớp Nhúa",
 		"powerCode": "P0079",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0075.png",
@@ -5877,7 +6538,8 @@
 		"name": "Dòng Năng Lượng Hoàn Hảo",
 		"powerCode": "P0075",
 		"rarity": "HUYỀN THOẠI",
-		"rarityRef": "Legendary"
+		"rarityRef": "Legendary",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0528.png",
@@ -5887,7 +6549,8 @@
 		"name": "Bọn Chúng Cười Nhạo",
 		"powerCode": "P0528",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["Foe Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0223.png",
@@ -5897,7 +6560,8 @@
 		"name": "Trò Chơi Lật Bài",
 		"powerCode": "P0223",
 		"rarity": "HIẾM",
-		"rarityRef": "Rare"
+		"rarityRef": "Rare",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0097.png",
@@ -5907,7 +6571,8 @@
 		"name": "Chiến Thuật Linh Động",
 		"powerCode": "P0097",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0821.png",
@@ -5917,7 +6582,8 @@
 		"name": "Lưỡi Kiếm Sắc Bén",
 		"powerCode": "P0821",
 		"rarity": "THƯỜNG",
-		"rarityRef": "Common"
+		"rarityRef": "Common",
+		"type": ["Relic Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0119.png",
@@ -5927,7 +6593,8 @@
 		"name": "Thiên Nhiên Báo Thù",
 		"powerCode": "P0119",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0671.png",
@@ -5937,6 +6604,7 @@
 		"name": "Hộ Vệ Của Demacia",
 		"powerCode": "P0671",
 		"rarity": "SỬ THI",
-		"rarityRef": "Epic"
+		"rarityRef": "Epic",
+		"type": ["Relic Power"]
 	}
 ]

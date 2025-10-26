@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import BuildSummary from "./BuildSummary";
 
-// Component này nhận các props từ cha để lọc và hiển thị dữ liệu
 const MyBuilds = ({
 	searchTerm,
 	selectedStarLevel,
@@ -13,15 +12,17 @@ const MyBuilds = ({
 	relicsList,
 	powersList,
 	runesList,
-	onFavoriteToggle,
 	refreshKey,
+	// ADDED: Nhận các hàm xử lý từ component cha (Builds.jsx)
+	onEditSuccess,
+	onDeleteSuccess,
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [myBuilds, setMyBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// Dữ liệu được tính toán trước để tối ưu hóa việc lọc
+	// Dữ liệu được tính toán trước không thay đổi
 	const powerMap = useMemo(
 		() => new Map(powersList.map(p => [p.id, p.name])),
 		[powersList]
@@ -32,7 +33,7 @@ const MyBuilds = ({
 		return map;
 	}, [championsList]);
 
-	// Effect để fetch dữ liệu build của người dùng
+	// Effect để fetch dữ liệu không thay đổi
 	useEffect(() => {
 		const fetchMyBuilds = async () => {
 			if (!user || !token) {
@@ -55,7 +56,6 @@ const MyBuilds = ({
 				if (!response.ok)
 					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
 				const data = await response.json();
-				// Sắp xếp các build mới nhất lên đầu
 				const sortedData = data.items.sort(
 					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 				);
@@ -67,12 +67,36 @@ const MyBuilds = ({
 			}
 		};
 		fetchMyBuilds();
-	}, [user, token, refreshKey]); // Fetch lại khi user, token, hoặc refreshKey thay đổi
+	}, [user, token, refreshKey]);
 
-	// Logic lọc được áp dụng trên `myBuilds`
+	// ADDED: Hàm xử lý khi một build con được SỬA
+	const handleBuildUpdated = updatedBuild => {
+		// 1. Cập nhật UI ngay lập tức
+		setMyBuilds(currentBuilds =>
+			currentBuilds.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+		);
+		// 2. Thông báo cho component cha để có thể trigger các hiệu ứng khác nếu cần
+		if (onEditSuccess) {
+			onEditSuccess();
+		}
+	};
+
+	// ADDED: Hàm xử lý khi một build con bị XÓA
+	const handleBuildDeleted = deletedBuildId => {
+		// 1. Cập nhật UI ngay lập tức
+		setMyBuilds(currentBuilds =>
+			currentBuilds.filter(b => b.id !== deletedBuildId)
+		);
+		// 2. Thông báo cho component cha để trigger refresh toàn cục
+		if (onDeleteSuccess) {
+			onDeleteSuccess();
+		}
+	};
+
+	// Logic lọc không thay đổi
 	const filteredBuilds = useMemo(() => {
 		let tempFiltered = [...myBuilds];
-
+		// ... logic lọc giữ nguyên ...
 		if (selectedStarLevel) {
 			tempFiltered = tempFiltered.filter(
 				build => build.star === parseInt(selectedStarLevel)
@@ -93,7 +117,6 @@ const MyBuilds = ({
 			tempFiltered = tempFiltered.filter(build => {
 				const searchString = [
 					build.championName,
-					build.creator,
 					build.description,
 					...(build.powers || []).map(p => powerMap.get(p) || ""),
 				]
@@ -112,19 +135,17 @@ const MyBuilds = ({
 		championNameToRegionsMap,
 	]);
 
-	// Render
+	// Render không thay đổi
 	if (isLoading) return <p className='text-center mt-8'>Đang tải dữ liệu...</p>;
 	if (error)
 		return (
 			<p className='text-[var(--color-danger)] text-center mt-8'>{error}</p>
 		);
-
 	if (myBuilds.length === 0) {
 		return (
 			<p className='text-center mt-8 text-gray-500'>Bạn chưa tạo build nào.</p>
 		);
 	}
-
 	if (filteredBuilds.length === 0) {
 		return (
 			<p className='text-center mt-8 text-gray-500'>
@@ -143,7 +164,9 @@ const MyBuilds = ({
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
-					onFavoriteToggle={onFavoriteToggle}
+					// ✨ Đây là phần kết nối quan trọng ✨
+					onBuildUpdate={handleBuildUpdated}
+					onBuildDelete={handleBuildDeleted}
 				/>
 			))}
 		</div>

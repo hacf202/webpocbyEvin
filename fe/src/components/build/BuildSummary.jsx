@@ -44,6 +44,7 @@ const BuildSummary = ({
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [buildToDelete, setBuildToDelete] = useState(null);
 	const [buildToEdit, setBuildToEdit] = useState(null);
+	const [creatorDisplayName, setCreatorDisplayName] = useState(build.creator);
 
 	useEffect(() => {
 		const element = contentRef.current;
@@ -82,16 +83,49 @@ const BuildSummary = ({
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
+	// Lấy tên hiển thị của người tạo
+	useEffect(() => {
+		const fetchCreatorName = async () => {
+			// Nếu build là của người dùng hiện tại, sử dụng tên đã có
+			if (user && build.sub === user.sub) {
+				setCreatorDisplayName(user.name || build.creator);
+				return;
+			}
+			// Nếu không có thông tin người tạo, hiển thị mặc định
+			if (!build.creator) {
+				setCreatorDisplayName("Vô danh");
+				return;
+			}
+			// Gọi API để lấy tên hiển thị
+			try {
+				const response = await fetch(`${apiUrl}/api/users/${build.creator}`);
+				if (response.ok) {
+					const data = await response.json();
+					setCreatorDisplayName(data.name || build.creator);
+				} else {
+					setCreatorDisplayName(build.creator); // Fallback về username nếu có lỗi
+				}
+			} catch (error) {
+				console.error("Failed to fetch creator name:", error);
+				setCreatorDisplayName(build.creator); // Fallback về username nếu có lỗi mạng
+			}
+		};
+
+		fetchCreatorName();
+	}, [build.creator, build.sub, user, apiUrl]);
+
 	const isOwner = useMemo(
 		() => user && build.sub === user.sub,
 		[user, build.sub]
 	);
-	const creatorDisplayName = isOwner
-		? user.name || build.creator
-		: build.creator;
+
+	// Hàm xử lý điều hướng
+	const handleNavigate = () => {
+		navigate(`/builds/${build.id}`);
+	};
 
 	const handleLike = async e => {
-		e.stopPropagation();
+		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
 		if (isLiked) return;
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
@@ -110,7 +144,7 @@ const BuildSummary = ({
 	};
 
 	const handleToggleFavorite = async e => {
-		e.stopPropagation();
+		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
 		if (!user) {
 			setShowLoginModal(true);
 			return;
@@ -134,7 +168,7 @@ const BuildSummary = ({
 	};
 
 	const handleEdit = e => {
-		e.stopPropagation();
+		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
 		setBuildToEdit(build);
 		setIsMenuOpen(false);
 	};
@@ -147,7 +181,7 @@ const BuildSummary = ({
 	};
 
 	const handleDeleteClick = e => {
-		e.stopPropagation();
+		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
 		setBuildToDelete(build);
 		setIsMenuOpen(false);
 	};
@@ -211,7 +245,8 @@ const BuildSummary = ({
 		<>
 			<div
 				style={style}
-				className='relative bg-[var(--color-build-summary-bg)] border-2 border-[var(--color-build-summary-border)] rounded-lg shadow-md hover:shadow-[0_8px_24px_var(--color-build-summary-shadow)] hover:-translate-y-1 hover:border-[var(--color-build-summary-hover-border)] transition-all duration-300 flex flex-col'
+				onClick={handleNavigate}
+				className='relative bg-[var(--color-build-summary-bg)] border-2 border-[var(--color-build-summary-border)] rounded-lg shadow-md hover:shadow-[0_8px_24px_var(--color-build-summary-shadow)] hover:-translate-y-1 hover:border-[var(--color-build-summary-hover-border)] transition-all duration-300 flex flex-col cursor-pointer'
 			>
 				<div
 					ref={contentRef}
@@ -237,9 +272,11 @@ const BuildSummary = ({
 									<h3 className='font-bold text-lg text-[var(--color-text-primary)]'>
 										{normalizeName(build.championName)}
 									</h3>
-									<p className='text-xs text-[var(--color-text-secondary)]'>
-										Tạo bởi: {creatorDisplayName || "Vô danh"}
-									</p>
+									<div onClick={e => e.stopPropagation()}>
+										<p className='text-xs text-[var(--color-text-secondary)]'>
+											Tạo bởi: {creatorDisplayName || "Vô danh"}
+										</p>
+									</div>
 								</div>
 							</div>
 
@@ -248,7 +285,10 @@ const BuildSummary = ({
 								{/* Top Row: Buttons */}
 								<div className='flex items-center gap-4'>
 									{/* Like Button & Count */}
-									<div className='flex items-center gap-1.5 text-[var(--color-text-secondary)]'>
+									<div
+										className='flex items-center gap-1.5 text-[var(--color-text-secondary)]'
+										onClick={e => e.stopPropagation()}
+									>
 										<button
 											onClick={handleLike}
 											disabled={isLiked}
@@ -264,7 +304,11 @@ const BuildSummary = ({
 										<span className='font-semibold text-lg'>{likeCount}</span>
 									</div>
 									{/* More Options Menu */}
-									<div className='relative' ref={menuRef}>
+									<div
+										className='relative'
+										ref={menuRef}
+										onClick={e => e.stopPropagation()}
+									>
 										<button
 											onClick={() => setIsMenuOpen(!isMenuOpen)}
 											className='p-1.5 rounded-full hover:bg-[var(--color-border)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-text-secondary)]'
@@ -422,7 +466,10 @@ const BuildSummary = ({
 				</div>
 
 				{isOverflowing && (
-					<div className='w-full text-center py-2 border-t border-[var(--color-build-summary-border)]'>
+					<div
+						className='w-full text-center py-2 border-t border-[var(--color-build-summary-border)]'
+						onClick={e => e.stopPropagation()}
+					>
 						<button
 							onClick={() => setIsExpanded(!isExpanded)}
 							className='font-semibold text-[var(--color-primary)] hover:underline text-sm'

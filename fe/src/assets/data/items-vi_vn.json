@@ -1,5 +1,35 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0188.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0188-full.png",
+		"description": "Ban +0|+1.<br>Ta không nhận sát thương từ bài phép hoặc kỹ năng của đồng minh.<br>",
+		"descriptionRaw": "Ban +0|+1.Ta không nhận sát thương từ bài phép hoặc kỹ năng của đồng minh.",
+		"name": "Giáp Băng",
+		"itemCode": "I0188",
+		"rarity": "THƯỜNG",
+		"rarityRef": "Common"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0185.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0185-full.png",
+		"description": "<link=keyword.Elemental Skill><sprite name=ElementalSkill><style=Keyword>Xuất Trận</style></link>: Gây 1 sát thương lên tất cả đối thủ và Nhà Chính của đối thủ.\r\n",
+		"descriptionRaw": "Xuất Trận: Gây 1 sát thương lên tất cả đối thủ và Nhà Chính của đối thủ.\r\n",
+		"name": "Gai Băng",
+		"itemCode": "I0185",
+		"rarity": "THƯỜNG",
+		"rarityRef": "Common"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0184.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/items/I0184-full.png",
+		"description": "<link=vocab.Play><style=Vocab>Xuất Trận</style></link>: Tạo trên tay 1 bài phép Nguyên Tố ngẫu nhiên.<br>",
+		"descriptionRaw": "Xuất Trận: Tạo trên tay 1 bài phép Nguyên Tố ngẫu nhiên.",
+		"name": "Nghiên Cứu Nguyên Tố",
+		"itemCode": "I0184",
+		"rarity": "THƯỜNG",
+		"rarityRef": "Common"
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/items/I0070.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/items/I0070-full.png",
 		"description": "<link=keyword.SpellShield><sprite name=SpellShield><style=Keyword>Khiên Phép</style></link>",
@@ -16,7 +46,7 @@
 		"descriptionRaw": "Siêu Tốc",
 		"name": "Đồng Hồ Ngưng Đọng",
 		"itemCode": "I0108",
-		"rarity": "Missing Translation",
+		"rarity": "ĐẶC BIỆT",
 		"rarityRef": "Special"
 	},
 	{
@@ -24,7 +54,7 @@
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/items/I0018-full.png",
 		"description": "Khi ta được triệu hồi, <link=vocab.Advance><style=Vocab>Đẩy Nhanh</style></link> ta lên 1 vòng.",
 		"descriptionRaw": "Khi ta được triệu hồi, Đẩy Nhanh ta lên 1 vòng.",
-		"name": "Đồng Hồ Ngưng Đọng",
+		"name": "Đồng Hồ Ngưng Đọng Địa Danh",
 		"itemCode": "I0018",
 		"rarity": "THƯỜNG",
 		"rarityRef": "Common"
@@ -136,7 +166,7 @@
 		"descriptionRaw": "Nhanh",
 		"name": "Đồng Hồ Vụn Vỡ",
 		"itemCode": "I0186",
-		"rarity": "Missing Translation",
+		"rarity": "ĐẶC BIỆT",
 		"rarityRef": "Special"
 	},
 	{
@@ -1044,7 +1074,7 @@
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/items/I0024-full.png",
 		"description": "Khi ta được triệu hồi, rút 1 lá bài.",
 		"descriptionRaw": "Khi ta được triệu hồi, rút 1 lá bài.",
-		"name": "Dược Phẩm Kỹ Năng",
+		"name": "Dược Phẩm Kỹ Năng Địa Danh",
 		"itemCode": "I0024",
 		"rarity": "THƯỜNG",
 		"rarityRef": "Common"
@@ -1474,7 +1504,7 @@
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/items/I0032-full.png",
 		"description": "Khi ta được triệu hồi, triệu hồi 1 Poro 1 tiêu hao ngẫu nhiên.",
 		"descriptionRaw": "Khi ta được triệu hồi, triệu hồi 1 Poro 1 tiêu hao ngẫu nhiên.",
-		"name": "Bánh Quy Poro",
+		"name": "Bánh Quy Poro Địa Danh",
 		"itemCode": "I0032",
 		"rarity": "THƯỜNG",
 		"rarityRef": "Common"

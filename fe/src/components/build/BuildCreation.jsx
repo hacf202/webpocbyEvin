@@ -153,16 +153,40 @@ const BuildCreation = ({ onConfirm, onClose }) => {
 			})),
 		[]
 	);
+
+	// Lọc bỏ các Cổ vật trùng tên
 	const relicOptions = useMemo(
-		() => relicsData.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
+		() =>
+			relicsData
+				.filter(
+					(relic, index, self) =>
+						index === self.findIndex(r => r.name === relic.name)
+				)
+				.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
 		[]
 	);
+
+	// Lọc bỏ các Ngọc bổ trợ trùng tên
 	const runeOptions = useMemo(
-		() => runesData.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
+		() =>
+			runesData
+				.filter(
+					(rune, index, self) =>
+						index === self.findIndex(r => r.name === rune.name)
+				)
+				.map(r => ({ name: r.name, icon: r.assetAbsolutePath })),
 		[]
 	);
+
+	// Lọc bỏ các Sức mạnh trùng tên (đây là nguyên nhân chính của lỗi)
 	const powerOptions = useMemo(
-		() => powersData.map(p => ({ name: p.name, icon: p.assetAbsolutePath })),
+		() =>
+			powersData
+				.filter(
+					(power, index, self) =>
+						index === self.findIndex(p => p.name === power.name)
+				)
+				.map(p => ({ name: p.name, icon: p.assetAbsolutePath })),
 		[]
 	);
 

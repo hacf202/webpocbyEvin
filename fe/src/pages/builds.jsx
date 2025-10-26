@@ -1,6 +1,6 @@
 // src/pages/Builds.jsx
 
-import React, { useEffect, useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext } from "react";
 import championsData from "../assets/data/champions.json";
 import relicsData from "../assets/data/relics-vi_vn.json";
 import powersData from "../assets/data/powers-vi_vn.json";
@@ -8,7 +8,7 @@ import runesData from "../assets/data/runes-vi_vn.json";
 import BuildCreation from "../components/build/BuildCreation";
 import MyBuilds from "../components/build/MyBuilds";
 import MyFavorite from "../components/build/MyFavorite";
-import CommunityBuilds from "../components/build/CommunityBuilds"; // <-- IMPORT COMPONENT MỚI
+import CommunityBuilds from "../components/build/CommunityBuilds";
 import { AuthContext } from "../context/AuthContext";
 import {
 	PlusCircle,
@@ -29,19 +29,16 @@ const Builds = () => {
 	const [activeTab, setActiveTab] = useState("community");
 	const [refreshKey, setRefreshKey] = useState(0);
 
-	// State cho các bộ lọc và tìm kiếm (dùng chung cho các tab)
 	const [searchInput, setSearchInput] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedStarLevel, setSelectedStarLevel] = useState("");
 	const [selectedRegion, setSelectedRegion] = useState("");
 
-	// Dữ liệu gốc
 	const championsList = useMemo(() => championsData, []);
 	const relicsList = useMemo(() => relicsData, []);
 	const powersList = useMemo(() => powersData, []);
 	const runesList = useMemo(() => runesData || [], []);
 
-	// Dữ liệu được tính toán trước
 	const powerMap = useMemo(
 		() => new Map(powersList.map(p => [p.id, p.name])),
 		[powersList]
@@ -52,7 +49,6 @@ const Builds = () => {
 		return map;
 	}, [championsList]);
 
-	// Tùy chọn cho bộ lọc
 	const regionOptions = useMemo(() => {
 		const allRegions = championsList.flatMap(c => c.regions);
 		const uniqueRegions = [...new Set(allRegions)];
@@ -66,16 +62,20 @@ const Builds = () => {
 	const starLevelOptions = useMemo(
 		() => [
 			{ value: "", label: "Tất cả cấp sao" },
+			{ value: "0", label: "0 Sao" },
 			{ value: "1", label: "1 Sao" },
 			{ value: "2", label: "2 Sao" },
 			{ value: "3", label: "3 Sao" },
 			{ value: "4", label: "4 Sao" },
 			{ value: "5", label: "5 Sao" },
+			{ value: "6", label: "6 Sao" },
+			{ value: "7", label: "7 Sao" },
 		],
 		[]
 	);
 
-	// Các hàm xử lý sự kiện
+	// --- CÁC HÀM XỬ LÝ SỰ KIỆN ---
+
 	const handleSearchSubmit = e => {
 		e.preventDefault();
 		setSearchTerm(searchInput);
@@ -92,20 +92,36 @@ const Builds = () => {
 		setSelectedRegion("");
 	};
 
-	const handleCreateBuild = () => {
-		setShowCreateModal(false);
+	// ADDED: Hàm chung để trigger refresh
+	const triggerRefresh = () => {
 		setRefreshKey(prevKey => prevKey + 1);
-		setActiveTab("my-builds");
 	};
 
+	// CHANGED: Xử lý khi TẠO build thành công
+	const handleCreateSuccess = () => {
+		setShowCreateModal(false); // Đóng modal
+		triggerRefresh(); // Kích hoạt tải lại dữ liệu
+		setActiveTab("my-builds"); // Chuyển sang tab "Build Của Tôi"
+	};
+
+	// ADDED: Xử lý khi SỬA build thành công
+	const handleEditSuccess = () => {
+		triggerRefresh();
+		// Thường thì không cần đóng modal hay chuyển tab khi sửa
+	};
+
+	// ADDED: Xử lý khi XÓA build thành công
+	const handleDeleteSuccess = () => {
+		triggerRefresh();
+	};
+
+	// ADDED: Xử lý khi toggle favorite thành công
 	const handleFavoriteToggle = () => {
-		// Khi người dùng yêu thích/bỏ yêu thích một build, trigger refresh
-		// để cập nhật lại danh sách ở tab "Yêu thích" và trạng thái ở các tab khác
-		setRefreshKey(prevKey => prevKey + 1);
+		triggerRefresh();
 	};
 
-	// Render nội dung chính dựa trên tab đang hoạt động
 	const renderContent = () => {
+		// CHANGED: Thêm các handler vào props chung
 		const commonProps = {
 			searchTerm,
 			selectedStarLevel,
@@ -114,8 +130,11 @@ const Builds = () => {
 			relicsList,
 			powersList,
 			runesList,
-			onFavoriteToggle: handleFavoriteToggle,
 			refreshKey, // Truyền refreshKey để component con tự fetch lại khi cần
+			onFavoriteToggle: handleFavoriteToggle,
+			// ADDED: Truyền các hàm xử lý xuống component con
+			onEditSuccess: handleEditSuccess,
+			onDeleteSuccess: handleDeleteSuccess,
 		};
 
 		switch (activeTab) {
@@ -128,6 +147,7 @@ const Builds = () => {
 					/>
 				);
 			case "my-builds":
+				// MyBuilds là nơi cần các hàm này nhất
 				return <MyBuilds {...commonProps} />;
 			case "my-favorites":
 				return <MyFavorite {...commonProps} />;
@@ -234,7 +254,8 @@ const Builds = () => {
 
 			{showCreateModal && (
 				<BuildCreation
-					onConfirm={handleCreateBuild}
+					// CHANGED: onConfirm bây giờ là onCreateSuccess
+					onConfirm={handleCreateSuccess}
 					onClose={() => setShowCreateModal(false)}
 				/>
 			)}

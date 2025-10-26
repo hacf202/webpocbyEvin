@@ -1,4 +1,23 @@
 :root {
+	/* =========================================
+    Màu chủ đề cho Header, Navbar & Footer (Hiện đại)
+    =========================================
+    */
+
+	/* Header */
+	--color-header-bg: #0d3b66;
+	--color-header-text: #ffffff;
+
+	/* Thanh điều hướng (Navbar) - Giữ nguyên */
+	--color-navbar-bg: #0d3b66;
+	--color-navbar-text: #ffffff;
+
+	/* Footer */
+	--color-footer-bg: #e2ecfa; /* Tương đồng với nền chính */
+	--color-footer-border-top: #dee2e6; /* Thêm đường viền để phân tách */
+	--color-footer-text: #333638; /* Dùng màu text phụ */
+	--color-footer-link: #007bff; /* Dùng màu link chính */
+
 	/* Nền & Bề mặt chung */
 	--color-background: #f0f2f5; /* Một màu nền hơi xám nhẹ */
 	--color-surface: #ffffff;

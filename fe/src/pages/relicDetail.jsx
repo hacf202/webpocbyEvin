@@ -9,16 +9,17 @@ function RelicDetail() {
 		relic => relic.relicCode === decodeURIComponent(relicCode)
 	);
 
-	// If relic is not found, display error message
 	if (!relic) {
 		return (
-			<div className='p-4 sm:p-6 text-white'>
+			<div
+				className='p-4 sm:p-6'
+				style={{ color: "var(--color-text-primary)" }}
+			>
 				Không tìm thấy thông tin cổ vật. Mã: {relicCode}
 			</div>
 		);
 	}
 
-	// Find champions that use this relic by matching relic.name in defaultRelicsSet
 	const compatibleChampions = championsData
 		.filter(champion =>
 			[1, 2, 3, 4, 5, 6].some(set =>
@@ -31,21 +32,40 @@ function RelicDetail() {
 		}));
 
 	return (
-		<div className='relative mx-auto max-w-[1200px] p-4 sm:p-6 bg-gray-900 rounded-lg mt-10 text-white'>
-			<div className='flex flex-col md:flex-row gap-4 bg-gray-800 rounded-md'>
+		<div
+			className='relative mx-auto max-w-[1200px] p-4 sm:p-6 rounded-lg mt-10'
+			style={{
+				backgroundColor: "var(--color-surface)",
+				color: "var(--color-text-primary)",
+			}}
+		>
+			<div
+				className='flex flex-col md:flex-row gap-4 rounded-md p-2'
+				style={{ backgroundColor: "var(--color-background)" }}
+			>
 				<img
 					className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg'
 					src={relic.assetAbsolutePath || "/images/placeholder.png"}
 					alt={relic.name || "Unknown Relic"}
 					loading='lazy'
 				/>
-				<div className='flex-1 '>
-					<div className='flex flex-col sm:flex-row sm:justify-between bg-gray-700 rounded-lg p-2 text-2xl sm:text-4xl font-bold m-1'>
-						<h1 className=''>{relic.name}</h1>
+				<div className='flex-1'>
+					<div
+						className='flex flex-col sm:flex-row sm:justify-between rounded-lg p-2 text-2xl sm:text-4xl font-bold m-1'
+						style={{ backgroundColor: "var(--color-background)" }}
+					>
+						<h1>{relic.name}</h1>
 						<h1>ĐỘ HIẾM: {relic.rarity}</h1>
 					</div>
-					{relic.description && (
-						<p className='text-base sm:text-xl mt-4 mx-1 bg-gray-700 rounded-lg overflow-y-auto h-60 p-2'>
+					{relic.descriptionRaw && (
+						<p
+							className='text-base sm:text-xl mt-4 mx-1 rounded-lg overflow-y-auto h-60 p-2'
+							style={{
+								backgroundColor: "var(--color-surface)",
+								border: "1px solid var(--color-border)",
+								color: "var(--color-text-secondary)",
+							}}
+						>
 							{relic.descriptionRaw}
 						</p>
 					)}
@@ -56,12 +76,19 @@ function RelicDetail() {
 				Các tướng có thể dùng cổ vật
 			</h2>
 			{compatibleChampions.length > 0 ? (
-				<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 bg-gray-700 rounded-md p-4'>
+				<div
+					className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 rounded-md p-4'
+					style={{ backgroundColor: "var(--color-background)" }}
+				>
 					{compatibleChampions.map((champion, index) => (
 						<Link
 							key={index}
 							to={`/champion/${encodeURIComponent(champion.name)}`}
-							className='bg-gray-600 rounded-lg p-4 hover:bg-gray-500 transition'
+							className='rounded-lg p-4 transition'
+							style={{
+								backgroundColor: "var(--color-surface)",
+								border: "1px solid var(--color-border)",
+							}}
 						>
 							<img
 								className='w-full max-w-[120px] h-auto mx-auto'
@@ -76,7 +103,10 @@ function RelicDetail() {
 					))}
 				</div>
 			) : (
-				<p className='text-base sm:text-lg bg-gray-700 rounded-md p-4'>
+				<p
+					className='text-base sm:text-lg rounded-md p-4'
+					style={{ backgroundColor: "var(--color-background)" }}
+				>
 					Không có tướng nào sử dụng cổ vật này.
 				</p>
 			)}

@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import BuildSummary from "./BuildSummary";
 
-// Component này nhận props từ cha để lọc và hiển thị dữ liệu
 const MyFavorite = ({
 	searchTerm,
 	selectedStarLevel,
@@ -13,14 +12,18 @@ const MyFavorite = ({
 	relicsList,
 	powersList,
 	runesList,
-	refreshKey, // Nhận refreshKey để fetch lại dữ liệu khi cần
-	onFavoriteToggle, // Nhận hàm xử lý toggle favorite
+	refreshKey,
+	// CHANGED: Đổi tên onFavoriteToggle thành một tên chung hơn onBuildUpdate
+	// để xử lý tất cả các thay đổi, nhưng vẫn nhận onFavoriteToggle để báo lên cha
+	onFavoriteToggle,
+	onDeleteSuccess,
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [favoriteBuilds, setFavoriteBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
+	// Effect fetch dữ liệu không thay đổi
 	useEffect(() => {
 		const fetchFavoriteBuilds = async () => {
 			if (!token) {
@@ -28,28 +31,21 @@ const MyFavorite = ({
 				setIsLoading(false);
 				return;
 			}
-
 			setIsLoading(true);
 			setError(null);
-
 			try {
 				const response = await fetch(
 					`${import.meta.env.VITE_API_URL}/api/builds/favorites`,
 					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
+						headers: { Authorization: `Bearer ${token}` },
 					}
 				);
-
 				if (!response.ok) {
 					throw new Error(
 						"Không thể tải danh sách build yêu thích. Vui lòng thử lại."
 					);
 				}
-
 				const data = await response.json();
-				// Sắp xếp các build mới nhất lên đầu
 				const sortedData = data.sort(
 					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 				);
@@ -60,20 +56,51 @@ const MyFavorite = ({
 				setIsLoading(false);
 			}
 		};
-
 		fetchFavoriteBuilds();
-	}, [token, refreshKey]); // Thêm refreshKey vào dependency array
+	}, [token, refreshKey]);
 
-	// Dữ liệu được tính toán trước để tối ưu hóa việc lọc
+	// ADDED: Xử lý khi người dùng "Bỏ yêu thích"
+	const handleBuildUpdated = updatedBuild => {
+		// Kiểm tra xem người dùng hiện tại có còn trong danh sách yêu thích của build không
+		const isStillFavorite = user && updatedBuild.favorite.includes(user.sub);
+
+		if (!isStillFavorite) {
+			// 1. Nếu không, xóa build này khỏi danh sách trên UI ngay lập tức
+			setFavoriteBuilds(currentBuilds =>
+				currentBuilds.filter(b => b.id !== updatedBuild.id)
+			);
+		} else {
+			// (Trường hợp hiếm) Nếu có một cập nhật khác (như like), thì cập nhật build đó
+			setFavoriteBuilds(currentBuilds =>
+				currentBuilds.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+			);
+		}
+
+		// 2. Luôn thông báo cho component cha để trigger refresh toàn cục
+		if (onFavoriteToggle) {
+			onFavoriteToggle();
+		}
+	};
+	const handleBuildDeleted = deletedBuildId => {
+		// 1. Cập nhật UI ngay lập tức bằng cách xóa build khỏi state cục bộ
+		setFavoriteBuilds(currentBuilds =>
+			currentBuilds.filter(b => b.id !== deletedBuildId)
+		);
+
+		// 2. Thông báo cho component cha (Builds.jsx) để trigger refresh toàn cục,
+		// đảm bảo các tab khác cũng được cập nhật.
+		if (onDeleteSuccess) {
+			onDeleteSuccess();
+		}
+	};
+
+	// Dữ liệu tính toán trước và logic lọc không thay đổi
 	const powerMap = useMemo(
 		() => new Map(powersList.map(p => [p.id, p.name])),
 		[powersList]
 	);
-
-	// SỬA LỖI Ở ĐÂY: Dùng 'regions' thay vì 'region_refs'
 	const championNameToRegionsMap = useMemo(() => {
 		const map = new Map();
-		// Thêm kiểm tra 'championsList' tồn tại để tránh lỗi
 		if (championsList) {
 			championsList.forEach(champion =>
 				map.set(champion.name, champion.regions)
@@ -82,43 +109,32 @@ const MyFavorite = ({
 		return map;
 	}, [championsList]);
 
-	// Lọc danh sách build dựa trên các tiêu chí tìm kiếm và bộ lọc
 	const filteredBuilds = useMemo(() => {
-		// Thêm kiểm tra 'favoriteBuilds' tồn tại
 		if (!favoriteBuilds) return [];
-
 		return favoriteBuilds.filter(build => {
-			// Lọc theo cấp sao
 			if (selectedStarLevel && build.star !== parseInt(selectedStarLevel)) {
 				return false;
 			}
-
-			// Lọc theo khu vực
 			if (selectedRegion) {
 				const buildRegions =
-					championNameToRegionsMap.get(build.championName) || []; // Dùng tên map đã sửa
+					championNameToRegionsMap.get(build.championName) || [];
 				if (!buildRegions.includes(selectedRegion)) {
 					return false;
 				}
 			}
-
-			// Lọc theo từ khóa tìm kiếm
 			if (searchTerm) {
 				const lowercasedTerm = searchTerm.toLowerCase();
 				const searchString = [
 					build.championName,
-					build.creator,
 					build.description,
 					...(build.powers || []).map(p => powerMap.get(p) || ""),
 				]
 					.join(" ")
 					.toLowerCase();
-
 				if (!searchString.includes(lowercasedTerm)) {
 					return false;
 				}
 			}
-
 			return true;
 		});
 	}, [
@@ -127,16 +143,15 @@ const MyFavorite = ({
 		selectedStarLevel,
 		selectedRegion,
 		powerMap,
-		championNameToRegionsMap, // Dùng tên map đã sửa
+		championNameToRegionsMap,
 	]);
 
-	// Render
+	// Render không thay đổi
 	if (isLoading) return <p className='text-center mt-8'>Đang tải dữ liệu...</p>;
 	if (error)
 		return (
 			<p className='text-[var(--color-danger)] text-center mt-8'>{error}</p>
 		);
-
 	if (favoriteBuilds.length === 0) {
 		return (
 			<p className='text-center mt-8 text-gray-500'>
@@ -144,7 +159,6 @@ const MyFavorite = ({
 			</p>
 		);
 	}
-
 	if (filteredBuilds.length === 0) {
 		return (
 			<p className='text-center mt-8 text-gray-500'>
@@ -163,7 +177,10 @@ const MyFavorite = ({
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
-					onFavoriteToggle={onFavoriteToggle} // Truyền hàm xuống
+					// ✨ Truyền hàm xử lý cập nhật xuống ✨
+					// BuildSummary sẽ gọi hàm này khi like/favorite/v.v.
+					onBuildUpdate={handleBuildUpdated}
+					onBuildDelete={handleBuildDeleted}
 				/>
 			))}
 		</div>

@@ -1,5 +1,176 @@
 [
 	{
+		"name": "Anivia",
+		"assets": [
+			{
+				"M": {
+					"fullAbsolutePath": {
+						"S": "https://wiki.leagueoflegends.com/en-us/images/01FR024T3-full.png?3e1e4"
+					},
+					"gameAbsolutePath": {
+						"S": "https://wiki.leagueoflegends.com/en-us/images/01FR024.png?f72fc"
+					},
+					"avatar": {
+						"S": "https://wpocpicture.s3.us-east-1.amazonaws.com/avt/Anivia.png"
+					}
+				}
+			}
+		],
+		"maxStar": 6,
+		"powerStars": [
+			{
+				"S": "Ân Huệ Mùa Đông"
+			},
+			{
+				"S": "Băng Giá Tràn Trề"
+			},
+			{
+				"S": "Ân Huệ Mùa Đông II"
+			},
+			{
+				"S": "Bền Bỉ"
+			},
+			{
+				"S": "Dòng Chảy Năng Lượng"
+			},
+			{
+				"S": "Tường Băng"
+			}
+		],
+		"bonusStars": [],
+		"adventurePowers": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+		"defaultItems": [
+			{
+				"S": "Mỏ Năng Lượng"
+			},
+			{
+				"S": "Hợp Âm Sức Mạnh"
+			},
+			{
+				"S": "Găng Tay Băng Giá"
+			},
+			{
+				"S": "Bất Tử"
+			},
+			{
+				"S": "Mề Đay Nomad"
+			},
+			{
+				"S": "Túi Tinh Thể"
+			},
+			{
+				"S": "Vật Tổ Bóng Đêm"
+			},
+			{
+				"S": "Bùa Canh Giữ"
+			},
+			{
+				"S": "Đá Hiền Triết"
+			}
+		],
+		"defaultRelicsSet1": [
+			{
+				"S": "Phong Kiếm của Yasuo"
+			},
+			{
+				"S": "Bằng Hữu Dịch Chuyển"
+			},
+			{
+				"S": "Lõi Công Nghệ Hoàn Hảo"
+			}
+		],
+		"defaultRelicsSet2": [
+			{
+				"S": "Đệ Tử Bóng Đêm"
+			},
+			{
+				"S": "Phong Kiếm của Yasuo"
+			},
+			{
+				"S": "Lõi Công Nghệ Hoàn Hảo"
+			}
+		],
+		"defaultRelicsSet3": [
+			{
+				"S": "Lõi Công Nghệ Hoàn Hảo"
+			},
+			{
+				"S": "Găng Tinh Vân Sư"
+			},
+			{
+				"S": "Dấu Vết Tử Thần"
+			}
+		],
+		"defaultRelicsSet4": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+		"defaultRelicsSet5": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+		"defaultRelicsSet6": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+
+		"startingDeck": [],
+		"tag": [],
+		"description": "Chưa có mô tả",
+		"regionRefs": ["Freljord"],
+		"regions": ["Freljord"],
+		"cost": 6
+	},
+	{
 		"name": "Yasuo Anh Hùng Lãng Kiếm",
 		"assets": [
 			{
@@ -162,11 +333,22 @@
 				"S": ""
 			}
 		],
+		"rune": [
+			{
+				"S": "Biggledust Sprinkle"
+			},
+			{
+				"S": "Biggledust Sprinkle"
+			},
+			{
+				"S": "Biggledust Sprinkle"
+			}
+		],
 		"startingDeck": [],
 		"tag": [],
 		"description": "Chưa có mô tả",
 		"regionRefs": ["SpiritBlossom"],
-		"regions": ["Hoa Linh Lục Địa"],
+		"regions": ["Hoa Linh Lục Địa", "Ionia"],
 		"cost": 15
 	},
 	{
@@ -332,6 +514,18 @@
 				"S": ""
 			}
 		],
+		"rune": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+
 		"startingDeck": [],
 		"tag": [],
 		"description": "Chưa có mô tả",
@@ -492,6 +686,17 @@
 			}
 		],
 		"defaultRelicsSet6": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
+		"rune": [
 			{
 				"S": ""
 			},
@@ -8662,6 +8867,17 @@
 				"S": "Kế Đối Phó Của Đại Tướng"
 			}
 		],
+		"rune": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
 		"startingDeck": [],
 		"tag": [],
 		"description": "",
@@ -10360,6 +10576,17 @@
 			},
 			{
 				"S": "Mảnh Sao Biến Đổi"
+			}
+		],
+		"rune": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
 			}
 		],
 		"startingDeck": [],
@@ -12742,6 +12969,17 @@
 				"S": ""
 			}
 		],
+		"rune": [
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			},
+			{
+				"S": ""
+			}
+		],
 		"startingDeck": [],
 		"tag": [],
 		"description": "",
@@ -13082,6 +13320,7 @@
 				"S": ""
 			}
 		],
+
 		"startingDeck": [],
 		"tag": [],
 		"description": "",

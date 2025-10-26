@@ -11,16 +11,18 @@ const CommunityBuilds = ({
 	relicsList,
 	powersList,
 	runesList,
-	onFavoriteToggle,
 	refreshKey,
 	powerMap,
 	championNameToRegionsMap,
+	// ADDED: Nhận thêm các prop xử lý sự kiện từ component cha (Builds.jsx)
+	onEditSuccess,
+	onDeleteSuccess,
+	onFavoriteToggle, // onFavoriteToggle vẫn hữu ích để trigger refresh toàn cục
 }) => {
 	const [communityBuilds, setCommunityBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// Fetch builds cộng đồng
 	useEffect(() => {
 		const fetchCommunityBuilds = async () => {
 			setIsLoading(true);
@@ -31,7 +33,6 @@ const CommunityBuilds = ({
 				if (!response.ok)
 					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
 				const data = await response.json();
-				// Sắp xếp các build mới nhất lên đầu
 				const sortedData = data.items.sort(
 					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 				);
@@ -45,8 +46,30 @@ const CommunityBuilds = ({
 		fetchCommunityBuilds();
 	}, [refreshKey]);
 
-	// Logic lọc cho builds cộng đồng
+	// ADDED: Hàm xử lý khi một build con được cập nhật (vd: like, favorite)
+	const handleBuildUpdated = updatedBuild => {
+		setCommunityBuilds(currentBuilds =>
+			currentBuilds.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+		);
+		// Có thể gọi onEditSuccess nếu cần trigger thêm hiệu ứng ở component cha
+		if (onEditSuccess) {
+			onEditSuccess();
+		}
+	};
+
+	// ADDED: Hàm xử lý khi một build con bị xóa
+	const handleBuildDeleted = deletedBuildId => {
+		setCommunityBuilds(currentBuilds =>
+			currentBuilds.filter(b => b.id !== deletedBuildId)
+		);
+		// Gọi onDeleteSuccess để component cha có thể trigger refresh toàn cục
+		if (onDeleteSuccess) {
+			onDeleteSuccess();
+		}
+	};
+
 	const filteredCommunityBuilds = useMemo(() => {
+		// ... logic lọc không thay đổi
 		let tempFiltered = [...communityBuilds];
 		if (selectedStarLevel) {
 			tempFiltered = tempFiltered.filter(
@@ -68,7 +91,6 @@ const CommunityBuilds = ({
 			tempFiltered = tempFiltered.filter(build => {
 				const searchString = [
 					build.championName,
-					build.creator,
 					build.description,
 					...(build.powers || []).map(p => powerMap.get(p) || ""),
 				]
@@ -99,19 +121,20 @@ const CommunityBuilds = ({
 			</p>
 		);
 
-	// Props cần truyền xuống BuildSummary
-	const summaryProps = {
-		championsList,
-		relicsList,
-		powersList,
-		runesList,
-		onFavoriteToggle,
-	};
-
 	return (
 		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
 			{filteredCommunityBuilds.map(build => (
-				<BuildSummary key={build.id} build={build} {...summaryProps} />
+				<BuildSummary
+					key={build.id}
+					build={build}
+					championsList={championsList}
+					relicsList={relicsList}
+					powersList={powersList}
+					runesList={runesList}
+					// Truyền các hàm xử lý mới xuống cho BuildSummary
+					onBuildUpdate={handleBuildUpdated}
+					onBuildDelete={handleBuildDeleted}
+				/>
 			))}
 		</div>
 	);
