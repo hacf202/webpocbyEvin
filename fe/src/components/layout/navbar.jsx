@@ -7,7 +7,7 @@ import Modal from "../common/Modal"; // Giả sử Modal.jsx cùng cấp, hãy �
 import Button from "../common/Button"; // Giả sử Button.jsx cùng cấp, hãy điều chỉnh đường dẫn nếu cần
 
 function Navbar() {
-	const { user, logout } = useContext(AuthContext);
+	const { user, logout, isAdmin } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -201,7 +201,15 @@ function Navbar() {
 											>
 												Thông tin tài khoản
 											</NavLink>
-											{/* --- BƯỚC 3: THAY ĐỔI ONCLICK ĐỂ MỞ MODAL --- */}
+											{isAdmin && (
+												<NavLink
+													to='/admin' // Dẫn đến trang mặc định của admin panel
+													onClick={closeAllMenus}
+													className='block px-4 py-2 text-sm font-semibold text-[var(--color-text-link)] hover:bg-[var(--color-background)]'
+												>
+													Admin Panel
+												</NavLink>
+											)}
 											<button
 												onClick={() => setIsLogoutModalOpen(true)}
 												className='block w-full text-left px-4 py-2 text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-background)]'

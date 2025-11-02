@@ -20,7 +20,7 @@ const featuredPosts = [
 		title: "Jinx 4 sao: Bùng nổ với Hỏa Lực Của Khẩu Pháo Nổi Loạn",
 		category: "Builds",
 		imageUrl:
-			"http://dd.b.pvp.net/6_3_0/set1/vi_vn/img/cards/01PZ040T1-full.png",
+			"https://wiki.leagueoflegends.com/en-us/images/01PZ040T1-full.png?3fc64",
 		excerpt: "Tối ưu hóa sát thương của Jinx với trang bị và cổ vật phù hợp.",
 	},
 	{
@@ -33,9 +33,9 @@ const featuredPosts = [
 			"Găng Tinh Vân Sư là cổ vật mạnh nhất trong game, cung cấp sức mạnh vượt trội cho tướng",
 	},
 	{
-		id: 103,
-		title: "Mẹo farm mảnh tướng nhanh và hiệu quả nhất",
-		category: "Mẹo & Thủ thuật",
+		id: "randomizer",
+		title: "Trải Nghiệm Vòng Quay Path Of Champions",
+		category: "Tool",
 		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Teemo.png",
 		excerpt:
 			"Tổng hợp các phương pháp giúp bạn đẩy nhanh tiến độ nâng cấp tướng.",
@@ -58,7 +58,7 @@ const latestPosts = [
 	},
 	{
 		id: 4,
-		title: "Cách mở khóa tất cả tướng trong Path of Champions",
+		title: "Trải Nghiệm Thử Vòng Quay ",
 		category: "Mẹo & Thủ thuật",
 		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Gwen.png",
 	},

@@ -30,7 +30,7 @@ const Button = ({
 		switch (variant) {
 			// Dành cho các hành động chính: Tạo, Cập nhật, Xác nhận, ...
 			case "primary":
-				return "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] cursor-pointer focus:ring-[var(--color-primary)]";
+				return "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] cursor-pointer focus:ring-[var(--color-primary)] py-3";
 			case "secondary":
 				return "bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] cursor-pointer focus:ring-[var(--color-text-secondary)]";
 			// Dành cho hành động nguy hiểm: Xóa, Đăng xuất

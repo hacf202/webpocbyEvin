@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import relicsData from "../../assets/data/relics-vi_vn.json";
-import powersData from "../../assets/data/powers-vi_vn.json";
+import powersData from "../../assets/data/general_powers.json";
 import runesData from "../../assets/data/runes-vi_vn.json";
 import { Star, Eye, EyeOff, ChevronDown, X, Loader2 } from "lucide-react";
 
@@ -242,7 +242,7 @@ const BuildEditModal = ({ build, isOpen, onClose, onConfirm }) => {
 	if (!isOpen) return null;
 
 	return (
-		<div className='fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50'>
+		<div className='fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50'>
 			<div className='bg-[var(--color-surface)] text-[var(--color-text-primary)] rounded-lg p-6 w-full max-w-3xl max-h-[95vh] overflow-y-auto'>
 				<div className='flex justify-between items-center mb-4'>
 					<h2 className='text-2xl font-bold text-[var(--color-primary)]'>
@@ -262,7 +262,7 @@ const BuildEditModal = ({ build, isOpen, onClose, onConfirm }) => {
 							Xếp hạng sao:
 						</label>
 						<div className='flex items-center'>
-							{[1, 2, 3, 4, 5].map(s => (
+							{[1, 2, 3, 4, 5, 6, 7].map(s => (
 								<Star
 									key={s}
 									size={30}

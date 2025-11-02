@@ -1735,7 +1735,7 @@
 		"cost": 5
 	},
 	{
-		"name": "Elder Dragon",
+		"name": "Rồng Ngàn Tuổi",
 		"assets": [
 			{
 				"M": {
@@ -8211,7 +8211,7 @@
 				}
 			}
 		],
-		"maxStar": 3,
+		"maxStar": 6,
 		"powerStars": [
 			{
 				"S": "Hỏa Cuồng"
@@ -8223,13 +8223,13 @@
 				"S": "Hỏa Cuồng II"
 			},
 			{
-				"S": ""
+				"S": "Tổ Đội Công Kích"
 			},
 			{
-				"S": ""
+				"S": "Dòng Chảy Năng lượng"
 			},
 			{
-				"S": ""
+				"S": "Đứa Trẻ Bóng Tối"
 			}
 		],
 		"bonusStars": [],
@@ -9730,7 +9730,7 @@
 		],
 		"startingDeck": [],
 		"tag": [],
-		"description": "Con này mạnh :v",
+		"description": "-Quỷ Kiếm Darkin, lối chơi kiểm soát bằng cách sử dụng các trang bị Darkin.\n-Sức mạnh của Aatrox nằm phần lớn ở sức mạnh Xiềng Xích Địa Ngục giúp giảm tiêu hao bài trên tay khi đồng minh mang trang bị ra đòn, nghĩa là bạn ra đòn bằng bài quân mang trang bị càng nhiều thì những lá bài trên tay bàng càng dễ sử dụng, khi mở khóa mốc sao Trang Bị Tận Răng thì bài quân có thêm +2|+2 làm cho các bài quân của bạn trở nên cứng cáp và trao đổi hiệu quả hơn nhiều.\n-Vì là 1 tướng cần set up nên Aatrox rất tốn năng lượng nên bạn có thể nâng hoặc lấy các sức mạnh, vật phẩm liên qua đến giảm năng lượng để dễ triển khai hơn, với sức mạnh thì tốt nhất là Pháp Thuật cho bạn năng lượng bài phép để lắp trang bị hoặc những sức mạnh triệu hồi quân khi bắt đầu trận đấu để thay vì việc bỏ năng lượng ra để triệu hồi quân sau đó lắp trang bị thì giờ bạn chỉ cần lắp trang bị lên bài quân có sẵn trên bàn (tin tôi đi nó sẽ hiệu giúp bạn triển khai hiệu quả hơn rất nhiều :D)\n-Có 1 mẹo giúp bạn có 2 Aatrox là bạn hãy lắp trang bị Darkin cho một tùy tùng khác sau đó dùng Chiến binh tận thế thì bạn sẽ có được 2 Aatrox. Cách làm sẽ là lắp 1 trang bị bất kì vào Aatrox để tháo trang bị Darkin của hắn ra -> lắp trang bị Quỷ Kiếm Darkin vào tùy tùng khác -> dùng Chiến binh tận thế. ",
 		"regionRefs": ["Runeterra"],
 		"regions": ["Runeterra"],
 		"cost": 6
@@ -13158,7 +13158,7 @@
 		"cost": 2
 	},
 	{
-		"name": "Poro King",
+		"name": "Vua Poro",
 		"assets": [
 			{
 				"M": {

@@ -1,18 +1,17 @@
-import { memo, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { memo, useMemo, useState } from "react"; // Thêm useState
+import { Link, useParams, useNavigate } from "react-router-dom";
 import championsData from "../assets/data/champions.json";
 import iconRegions from "../assets/data/iconRegions.json";
 import powers from "../assets/data/powers-vi_vn.json";
 import items from "../assets/data/items-vi_vn.json";
 import relics from "../assets/data/relics-vi_vn.json";
-import runes from "../assets/data/runes-vi_vn.json"; // Giả định có tệp dữ liệu cho ngọc
+import runes from "../assets/data/runes-vi_vn.json";
 import championVideoLinks from "../assets/data/linkChampionVideo.json";
 
-// --- RenderItem Component (Cập nhật để hỗ trợ ngọc) ---
+// --- RenderItem Component ---
 const RenderItem = ({ item }) => {
 	if (!item) return null;
 
-	// Hàm để xác định đường dẫn liên kết dựa trên loại của item
 	const getLinkPath = item => {
 		if (item.powerCode) {
 			return `/power/${encodeURIComponent(item.powerCode)}`;
@@ -24,16 +23,14 @@ const RenderItem = ({ item }) => {
 			return `/item/${encodeURIComponent(item.itemCode)}`;
 		}
 		if (item.runeCode) {
-			return `/rune/${encodeURIComponent(item.runeCode)}`; // Thêm xử lý cho runeCode
+			return `/rune/${encodeURIComponent(item.runeCode)}`;
 		}
-		// Thêm các trường hợp khác nếu cần
 		return null;
 	};
 
 	const linkPath = getLinkPath(item);
 	const imgSrc = item.image || "/images/placeholder.png";
 
-	// Nội dung của item
 	const content = (
 		<div className='flex items-start gap-4 p-3 bg-[var(--color-background)] rounded-md border border-[var(--color-border)] h-full hover:bg-[var(--color-build-summary-shadow)] transition'>
 			<img
@@ -59,21 +56,23 @@ const RenderItem = ({ item }) => {
 		</div>
 	);
 
-	// Nếu có đường dẫn, bọc nội dung trong thẻ Link
 	return linkPath ? <Link to={linkPath}>{content}</Link> : content;
 };
 
 function ChampionDetail() {
 	const { name } = useParams();
+	const navigate = useNavigate();
 	const champion = championsData.find(champ => champ.name === name);
 
-	// Helper function to find region icon
+	// --- Bắt đầu thay đổi: Thêm State để quản lý trạng thái hiển thị mô tả ---
+	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+	// --- Kết thúc thay đổi ---
+
 	const findRegionIconLink = regionName => {
 		const region = iconRegions.find(item => item.name === regionName);
 		return region?.iconAbsolutePath || "/images/default-icon.png";
 	};
 
-	// Sử dụng useMemo để xử lý và chuẩn bị dữ liệu một lần
 	const powerStarsFull = useMemo(() => {
 		if (!champion?.powerStars) return [];
 		return champion.powerStars.map(power => {
@@ -90,7 +89,7 @@ function ChampionDetail() {
 	const adventurePowersFull = useMemo(() => {
 		if (!champion?.adventurePowers) return [];
 		return champion.adventurePowers
-			.filter(power => power.S) // Lọc ra các power có tên không rỗng
+			.filter(power => power.S)
 			.map(power => {
 				const powerData = powers.find(p => p.name === power.S);
 				return {
@@ -105,7 +104,7 @@ function ChampionDetail() {
 	const defaultItemsFull = useMemo(() => {
 		if (!champion?.defaultItems) return [];
 		return champion.defaultItems
-			.filter(item => item.S) // Lọc ra các item có tên không rỗng
+			.filter(item => item.S)
 			.map(item => {
 				const itemData = items.find(i => i.name === item.S);
 				return {
@@ -117,18 +116,17 @@ function ChampionDetail() {
 			});
 	}, [champion]);
 
-	// Dữ liệu ngọc cho tướng Hoa Linh Lục Địa
 	const runesFull = useMemo(() => {
 		if (!champion?.rune) return [];
 		return champion.rune
-			.filter(rune => rune.S) // Lọc ra các rune có tên không rỗng
+			.filter(rune => rune.S)
 			.map(rune => {
 				const runeData = runes.find(r => r.name === rune.S);
 				return {
 					name: rune.S,
 					image: runeData?.assetAbsolutePath || "/images/placeholder.png",
 					description: runeData?.description || "",
-					runeCode: runeData?.runeCode || null, // Giả định rune có runeCode
+					runeCode: runeData?.runeCode || null,
 				};
 			});
 	}, [champion]);
@@ -140,7 +138,7 @@ function ChampionDetail() {
 			const setName = `defaultRelicsSet${i}`;
 			if (champion[setName] && champion[setName].some(relic => relic.S)) {
 				const relicsInSet = champion[setName]
-					.filter(relic => relic.S) // Lọc ra các relic có tên không rỗng
+					.filter(relic => relic.S)
 					.map(relic => {
 						const relicData = relics.find(r => r.name === relic.S);
 						return {
@@ -186,9 +184,17 @@ function ChampionDetail() {
 				color: "var(--color-text-primary)",
 			}}
 		>
+			{/* Back Button */}
+			<button
+				onClick={() => navigate(-1)}
+				className='absolute top-4 left-4 bg-[var(--color-background)] hover:bg-[var(--color-border)] text-[var(--color-text-primary)] font-bold py-2 px-4 rounded-lg transition'
+			>
+				&larr; Quay lại
+			</button>
+
 			{/* Champion Header */}
 			<div
-				className='flex flex-col md:flex-row gap-4 rounded-md'
+				className='flex flex-col md:flex-row gap-4 rounded-md mt-16'
 				style={{ backgroundColor: "var(--color-background)" }}
 			>
 				<img
@@ -214,13 +220,15 @@ function ChampionDetail() {
 							</div>
 						</div>
 						<div className='flex flex-row items-center'>
-							<div
-								className='text-2xl sm:text-4xl font-bold m-1'
-								style={{ color: "var(--color-text-secondary)" }}
-							>
-								MAX STAR: {champion.maxStar}
+							<div className='flex items-center gap-2'>
+								<div
+									className='text-2xl sm:text-4xl font-bold'
+									style={{ color: "var(--color-text-secondary)" }}
+								>
+									Sao tối đa: {champion.maxStar}
+								</div>
 							</div>
-							<div className='gap-2 flex'>
+							<div className='gap-2 flex ml-4'>
 								{champion.regions &&
 									champion.regions.map((region, index) => (
 										<img
@@ -234,18 +242,36 @@ function ChampionDetail() {
 							</div>
 						</div>
 					</div>
+
+					{/* --- Bắt đầu thay đổi: Cập nhật phần hiển thị mô tả --- */}
 					{champion.description && (
-						<p
-							className='text-base sm:text-xl mt-4 mx-1 rounded-lg overflow-y-auto h-60 p-2'
-							style={{
-								backgroundColor: "var(--color-background)",
-								color: "var(--color-text-secondary)",
-								border: "1px solid var(--color-border)",
-							}}
-						>
-							{champion.description}
-						</p>
+						<div className='mt-4 mx-1'>
+							<p
+								className={`text-base sm:text-xl rounded-lg p-2 transition-all duration-300 ${
+									!isDescriptionExpanded ? "overflow-y-auto h-60" : "h-auto"
+								}`}
+								style={{
+									backgroundColor: "var(--color-background)",
+									color: "var(--color-text-secondary)",
+									border: "1px solid var(--color-border)",
+									whiteSpace: "pre-line", // Thuộc tính này giúp nhận diện và hiển thị ký tự \n
+								}}
+							>
+								{champion.description}
+							</p>
+							<button
+								onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+								className='text-sm font-semibold mt-2 px-3 py-1 rounded hover:bg-[var(--color-border)] transition'
+								style={{
+									color: "var(--color-text-link)",
+									backgroundColor: "transparent",
+								}}
+							>
+								{isDescriptionExpanded ? "Thu gọn" : "Hiển thị toàn bộ"}
+							</button>
+						</div>
 					)}
+					{/* --- Kết thúc thay đổi --- */}
 				</div>
 			</div>
 

@@ -1,13 +1,39 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { usePersistentState } from "../hooks/usePersistentState";
 import InputField from "../components/common/InputField";
+import MultiSelectFilter from "../components/common/MultiSelectFilter";
 import DropdownFilter from "../components/common/DropdownFilter";
 import Button from "../components/common/Button";
-import relicsData from "../assets/data/relics-vi_vn.json";
-import { Search, XCircle, RotateCw } from "lucide-react";
+import RarityIcon from "../components/common/RarityIcon";
+import { Search, RotateCw, XCircle } from "lucide-react";
+import { removeAccents } from "../utils/vietnameseUtils";
 
-function Relics() {
+const ITEMS_PER_PAGE = 21;
+
+// --- Component phụ ---
+const LoadingSpinner = () => (
+	<div className='flex justify-center items-center h-64'>
+		<div className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500'></div>
+	</div>
+);
+
+const ErrorMessage = ({ message, onRetry }) => (
+	<div className='text-center p-10 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg'>
+		<h2 className='text-xl font-bold mb-2'>Đã xảy ra lỗi</h2>
+		<p className='mb-4'>{message}</p>
+		<Button onClick={onRetry} variant='danger'>
+			Thử lại
+		</Button>
+	</div>
+);
+
+// --- Component chính ---
+function RelicList() {
+	// State quản lý dữ liệu và bộ lọc
+	const [relics, setRelics] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const [searchInput, setSearchInput] = usePersistentState(
 		"relicsSearchInput",
 		""
@@ -16,157 +42,297 @@ function Relics() {
 		"relicsSearchTerm",
 		""
 	);
-	const [selectedRarity, setSelectedRarity] = usePersistentState(
-		"relicsSelectedRarity",
-		""
+	const [selectedRarities, setSelectedRarities] = usePersistentState(
+		"relicsSelectedRarities",
+		[]
+	);
+	const [selectedTypes, setSelectedTypes] = usePersistentState(
+		"relicsSelectedTypes",
+		[]
+	);
+	const [selectedStacks, setSelectedStacks] = usePersistentState(
+		"relicsSelectedStacks",
+		[]
 	);
 	const [sortOrder, setSortOrder] = usePersistentState(
 		"relicsSortOrder",
-		"asc"
+		"name-asc"
+	);
+	const [currentPage, setCurrentPage] = usePersistentState(
+		"relicsCurrentPage",
+		1
 	);
 
-	const filterOptions = useMemo(() => {
-		const rarities = [...new Set(relicsData.map(relic => relic.rarity))].sort();
-		return {
-			rarities: [
-				{ value: "", label: "Tất cả độ hiếm" },
-				...rarities.map(r => ({ value: r, label: r })),
-			],
-			sort: [
-				{ value: "asc", label: "A-Z" },
-				{ value: "desc", label: "Z-A" },
-				{ value: "rarityAsc", label: "Độ hiếm tăng dần" },
-				{ value: "rarityDesc", label: "Độ hiếm giảm dần" },
-			],
-		};
-	}, []);
-
-	const rarityOrderMap = useMemo(
-		() => ({ THƯỜNG: 0, HIẾM: 1, "SỬ THI": 2 }),
-		[]
-	);
-
-	const sortedRelics = useMemo(() => {
-		let relics = relicsData.filter(relic =>
-			relic.name.toLowerCase().includes(searchTerm.toLowerCase())
-		);
-		if (selectedRarity) {
-			relics = relics.filter(relic => relic.rarity === selectedRarity);
+	// Hàm gọi API
+	const fetchRelics = async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const backendUrl =
+				import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+			const response = await fetch(`${backendUrl}/api/relics`);
+			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
+			const data = await response.json();
+			setRelics(data);
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setLoading(false);
 		}
-		switch (sortOrder) {
-			case "asc":
-				return relics.sort((a, b) => a.name.localeCompare(b.name));
-			case "desc":
-				return relics.sort((a, b) => b.name.localeCompare(a.name));
-			case "rarityAsc":
-				return relics.sort(
-					(a, b) => rarityOrderMap[a.rarity] - rarityOrderMap[b.rarity]
-				);
-			case "rarityDesc":
-				return relics.sort(
-					(a, b) => rarityOrderMap[b.rarity] - rarityOrderMap[a.rarity]
-				);
-			default:
-				return relics;
-		}
-	}, [searchTerm, selectedRarity, sortOrder, rarityOrderMap]);
-
-	const handleSearchSubmit = e => {
-		e.preventDefault();
-		setSearchTerm(searchInput);
 	};
 
+	useEffect(() => {
+		fetchRelics();
+	}, []);
+
+	// Tạo tùy chọn cho bộ lọc
+	const filterOptions = useMemo(() => {
+		if (relics.length === 0)
+			return { rarities: [], types: [], stacks: [], sort: [] };
+
+		// Sử dụng icon trong bộ lọc
+		const rarities = [...new Set(relics.map(r => r.rarity))]
+			.sort()
+			.map(rarity => ({
+				value: rarity,
+				label: rarity,
+				iconComponent: <RarityIcon rarity={rarity} />, // Sử dụng component icon
+			}));
+
+		const types = [...new Set(relics.map(r => r.type).filter(Boolean))]
+			.sort()
+			.map(type => ({ value: type, label: type }));
+
+		const stacks = [...new Set(relics.map(r => r.stack))]
+			.sort((a, b) => a - b)
+			.map(stack => ({ value: stack, label: `Stack ${stack}` }));
+
+		const sort = [
+			{ value: "name-asc", label: "Tên A-Z" },
+			{ value: "name-desc", label: "Tên Z-A" },
+		];
+
+		return { rarities, types, stacks, sort };
+	}, [relics]);
+
+	// Lọc và sắp xếp danh sách
+	const filteredRelics = useMemo(() => {
+		let filtered = [...relics];
+		if (searchTerm) {
+			const normalized = removeAccents(searchTerm.toLowerCase());
+			filtered = filtered.filter(r =>
+				removeAccents(r.name.toLowerCase()).includes(normalized)
+			);
+		}
+		if (selectedRarities.length > 0) {
+			filtered = filtered.filter(r => selectedRarities.includes(r.rarity));
+		}
+		if (selectedTypes.length > 0) {
+			filtered = filtered.filter(r => selectedTypes.includes(r.type));
+		}
+		if (selectedStacks.length > 0) {
+			filtered = filtered.filter(r => selectedStacks.includes(r.stack));
+		}
+
+		const [sortKey, sortDirection] = sortOrder.split("-");
+		filtered.sort((a, b) => {
+			const valA = a[sortKey] || "";
+			const valB = b[sortKey] || "";
+			return sortDirection === "asc"
+				? valA.localeCompare(valB)
+				: valB.localeCompare(valA);
+		});
+
+		return filtered;
+	}, [
+		relics,
+		searchTerm,
+		selectedRarities,
+		selectedTypes,
+		selectedStacks,
+		sortOrder,
+	]);
+
+	// Các hàm xử lý sự kiện
+	const handleSearch = () => {
+		setSearchTerm(searchInput);
+		setCurrentPage(1);
+	};
 	const handleClearSearch = () => {
 		setSearchInput("");
 		setSearchTerm("");
+		setCurrentPage(1);
 	};
-
 	const handleResetFilters = () => {
 		handleClearSearch();
-		setSelectedRarity("");
-		setSortOrder("asc");
+		setSelectedRarities([]);
+		setSelectedTypes([]);
+		setSelectedStacks([]);
+		setSortOrder("name-asc");
+		setCurrentPage(1);
+	};
+	const handlePageChange = page => {
+		if (page > 0 && page <= totalPages) {
+			setCurrentPage(page);
+		}
 	};
 
-	return (
-		<div className='container mx-auto p-4'>
-			<h1 className='text-3xl font-bold mb-6 text-[var(--color-primary)]'>
-				Cổ Vật
-			</h1>
-			<div className='mb-6 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]'>
-				<form onSubmit={handleSearchSubmit} className='mb-4'>
-					<div className='relative flex items-center gap-4'>
-						<InputField
-							value={searchInput}
-							onChange={e => setSearchInput(e.target.value)}
-							placeholder='Tìm theo tên cổ vật...'
-							className='flex-grow pr-10'
-						/>
-						{searchInput && (
-							<button
-								type='button'
-								onClick={handleClearSearch}
-								className='absolute right-[calc(6rem+1rem)] mr-2 text-gray-500 hover:text-gray-800'
-							>
-								<XCircle size={20} />
-							</button>
-						)}
-						<Button
-							type='submit'
-							variant='primary'
-							iconLeft={<Search size={18} />}
-						>
-							Tìm
-						</Button>
-					</div>
-				</form>
-				<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-					<DropdownFilter
-						options={filterOptions.rarities}
-						selectedValue={selectedRarity}
-						onChange={setSelectedRarity}
-						placeholder='Tất cả độ hiếm'
-					/>
-					<DropdownFilter
-						options={filterOptions.sort}
-						selectedValue={sortOrder}
-						onChange={setSortOrder}
-						placeholder='Sắp xếp theo'
-					/>
-					<Button
-						variant='outline'
-						onClick={handleResetFilters}
-						iconLeft={<RotateCw size={16} />}
-					>
-						Đặt lại
-					</Button>
-				</div>
-			</div>
+	const totalPages = Math.ceil(filteredRelics.length / ITEMS_PER_PAGE);
+	const paginatedRelics = filteredRelics.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
 
-			<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4'>
-				{sortedRelics.map(relic => (
-					<Link
-						key={relic.relicCode}
-						to={`/relic/${encodeURIComponent(relic.relicCode)}`}
-						className='flex items-center gap-4 bg-[var(--color-surface)] p-4 rounded-lg hover:bg-gray-200 transition border border-[var(--color-border)]'
-					>
-						<img
-							src={relic.assetAbsolutePath}
-							alt={relic.name}
-							className='w-16 h-16 object-cover rounded-md border border-[var(--color-border)]'
-						/>
-						<div className='flex-grow'>
-							<h3 className='font-bold text-lg text-[var(--color-text-primary)]'>
-								{relic.name}
-							</h3>
-							<p className='text-sm text-[var(--color-text-secondary)]'>
-								{relic.rarity}
-							</p>
+	if (loading) return <LoadingSpinner />;
+	if (error) return <ErrorMessage message={error} onRetry={fetchRelics} />;
+
+	return (
+		<div>
+			<h1 className='text-3xl font-bold mb-6 text-[var(--color-text-primary)]'>
+				Danh Sách Di Vật
+			</h1>
+			<div className='flex flex-col lg:flex-row gap-8'>
+				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+					<div className='p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4'>
+						<div>
+							<label className='block text-sm font-medium mb-1 text-[var(--color-text-secondary)]'>
+								Tìm kiếm
+							</label>
+							<div className='relative'>
+								<InputField
+									value={searchInput}
+									onChange={e => setSearchInput(e.target.value)}
+									onKeyPress={e => e.key === "Enter" && handleSearch()}
+									placeholder='Nhập tên di vật...'
+								/>
+								{searchInput && (
+									<button
+										onClick={handleClearSearch}
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 '
+									>
+										<XCircle size={18} />
+									</button>
+								)}
+							</div>
+							<Button onClick={handleSearch} className='w-full mt-2'>
+								<Search size={16} className='mr-2' />
+								Tìm kiếm
+							</Button>
 						</div>
-					</Link>
-				))}
+
+						<MultiSelectFilter
+							label='Độ hiếm'
+							options={filterOptions.rarities}
+							selectedValues={selectedRarities}
+							onChange={setSelectedRarities}
+							placeholder='Tất cả Độ hiếm'
+						/>
+						<MultiSelectFilter
+							label='Loại'
+							options={filterOptions.types}
+							selectedValues={selectedTypes}
+							onChange={setSelectedTypes}
+							placeholder='Tất cả Loại'
+						/>
+						<MultiSelectFilter
+							label='Stack'
+							options={filterOptions.stacks}
+							selectedValues={selectedStacks}
+							onChange={setSelectedStacks}
+							placeholder='Tất cả Stack'
+						/>
+						<DropdownFilter
+							label='Sắp xếp'
+							options={filterOptions.sort}
+							selectedValue={sortOrder}
+							onChange={setSortOrder}
+						/>
+
+						<div className='pt-2'>
+							<Button
+								variant='outline'
+								onClick={handleResetFilters}
+								iconLeft={<RotateCw size={16} />}
+								className='w-full'
+							>
+								Đặt lại bộ lọc
+							</Button>
+						</div>
+					</div>
+				</aside>
+				<div className='lg:w-4/5 w-full lg:order-first'>
+					<div className='bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] p-4 sm:p-6'>
+						{paginatedRelics.length > 0 ? (
+							<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'>
+								{paginatedRelics.map(relic => (
+									<Link
+										key={relic.relicCode}
+										to={`/relic/${encodeURIComponent(relic.relicCode)}`}
+										className='group relative flex items-center gap-4 bg-[var(--color-surface)] p-4 rounded-lg hover:bg-gray-200  transition border border-[var(--color-border)]'
+									>
+										<img
+											src={relic.assetAbsolutePath}
+											alt={relic.name}
+											className='w-16 h-16 object-cover rounded-md border border-[var(--color-border)]'
+										/>
+										<div className='flex-grow'>
+											<h3 className='font-bold text-lg text-[var(--color-text-primary)]'>
+												{relic.name}
+											</h3>
+											{/* Sử dụng icon trong danh sách */}
+											<div className='flex items-center gap-2 text-sm text-[var(--color-text-secondary)]'>
+												<RarityIcon rarity={relic.rarity} />
+												<span>{relic.rarity}</span>
+											</div>
+											<p className='text-sm text-[var(--color-text-secondary)] mt-1'>
+												Stack: {relic.stack}
+											</p>
+										</div>
+										<div className='absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-72 p-3 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible pointer-events-none z-10'>
+											<p className='whitespace-pre-wrap'>
+												{relic.descriptionRaw}
+											</p>
+											<div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800'></div>
+										</div>
+									</Link>
+								))}
+							</div>
+						) : (
+							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-gray-500 dark:text-gray-400'>
+								<div>
+									<p className='font-semibold text-lg'>
+										Không tìm thấy di vật nào phù hợp.
+									</p>
+									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+								</div>
+							</div>
+						)}
+						{totalPages > 1 && (
+							<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
+								<Button
+									onClick={() => handlePageChange(currentPage - 1)}
+									disabled={currentPage === 1}
+									variant='outline'
+								>
+									Trang trước
+								</Button>
+								<span className='text-lg font-medium text-[var(--color-text-primary)]'>
+									{currentPage} / {totalPages}
+								</span>
+								<Button
+									onClick={() => handlePageChange(currentPage + 1)}
+									disabled={currentPage === totalPages}
+									variant='outline'
+								>
+									Trang sau
+								</Button>
+							</div>
+						)}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
 }
 
-export default Relics;
+export default RelicList;

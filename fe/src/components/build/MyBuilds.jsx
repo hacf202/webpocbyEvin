@@ -45,7 +45,7 @@ const MyBuilds = ({
 			setError(null);
 			try {
 				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/api/my-builds`,
+					`${import.meta.env.VITE_API_URL}/api/builds/my-builds`,
 					{
 						headers: {
 							"Content-Type": "application/json",
@@ -155,7 +155,7 @@ const MyBuilds = ({
 	}
 
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6'>
+		<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6'>
 			{filteredBuilds.map(build => (
 				<BuildSummary
 					key={build.id}

@@ -1,0 +1,43 @@
+:root {
+	/* =========================================
+    Theme "Thanh Lịch & Tối Giản" (Nền sáng)
+    =========================================
+    */
+
+	/* Header, Navbar & Footer */
+	--color-header-bg: #ffffff;
+	--color-header-text: #333333;
+
+	--color-navbar-bg: #ffffff;
+	--color-navbar-text: #333333;
+
+	--color-footer-bg: #ffffff;
+	--color-footer-border-top: #eeeeee;
+	--color-footer-text: #666666;
+	--color-footer-link: #001f3f;
+
+	/* Nền & Bề mặt chung */
+	--color-background: #f8f8f8; /* Nền xám rất nhẹ */
+	--color-surface: #ffffff;
+	--color-border: #eeeeee;
+
+	/* Văn bản */
+	--color-text-primary: #333333; /* Đen không quá gắt */
+	--color-text-secondary: #666666;
+	--color-text-link: #001f3f; /* Xanh Navy cho link */
+
+	/* Màu hành động */
+	--color-primary: #001f3f; /* Xanh Navy đậm (Navy Blue) */
+	--color-primary-hover: #001429;
+	--color-danger: #d9534f;
+	--color-danger-hover: #c9302c;
+	--color-warning: #f0ad4e;
+	--color-star: #d4af37; /* Màu vàng Gold cho sang trọng */
+
+	/* BuildSummary */
+	--color-build-summary-bg: #ffffff;
+	--color-build-summary-border: #eeeeee;
+	--color-primary-build-summary-border: var(--color-primary);
+	--color-build-summary-hover-border: var(--color-primary);
+	--color-build-summary-shadow: rgba(0, 0, 0, 0.05);
+}

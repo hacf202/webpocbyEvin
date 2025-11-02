@@ -1,8 +1,8 @@
+// src/components/build/BuildDetail.jsx
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom"; // Import Link
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Star, ThumbsUp, Heart, Trash2, Edit, ChevronLeft } from "lucide-react";
 
-// Import context và các components con
 import { useAuth } from "../context/AuthContext";
 import Modal from "../components/common/Modal";
 import Button from "../components/common/Button";
@@ -10,14 +10,9 @@ import BuildEditModal from "../components/build/BuildEditModal";
 import BuildDelete from "../components/build/BuildDelete";
 import CommentsSection from "../components/build/CommentsSection";
 
-// Import dữ liệu JSON tĩnh
-import championsData from "../assets/data/champions.json";
-import relicsData from "../assets/data/relics-vi_vn.json";
-import runesData from "../assets/data/runes-vi_vn.json";
-import powersData from "../assets/data/powers-vi_vn.json";
+// === CHỈ regionsData DÙNG IMPORT JSON ===
 import regionsData from "../assets/data/iconRegions.json";
 
-// --- BuildDetail Component ---
 const BuildDetail = () => {
 	const { buildId } = useParams();
 	const navigate = useNavigate();
@@ -38,17 +33,67 @@ const BuildDetail = () => {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [buildToDelete, setBuildToDelete] = useState(null);
 
+	// Dữ liệu động từ API
+	const [champions, setChampions] = useState([]);
+	const [relics, setRelics] = useState([]);
+	const [runes, setRunes] = useState([]);
+	const [powers, setPowers] = useState([]);
+	const [loadingData, setLoadingData] = useState(true);
+
 	const isOwner = useMemo(
 		() => user && build && build.sub === user.sub,
 		[user, build]
 	);
 
+	// === Tải dữ liệu động từ API (không bao gồm regions) ===
+	useEffect(() => {
+		const fetchStaticData = async () => {
+			setLoadingData(true);
+			try {
+				const [champRes, relicRes, runeRes, powerRes] = await Promise.all([
+					fetch(`${apiUrl}/api/champions`),
+					fetch(`${apiUrl}/api/relics`),
+					fetch(`${apiUrl}/api/runes`),
+					fetch(`${apiUrl}/api/generalPowers`),
+				]);
+
+				const [champData, relicData, runeData, powerData] = await Promise.all([
+					champRes.json(),
+					relicRes.json(),
+					runeRes.json(),
+					powerRes.json(),
+				]);
+
+				setChampions(champData);
+				setRelics(relicData);
+				setRunes(runeData);
+				setPowers(powerData);
+			} catch (err) {
+				console.error("Lỗi tải dữ liệu từ API:", err);
+			} finally {
+				setLoadingData(false);
+			}
+		};
+
+		fetchStaticData();
+	}, [apiUrl]);
+
+	// === Tải build cụ thể ===
 	const fetchBuild = useCallback(async () => {
 		setLoadingBuild(true);
 		try {
-			const res = await fetch(`${apiUrl}/api/builds/${buildId}`);
-			if (!res.ok)
-				throw new Error("Không tìm thấy build hoặc build này là riêng tư.");
+			const headers = {};
+			if (token) {
+				headers.Authorization = `Bearer ${token}`;
+			}
+
+			const res = await fetch(`${apiUrl}/api/builds/${buildId}`, { headers });
+			if (!res.ok) {
+				const errData = await res.json().catch(() => ({}));
+				throw new Error(
+					errData.error || "Không tìm thấy build hoặc không có quyền truy cập."
+				);
+			}
 			const data = await res.json();
 			setBuild(data);
 			setLikeCount(data.like || 0);
@@ -60,21 +105,20 @@ const BuildDetail = () => {
 		} finally {
 			setLoadingBuild(false);
 		}
-	}, [buildId, apiUrl, user]);
+	}, [buildId, apiUrl, token, user]);
 
 	useEffect(() => {
 		fetchBuild();
 	}, [fetchBuild]);
 
+	// === Tải tên người tạo ===
 	useEffect(() => {
 		const fetchCreatorName = async () => {
 			if (!build || !build.creator) return;
-
 			if (isOwner) {
 				setCreatorDisplayName(user.name || build.creator);
 				return;
 			}
-
 			try {
 				const response = await fetch(`${apiUrl}/api/users/${build.creator}`);
 				if (response.ok) {
@@ -85,28 +129,30 @@ const BuildDetail = () => {
 				console.error("Failed to fetch creator name:", error);
 			}
 		};
-
 		fetchCreatorName();
 	}, [build, isOwner, user, apiUrl]);
 
+	// === Kiểm tra like/favorite local ===
 	useEffect(() => {
-		if (sessionStorage.getItem(`liked_${buildId}`)) setIsLiked(true);
+		const liked = sessionStorage.getItem(`liked_${buildId}`);
+		if (liked) setIsLiked(true);
 	}, [buildId]);
 
 	useEffect(() => {
 		setIsFavorite(user && favoriteList.includes(user.sub));
 	}, [user, favoriteList]);
 
+	// === Xử lý like ===
 	const handleLike = async e => {
 		e.stopPropagation();
-		if (isLiked) return;
+		if (isLiked || !build) return;
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
 				method: "PATCH",
 			});
 			if (res.ok) {
-				const updatedBuild = await res.json();
-				setLikeCount(updatedBuild.like);
+				const updated = await res.json();
+				setLikeCount(updated.like);
 				setIsLiked(true);
 				sessionStorage.setItem(`liked_${build.id}`, "true");
 			}
@@ -115,12 +161,14 @@ const BuildDetail = () => {
 		}
 	};
 
+	// === Xử lý yêu thích ===
 	const handleToggleFavorite = async e => {
 		e.stopPropagation();
 		if (!user) {
 			setShowLoginModal(true);
 			return;
 		}
+		if (!build) return;
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/favorite`, {
 				method: "PATCH",
@@ -130,30 +178,35 @@ const BuildDetail = () => {
 				},
 			});
 			if (res.ok) {
-				const updatedBuild = await res.json();
-				setFavoriteList(updatedBuild.favorite);
+				const updated = await res.json();
+				setFavoriteList(updated.favorite);
 			}
 		} catch (error) {
 			console.error("Error toggling favorite:", error);
 		}
 	};
 
+	// === Cập nhật / xóa build ===
 	const handleBuildUpdate = updatedData => {
 		setBuild(prev => ({ ...prev, ...updatedData }));
 		setShowEditModal(false);
 	};
+
 	const handleBuildDelete = () => {
 		setBuildToDelete(null);
 		navigate("/builds");
 	};
 
+	// === Helper: chuẩn hóa tên ===
 	const normalizeName = val =>
 		val && typeof val === "object" ? val.S || "" : String(val || "");
 
+	// === Tìm thông tin tướng ===
 	const championInfo = useMemo(() => {
-		const name = normalizeName(build?.championName);
-		return name ? championsData.find(c => c.name === name) : null;
-	}, [build?.championName]);
+		if (!build?.championName) return null;
+		const name = normalizeName(build.championName);
+		return champions.find(c => c.name === name) || null;
+	}, [build?.championName, champions]);
 
 	const championImage = useMemo(
 		() => championInfo?.assets?.[0]?.M?.avatar?.S || "/images/placeholder.png",
@@ -162,88 +215,64 @@ const BuildDetail = () => {
 
 	const championRegions = useMemo(() => {
 		if (!championInfo?.regions) return [];
-		return championInfo.regions.map(regionName => {
-			const regionData = regionsData.find(r => r.name === regionName);
-			return { name: regionName, icon: regionData?.iconAbsolutePath || "" };
-		});
+		return championInfo.regions
+			.map(regionName => {
+				const region = regionsData.find(r => r.name === regionName);
+				return region
+					? { name: regionName, icon: region.iconAbsolutePath }
+					: null;
+			})
+			.filter(Boolean);
 	}, [championInfo]);
 
-	const findFullItem = (list, name) =>
-		list.find(item => item?.name === normalizeName(name));
+	// === Tìm item đầy đủ ===
+	const findFullItem = (list, name) => {
+		const n = normalizeName(name);
+		return list.find(item => item.name === n);
+	};
 
 	const fullArtifacts = useMemo(
 		() =>
 			(build?.artifacts || [])
-				.map(a => findFullItem(relicsData, a))
+				.map(a => findFullItem(relics, a))
 				.filter(Boolean),
-		[build?.artifacts]
+		[build?.artifacts, relics]
 	);
+
 	const fullPowers = useMemo(
 		() =>
-			(build?.powers || [])
-				.map(p => findFullItem(powersData, p))
-				.filter(Boolean),
-		[build?.powers]
+			(build?.powers || []).map(p => findFullItem(powers, p)).filter(Boolean),
+		[build?.powers, powers]
 	);
+
 	const fullRunes = useMemo(
-		() =>
-			(build?.rune || []).map(r => findFullItem(runesData, r)).filter(Boolean),
-		[build?.rune]
+		() => (build?.rune || []).map(r => findFullItem(runes, r)).filter(Boolean),
+		[build?.rune, runes]
 	);
 
-	if (loadingBuild)
-		return (
-			<div className='flex justify-center items-center h-64'>
-				<p className='text-[var(--color-text-secondary)]'>Đang tải...</p>
-			</div>
-		);
-	if (error)
-		return (
-			<div className='text-center text-[var(--color-danger)] mt-10'>
-				<p>{error}</p>
-				<Button
-					variant='primary'
-					onClick={() => navigate("/")}
-					className='mt-4'
-				>
-					<ChevronLeft size={18} />
-					Về trang chủ
-				</Button>
-			</div>
-		);
-	if (!build) return null;
-
-	// --- Cập nhật RenderItem ---
+	// === Render Item ===
 	const RenderItem = ({ item }) => {
 		if (!item) return null;
 
 		const getLinkPath = item => {
-			// Sức mạnh có powerCode
-			if (item.powerCode) {
-				return `/power/${encodeURIComponent(item.powerCode)}`;
-			}
-			if (item.relicCode) {
-				return `/relic/${encodeURIComponent(item.relicCode)}`;
-			}
-			if (item.runeCode) {
-				return `/rune/${encodeURIComponent(item.runeCode)}`;
-			}
+			if (item.powerCode) return `/power/${encodeURIComponent(item.powerCode)}`;
+			if (item.relicCode) return `/relic/${encodeURIComponent(item.relicCode)}`;
+			if (item.runeCode) return `/rune/${encodeURIComponent(item.runeCode)}`;
+			return "#";
 		};
 
 		const linkPath = getLinkPath(item);
-		const imgSrc = item.assetAbsolutePath;
+		const imgSrc = item.assetAbsolutePath || "/images/placeholder.png";
 
 		const content = (
 			<div className='flex items-start gap-4 p-3 bg-[var(--color-background)] rounded-md border border-[var(--color-border)] h-full hover:bg-gray-200 transition'>
 				<img
-					src={imgSrc || "/images/placeholder.png"}
+					src={imgSrc}
 					alt={item.name}
-					className='w-12 h-12 rounded-md'
-					onError={e => {
-						e.target.src = "/images/placeholder.png";
-					}}
+					className='w-12 h-12 rounded-md object-cover'
+					onError={e => (e.target.src = "/images/placeholder.png")}
 				/>
-				<div>
+				<div className='flex-1'>
 					<h3 className='font-semibold text-[var(--color-text-primary)]'>
 						{item.name}
 					</h3>
@@ -260,6 +289,34 @@ const BuildDetail = () => {
 		return linkPath !== "#" ? <Link to={linkPath}>{content}</Link> : content;
 	};
 
+	// === Loading & Error ===
+	if (loadingBuild || loadingData) {
+		return (
+			<div className='flex justify-center items-center h-64'>
+				<p className='text-[var(--color-text-secondary)]'>Đang tải...</p>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div className='text-center text-[var(--color-danger)] mt-10'>
+				<p>{error}</p>
+				<Button
+					variant='primary'
+					onClick={() => navigate("/builds")}
+					className='mt-4'
+				>
+					<ChevronLeft size={18} />
+					Về danh sách build
+				</Button>
+			</div>
+		);
+	}
+
+	if (!build) return null;
+
+	// === Render chính ===
 	return (
 		<div className='max-w-4xl mx-auto p-4 md:p-6 text-[var(--color-text-primary)]'>
 			<Button variant='ghost' onClick={() => navigate(-1)} className='mb-4'>
@@ -268,13 +325,13 @@ const BuildDetail = () => {
 			</Button>
 
 			<div className='bg-[var(--color-surface)] rounded-lg shadow-[var(--color-build-summary-shadow)] overflow-hidden p-4 sm:p-6 border border-[var(--color-border)]'>
-				{/* ... phần còn lại của component không đổi ... */}
+				{/* Header */}
 				<div className='flex flex-col sm:flex-row justify-between items-start gap-4 mb-6'>
 					<div className='flex items-center gap-4'>
 						<img
 							src={championImage}
 							alt={normalizeName(build.championName)}
-							className='w-20 h-20 rounded-full border-4 border-[var(--color-star)]'
+							className='w-20 h-20 rounded-full border-4 border-[var(--color-star)] object-cover'
 						/>
 						<div>
 							<div className='flex items-center gap-2'>
@@ -313,6 +370,7 @@ const BuildDetail = () => {
 							</div>
 						</div>
 					</div>
+
 					<div className='flex items-center gap-2 sm:gap-4'>
 						<button
 							onClick={handleLike}
@@ -327,6 +385,7 @@ const BuildDetail = () => {
 							<ThumbsUp size={22} />
 							<span className='font-semibold text-lg'>{likeCount}</span>
 						</button>
+
 						<button
 							onClick={handleToggleFavorite}
 							className={`p-2 rounded-full transition-colors focus:outline-none hover:bg-[var(--color-background)] ${
@@ -338,6 +397,7 @@ const BuildDetail = () => {
 						>
 							<Heart size={22} fill={isFavorite ? "currentColor" : "none"} />
 						</button>
+
 						{isOwner && (
 							<>
 								<button
@@ -359,6 +419,7 @@ const BuildDetail = () => {
 					</div>
 				</div>
 
+				{/* Ghi chú */}
 				{build.description && (
 					<div className='mb-6'>
 						<h2 className='text-xl sm:text-2xl font-semibold mb-3'>Ghi chú</h2>
@@ -368,6 +429,7 @@ const BuildDetail = () => {
 					</div>
 				)}
 
+				{/* Thánh tích */}
 				{fullArtifacts.length > 0 && (
 					<div className='mb-6'>
 						<h2 className='text-xl sm:text-2xl font-semibold mb-3'>
@@ -380,6 +442,8 @@ const BuildDetail = () => {
 						</div>
 					</div>
 				)}
+
+				{/* Ngọc bổ trợ */}
 				{fullRunes.length > 0 && (
 					<div className='mb-6'>
 						<h2 className='text-xl sm:text-2xl font-semibold mb-3'>
@@ -392,6 +456,8 @@ const BuildDetail = () => {
 						</div>
 					</div>
 				)}
+
+				{/* Sức mạnh */}
 				{fullPowers.length > 0 && (
 					<div className='mb-6'>
 						<h2 className='text-xl sm:text-2xl font-semibold mb-3'>Sức mạnh</h2>
@@ -406,6 +472,7 @@ const BuildDetail = () => {
 
 			<CommentsSection buildId={build.id} />
 
+			{/* Modal yêu cầu đăng nhập */}
 			<Modal
 				isOpen={showLoginModal}
 				onClose={() => setShowLoginModal(false)}
@@ -430,17 +497,20 @@ const BuildDetail = () => {
 				</div>
 			</Modal>
 
+			{/* Modal sửa build */}
 			{isOwner && (
 				<BuildEditModal
 					isOpen={showEditModal}
 					onClose={() => setShowEditModal(false)}
 					build={build}
-					relicsList={relicsData}
-					powersList={powersData}
-					runesList={runesData}
+					relicsList={relics}
+					powersList={powers}
+					runesList={runes}
 					onBuildUpdate={handleBuildUpdate}
 				/>
 			)}
+
+			{/* Modal xóa build */}
 			{isOwner && (
 				<BuildDelete
 					isOpen={!!buildToDelete}

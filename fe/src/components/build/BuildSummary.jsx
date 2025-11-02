@@ -228,7 +228,7 @@ const BuildSummary = ({
 				<img
 					src={src || "/images/placeholder.png"}
 					alt={normalizeName(name)}
-					className='w-10 h-10 rounded-md border-2 border-[var(--color-border)]'
+					className='w-16 h-16 rounded-md border-2 border-[var(--color-border)]'
 					onError={e => {
 						e.target.onerror = null;
 						e.target.src = "/images/placeholder.png";
@@ -398,10 +398,10 @@ const BuildSummary = ({
 						<div className='flex flex-col gap-3'>
 							{Array.isArray(build.artifacts) && build.artifacts.length > 0 && (
 								<div>
-									<p className='text-[var(--color-text-primary)] text-sm font-semibold mb-1'>
+									<p className='text-[var(--color-text-primary)] text-md font-semibold mb-1'>
 										Thánh tích:
 									</p>
-									<div className='flex flex-wrap gap-2'>
+									<div className='flex flex-wrap gap-2 '>
 										{build.artifacts.map((a, i) =>
 											renderImageWithTooltip(
 												a,
@@ -434,7 +434,7 @@ const BuildSummary = ({
 							)}
 							{Array.isArray(build.powers) && build.powers.length > 0 && (
 								<div>
-									<p className='text-[var(--color-text-primary)] text-sm font-semibold mb-1'>
+									<p className='text-[var(--color-text-primary)] text-md font-semibold mb-1'>
 										Sức mạnh:
 									</p>
 									<div className='flex flex-wrap gap-2'>

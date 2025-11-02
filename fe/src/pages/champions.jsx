@@ -1,315 +1,347 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { usePersistentState } from "../hooks/usePersistentState";
 import InputField from "../components/common/InputField";
+import MultiSelectFilter from "../components/common/MultiSelectFilter";
 import DropdownFilter from "../components/common/DropdownFilter";
 import ChampionCard from "../components/champion/ChampionCard";
 import Button from "../components/common/Button";
-import championsData from "../assets/data/champions.json";
+import { Search, RotateCw, XCircle } from "lucide-react";
+import { removeAccents } from "../utils/vietnameseUtils";
 import iconRegions from "../assets/data/iconRegions.json";
-import { Search, XCircle, RotateCw, List } from "lucide-react";
 
 const ITEMS_PER_PAGE = 20;
 
+// --- Component phụ ---
+const LoadingSpinner = () => (
+	<div className='flex justify-center items-center h-64'>
+		<div className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500'></div>
+	</div>
+);
+
+const ErrorMessage = ({ message, onRetry }) => (
+	<div className='text-center p-10 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg'>
+		<h2 className='text-xl font-bold mb-2'>Đã xảy ra lỗi</h2>
+		<p className='mb-4'>{message}</p>
+		<Button onClick={onRetry} variant='danger'>
+			Thử lại
+		</Button>
+	</div>
+);
+
+// --- Component chính ---
 function ChampionList() {
-	// State cho giá trị nhập vào
+	// State quản lý dữ liệu và bộ lọc
+	const [champions, setChampions] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const [searchInput, setSearchInput] = usePersistentState(
 		"championsSearchInput",
 		""
 	);
-	// State cho giá trị được áp dụng
 	const [searchTerm, setSearchTerm] = usePersistentState(
 		"championsSearchTerm",
 		""
 	);
-	const [selectedRegion, setSelectedRegion] = usePersistentState(
-		"championsSelectedRegion",
-		""
+	const [selectedRegions, setSelectedRegions] = usePersistentState(
+		"championsSelectedRegions",
+		[]
 	);
-	const [selectedCost, setSelectedCost] = usePersistentState(
-		"championsSelectedCost",
-		""
+	const [selectedCosts, setSelectedCosts] = usePersistentState(
+		"championsSelectedCosts",
+		[]
 	);
-	const [selectedTag, setSelectedTag] = usePersistentState(
-		"championsSelectedTag",
-		""
+	const [selectedMaxStars, setSelectedMaxStars] = usePersistentState(
+		"championsSelectedMaxStars",
+		[]
 	);
-	const [selectedStar, setSelectedStar] = usePersistentState(
-		"championsSelectedStar",
-		""
+	const [selectedTags, setSelectedTags] = usePersistentState(
+		"championsSelectedTags",
+		[]
 	);
 	const [sortOrder, setSortOrder] = usePersistentState(
 		"championsSortOrder",
-		"asc"
+		"name-asc"
 	);
 	const [currentPage, setCurrentPage] = usePersistentState(
 		"championsCurrentPage",
 		1
 	);
 
-	const filterOptions = useMemo(() => {
-		const regions = [...new Set(championsData.flatMap(c => c.regions))].sort();
-		const costs = [...new Set(championsData.map(c => c.cost))].sort(
-			(a, b) => a - b
-		);
-		const tags = [...new Set(championsData.flatMap(c => c.tag))].sort();
-		const stars = [...new Set(championsData.map(c => c.maxStar))].sort(
-			(a, b) => a - b
-		);
+	// Hàm gọi API
+	const fetchChampions = async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const backendUrl =
+				import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+			const response = await fetch(`${backendUrl}/api/champions`);
+			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
 
-		const findRegionIcon = regionName =>
-			iconRegions.find(item => item.name === regionName)?.iconAbsolutePath ||
-			"";
-
-		return {
-			regions: [
-				{
-					value: "",
-					label: "Tất cả khu vực",
-				},
-				...regions.map(r => ({
-					value: r,
-					label: r,
-					icon: findRegionIcon(r),
-				})),
-			],
-			costs: [
-				{ value: "", label: "Mọi giá" },
-				...costs.map(c => ({ value: c, label: c.toString() })),
-			],
-			tags: [
-				{ value: "", label: "Tất cả tag" },
-				...tags.map(t => ({ value: t, label: t })),
-			],
-			stars: [
-				{ value: "", label: "Mọi sao" },
-				...stars.map(s => ({ value: s, label: s.toString() })),
-			],
-			sort: [
-				{ value: "asc", label: "Tên A-Z" },
-				{ value: "desc", label: "Tên Z-A" },
-				{ value: "costAsc", label: "Giá tăng dần" },
-				{ value: "costDesc", label: "Giá giảm dần" },
-			],
-		};
-	}, []);
-
-	const filteredChampions = useMemo(() => {
-		let champions = [...championsData];
-		if (searchTerm) {
-			champions = champions.filter(c =>
-				c.name.toLowerCase().includes(searchTerm.toLowerCase())
-			);
+			const data = await response.json();
+			const formattedData = data.map(champ => ({
+				...champ,
+				avatarUrl: champ.assets?.[0]?.M?.avatar?.S || "",
+			}));
+			setChampions(formattedData);
+		} catch (err) {
+			setError(err.message);
+		} finally {
+			setLoading(false);
 		}
-		if (selectedRegion) {
-			champions = champions.filter(c => c.regions.includes(selectedRegion));
-		}
-		if (selectedCost) {
-			champions = champions.filter(c => c.cost === parseInt(selectedCost));
-		}
-		if (selectedTag) {
-			champions = champions.filter(c => c.tag.includes(selectedTag));
-		}
-		if (selectedStar) {
-			champions = champions.filter(c => c.maxStar === parseInt(selectedStar));
-		}
-
-		switch (sortOrder) {
-			case "asc":
-				champions.sort((a, b) => a.name.localeCompare(b.name));
-				break;
-			case "desc":
-				champions.sort((a, b) => b.name.localeCompare(a.name));
-				break;
-			case "costAsc":
-				champions.sort((a, b) => a.cost - b.cost);
-				break;
-			case "costDesc":
-				champions.sort((a, b) => b.cost - a.cost);
-				break;
-			default:
-				break;
-		}
-		return champions;
-	}, [
-		searchTerm,
-		selectedRegion,
-		selectedCost,
-		selectedTag,
-		selectedStar,
-		sortOrder,
-	]);
-
-	// Tự động về trang 1 khi bộ lọc thay đổi
-	useEffect(() => {
-		setCurrentPage(1);
-	}, [
-		searchTerm,
-		selectedRegion,
-		selectedCost,
-		selectedTag,
-		selectedStar,
-		sortOrder,
-		setCurrentPage,
-	]);
-
-	// Logic phân trang
-	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
-	const paginatedChampions = useMemo(() => {
-		const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-		return filteredChampions.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-	}, [filteredChampions, currentPage]);
-
-	const handleSearchSubmit = e => {
-		e.preventDefault();
-		setSearchTerm(searchInput);
 	};
 
+	useEffect(() => {
+		fetchChampions();
+	}, []);
+
+	// Tạo các tùy chọn cho bộ lọc
+	const filterOptions = useMemo(() => {
+		if (champions.length === 0)
+			return { regions: [], costs: [], maxStars: [], tags: [], sort: [] };
+		const regions = [...new Set(champions.flatMap(c => c.regions))]
+			.sort()
+			.map(regionName => {
+				const regionData = iconRegions.find(r => r.name === regionName);
+				return {
+					value: regionName,
+					label: regionName,
+					iconUrl: regionData ? regionData.iconAbsolutePath : null,
+				};
+			});
+		const costs = [...new Set(champions.map(c => c.cost))]
+			.sort((a, b) => a - b)
+			.map(cost => ({ value: cost, isCost: true }));
+		const maxStars = [...new Set(champions.map(c => c.maxStar))]
+			.sort((a, b) => a - b)
+			.map(star => ({ value: star, isStar: true }));
+		const tags = [...new Set(champions.flatMap(c => c.tag || []))]
+			.sort()
+			.map(tag => ({ value: tag, label: tag, isTag: true }));
+		const sort = [
+			{ value: "name-asc", label: "Tên A-Z" },
+			{ value: "name-desc", label: "Tên Z-A" },
+			{ value: "cost-asc", label: "Năng lượng thấp-cao" },
+			{ value: "cost-desc", label: "Năng lượng cao-thấp" },
+		];
+		return { regions, costs, maxStars, tags, sort };
+	}, [champions]);
+
+	// Lọc và sắp xếp danh sách tướng
+	const filteredChampions = useMemo(() => {
+		let filtered = [...champions];
+		if (searchTerm) {
+			const normalized = removeAccents(searchTerm.toLowerCase());
+			filtered = filtered.filter(c =>
+				removeAccents(c.name.toLowerCase()).includes(normalized)
+			);
+		}
+		if (selectedRegions.length > 0)
+			filtered = filtered.filter(c =>
+				c.regions.some(r => selectedRegions.includes(r))
+			);
+		if (selectedCosts.length > 0)
+			filtered = filtered.filter(c => selectedCosts.includes(c.cost));
+		if (selectedMaxStars.length > 0)
+			filtered = filtered.filter(c => selectedMaxStars.includes(c.maxStar));
+		if (selectedTags.length > 0)
+			filtered = filtered.filter(c =>
+				c.tag?.some(t => selectedTags.includes(t))
+			);
+
+		const [sortKey, sortDirection] = sortOrder.split("-");
+		filtered.sort((a, b) => {
+			const valA = a[sortKey];
+			const valB = b[sortKey];
+
+			// Nếu sắp xếp theo 'cost', so sánh như số
+			if (sortKey === "cost" || sortKey === "maxStar") {
+				return sortDirection === "asc" ? valA - valB : valB - valA;
+			}
+
+			// Nếu không, so sánh như chuỗi
+			return sortDirection === "asc"
+				? (valA || "").toString().localeCompare((valB || "").toString())
+				: (valB || "").toString().localeCompare((valA || "").toString());
+		});
+
+		return filtered;
+	}, [
+		champions,
+		searchTerm,
+		selectedRegions,
+		selectedCosts,
+		selectedMaxStars,
+		selectedTags,
+		sortOrder,
+	]);
+	// Các hàm xử lý sự kiện
+	const handleSearch = () => {
+		setSearchTerm(searchInput);
+		setCurrentPage(1);
+	};
 	const handleClearSearch = () => {
 		setSearchInput("");
 		setSearchTerm("");
+		setCurrentPage(1);
 	};
-
 	const handleResetFilters = () => {
 		handleClearSearch();
-		setSelectedRegion("");
-		setSelectedCost("");
-		setSelectedTag("");
-		setSelectedStar("");
-		setSortOrder("asc");
+		setSelectedRegions([]);
+		setSelectedCosts([]);
+		setSelectedMaxStars([]);
+		setSelectedTags([]);
+		setSortOrder("name-asc");
+		setCurrentPage(1);
+	};
+	const handlePageChange = page => {
+		setCurrentPage(page);
 	};
 
-	const handlePageChange = newPage => {
-		if (newPage >= 1 && newPage <= totalPages) {
-			setCurrentPage(newPage);
-		}
-	};
+	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
+	const paginatedChampions = filteredChampions.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
+
+	if (loading) return <LoadingSpinner />;
+	if (error) return <ErrorMessage message={error} onRetry={fetchChampions} />;
 
 	return (
-		<div className='container mx-auto p-4'>
-			<h1 className='text-3xl font-bold mb-6 text-[var(--color-primary)]'>
+		<div>
+			<h1 className='text-3xl font-bold mb-6 text-[var(--color-text-primary)]'>
 				Danh Sách Tướng
 			</h1>
-			<div className='mb-6 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]'>
-				<form onSubmit={handleSearchSubmit} className='mb-4'>
-					<div className='relative flex items-center gap-4'>
-						<InputField
-							value={searchInput}
-							onChange={e => setSearchInput(e.target.value)}
-							placeholder='Tìm theo tên tướng...'
-							className='flex-grow pr-10'
-						/>
-						{searchInput && (
-							<button
-								type='button'
-								onClick={handleClearSearch}
-								className='absolute right-[calc(6rem+1rem)] mr-2 text-gray-500 hover:text-gray-800'
-							>
-								<XCircle size={20} />
-							</button>
-						)}
-						<Button
-							type='submit'
-							variant='primary'
-							iconLeft={<Search size={18} />}
-						>
-							Tìm
-						</Button>
-					</div>
-				</form>
-				<div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4'>
-					<div className='lg:col-span-2'>
-						<DropdownFilter
+
+			{/* BỐ CỤC MỚI: flex-col mặc định (mobile), lg:flex-row cho desktop */}
+			<div className='flex flex-col lg:flex-row gap-8'>
+				{/* THANH CÔNG CỤ (Mặc định nằm trên cùng) */}
+				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+					<div className='p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4'>
+						{/* ... Toàn bộ nội dung của thanh công cụ giữ nguyên ... */}
+						<div>
+							<label className='block text-sm font-medium mb-1 text-[var(--color-text-secondary)]'>
+								Tìm kiếm tướng
+							</label>
+							<div className='relative'>
+								<InputField
+									value={searchInput}
+									onChange={e => setSearchInput(e.target.value)}
+									onKeyPress={e => e.key === "Enter" && handleSearch()}
+									placeholder='Nhập tên tướng...'
+								/>
+								{searchInput && (
+									<button
+										onClick={handleClearSearch}
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+									>
+										<XCircle size={18} />
+									</button>
+								)}
+							</div>
+							<Button onClick={handleSearch} className='w-full mt-2'>
+								<Search size={16} className='mr-2' />
+								Tìm kiếm
+							</Button>
+						</div>
+						<MultiSelectFilter
+							label='Vùng'
 							options={filterOptions.regions}
-							selectedValue={selectedRegion}
-							onChange={setSelectedRegion}
-							placeholder='Khu vực'
-							renderOption={option => (
-								<span className='flex items-center'>
-									{option.value === "" ? (
-										<List className='w-5 h-5 mr-2' />
-									) : (
-										<img
-											src={option.icon}
-											alt={option.label}
-											className='w-5 h-5 mr-2'
-										/>
-									)}
-									{option.label}
-								</span>
-							)}
+							selectedValues={selectedRegions}
+							onChange={setSelectedRegions}
+							placeholder='Tất cả Vùng'
 						/>
-					</div>
-					<DropdownFilter
-						options={filterOptions.costs}
-						selectedValue={selectedCost}
-						onChange={setSelectedCost}
-						placeholder='Tiêu hao'
-					/>
-					<DropdownFilter
-						options={filterOptions.tags}
-						selectedValue={selectedTag}
-						onChange={setSelectedTag}
-						placeholder='Tag'
-					/>
-					<DropdownFilter
-						options={filterOptions.stars}
-						selectedValue={selectedStar}
-						onChange={setSelectedStar}
-						placeholder='Sao'
-					/>
-					<div className='lg:col-span-1'>
+						<MultiSelectFilter
+							label='Năng lượng'
+							options={filterOptions.costs}
+							selectedValues={selectedCosts}
+							onChange={setSelectedCosts}
+							placeholder='Tất cả Năng lượng'
+						/>
+						<MultiSelectFilter
+							label='Số sao tối đa'
+							options={filterOptions.maxStars}
+							selectedValues={selectedMaxStars}
+							onChange={setSelectedMaxStars}
+							placeholder='Tất cả Sao'
+						/>
+						<MultiSelectFilter
+							label='Thẻ'
+							options={filterOptions.tags}
+							selectedValues={selectedTags}
+							onChange={setSelectedTags}
+							placeholder='Tất cả Thẻ'
+						/>
 						<DropdownFilter
+							label='Sắp xếp'
 							options={filterOptions.sort}
 							selectedValue={sortOrder}
 							onChange={setSortOrder}
-							placeholder='Sắp xếp'
 						/>
+						<div className='pt-2'>
+							<Button
+								variant='outline'
+								onClick={handleResetFilters}
+								iconLeft={<RotateCw size={16} />}
+								className='w-full'
+							>
+								Đặt lại bộ lọc
+							</Button>
+						</div>
 					</div>
-					<Button
-						variant='outline'
-						onClick={handleResetFilters}
-						iconLeft={<RotateCw size={16} />}
-					>
-						Đặt lại
-					</Button>
+				</aside>
+
+				{/* NỘI DUNG CHÍNH */}
+				{/* THAY ĐỔI Ở ĐÂY: Dùng `order-first` trên desktop để đẩy nó sang trái */}
+				<div className='lg:w-4/5 w-full lg:order-first'>
+					<div className='bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] p-4 sm:p-6'>
+						{paginatedChampions.length > 0 ? (
+							<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
+								{paginatedChampions.map(champion => (
+									<Link
+										key={champion.name}
+										to={`/champion/${encodeURIComponent(champion.name)}`}
+										className='hover:scale-105 transition-transform duration-200'
+									>
+										<ChampionCard champion={champion} />
+									</Link>
+								))}
+							</div>
+						) : (
+							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-gray-500 dark:text-gray-400'>
+								<div>
+									<p className='font-semibold text-lg'>
+										Không tìm thấy tướng nào phù hợp.
+									</p>
+									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+								</div>
+							</div>
+						)}
+
+						{totalPages > 1 && (
+							<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
+								<Button
+									onClick={() => handlePageChange(currentPage - 1)}
+									disabled={currentPage === 1}
+									variant='outline'
+								>
+									Trang trước
+								</Button>
+								<span className='text-lg font-medium text-[var(--color-text-primary)]'>
+									{currentPage} / {totalPages}
+								</span>
+								<Button
+									onClick={() => handlePageChange(currentPage + 1)}
+									disabled={currentPage === totalPages}
+									variant='outline'
+								>
+									Trang sau
+								</Button>
+							</div>
+						)}
+					</div>
 				</div>
 			</div>
-
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4 justify-items-center'>
-				{paginatedChampions.map(champion => (
-					<Link
-						key={champion.name}
-						to={`/champion/${encodeURIComponent(champion.name)}`}
-						className='hover:scale-105 transition-transform duration-200'
-					>
-						<ChampionCard champion={champion} />
-					</Link>
-				))}
-			</div>
-
-			{/* Giao diện phân trang */}
-			{totalPages > 1 && (
-				<div className='mt-8 flex justify-center items-center gap-4'>
-					<Button
-						onClick={() => handlePageChange(currentPage - 1)}
-						disabled={currentPage === 1}
-						variant='outline'
-					>
-						Trang trước
-					</Button>
-					<span className='text-lg font-medium text-[var(--color-text)]'>
-						Trang {currentPage} / {totalPages}
-					</span>
-					<Button
-						onClick={() => handlePageChange(currentPage + 1)}
-						disabled={currentPage === totalPages}
-						variant='outline'
-					>
-						Trang sau
-					</Button>
-				</div>
-			)}
 		</div>
 	);
 }

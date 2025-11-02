@@ -3,8 +3,9 @@
 import React, { useState, useMemo, useContext } from "react";
 import championsData from "../assets/data/champions.json";
 import relicsData from "../assets/data/relics-vi_vn.json";
-import powersData from "../assets/data/powers-vi_vn.json";
+import powersData from "../assets/data/general_powers.json";
 import runesData from "../assets/data/runes-vi_vn.json";
+import iconRegions from "../assets/data/iconRegions.json";
 import BuildCreation from "../components/build/BuildCreation";
 import MyBuilds from "../components/build/MyBuilds";
 import MyFavorite from "../components/build/MyFavorite";
@@ -20,7 +21,7 @@ import {
 	RotateCw,
 } from "lucide-react";
 import Button from "../components/common/Button";
-import DropdownFilter from "../components/common/DropdownFilter";
+import MultiSelectFilter from "../components/common/MultiSelectFilter";
 import InputField from "../components/common/InputField";
 
 const Builds = () => {
@@ -31,8 +32,8 @@ const Builds = () => {
 
 	const [searchInput, setSearchInput] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
-	const [selectedStarLevel, setSelectedStarLevel] = useState("");
-	const [selectedRegion, setSelectedRegion] = useState("");
+	const [selectedStarLevels, setSelectedStarLevels] = useState([]);
+	const [selectedRegions, setSelectedRegions] = useState([]);
 
 	const championsList = useMemo(() => championsData, []);
 	const relicsList = useMemo(() => relicsData, []);
@@ -53,31 +54,32 @@ const Builds = () => {
 		const allRegions = championsList.flatMap(c => c.regions);
 		const uniqueRegions = [...new Set(allRegions)];
 		const sortedRegions = uniqueRegions.sort((a, b) => a.localeCompare(b));
-		return [
-			{ value: "", label: "Tất cả khu vực" },
-			...sortedRegions.map(r => ({ value: r, label: r })),
-		];
+		return sortedRegions.map(regionName => {
+			const regionData = iconRegions.find(r => r.name === regionName);
+			return {
+				value: regionName,
+				label: regionName,
+				iconUrl: regionData ? regionData.iconAbsolutePath : null,
+			};
+		});
 	}, [championsList]);
 
 	const starLevelOptions = useMemo(
 		() => [
-			{ value: "", label: "Tất cả cấp sao" },
-			{ value: "0", label: "0 Sao" },
-			{ value: "1", label: "1 Sao" },
-			{ value: "2", label: "2 Sao" },
-			{ value: "3", label: "3 Sao" },
-			{ value: "4", label: "4 Sao" },
-			{ value: "5", label: "5 Sao" },
-			{ value: "6", label: "6 Sao" },
-			{ value: "7", label: "7 Sao" },
+			{ value: "1", label: "", isStar: true },
+			{ value: "2", label: "", isStar: true },
+			{ value: "3", label: "", isStar: true },
+			{ value: "4", label: "", isStar: true },
+			{ value: "5", label: "", isStar: true },
+			{ value: "6", label: "", isStar: true },
+			{ value: "7", label: "", isStar: true },
 		],
 		[]
 	);
 
 	// --- CÁC HÀM XỬ LÝ SỰ KIỆN ---
 
-	const handleSearchSubmit = e => {
-		e.preventDefault();
+	const handleSearch = () => {
 		setSearchTerm(searchInput);
 	};
 
@@ -88,8 +90,8 @@ const Builds = () => {
 
 	const handleResetFilters = () => {
 		handleClearSearch();
-		setSelectedStarLevel("");
-		setSelectedRegion("");
+		setSelectedStarLevels([]);
+		setSelectedRegions([]);
 	};
 
 	// ADDED: Hàm chung để trigger refresh
@@ -124,8 +126,8 @@ const Builds = () => {
 		// CHANGED: Thêm các handler vào props chung
 		const commonProps = {
 			searchTerm,
-			selectedStarLevel,
-			selectedRegion,
+			selectedStarLevels,
+			selectedRegions,
 			championsList,
 			relicsList,
 			powersList,
@@ -201,54 +203,65 @@ const Builds = () => {
 				)}
 			</div>
 
-			<div className='mb-6 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]'>
-				<form onSubmit={handleSearchSubmit} className='mb-4'>
-					<div className='relative flex items-center gap-4'>
-						<InputField
-							value={searchInput}
-							onChange={e => setSearchInput(e.target.value)}
-							placeholder='Tìm theo từ khóa (mô tả, tướng, người tạo...)'
-							className='flex-grow pr-10'
+			<div className='flex flex-col lg:flex-row gap-8'>
+				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+					<div className='p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4'>
+						<div>
+							<label className='block text-sm font-medium mb-1 text-[var(--color-text-secondary)]'>
+								Tìm kiếm build
+							</label>
+							<div className='relative'>
+								<InputField
+									value={searchInput}
+									onChange={e => setSearchInput(e.target.value)}
+									onKeyPress={e => e.key === "Enter" && handleSearch()}
+									placeholder='Tìm theo từ khóa (mô tả, tướng, người tạo...)'
+								/>
+								{searchInput && (
+									<button
+										onClick={handleClearSearch}
+										className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+									>
+										<XCircle size={18} />
+									</button>
+								)}
+							</div>
+							<Button onClick={handleSearch} className='w-full mt-2'>
+								<Search size={16} className='mr-2' />
+								Tìm kiếm
+							</Button>
+						</div>
+						<MultiSelectFilter
+							label='Cấp sao'
+							options={starLevelOptions}
+							selectedValues={selectedStarLevels}
+							onChange={setSelectedStarLevels}
+							placeholder='Tất cả cấp sao'
 						/>
-						{searchInput && (
-							<button
-								type='button'
-								onClick={handleClearSearch}
-								className='absolute right-[calc(6rem+1rem)] mr-2 text-gray-500 hover:text-gray-800'
-								aria-label='Xóa tìm kiếm'
+						<MultiSelectFilter
+							label='Khu vực'
+							options={regionOptions}
+							selectedValues={selectedRegions}
+							onChange={setSelectedRegions}
+							placeholder='Tất cả khu vực'
+						/>
+						<div className='pt-2'>
+							<Button
+								variant='outline'
+								onClick={handleResetFilters}
+								iconLeft={<RotateCw size={16} />}
+								className='w-full'
 							>
-								<XCircle size={20} />
-							</button>
-						)}
-						<Button
-							type='submit'
-							variant='primary'
-							iconLeft={<Search size={18} />}
-						>
-							Tìm
-						</Button>
+								Đặt lại bộ lọc
+							</Button>
+						</div>
 					</div>
-				</form>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-					<DropdownFilter
-						options={starLevelOptions}
-						selectedValue={selectedStarLevel}
-						onChange={setSelectedStarLevel}
-						placeholder='Lọc theo cấp sao'
-					/>
-					<DropdownFilter
-						options={regionOptions}
-						selectedValue={selectedRegion}
-						onChange={setSelectedRegion}
-						placeholder='Lọc theo khu vực'
-					/>
-					<Button
-						variant='outline'
-						onClick={handleResetFilters}
-						iconLeft={<RotateCw size={16} />}
-					>
-						Đặt lại bộ lọc
-					</Button>
+				</aside>
+
+				<div className='lg:w-4/5 w-full lg:order-first'>
+					<div className='bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] p-4 sm:p-6'>
+						{renderContent()}
+					</div>
 				</div>
 			</div>
 
@@ -259,8 +272,6 @@ const Builds = () => {
 					onClose={() => setShowCreateModal(false)}
 				/>
 			)}
-
-			{renderContent()}
 		</div>
 	);
 };

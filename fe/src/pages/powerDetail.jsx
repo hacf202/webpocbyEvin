@@ -69,7 +69,7 @@ function PowerDetail() {
 								color: "var(--color-text-secondary)",
 							}}
 						>
-							{power.description}
+							{power.descriptionRaw}
 						</p>
 					)}
 				</div>

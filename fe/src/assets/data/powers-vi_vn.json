@@ -1053,7 +1053,7 @@
 		"powerCode": "P0444",
 		"rarity": "HUYỀN THOẠI",
 		"rarityRef": "Legendary",
-		"type": ["Star Power"]
+		"type": ["Star Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0017.png",
@@ -2944,7 +2944,7 @@
 		"powerCode": "P0468",
 		"rarity": "HUYỀN THOẠI",
 		"rarityRef": "Legendary",
-		"type": ["Star Power"]
+		"type": ["Star Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0419.png",
@@ -6242,7 +6242,7 @@
 		"powerCode": "P0682",
 		"rarity": "THƯỜNG",
 		"rarityRef": "Common",
-		"type": ["Rune Power", "General"]
+		"type": ["Rune Power", "General Power"]
 	},
 	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/powers/P0093.png",
