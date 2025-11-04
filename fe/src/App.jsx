@@ -38,12 +38,12 @@ import Introduction from "./components/about/introduction.jsx";
 // Luồng admin
 import AdminPanel from "./components/admin/adminPanel.jsx";
 import ChampionEditor from "./components/admin/championEditor.jsx";
-import PowerEditor from "./components/admin/PowerEditor";
-import RelicEditor from "./components/admin/RelicEditor.jsx";
-import ItemEditor from "./components/admin/ItemEditor.jsx";
-import RuneEditor from "./components/admin/RuneEditor.jsx";
-import BuildEditor from "./components/admin/BuildEditor.jsx";
-import PrivateRoute from "./components/admin/PrivateRoute.jsx";
+import PowerEditor from "./components/admin/powerEditor";
+import RelicEditor from "./components/admin/relicEditor.jsx";
+import ItemEditor from "./components/admin/itemEditor.jsx";
+import RuneEditor from "./components/admin/runeEditor.jsx";
+import BuildEditor from "./components/admin/buildEditor.jsx";
+import PrivateRoute from "./components/admin/privateRoute.jsx";
 
 // --- Component Layout có điều kiện ---
 function MainContent() {
