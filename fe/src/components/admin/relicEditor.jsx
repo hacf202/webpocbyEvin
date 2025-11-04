@@ -315,8 +315,7 @@ function RelicEditor() {
 		message: "",
 	});
 	const [isBackNavigation, setIsBackNavigation] = useState(false); // <-- THÊM: Flag để phân biệt back vs cancel
-	const backendUrl =
-		import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 	const navigate = useNavigate();
 
 	const fetchRelics = useCallback(async () => {

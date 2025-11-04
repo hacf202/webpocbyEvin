@@ -58,8 +58,7 @@ function ItemList() {
 		setLoading(true);
 		setError(null);
 		try {
-			const backendUrl =
-				import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+			const backendUrl = import.meta.env.VITE_BACKEND_URL;
 			const response = await fetch(`${backendUrl}/api/items`);
 			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
 			const data = await response.json();

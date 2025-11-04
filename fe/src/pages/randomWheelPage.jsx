@@ -19,8 +19,7 @@ function RandomizerPage() {
 	const [activeFilters, setActiveFilters] = useState({});
 	const [isLoading, setIsLoading] = useState(true);
 
-	const backendUrl =
-		import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+	const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 	// Fetch data từ API
 	const fetchData = useCallback(async () => {

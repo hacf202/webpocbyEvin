@@ -1,6 +1,6 @@
 // Một tệp trợ giúp nhỏ để xử lý logic lặp đi lặp lại trong các lệnh gọi fetch, giúp authService.js gọn gàng hơn.
 const COGNITO_URL = "https://cognito-idp.us-east-1.amazonaws.com";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 /**
  * Hàm chung để gọi API của AWS Cognito.

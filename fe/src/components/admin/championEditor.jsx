@@ -148,7 +148,7 @@ function ChampionEditor() {
 		message: "",
 	});
 	const [isBackNavigation, setIsBackNavigation] = useState(false);
-	const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+	const API_BASE_URL = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
 
 	const fetchChampions = useCallback(async () => {
