@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Modal from "../common/modal";
-import Button from "../common/Button";
+import Button from "../common/button";
 import BuildDelete from "./buildDelete";
 import BuildEditModal from "./buildEditModal";
 
