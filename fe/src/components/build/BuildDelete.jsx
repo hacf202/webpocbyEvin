@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { Trash2, Loader2, X } from "lucide-react";
 import Modal from "../common/modal";
 import Button from "../common/button";

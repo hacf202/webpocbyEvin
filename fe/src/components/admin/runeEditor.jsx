@@ -5,7 +5,7 @@ import Modal from "../common/modal";
 import Button from "../common/button";
 import InputField from "../common/inputField"; // <-- IMPORT
 import RarityIcon from "../common/rarityIcon";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { removeAccents } from "../../utils/vietnameseUtils";
 import SidePanel from "../common/sidePanel";
 import { Loader2, XCircle, Plus, ChevronLeft } from "lucide-react"; // <-- IMPORT

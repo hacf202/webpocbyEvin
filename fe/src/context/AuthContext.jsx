@@ -5,7 +5,7 @@ import React, {
 	useContext,
 	useCallback,
 } from "react";
-// authContext.jsx
+// AuthContext.jsx
 import * as authService from "./services/authService";
 
 export const AuthContext = createContext();

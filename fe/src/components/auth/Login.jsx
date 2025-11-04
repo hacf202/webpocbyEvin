@@ -1,7 +1,7 @@
 // src/pages/auth/Login.jsx
 
 import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext.jsx";
 import InputField from "../common/inputField";
 import Button from "../common/button";
 import { Loader2, Eye, EyeOff } from "lucide-react";

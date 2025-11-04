@@ -1,7 +1,7 @@
 // src/components/build/MyFavorite.jsx (ĐÃ ĐỒNG BỘ)
 
 import React, { useEffect, useState, useMemo, useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "../build/buildSummary";
 import { filterBuilds } from "../../utils/filterBuilds";
 
