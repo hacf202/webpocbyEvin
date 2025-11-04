@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { ChevronsRight, CheckCircle2, MinusCircle } from "lucide-react";
-import DropdownFilter from "../common/DropdownFilter"; // <-- 1. IMPORT COMPONENT MỚI
+import DropdownFilter from "../common/dropdownFilter"; // <-- 1. IMPORT COMPONENT MỚI
 
 // --- Nhãn bộ lọc (Giữ nguyên) ---
 const filterLabels = {
