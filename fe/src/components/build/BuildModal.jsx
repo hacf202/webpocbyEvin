@@ -1,11 +1,13 @@
 // src/components/build/BuildModal.jsx
 import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import championsData from "../../assets/data/champions.json";
-import Modal from "../common/Modal"; // Dùng Modal chung
+import { AuthContext } from "../../context/authContext";
+// XÓA DÒNG NÀY:
+// import championsData from "../../assets/data/champions.json";
+import Modal from "../common/modal";
+import Button from "../common/button";
 import { Star, Eye, EyeOff, ChevronDown, AlertCircle, X } from "lucide-react";
 
-// === Searchable Dropdown ===
+// === Searchable Dropdown (giữ nguyên) ===
 const SearchableDropdown = ({
 	options,
 	selectedValue,
@@ -70,12 +72,12 @@ const SearchableDropdown = ({
 				type='button'
 				onClick={() => !disabled && !loading && setIsOpen(!isOpen)}
 				disabled={disabled || loading}
-				className={`w-full bg-[var(--color-surface)] border rounded-md p-2 flex justify-between items-center text-left transition-colors ${
+				className={`w-full bg-input-bg border rounded-md p-2 flex justify-between items-center text-left transition-colors ${
 					error
-						? "border-[var(--color-danger)]"
+						? "border-input-error-border"
 						: disabled || loading
-						? "border-[var(--color-border)] opacity-50 cursor-not-allowed"
-						: "border-[var(--color-border)] hover:border-[var(--color-primary)]"
+						? "border-input-border opacity-50 cursor-not-allowed"
+						: "border-input-border hover:border-primary-500"
 				}`}
 			>
 				<div className='flex items-center truncate'>
@@ -88,9 +90,7 @@ const SearchableDropdown = ({
 					)}
 					<span
 						className={`truncate ${
-							selectedValue
-								? "text-[var(--color-text-primary)]"
-								: "text-[var(--color-text-secondary)]"
+							selectedValue ? "text-text-primary" : "text-text-secondary"
 						}`}
 					>
 						{loading ? "Đang tải..." : selectedValue || placeholder}
@@ -98,7 +98,7 @@ const SearchableDropdown = ({
 				</div>
 				<ChevronDown
 					size={20}
-					className={`transition-transform flex-shrink-0 ${
+					className={`text-text-secondary transition-transform flex-shrink-0 ${
 						isOpen ? "rotate-180" : ""
 					}`}
 				/>
@@ -106,14 +106,14 @@ const SearchableDropdown = ({
 
 			{isOpen && (
 				<div
-					className='absolute left-0 right-0 top-full mt-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-md shadow-2xl max-h-60 overflow-y-hidden z-[100]'
+					className='absolute left-0 right-0 top-full mt-1 bg-surface-bg border border-border rounded-md shadow-2xl max-h-60 overflow-y-hidden z-[100]'
 					style={{ minWidth: "100%" }}
 				>
-					<div className='p-2 sticky top-0 bg-[var(--color-surface)] z-10 border-b border-[var(--color-border)]'>
+					<div className='p-2 sticky top-0 bg-surface-bg z-10 border-b border-border'>
 						<input
 							type='text'
 							placeholder='Tìm kiếm...'
-							className='w-full bg-[var(--color-background)] border border-[var(--color-border)] rounded-md p-2 text-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]'
+							className='w-full bg-surface-hover border border-border rounded-md p-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500'
 							value={searchTerm}
 							onChange={e => setSearchTerm(e.target.value)}
 							autoFocus
@@ -121,7 +121,7 @@ const SearchableDropdown = ({
 					</div>
 					<ul className='max-h-48 overflow-y-auto'>
 						{loading ? (
-							<li className='p-3 text-center text-[var(--color-text-secondary)] text-sm'>
+							<li className='p-3 text-center text-text-secondary text-sm'>
 								Đang tải...
 							</li>
 						) : filteredOptions.length > 0 ? (
@@ -136,8 +136,8 @@ const SearchableDropdown = ({
 										onClick={() => !isDisabled && handleSelect(opt.name)}
 										className={`p-2 flex items-center transition-colors ${
 											isDisabled
-												? "opacity-40 cursor-not-allowed text-[var(--color-text-secondary)]"
-												: "hover:bg-[var(--color-primary)] hover:text-white cursor-pointer"
+												? "opacity-40 cursor-not-allowed text-text-secondary"
+												: "text-dropdown-item-text hover:bg-dropdown-item-hover-bg cursor-pointer"
 										}`}
 									>
 										{opt.icon && (
@@ -149,7 +149,7 @@ const SearchableDropdown = ({
 										)}
 										<span className='truncate text-sm'>{opt.name}</span>
 										{isDisabled && (
-											<span className='ml-auto text-xs text-[var(--color-danger)]'>
+											<span className='ml-auto text-xs text-danger-text-dark'>
 												Đã chọn
 											</span>
 										)}
@@ -157,7 +157,7 @@ const SearchableDropdown = ({
 								);
 							})
 						) : (
-							<li className='p-2 text-[var(--color-text-secondary)] text-sm'>
+							<li className='p-2 text-text-secondary text-sm'>
 								Không tìm thấy
 							</li>
 						)}
@@ -166,7 +166,7 @@ const SearchableDropdown = ({
 			)}
 
 			{error && (
-				<div className='mt-1 flex items-center gap-1 text-[var(--color-danger)] text-xs'>
+				<div className='mt-1 flex items-center gap-1 text-input-error-text text-xs'>
 					<AlertCircle size={14} />
 					<span>{error}</span>
 				</div>
@@ -176,7 +176,14 @@ const SearchableDropdown = ({
 };
 
 // === BuildModal ===
-const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
+const BuildModal = ({
+	isOpen,
+	onClose,
+	onConfirm,
+	initialData = null,
+	onChampionChange,
+	maxStar = 7,
+}) => {
 	const { token } = useContext(AuthContext);
 	const isEditMode = !!initialData;
 
@@ -203,24 +210,28 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 	const [relics, setRelics] = useState([]);
 	const [powers, setPowers] = useState([]);
 	const [runes, setRunes] = useState([]);
+	const [champions, setChampions] = useState([]); // Thêm state cho champions
 	const [loadingRelics, setLoadingRelics] = useState(true);
 	const [loadingPowers, setLoadingPowers] = useState(true);
 	const [loadingRunes, setLoadingRunes] = useState(true);
+	const [loadingChampions, setLoadingChampions] = useState(true); // Thêm loading
 
-	// === Load API ===
 	useEffect(() => {
 		if (!isOpen) return;
 		const fetchData = async () => {
 			const baseURL = import.meta.env.VITE_API_URL;
 			try {
-				const [relicRes, powerRes, runeRes] = await Promise.all([
+				const [relicRes, powerRes, runeRes, championRes] = await Promise.all([
 					fetch(`${baseURL}/api/relics`),
 					fetch(`${baseURL}/api/generalPowers`),
 					fetch(`${baseURL}/api/runes`),
+					fetch(`${baseURL}/api/champions`), // Gọi API champions
 				]);
+
 				const relicData = await relicRes.json();
 				const powerData = await powerRes.json();
 				const runeData = await runeRes.json();
+				const championData = await championRes.json();
 
 				setRelics(
 					relicData.map(r => ({
@@ -235,29 +246,31 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 				setRunes(
 					runeData.map(r => ({ name: r.name, icon: r.assetAbsolutePath }))
 				);
+				setChampions(
+					championData.map(c => ({
+						name: c.name,
+						icon: c.assets?.[0]?.M?.avatar?.S,
+						regions: c.regions,
+					}))
+				);
 
 				setLoadingRelics(false);
 				setLoadingPowers(false);
 				setLoadingRunes(false);
+				setLoadingChampions(false); // Tắt loading
 			} catch (err) {
 				console.error("Lỗi tải dữ liệu:", err);
 				setLoadingRelics(false);
 				setLoadingPowers(false);
 				setLoadingRunes(false);
+				setLoadingChampions(false);
 			}
 		};
 		fetchData();
 	}, [isOpen]);
 
-	const championOptions = useMemo(
-		() =>
-			championsData.map(c => ({
-				name: c.name,
-				icon: c.assets?.[0]?.M?.avatar?.S,
-				regions: c.regions,
-			})),
-		[]
-	);
+	// Sử dụng champions từ API thay vì championsData
+	const championOptions = useMemo(() => champions, [champions]);
 
 	const isChampionSelected = !!formData.championName;
 	const isHoaLinhChampion =
@@ -334,6 +347,11 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 
 		if (!validateArtifacts() || !validatePowers()) return;
 
+		if (formData.star > maxStar) {
+			alert(`Tối đa chỉ được chọn ${maxStar} sao cho tướng này!`);
+			return;
+		}
+
 		setSubmitting(true);
 		try {
 			const url = isEditMode
@@ -373,7 +391,6 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 
 	return (
 		<>
-			{/* Main Form Modal */}
 			<Modal
 				isOpen={isOpen && !showConfirmClose}
 				onClose={handleCloseAttempt}
@@ -383,7 +400,7 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 				<form onSubmit={handleSubmit} className='space-y-5'>
 					{/* Champion */}
 					<div>
-						<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-1'>
+						<label className='block text-sm font-medium text-text-secondary mb-1'>
 							Tướng (Bắt buộc):
 						</label>
 						<SearchableDropdown
@@ -400,26 +417,33 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 										: [null],
 								}));
 								markChange();
+								onChampionChange(v);
 							}}
 							placeholder='Chọn hoặc tìm kiếm tướng...'
+							loading={loadingChampions} // Hiển thị loading
 						/>
 					</div>
 
 					<fieldset disabled={!isChampionSelected} className='space-y-5'>
 						{/* Star */}
 						<div>
-							<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
-								Xếp hạng sao:
-							</label>
+							<div className='flex items-center justify-between mb-2'>
+								<label className='block text-sm font-medium text-text-secondary'>
+									Xếp hạng sao:
+								</label>
+								<span className='text-xs text-text-secondary'>
+									Tối đa: <strong>{maxStar} sao</strong>
+								</span>
+							</div>
 							<div className='flex items-center gap-1'>
-								{[1, 2, 3, 4, 5, 6, 7].map(s => (
+								{Array.from({ length: maxStar }, (_, i) => i + 1).map(s => (
 									<Star
 										key={s}
 										size={28}
 										className={`cursor-pointer transition-all ${
 											formData.star >= s
-												? "text-[var(--color-warning)]"
-												: "text-[var(--color-border)] hover:text-[var(--color-text-secondary)]"
+												? "text-icon-star"
+												: "text-border hover:text-text-secondary"
 										}`}
 										fill={formData.star >= s ? "currentColor" : "none"}
 										onClick={() => {
@@ -431,40 +455,36 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 							</div>
 						</div>
 
-						{/* Artifacts */}
+						{/* Artifacts, Rune, Powers */}
 						<div>
-							<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
+							<label className='block text-sm font-medium text-text-secondary mb-2'>
 								Cổ vật (Bắt buộc ít nhất 1):
 							</label>
 							<div className='grid grid-cols-3 gap-3'>
-								{formData.artifacts.map((_, index) => {
-									const otherValues = formData.artifacts.filter(
-										(_, i) => i !== index
-									);
-									return (
-										<SearchableDropdown
-											key={`artifact-${index}`}
-											options={relics}
-											selectedValue={formData.artifacts[index]}
-											onChange={v => handleArtifactChange(v, index)}
-											placeholder={`Cổ vật ${index + 1}`}
-											loading={loadingRelics}
-											error={artifactErrors[index]}
-											allowDuplicate={
-												relics.find(r => r.name === formData.artifacts[index])
-													?.stack !== "1"
-											}
-											selectedValues={otherValues}
-										/>
-									);
-								})}
+								{formData.artifacts.map((_, index) => (
+									<SearchableDropdown
+										key={`artifact-${index}`}
+										options={relics}
+										selectedValue={formData.artifacts[index]}
+										onChange={v => handleArtifactChange(v, index)}
+										placeholder={`Cổ vật ${index + 1}`}
+										loading={loadingRelics}
+										error={artifactErrors[index]}
+										allowDuplicate={
+											relics.find(r => r.name === formData.artifacts[index])
+												?.stack !== "1"
+										}
+										selectedValues={formData.artifacts.filter(
+											(_, i) => i !== index
+										)}
+									/>
+								))}
 							</div>
 						</div>
 
-						{/* Rune */}
 						{isHoaLinhChampion && (
 							<div>
-								<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
+								<label className='block text-sm font-medium text-text-secondary mb-2'>
 									Ngọc bổ trợ:
 								</label>
 								<SearchableDropdown
@@ -480,36 +500,32 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 							</div>
 						)}
 
-						{/* Powers */}
 						<div>
-							<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
+							<label className='block text-sm font-medium text-text-secondary mb-2'>
 								Sức mạnh:
 							</label>
 							<div className='grid grid-cols-3 gap-3'>
-								{formData.powers.map((_, index) => {
-									const otherValues = formData.powers.filter(
-										(_, i) => i !== index
-									);
-									return (
-										<SearchableDropdown
-											key={`power-${index}`}
-											options={powers}
-											selectedValue={formData.powers[index]}
-											onChange={v => handlePowerChange(v, index)}
-											placeholder={`Sức mạnh ${index + 1}`}
-											loading={loadingPowers}
-											error={powerErrors[index]}
-											allowDuplicate={false}
-											selectedValues={otherValues}
-										/>
-									);
-								})}
+								{formData.powers.map((_, index) => (
+									<SearchableDropdown
+										key={`power-${index}`}
+										options={powers}
+										selectedValue={formData.powers[index]}
+										onChange={v => handlePowerChange(v, index)}
+										placeholder={`Sức mạnh ${index + 1}`}
+										loading={loadingPowers}
+										error={powerErrors[index]}
+										allowDuplicate={false}
+										selectedValues={formData.powers.filter(
+											(_, i) => i !== index
+										)}
+									/>
+								))}
 							</div>
 						</div>
 
 						{/* Description */}
 						<div>
-							<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
+							<label className='block text-sm font-medium text-text-secondary mb-2'>
 								Ghi chú:
 							</label>
 							<textarea
@@ -522,13 +538,16 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 									markChange();
 								}}
 								placeholder='Mô tả lối chơi, mẹo hay...'
-								className='w-full bg-[var(--color-surface)] text-[var(--color-text-primary)] rounded-md h-28 p-3 border border-[var(--color-border)] focus:ring-2 focus:ring-[var(--color-primary)] resize-none'
+								className='w-full bg-input-bg text-text-primary rounded-md h-28 p-3 border border-input-border
+                placeholder:text-input-placeholder
+                focus:border-input-focus-border focus:ring-0 focus:outline-none 
+                transition-colors duration-200 resize-none'
 							/>
 						</div>
 
 						{/* Display */}
 						<div>
-							<label className='block text-sm font-medium text-[var(--color-text-secondary)] mb-2'>
+							<label className='block text-sm font-medium text-text-secondary mb-2'>
 								Trạng thái hiển thị:
 							</label>
 							<button
@@ -537,7 +556,10 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 									setFormData(prev => ({ ...prev, display: !prev.display }));
 									markChange();
 								}}
-								className='flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] hover:bg-[var(--color-primary)] hover:text-white transition-all text-sm font-medium'
+								className='flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-bg border border-border 
+                text-text-primary
+                hover:bg-primary-500 hover:text-white hover:border-primary-500
+                transition-all text-sm font-medium'
 							>
 								{formData.display ? <Eye size={18} /> : <EyeOff size={18} />}
 								{formData.display ? "Công khai" : "Riêng tư"}
@@ -545,21 +567,22 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 						</div>
 					</fieldset>
 
-					<button
+					<Button
 						type='submit'
-						disabled={submitting || !isChampionSelected}
-						className='w-full mt-6 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all'
+						variant='primary'
+						className='w-full mt-6 py-3'
+						disabled={submitting || !isChampionSelected || loadingChampions}
 					>
 						{submitting
 							? "Đang xử lý..."
 							: isEditMode
 							? "Cập nhật Build"
 							: "Tạo Build"}
-					</button>
+					</Button>
 				</form>
 			</Modal>
 
-			{/* Confirm Close Modal – Tích hợp trực tiếp, dùng Modal chung */}
+			{/* Confirm Close Modal */}
 			<Modal
 				isOpen={showConfirmClose}
 				onClose={handleCancelClose}
@@ -567,24 +590,18 @@ const BuildModal = ({ isOpen, onClose, onConfirm, initialData = null }) => {
 				maxWidth='max-w-sm'
 			>
 				<div className='flex items-center gap-2 mb-3'>
-					<AlertCircle className='text-[var(--color-warning)]' size={20} />
-					<p className='text-sm text-[var(--color-text-secondary)]'>
+					<AlertCircle className='text-warning' size={20} />
+					<p className='text-sm text-text-secondary'>
 						Bạn có thay đổi chưa lưu. Đóng sẽ mất dữ liệu.
 					</p>
 				</div>
 				<div className='flex gap-3 justify-end mt-4'>
-					<button
-						onClick={handleCancelClose}
-						className='px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-background)] border border-[var(--color-border)] rounded hover:bg-[var(--color-surface)] transition'
-					>
+					<Button variant='ghost' onClick={handleCancelClose}>
 						Hủy
-					</button>
-					<button
-						onClick={handleConfirmClose}
-						className='px-4 py-2 text-sm font-medium text-white bg-[var(--color-danger)] rounded hover:bg-red-700 transition'
-					>
+					</Button>
+					<Button variant='danger' onClick={handleConfirmClose}>
 						Đóng không lưu
-					</button>
+					</Button>
 				</div>
 			</Modal>
 		</>

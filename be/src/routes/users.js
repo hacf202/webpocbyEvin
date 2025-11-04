@@ -1,4 +1,6 @@
 // src/routes/users.js
+// TỐI ƯU HOÀN CHỈNH
+
 import express from "express";
 import {
 	AdminGetUserCommand,
@@ -11,7 +13,7 @@ import { authenticateCognitoToken } from "../middleware/authenticate.js";
 const router = express.Router();
 const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 
-// GET /api/user/me - Lấy thông tin người dùng hiện tại
+// GET /api/user/me
 router.get("/user/me", authenticateCognitoToken, async (req, res) => {
 	try {
 		const command = new AdminGetUserCommand({
@@ -30,7 +32,7 @@ router.get("/user/me", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// GET /api/users/:username - Lấy thông tin công khai của một người dùng
+// GET /api/users/:username
 router.get("/users/:username", async (req, res) => {
 	const { username } = req.params;
 	try {
@@ -41,7 +43,7 @@ router.get("/users/:username", async (req, res) => {
 		const { UserAttributes } = await cognitoClient.send(command);
 		const nameAttribute = UserAttributes.find(attr => attr.Name === "name");
 		const publicProfile = {
-			username: username,
+			username,
 			name: nameAttribute ? nameAttribute.Value : username,
 		};
 		res.json(publicProfile);
@@ -54,20 +56,17 @@ router.get("/users/:username", async (req, res) => {
 	}
 });
 
-// POST /api/user/change-password - Đổi mật khẩu
+// POST /api/user/change-password
 router.post(
 	"/user/change-password",
 	authenticateCognitoToken,
 	async (req, res) => {
-		const { previousPassword, proposedPassword } = req.body;
-		const accessToken = req.headers.authorization.split(" ")[1];
-
-		if (!previousPassword || !proposedPassword) {
+		const { previousPassword, proposedPassword, accessToken } = req.body;
+		if (!previousPassword || !proposedPassword || !accessToken) {
 			return res
 				.status(400)
 				.json({ error: "Both previous and new passwords are required" });
 		}
-
 		try {
 			const command = new ChangePasswordCommand({
 				PreviousPassword: previousPassword,
@@ -84,15 +83,14 @@ router.post(
 		}
 	}
 );
+
 // PUT /api/user/change-name
 router.put("/user/change-name", authenticateCognitoToken, async (req, res) => {
 	const { name } = req.body;
 	const username = req.user["cognito:username"];
-
 	if (!name || name.trim().length < 3) {
 		return res.status(400).json({ error: "Tên phải có ít nhất 3 ký tự" });
 	}
-
 	try {
 		const command = new AdminUpdateUserAttributesCommand({
 			UserPoolId: COGNITO_USER_POOL_ID,
@@ -107,13 +105,13 @@ router.put("/user/change-name", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// GET /api/user/info/:sub → Lấy tên theo sub (cần mapping nếu sub ≠ username)
+// GET /api/user/info/:sub → DÙNG preferred_username = sub
 router.get("/user/info/:sub", async (req, res) => {
 	const { sub } = req.params;
 	try {
 		const command = new AdminGetUserCommand({
 			UserPoolId: COGNITO_USER_POOL_ID,
-			Username: sub, // Nếu sub = username → hoạt động
+			Username: sub, // BÂY GIỜ sub = username
 		});
 		const { UserAttributes } = await cognitoClient.send(command);
 		const name =

@@ -1,10 +1,40 @@
+// src/components/layout/Navbar.jsx (ĐÃ THAY BẰNG LOGO)
+
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/authContext";
 
-// --- BƯỚC 1: IMPORT CÁC COMPONENT MỚI ---
-import Modal from "../common/Modal"; // Giả sử Modal.jsx cùng cấp, hãy điều chỉnh đường dẫn nếu cần
-import Button from "../common/Button"; // Giả sử Button.jsx cùng cấp, hãy điều chỉnh đường dẫn nếu cần
+import Modal from "../common/modal";
+import Button from "../common/button";
+
+import {
+	Menu,
+	X,
+	User,
+	LogIn,
+	LogOut,
+	Settings,
+	Shield,
+	Swords,
+	Package,
+	Wrench,
+	ScrollText,
+	Landmark,
+	Zap,
+	Gem,
+	Dices,
+} from "lucide-react";
+
+// Import logo (đảm bảo file tồn tại trong thư mục public hoặc assets)
+import logo from "./icon/Yuumi.png"; // Đường dẫn đến logo
+import championIcon from "./icon/champion.png";
+import itemIcon from "./icon/item.png";
+import listIcon from "./icon/list.png";
+import relicIcon from "./icon/relic.png";
+import powerIcon from "./icon/power.png";
+import reliclistIcon from "./icon/reliclist.png";
+import runeIcon from "./icon/rune.png";
+import wheelIcon from "./icon/wheel.png";
 
 function Navbar() {
 	const { user, logout, isAdmin } = useContext(AuthContext);
@@ -12,208 +42,304 @@ function Navbar() {
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isProfileOpen, setIsProfileOpen] = useState(false);
-	const profileMenuRef = useRef(null);
+	const [isItemsDropdownOpen, setIsItemsDropdownOpen] = useState(false);
+	const [isToolsDropdownOpen, setIsToolsDropdownOpen] = useState(false);
 
-	// --- BƯỚC 2: THÊM STATE ĐỂ QUẢN LÝ MODAL ---
+	const profileMenuRef = useRef(null);
+	const itemsDropdownRef = useRef(null);
+	const toolsDropdownRef = useRef(null);
+
 	const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-	// Hàm thực hiện đăng xuất sau khi người dùng xác nhận trong Modal
 	const confirmLogout = () => {
 		logout();
-		setIsLogoutModalOpen(false); // Đóng modal
-		closeAllMenus(); // Đóng các menu khác nếu đang mở
+		setIsLogoutModalOpen(false);
+		closeAllMenus();
 		navigate("/");
 	};
 
 	const closeAllMenus = () => {
 		setIsMenuOpen(false);
 		setIsProfileOpen(false);
+		setIsItemsDropdownOpen(false);
+		setIsToolsDropdownOpen(false);
 	};
 
 	useEffect(() => {
-		function handleClickOutside(event) {
-			if (
-				profileMenuRef.current &&
-				!profileMenuRef.current.contains(event.target)
-			) {
-				setIsProfileOpen(false);
-			}
-		}
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
+		const handleClickOutside = event => {
+			[profileMenuRef, itemsDropdownRef, toolsDropdownRef].forEach(ref => {
+				if (ref.current && !ref.current.contains(event.target)) {
+					if (ref === profileMenuRef) setIsProfileOpen(false);
+					if (ref === itemsDropdownRef) setIsItemsDropdownOpen(false);
+					if (ref === toolsDropdownRef) setIsToolsDropdownOpen(false);
+				}
+			});
 		};
-	}, [profileMenuRef]);
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, []);
+
+	const navLinkClass = ({ isActive }) =>
+		`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 text-nav-link-text ${
+			isActive ? "bg-nav-active-bg font-bold" : ""
+		}`;
+
+	const dropdownLinkClass =
+		"flex items-center gap-2 px-4 py-2 text-sm text-dropdown-item-text hover:bg-dropdown-item-hover-bg transition-colors";
 
 	return (
 		<>
-			<header className='bg-[var(--color-navbar-bg)] text-[var(--color-navbar-text)] p-4 shadow-xl sticky top-0 z-50'>
+			<header className='bg-header-bg text-header-text p-4 shadow-xl sticky top-0 z-50 transition-all duration-300 font-secondary'>
 				<div className='container mx-auto flex justify-between items-center'>
+					{/* LOGO - Thay thế bằng hình ảnh */}
 					<NavLink
 						to='/'
-						className='text-2xl font-bold'
+						className='flex items-center group'
 						onClick={closeAllMenus}
 					>
-						Web POC
+						<img
+							src={logo}
+							alt='Web POC Logo'
+							className='h-10 w-auto object-contain rounded-lg transition-transform duration-300 group-hover:scale-110'
+						/>
+						<span className='ml-2 text-header-text font-primary text-3xl'>
+							GUIDE POC
+						</span>
 					</NavLink>
 
-					{/* ... (Phần code hamburger menu và các link điều hướng không đổi) ... */}
+					{/* Hamburger Button */}
 					<button
-						className='xl:hidden focus:outline-none'
+						className='xl:hidden focus:outline-none p-2 rounded-lg hover:bg-nav-hover-bg transition-colors'
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
 						aria-label='Toggle menu'
 					>
-						<svg
-							className='w-6 h-6'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-							xmlns='http://www.w3.org/2000/svg'
-						>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth='2'
-								d={
-									isMenuOpen
-										? "M6 18L18 6M6 6l12 12"
-										: "M4 6h16M4 12h16M4 18h16"
-								}
-							/>
-						</svg>
+						{isMenuOpen ? (
+							<X className='w-6 h-6' />
+						) : (
+							<Menu className='w-6 h-6' />
+						)}
 					</button>
 
+					{/* Navigation */}
 					<div
 						className={`${
 							isMenuOpen ? "block" : "hidden"
-						} xl:flex xl:items-center xl:gap-4 absolute xl:static top-16 left-0 w-full xl:w-auto bg-[var(--color-navbar-bg)] xl:bg-transparent z-40`}
+						} xl:flex xl:items-center xl:gap-1 absolute xl:static top-16 left-0 w-full xl:w-auto bg-header-bg xl:bg-transparent z-40 shadow-lg xl:shadow-none transition-all duration-300`}
 					>
-						<nav className='flex flex-col xl:flex-row xl:items-center p-4 xl:p-0 border-t xl:border-none border-gray-600'>
+						<nav className='flex flex-col xl:flex-row xl:items-center p-4 xl:p-0 gap-2 xl:gap-1'>
+							{/* Danh sách tướng */}
 							<NavLink
 								to='/champions'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
+								className={navLinkClass}
+								onClick={closeAllMenus}
 							>
-								Tướng
+								<img
+									src={championIcon}
+									alt='Champion'
+									className='w-8 h-8 object-contain'
+									style={{ filter: "invert(1) brightness(2)" }}
+								/>
+								Danh sách tướng
 							</NavLink>
-							<NavLink
-								to='/relics'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Cổ Vật
-							</NavLink>
-							<NavLink
-								to='/powers'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Sức Mạnh
-							</NavLink>
-							<NavLink
-								to='/items'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Vật Phẩm
-							</NavLink>
-							<NavLink
-								to='/runes'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Ngọc
-							</NavLink>
+
+							{/* Bộ cổ vật */}
 							<NavLink
 								to='/builds'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
+								className={navLinkClass}
+								onClick={closeAllMenus}
 							>
-								Builds
+								<img
+									src={reliclistIcon}
+									alt='Bộ cổ vật'
+									className='w-8 h-8 object-contain'
+									style={{ filter: "invert(1) brightness(2)" }}
+								/>
+								Bộ cổ vật
 							</NavLink>
-							<NavLink
-								to='/randomizer'
-								className={({ isActive }) =>
-									`py-2 xl:py-0 xl:mr-4 hover:underline ${
-										isActive ? "underline font-bold" : ""
-									}`
-								}
-								onClick={() => setIsMenuOpen(false)}
-							>
-								Vòng quay
-							</NavLink>
+
+							{/* Dropdown: Trang bị */}
+							<div className='relative' ref={itemsDropdownRef}>
+								<button
+									onClick={() => setIsItemsDropdownOpen(!isItemsDropdownOpen)}
+									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text ${
+										isItemsDropdownOpen ? "bg-nav-active-bg" : ""
+									}`}
+								>
+									<img
+										src={listIcon}
+										alt='weapon'
+										className='w-8 h-8 object-contain'
+										style={{ filter: "invert(1) brightness(2)" }}
+									/>
+									Trang bị
+									<svg
+										className={`w-4 h-4 transition-transform duration-300 ${
+											isItemsDropdownOpen ? "rotate-180" : ""
+										}`}
+										fill='none'
+										stroke='currentColor'
+										viewBox='0 0 24 24'
+									>
+										<path
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth={2}
+											d='M19 9l-7 7-7-7'
+										/>
+									</svg>
+								</button>
+
+								{isItemsDropdownOpen && (
+									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-56 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down duration-200'>
+										<NavLink
+											to='/relics'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={relicIcon}
+												alt='relic'
+												className='w-8 h-8 object-contain'
+											/>
+											Cổ Vật
+										</NavLink>
+										<NavLink
+											to='/powers'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={powerIcon}
+												alt='power'
+												className='w-8 h-8 object-contain'
+											/>
+											Sức Mạnh
+										</NavLink>
+										<NavLink
+											to='/items'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={itemIcon}
+												alt='item'
+												className='w-8 h-8 object-contain'
+											/>
+											Vật Phẩm
+										</NavLink>
+										<NavLink
+											to='/runes'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={runeIcon}
+												alt='rune'
+												className='w-8 h-8 object-contain'
+											/>
+											Ngọc
+										</NavLink>
+									</div>
+								)}
+							</div>
+
+							{/* Dropdown: Công cụ */}
+							<div className='relative' ref={toolsDropdownRef}>
+								<button
+									onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
+									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text ${
+										isToolsDropdownOpen ? "bg-nav-active-bg" : ""
+									}`}
+								>
+									<Wrench className='w-8 h-8' />
+									Công cụ
+									<svg
+										className={`w-4 h-4 transition-transform duration-300 ${
+											isToolsDropdownOpen ? "rotate-180" : ""
+										}`}
+										fill='none'
+										stroke='currentColor'
+										viewBox='0 0 24 24'
+									>
+										<path
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											strokeWidth={2}
+											d='M19 9l-7 7-7-7'
+										/>
+									</svg>
+								</button>
+
+								{isToolsDropdownOpen && (
+									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-48 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down duration-200'>
+										<NavLink
+											to='/randomizer'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={wheelIcon}
+												alt='wheel'
+												className='w-8 h-8 object-contain'
+											/>
+											Vòng quay
+										</NavLink>
+										<NavLink
+											to='/introduction'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<img
+												src={wheelIcon}
+												alt='introduction'
+												className='w-8 h-8 object-contain'
+											/>
+											Giới thiệu
+										</NavLink>
+									</div>
+								)}
+							</div>
 						</nav>
 
-						<div className='flex items-center gap-4 p-4 xl:p-0 border-t xl:border-none border-gray-600'>
+						{/* Auth Section */}
+						<div className='flex items-center gap-4 p-4 xl:p-0 border-t xl:border-none border-header-border'>
 							{user ? (
 								<div className='relative' ref={profileMenuRef}>
 									<button
 										onClick={() => setIsProfileOpen(!isProfileOpen)}
-										className='flex items-center gap-2 py-2 px-3 rounded-md hover:bg-[rgba(255,255,255,0.1)] focus:outline-none'
+										className='flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-nav-hover-bg focus:outline-none transition-all duration-200 hover:scale-105'
 									>
-										<span className='text-sm font-medium'>{user.name}</span>
-										<svg
-											xmlns='http://www.w3.org/2000/svg'
-											className='h-8 w-8'
-											fill='none'
-											viewBox='0 0 24 24'
-											stroke='currentColor'
-											strokeWidth={2}
-										>
-											<path
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-											/>
-										</svg>
+										<span className='text-sm font-medium text-nav-link-text'>
+											{user.name}
+										</span>
+										<User className='h-8 w-8' />
 									</button>
 
 									{isProfileOpen && (
-										<div className='absolute right-0 mt-2 w-48 bg-[var(--color-surface)] rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5'>
+										<div className='absolute right-0 mt-2 w-56 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 ring-1 ring-black ring-opacity-5 animate-slide-down duration-200'>
 											<NavLink
 												to='/profile'
-												className='block px-4 py-2 text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-background)]'
+												className={dropdownLinkClass}
 												onClick={closeAllMenus}
 											>
+												<Settings className='w-4 h-4' />
 												Thông tin tài khoản
 											</NavLink>
 											{isAdmin && (
 												<NavLink
-													to='/admin' // Dẫn đến trang mặc định của admin panel
+													to='/admin'
 													onClick={closeAllMenus}
-													className='block px-4 py-2 text-sm font-semibold text-[var(--color-text-link)] hover:bg-[var(--color-background)]'
+													className={`${dropdownLinkClass} font-semibold text-text-link-admin`}
 												>
+													<Shield className='w-4 h-4' />
 													Admin Panel
 												</NavLink>
 											)}
 											<button
 												onClick={() => setIsLogoutModalOpen(true)}
-												className='block w-full text-left px-4 py-2 text-sm text-[var(--color-text-primary)] hover:bg-[var(--color-background)]'
+												className={`${dropdownLinkClass} w-full`}
 											>
+												<LogOut className='w-4 h-4' />
 												Đăng Xuất
 											</button>
 										</div>
@@ -222,23 +348,11 @@ function Navbar() {
 							) : (
 								<NavLink
 									to='/auth'
-									onClick={() => setIsMenuOpen(false)}
-									aria-label='Đăng Nhập'
+									onClick={closeAllMenus}
+									className='flex items-center gap-2 py-2 px-4 rounded-lg bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover-bg transition-all duration-200 hover:scale-105'
 								>
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										className='h-8 w-8 hover:opacity-80'
-										fill='none'
-										viewBox='0 0 24 24'
-										stroke='currentColor'
-										strokeWidth={2}
-									>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1'
-										/>
-									</svg>
+									<LogIn className='h-5 w-5' />
+									Đăng Nhập
 								</NavLink>
 							)}
 						</div>
@@ -246,7 +360,7 @@ function Navbar() {
 				</div>
 			</header>
 
-			{/* --- BƯỚC 4: THÊM MODAL VÀO GIAO DIỆN --- */}
+			{/* Modal Đăng xuất */}
 			<Modal
 				isOpen={isLogoutModalOpen}
 				onClose={() => setIsLogoutModalOpen(false)}
@@ -254,7 +368,8 @@ function Navbar() {
 				maxWidth='max-w-sm'
 			>
 				<div>
-					<p className='text-[var(--color-text-secondary)]'>
+					<p className='text-text-secondary flex items-center gap-2'>
+						<LogOut className='w-5 h-5 text-red-500' />
 						Bạn có chắc chắn muốn kết thúc phiên làm việc này không?
 					</p>
 					<div className='flex justify-end gap-4 mt-6'>

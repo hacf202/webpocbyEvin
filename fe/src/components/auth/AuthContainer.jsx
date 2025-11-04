@@ -1,43 +1,99 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Login from "./Login.jsx";
-import Register from "./Register.jsx";
+// src/pages/auth/AuthContainer.jsx
 
-const AuthContainer = ({ onClose }) => {
-	// isLoginView: true => Hiển thị Đăng nhập; false => Hiển thị Đăng ký
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Login from "./login.jsx";
+import Register from "./register.jsx";
+import { ChevronLeft } from "lucide-react";
+import Button from "../common/button.jsx";
+
+const AuthContainer = () => {
 	const [isLoginView, setIsLoginView] = useState(true);
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	// Chỉ hiển thị nút quay lại nếu có trang trước đó
+	const showBackButton = location.key !== "default";
 
 	const handleLoginSuccess = () => {
-		// Xử lý sau khi đăng nhập thành công: đóng container và điều hướng
-		if (onClose) onClose();
 		navigate("/builds");
 	};
 
-	const handleRegisterSuccessAndClose = () => {
-		// Xử lý sau khi đăng ký VÀ xác minh OTP thành công
-		if (onClose) onClose();
-		// Nếu không đóng, có thể chuyển về màn hình đăng nhập
-		// setIsLoginView(true);
+	const handleRegisterSuccess = () => {
+		setIsLoginView(true);
 	};
 
 	const switchToRegister = () => setIsLoginView(false);
 	const switchToLogin = () => setIsLoginView(true);
 
+	const handleBack = () => {
+		if (showBackButton) {
+			navigate(-1);
+		} else {
+			navigate("/");
+		}
+	};
+
 	return (
-		<div className='auth-container flex justify-center items-center min-h-screen'>
-			<div className='w-full max-w-md'>
-				{isLoginView ? (
-					<Login
-						onSwitchToRegister={switchToRegister}
-						onSuccess={handleLoginSuccess}
-					/>
-				) : (
-					<Register
-						onSwitchToLogin={switchToLogin}
-						onClose={handleRegisterSuccessAndClose}
-					/>
+		<div className='flex justify-center min-h-screen p-4 pt-16 sm:pt-20 font-secondary'>
+			<div className='w-full max-w-lg'>
+				{/* === NÚT QUAY LẠI - NẰM TRÊN FORM === */}
+				{showBackButton && (
+					<div className='mb-4'>
+						<Button onClick={handleBack} variant='outline'>
+							<ChevronLeft size={18} />
+							Quay lại
+						</Button>
+					</div>
 				)}
+
+				{/* === TAB ĐĂNG NHẬP / ĐĂNG KÝ === */}
+				<div className='flex mb-0'>
+					<button
+						onClick={switchToLogin}
+						className={`relative flex-1 py-3 px-4 font-primary font-bold text-lg rounded-t-xl transition-all duration-300 ease-in-out
+              ${
+								isLoginView
+									? "bg-surface-bg text-text-primary shadow-inner-top"
+									: "bg-surface-hover text-text-secondary hover:text-text-primary hover:bg-surface-active"
+							}`}
+					>
+						Đăng Nhập
+						{isLoginView && (
+							<span className='absolute bottom-0 left-0 w-full h-1 bg-primary-500'></span>
+						)}
+					</button>
+
+					<button
+						onClick={switchToRegister}
+						className={`relative flex-1 py-3 px-4 font-primary font-bold text-lg rounded-t-xl transition-all duration-300 ease-in-out
+              ${
+								!isLoginView
+									? "bg-surface-bg text-text-primary shadow-inner-top"
+									: "bg-surface-hover text-text-secondary hover:text-text-primary hover:bg-surface-active"
+							}`}
+					>
+						Đăng Ký
+						{!isLoginView && (
+							<span className='absolute bottom-0 left-0 w-full h-1 bg-primary-500'></span>
+						)}
+					</button>
+				</div>
+
+				{/* === NỘI DUNG FORM === */}
+				<div className='bg-surface-bg rounded-b-xl shadow-primary-md overflow-hidden border-t border-transparent'>
+					{isLoginView ? (
+						<Login
+							onSwitchToRegister={switchToRegister}
+							onSuccess={handleLoginSuccess}
+						/>
+					) : (
+						<Register
+							onSwitchToLogin={switchToLogin}
+							onClose={handleRegisterSuccess}
+						/>
+					)}
+				</div>
 			</div>
 		</div>
 	);

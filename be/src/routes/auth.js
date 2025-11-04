@@ -28,7 +28,9 @@ router.post("/forgot-password", async (req, res) => {
 		const userEmail = UserAttributes.find(a => a.Name === "email")?.Value;
 
 		if (email && userEmail && userEmail.toLowerCase() !== email.toLowerCase()) {
-			return res.status(400).json({ error: "Email không khớp với tài khoản" });
+			return res
+				.status(400)
+				.json({ error: "Tài khoản hoặc email không chính xác" });
 		}
 
 		const command = new ForgotPasswordCommand({
@@ -39,7 +41,9 @@ router.post("/forgot-password", async (req, res) => {
 		res.json({ message: "Mã đặt lại mật khẩu đã được gửi đến email" });
 	} catch (error) {
 		if (error.name === "UserNotFoundException") {
-			return res.status(404).json({ error: "Không tìm thấy tài khoản" });
+			return res
+				.status(404)
+				.json({ error: "Tài khoản hoặc email không chính xác" });
 		}
 		console.error("Forgot password error:", error);
 		res.status(500).json({ error: "Không thể xử lý yêu cầu" });

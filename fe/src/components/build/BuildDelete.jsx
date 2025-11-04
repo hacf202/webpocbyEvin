@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/authContext";
 import { Trash2, Loader2, X } from "lucide-react";
-import Modal from "../common/Modal";
-import Button from "../common/Button";
+import Modal from "../common/modal";
+import Button from "../common/button";
 
 const BuildDelete = ({ build, isOpen, onClose, onConfirm }) => {
 	const { token } = useAuth();
@@ -55,9 +55,9 @@ const BuildDelete = ({ build, isOpen, onClose, onConfirm }) => {
 	return (
 		<Modal isOpen={isOpen} onClose={handleClose} title='Xác nhận xóa Build'>
 			<div>
-				<p className='text-[var(--color-text-secondary)] mb-6'>
+				<p className='text-text-secondary mb-6'>
 					Bạn có chắc chắn muốn xóa build cho tướng{" "}
-					<strong className='font-semibold text-[var(--color-text-primary)]'>
+					<strong className='font-semibold text-text-primary'>
 						{build?.championName}
 					</strong>
 					?
@@ -69,8 +69,8 @@ const BuildDelete = ({ build, isOpen, onClose, onConfirm }) => {
 					<p
 						className={`mb-4 text-center text-sm font-medium ${
 							message.startsWith("Lỗi")
-								? "text-[var(--color-danger)]"
-								: "text-green-500" // Giữ màu xanh lá cho thành công hoặc dùng biến nếu có
+								? "text-danger-text-dark"
+								: "text-success"
 						}`}
 					>
 						{message}

@@ -182,7 +182,6 @@ export const AuthProvider = ({ children }) => {
 		onError
 	) => {
 		try {
-			// Bạn có thể thêm validation mật khẩu ở đây
 			await authService.confirmPasswordReset(username, code, newPassword);
 			onSuccess("Mật khẩu đã được đặt lại thành công! Vui lòng đăng nhập.");
 		} catch (error) {
@@ -193,11 +192,11 @@ export const AuthProvider = ({ children }) => {
 	const changeName = async (newName, onSuccess, onError) => {
 		try {
 			const data = await authService.changeName(newName, token);
-			// Cập nhật lại tên trong state và token
-			updateUserName(newName);
+			// CẬP NHẬT STATE NGAY LẬP TỨC
+			setUser(prev => (prev ? { ...prev, name: newName } : null));
 			onSuccess(data.message);
 		} catch (err) {
-			onError(err.message);
+			onError(err.message || "Không thể đổi tên");
 		}
 	};
 
@@ -207,26 +206,22 @@ export const AuthProvider = ({ children }) => {
 		onSuccess,
 		onError
 	) => {
+		if (!accessToken) {
+			onError("Không tìm thấy access token");
+			return;
+		}
+
 		try {
 			const data = await authService.changePassword(
 				oldPassword,
 				newPassword,
-				accessToken,
-				token
+				accessToken, // ← BẮT BUỘC
+				token // ← ID Token để xác thực (nếu backend cần)
 			);
 			onSuccess(data.message);
 		} catch (err) {
-			onError(err.message);
+			onError(err.message || "Không thể đổi mật khẩu");
 		}
-	};
-
-	const updateUserName = newName => {
-		setUser(currentUser =>
-			currentUser ? { ...currentUser, name: newName } : null
-		);
-		// Lưu ý: Việc này chỉ cập nhật state ở client. Lần đăng nhập tiếp theo sẽ lấy lại tên từ token.
-		// Để cập nhật vĩnh viễn, backend của bạn cần cập nhật thuộc tính 'name' trong Cognito
-		// và bạn cần lấy lại token mới sau khi đổi tên.
 	};
 
 	const getUserNameBySub = async sub => {
@@ -255,7 +250,6 @@ export const AuthProvider = ({ children }) => {
 		confirmPasswordReset,
 		changeName,
 		changePassword,
-		updateUserName,
 		getUserNameBySub,
 	};
 

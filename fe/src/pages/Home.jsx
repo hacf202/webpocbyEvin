@@ -1,283 +1,301 @@
 // src/pages/Home.jsx
+import React, { useEffect } from "react"; // Xóa useEffect chèn style
+import { NavLink } from "react-router-dom";
+import {
+	Swords,
+	ScrollText,
+	Dices,
+	ChevronRight,
+	Crown,
+	Zap,
+	Shield,
+	Flame,
+	HandFist,
+	Skull,
+	Target,
+} from "lucide-react";
 
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Flame, Rss, ChevronLeft, ChevronRight } from "lucide-react";
-
-// Dữ liệu giả lập cho các bài viết
-const featuredPosts = [
-	{
-		id: "builds",
-		title: "Top những tướng mạnh nhất trong Path of Champions",
-		category: "Path of Champions",
-		imageUrl:
-			"https://spellmana.com/wp-content/uploads/2024/05/GNvFb3eaAAAkxw7.webp",
-		excerpt:
-			"Khám phá những tướng có sức mạnh vượt trội giúp bạn chinh phục các thử thách trong Path of Champions.",
-	},
-	{
-		id: "champion/Jinx",
-		title: "Jinx 4 sao: Bùng nổ với Hỏa Lực Của Khẩu Pháo Nổi Loạn",
-		category: "Builds",
-		imageUrl:
-			"https://wiki.leagueoflegends.com/en-us/images/01PZ040T1-full.png?3fc64",
-		excerpt: "Tối ưu hóa sát thương của Jinx với trang bị và cổ vật phù hợp.",
-	},
-	{
-		id: "relic/R0082",
-		title: "Găng Tinh Vân Sư cổ vật mạnh nhất game",
-		category: "Cổ vật",
-		imageUrl:
-			"https://dd.b.pvp.net/6_9_0/adventure/vi_vn/img/relics/R0082-full.png",
-		excerpt:
-			"Găng Tinh Vân Sư là cổ vật mạnh nhất trong game, cung cấp sức mạnh vượt trội cho tướng",
-	},
-	{
-		id: "randomizer",
-		title: "Trải Nghiệm Vòng Quay Path Of Champions",
-		category: "Tool",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Teemo.png",
-		excerpt:
-			"Tổng hợp các phương pháp giúp bạn đẩy nhanh tiến độ nâng cấp tướng.",
-	},
+// Mảng ảnh nền vẫn giữ nguyên
+const BACKGROUND_IMAGES = [
+	"http://dd.b.pvp.net/6_3_0/set2/vi_vn/img/cards/02NX007T2-full.png",
+	"https://wiki.leagueoflegends.com/en-us/images/06SI012T1-full.png?0bfd7",
+	"https://wiki.leagueoflegends.com/en-us/images/06SH009-full.png?ff10a",
 ];
 
-const latestPosts = [
-	{
-		id: 2,
-		title: "Phân tích meta game hiện tại: Những tướng đang thống trị",
-		category: "Phân tích",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Kindred.png",
-	},
-	{
-		id: 3,
-		title: "Top 5 thánh vật hiếm mạnh nhất bạn nên sở hữu",
-		category: "Hướng dẫn",
-		imageUrl:
-			"https://cdn.sanity.io/images/g4s1d0u7/production/501a615af2181561025217a26f312c15143b86a0-64x64.png",
-	},
-	{
-		id: 4,
-		title: "Trải Nghiệm Thử Vòng Quay ",
-		category: "Mẹo & Thủ thuật",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Gwen.png",
-	},
-	{
-		id: 5,
-		title: "Cập nhật phiên bản 4.3: Những thay đổi đáng chú ý",
-		category: "Tin tức",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Volibear.png",
-	},
-	{
-		id: 6,
-		title: "Build đồ 'one shot' cho Jhin 4 sao",
-		category: "Builds",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Jhin.png",
-	},
-	{
-		id: 7,
-		title: "Đánh giá sức mạnh của Morgana mới ra mắt",
-		category: "Đánh giá",
-		imageUrl: "https://rerollcdn.com/GEN/lol/champion/Morgana.png",
-	},
-];
+// Hàm preload vẫn giữ nguyên
+const preloadBackgrounds = () => {
+	BACKGROUND_IMAGES.forEach(src => {
+		const link = document.createElement("link");
+		link.rel = "preload";
+		link.as = "image";
+		link.href = src;
+		document.head.appendChild(link);
+	});
+};
 
-const popularPosts = [
-	{ id: 1, title: "Hướng dẫn build đồ cho Yasuo 4 sao" },
-	{ id: 2, title: "Làm thế nào để đánh bại Aurelion Sol?" },
-	{ id: 3, title: "Top 3 tướng leo rank dễ nhất cho người mới" },
-	{ id: 4, title: "Mẹo farm mảnh tướng hiệu quả" },
-];
-
-// Component Banner Carousel mới
-const BannerCarousel = ({ posts }) => {
-	const [currentIndex, setCurrentIndex] = useState(0);
-
+const Home = () => {
+	// CHỈ CÒN LẠI useEffect cho preload ảnh
 	useEffect(() => {
-		const interval = setInterval(() => {
-			setCurrentIndex(prevIndex =>
-				prevIndex === posts.length - 1 ? 0 : prevIndex + 1
-			);
-		}, 7000); // Tự động chuyển sau mỗi 7 giây
+		preloadBackgrounds();
+	}, []);
 
-		return () => clearInterval(interval); // Dọn dẹp interval khi component unmount
-	}, [posts.length]);
+	// SỬ DỤNG CLASS MÀU TỪ TAILWIND CONFIG
+	const roles = [
+		{
+			icon: Swords,
+			bg: "bg-role-aggro",
+			label: "AGGRO",
+			shadow: "shadow-role-aggro/50",
+		},
+		{
+			icon: Zap,
+			bg: "bg-role-combo",
+			label: "COMBO",
+			shadow: "shadow-role-combo/60",
+		},
+		{
+			icon: Skull,
+			bg: "bg-role-mill",
+			label: "MILL (MAIKA)",
+			shadow: "shadow-role-mill/50",
+		},
+		{
+			icon: Shield,
+			bg: "bg-role-control",
+			label: "CONTROL",
+			shadow: "shadow-role-control/50",
+		},
+		{
+			icon: Target,
+			bg: "bg-role-midrange",
+			label: "MIDRANGE",
+			shadow: "shadow-role-midrange/50",
+		},
+		{
+			icon: Flame,
+			bg: "bg-role-burn",
+			label: "BURN",
+			shadow: "shadow-role-burn/50",
+		},
 
-	const goToPrevious = () => {
-		const isFirstSlide = currentIndex === 0;
-		const newIndex = isFirstSlide ? posts.length - 1 : currentIndex - 1;
-		setCurrentIndex(newIndex);
-	};
+		{
+			icon: HandFist,
+			bg: "bg-role-ftk-otk",
+			label: "FTK / OTK",
+			shadow: "shadow-role-ftk-otk/50",
+		},
+	];
 
-	const goToNext = () => {
-		const isLastSlide = currentIndex === posts.length - 1;
-		const newIndex = isLastSlide ? 0 : currentIndex + 1;
-		setCurrentIndex(newIndex);
-	};
-
-	const goToSlide = index => {
-		setCurrentIndex(index);
-	};
+	// SỬ DỤNG CLASS MÀU TỪ TAILWIND CONFIG
+	const sections = [
+		{
+			title: "DANH SÁCH TƯỚNG",
+			subtitle: "KHÁM PHÁ SỨC MẠNH – TRỞ THÀNH TRANH CHỦ",
+			titleColor: "text-accent1-title",
+			subtitleColor: "text-accent1-subtitle",
+			btnBg: "bg-accent1-cta-bg",
+			btnHover: "hover:bg-accent1-cta-hover hover:shadow-accent1-cta-bg/70",
+			link: "/champions",
+			btnText: "Xem Danh Sách Tướng",
+			icon: Swords,
+			align: "center",
+		},
+		{
+			title: "DANH SÁCH CỔ VẬT",
+			subtitle: "TỐI ƯU HÓA SỨC MẠNH – THỐNG TRỊ CHIẾN TRƯỜNG",
+			titleColor: "text-accent2-title",
+			subtitleColor: "text-accent2-subtitle",
+			btnBg: "bg-accent2-cta-bg",
+			btnHover: "hover:bg-accent2-cta-hover hover:shadow-accent2-cta-bg/70",
+			link: "/builds",
+			btnText: "Xem Bộ Cổ Vật",
+			icon: ScrollText,
+			align: "left",
+		},
+		{
+			title: "VÒNG QUAY MAY MẮN",
+			subtitle: "NGẪU NHIÊN HOÀN HẢO – THỬ NGẪU CHIẾN THẮNG",
+			titleColor: "text-accent3-title",
+			subtitleColor: "text-accent3-subtitle",
+			btnBg: "bg-accent3-cta-bg",
+			btnHover: "hover:bg-accent3-cta-hover hover:shadow-accent3-cta-bg/70",
+			link: "/randomizer",
+			btnText: "Quay Ngay",
+			icon: Dices,
+			spin: true,
+			align: "right",
+		},
+	];
 
 	return (
-		<div className='relative w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden shadow-lg group'>
-			<div
-				className='flex transition-transform duration-700 ease-in-out h-full'
-				style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-			>
-				{posts.map(post => (
-					<Link
-						to={`/${post.id}`}
-						key={post.id}
-						className='flex-shrink-0 w-full h-full'
+		// ĐỔI SANG FONT CHÍNH (SPACE GROTESK) CHO TIÊU ĐỀ
+		<div className='text-white overflow-x-hidden font-primary'>
+			{/* Lớp phủ này giờ đọc từ theme.css (thông qua tailwind.config) */}
+			<div className='fixed inset-0 -z-20 pointer-events-none bg-page-overlay' />
+
+			{sections.map((section, idx) => (
+				<section
+					key={idx}
+					className='relative min-h-screen flex overflow-hidden'
+					style={{
+						padding:
+							section.align === "center" ? "0 1.5rem md:3rem lg:6rem" : "0",
+					}}
+				>
+					{/* Ảnh nền */}
+					<div
+						className='absolute inset-0 w-full h-full -z-10 bg-cover bg-center'
+						style={{
+							backgroundImage: `url(${
+								BACKGROUND_IMAGES[idx % BACKGROUND_IMAGES.length]
+							})`,
+							filter: "brightness(0.9) contrast(1.1) saturate(1.2)",
+						}}
+					/>
+					{/* Lớp phủ mờ trên ảnh */}
+					<div className='absolute inset-0 bg-black/15 -z-10' />
+
+					{/* === NỘI DUNG – DÍNH SÁT GÓC DƯỚI === */}
+					<div
+						className={`
+              absolute bottom-0 w-full
+              ${section.align === "left" ? "left-0 pl-6 md:pl-12 lg:pl-20" : ""}
+              ${
+								section.align === "right"
+									? "right-0 pr-6 md:pr-12 lg:pr-20"
+									: ""
+							}
+              ${
+								section.align === "center"
+									? "left-1/2 -translate-x-1/2 max-w-6xl px-6 md:px-12 lg:px-24"
+									: ""
+							}
+              pb-12 md:pb-16 z-10
+            `}
 					>
-						<div
-							className='w-full h-full bg-cover bg-center relative'
-							style={{ backgroundImage: `url(${post.imageUrl})` }}
-						>
-							<div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent'></div>
-							<div className='absolute bottom-0 left-0 p-6 text-white'>
-								<span className='text-sm bg-blue-500 px-2 py-1 rounded'>
-									{post.category}
-								</span>
-								<h3 className='text-xl md:text-3xl font-bold mt-2'>
-									{post.title}
-								</h3>
+						{/* Badge */}
+						{idx === 0 && section.align === "center" && (
+							<div className='flex justify-center mb-8'>
+								{/* SỬ DỤNG CLASS MỚI TỪ theme.css VÀ TAILWIND CONFIG */}
+								<div className='inline-flex items-center gap-3 px-7 py-3 bg-accent1-badge-bg rounded-full shadow-xl animate-badgeBounce'>
+									<Crown className='w-7 h-7 text-white' />
+									<span className='font-bold uppercase tracking-wider text-white text-lg'>
+										Con Đường Anh Hùng
+									</span>
+								</div>
 							</div>
+						)}
+
+						{/* Tiêu đề */}
+						<h2
+							className={`
+                text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-wider drop-shadow-2xl animate-fadeIn
+                ${
+									section.align === "left"
+										? "text-left"
+										: section.align === "right"
+										? "text-right"
+										: "text-center"
+								}
+                ${section.titleColor}
+              `}
+							style={{
+								textShadow:
+									"0 0 20px rgba(255,255,255,0.4), 0 0 40px currentColor",
+							}}
+						>
+							{section.title}
+						</h2>
+
+						{/* Phụ đề */}
+						<p
+							className={`
+                text-xl md:text-3xl lg:text-4xl font-bold uppercase tracking-widest mb-8 drop-shadow-xl animate-slideUp
+                ${
+									section.align === "left"
+										? "text-left"
+										: section.align === "right"
+										? "text-right"
+										: "text-center"
+								}
+                ${section.subtitleColor}
+              `}
+							style={{ textShadow: "0 0 15px rgba(255,255,255,0.6)" }}
+						>
+							{section.subtitle}
+						</p>
+
+						{/* CARD VAI TRÒ */}
+						{idx === 0 && section.align === "center" && (
+							<div className='flex justify-center gap-6 md:gap-10 mb-12 flex-wrap'>
+								{roles.map((role, i) => (
+									<div
+										key={i}
+										// SỬ DỤNG MÀU TỪ TAILWIND CONFIG
+										className={`group flex flex-col items-center gap-3 p-5 rounded-2xl bg-glass-bg backdrop-blur-md border-2 border-glass-border hover:bg-glass-hover-bg hover:border-glass-hover-border hover:scale-115 transition-all duration-500 cursor-pointer shadow-2xl animate-cardFloat ${role.shadow}`}
+										style={{
+											animationDelay: `${i * 120}ms`,
+											boxShadow: `0 0 20px var(--color-role-${role.label.toLowerCase()}), 0 10px 30px rgba(0,0,0,0.2)`,
+										}}
+									>
+										<div
+											className={`p-4 rounded-full ${role.bg} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+										>
+											<role.icon className='w-9 h-9 md:w-11 md:h-11 text-white drop-shadow-md' />
+										</div>
+										{/* ĐỔI SANG FONT PHỤ (OPEN SANS) CHO DỄ ĐỌC */}
+										<span className='text-sm md:text-base font-bold tracking-wide text-glass-text font-secondary'>
+											{role.label}
+										</span>
+									</div>
+								))}
+							</div>
+						)}
+
+						{/* NÚT BẤM */}
+						<div
+							className={`
+                flex flex-col sm:flex-row gap-6 animate-slideUp
+                ${
+									section.align === "left"
+										? "justify-start"
+										: section.align === "right"
+										? "justify-end"
+										: "justify-center"
+								}
+              `}
+						>
+							<NavLink
+								to={section.link}
+								className={`
+                  flex items-center justify-center gap-3 px-9 py-5 ${section.btnBg} rounded-full
+                  font-bold text-lg md:text-xl text-white hover:scale-110 transition-all duration-300
+                  shadow-2xl ${section.btnHover} backdrop-blur-md group
+                `}
+							>
+								{section.spin ? (
+									<section.icon className='w-6 h-6 animate-spin' />
+								) : (
+									<section.icon className='w-6 h-6' />
+								)}
+								{section.btnText}
+								<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
+							</NavLink>
+
+							<NavLink
+								to={section.link}
+								// SỬ DỤNG CLASS MÀU TỪ TAILWIND CONFIG
+								className='flex items-center justify-center gap-3 px-9 py-5 bg-glass-bg hover:bg-glass-hover-bg backdrop-blur-md rounded-full font-bold text-lg md:text-xl transition-all duration-300 hover:scale-110 border-2 border-glass-border shadow-xl group'
+							>
+								Khám Phá Ngay
+								<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
+							</NavLink>
 						</div>
-					</Link>
-				))}
-			</div>
-
-			{/* Nút chuyển trái */}
-			<button
-				onClick={goToPrevious}
-				className='absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100'
-				aria-label='Previous slide'
-			>
-				<ChevronLeft size={24} />
-			</button>
-
-			{/* Nút chuyển phải */}
-			<button
-				onClick={goToNext}
-				className='absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 text-white p-2 rounded-full hover:bg-black/50 transition-all opacity-0 group-hover:opacity-100'
-				aria-label='Next slide'
-			>
-				<ChevronRight size={24} />
-			</button>
-
-			{/* Chấm điều hướng */}
-			<div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2'>
-				{posts.map((_, index) => (
-					<button
-						key={index}
-						onClick={() => goToSlide(index)}
-						className={`w-3 h-3 rounded-full transition-colors ${
-							currentIndex === index ? "bg-white" : "bg-white/50"
-						}`}
-						aria-label={`Go to slide ${index + 1}`}
-					></button>
-				))}
-			</div>
+					</div>
+				</section>
+			))}
 		</div>
 	);
 };
-
-// Component Card bài viết
-const PostCard = ({ post }) => (
-	<div className='bg-[var(--color-surface)] rounded-lg overflow-hidden shadow-[var(--color-shadow)] border border-[var(--color-border)] hover:shadow-lg transition-shadow duration-300 h-full'>
-		<Link to={`/post/${post.id}`} className='block'>
-			<img
-				src={post.imageUrl}
-				alt={post.title}
-				className='w-full h-40 object-cover object-top'
-			/>
-			<div className='p-4'>
-				<span className='text-sm text-blue-500 font-semibold'>
-					{post.category}
-				</span>
-				<h3 className='font-bold mt-1 text-lg text-[var(--color-text-primary)]'>
-					{post.title}
-				</h3>
-			</div>
-		</Link>
-	</div>
-);
-
-// Component Section
-const Section = ({ title, icon, children }) => (
-	<div className='mb-8'>
-		<div className='flex items-center mb-4'>
-			{icon}
-			<h2 className='text-2xl font-bold text-[var(--color-text-primary)] ml-2'>
-				{title}
-			</h2>
-		</div>
-		{children}
-	</div>
-);
-
-function Home() {
-	return (
-		<div className='container mx-auto p-4 max-w-7xl'>
-			<div className='lg:flex lg:gap-8'>
-				{/* Cột nội dung chính */}
-				<main className='flex-1'>
-					{/* Bài viết nổi bật - Banner Carousel */}
-					<Section
-						title='Nổi bật'
-						icon={<Flame className='text-red-500' size={28} />}
-					>
-						<BannerCarousel posts={featuredPosts} />
-					</Section>
-
-					{/* Tin tức mới nhất */}
-					<Section
-						title='Tin mới nhất'
-						icon={<Rss className='text-green-500' size={28} />}
-					>
-						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-							{latestPosts.map(post => (
-								<PostCard key={post.id} post={post} />
-							))}
-						</div>
-					</Section>
-				</main>
-
-				{/* Sidebar */}
-				<aside className='w-full lg:w-80 mt-8 lg:mt-0 flex-shrink-0'>
-					<div className='sticky top-20'>
-						<div className='bg-[var(--color-surface)] rounded-lg p-4 shadow-[var(--color-shadow)] border border-[var(--color-border)]'>
-							<h3 className='text-xl font-bold mb-4 border-l-4 border-blue-500 pl-3 text-[var(--color-text-primary)]'>
-								Xem nhiều
-							</h3>
-							<ul>
-								{popularPosts.map((post, index) => (
-									<li
-										key={post.id}
-										className='mb-3 pb-3 border-b border-[var(--color-border-secondary)] last:border-b-0 last:pb-0 last:mb-0'
-									>
-										<Link
-											to={`/post/${post.id}`}
-											className='flex items-start gap-3 group'
-										>
-											<span className='text-2xl font-bold text-gray-400 group-hover:text-blue-500 transition-colors'>
-												{index + 1}
-											</span>
-											<span className='font-semibold text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors'>
-												{post.title}
-											</span>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
-					</div>
-				</aside>
-			</div>
-		</div>
-	);
-}
 
 export default Home;

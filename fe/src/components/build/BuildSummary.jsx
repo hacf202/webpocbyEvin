@@ -1,3 +1,4 @@
+// src/components/build/BuildSummary.jsx
 import React, { memo, useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -9,14 +10,15 @@ import {
 	MoreVertical,
 	Edit,
 	Trash2,
+	ChevronRight,
 } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import Modal from "../common/Modal";
+import { useAuth } from "../../context/authContext";
+import Modal from "../common/modal";
 import Button from "../common/Button";
-import BuildDelete from "./BuildDelete";
-import BuildEditModal from "./BuildEditModal";
+import BuildDelete from "./buildDelete";
+import BuildEditModal from "./buildEditModal";
 
-const MAX_HEIGHT = 500;
+const DESCRIPTION_MAX_HEIGHT = 80; // ~4 dòng
 
 const BuildSummary = ({
 	build,
@@ -32,10 +34,10 @@ const BuildSummary = ({
 	const navigate = useNavigate();
 	const apiUrl = import.meta.env.VITE_API_URL;
 	const menuRef = useRef(null);
-	const contentRef = useRef(null);
+	const descriptionRef = useRef(null);
 
-	const [isOverflowing, setIsOverflowing] = useState(false);
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
+		useState(false);
 	const [likeCount, setLikeCount] = useState(build.like || 0);
 	const [isLiked, setIsLiked] = useState(false);
 	const [isFavorite, setIsFavorite] = useState(false);
@@ -46,27 +48,31 @@ const BuildSummary = ({
 	const [buildToEdit, setBuildToEdit] = useState(null);
 	const [creatorDisplayName, setCreatorDisplayName] = useState(build.creator);
 
+	// === Kiểm tra overflow mô tả ===
 	useEffect(() => {
-		const element = contentRef.current;
-		const checkOverflow = () => {
-			if (element) {
-				setIsOverflowing(element.scrollHeight > MAX_HEIGHT);
-			}
-		};
-		const resizeObserver = new ResizeObserver(checkOverflow);
-		if (element) {
-			resizeObserver.observe(element);
+		const element = descriptionRef.current;
+		if (!element || !build.description) {
+			setIsDescriptionOverflowing(false);
+			return;
 		}
-		return () => {
-			if (element) {
-				resizeObserver.unobserve(element);
-			}
-		};
-	}, [build]);
 
+		const checkOverflow = () => {
+			setIsDescriptionOverflowing(
+				element.scrollHeight > DESCRIPTION_MAX_HEIGHT
+			);
+		};
+
+		const resizeObserver = new ResizeObserver(checkOverflow);
+		resizeObserver.observe(element);
+		checkOverflow(); // Gọi ngay lập tức
+
+		return () => resizeObserver.disconnect();
+	}, [build.description]);
+
+	// === Like / Favorite / Menu / Creator ===
 	useEffect(() => {
-		const likedInSession = sessionStorage.getItem(`liked_${build.id}`);
-		if (likedInSession) setIsLiked(true);
+		const liked = sessionStorage.getItem(`liked_${build.id}`);
+		if (liked) setIsLiked(true);
 	}, [build.id]);
 
 	useEffect(() => {
@@ -74,8 +80,8 @@ const BuildSummary = ({
 	}, [user, favoriteList]);
 
 	useEffect(() => {
-		const handleClickOutside = event => {
-			if (menuRef.current && !menuRef.current.contains(event.target)) {
+		const handleClickOutside = e => {
+			if (menuRef.current && !menuRef.current.contains(e.target)) {
 				setIsMenuOpen(false);
 			}
 		};
@@ -83,34 +89,29 @@ const BuildSummary = ({
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
-	// Lấy tên hiển thị của người tạo
 	useEffect(() => {
 		const fetchCreatorName = async () => {
-			// Nếu build là của người dùng hiện tại, sử dụng tên đã có
 			if (user && build.sub === user.sub) {
 				setCreatorDisplayName(user.name || build.creator);
 				return;
 			}
-			// Nếu không có thông tin người tạo, hiển thị mặc định
 			if (!build.creator) {
 				setCreatorDisplayName("Vô danh");
 				return;
 			}
-			// Gọi API để lấy tên hiển thị
 			try {
-				const response = await fetch(`${apiUrl}/api/users/${build.creator}`);
-				if (response.ok) {
-					const data = await response.json();
+				const res = await fetch(`${apiUrl}/api/users/${build.creator}`);
+				if (res.ok) {
+					const data = await res.json();
 					setCreatorDisplayName(data.name || build.creator);
 				} else {
-					setCreatorDisplayName(build.creator); // Fallback về username nếu có lỗi
+					setCreatorDisplayName(build.creator);
 				}
-			} catch (error) {
-				console.error("Failed to fetch creator name:", error);
-				setCreatorDisplayName(build.creator); // Fallback về username nếu có lỗi mạng
+			} catch (err) {
+				console.error("Lỗi lấy tên:", err);
+				setCreatorDisplayName(build.creator);
 			}
 		};
-
 		fetchCreatorName();
 	}, [build.creator, build.sub, user, apiUrl]);
 
@@ -119,32 +120,35 @@ const BuildSummary = ({
 		[user, build.sub]
 	);
 
-	// Hàm xử lý điều hướng
-	const handleNavigate = () => {
+	// === Xem chi tiết ===
+	const handleViewDetail = e => {
+		e.stopPropagation();
 		navigate(`/builds/${build.id}`);
 	};
 
+	// === Like ===
 	const handleLike = async e => {
-		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+		e.stopPropagation();
 		if (isLiked) return;
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
 				method: "PATCH",
 			});
 			if (res.ok) {
-				const updatedBuild = await res.json();
-				setLikeCount(updatedBuild.like);
+				const updated = await res.json();
+				setLikeCount(updated.like);
 				setIsLiked(true);
 				sessionStorage.setItem(`liked_${build.id}`, "true");
-				if (onBuildUpdate) onBuildUpdate(updatedBuild);
+				onBuildUpdate?.(updated);
 			}
-		} catch (error) {
-			console.error("Error liking build:", error);
+		} catch (err) {
+			console.error("Lỗi like:", err);
 		}
 	};
 
+	// === Yêu thích ===
 	const handleToggleFavorite = async e => {
-		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+		e.stopPropagation();
 		if (!user) {
 			setShowLoginModal(true);
 			return;
@@ -158,54 +162,51 @@ const BuildSummary = ({
 				},
 			});
 			if (res.ok) {
-				const updatedBuild = await res.json();
-				setFavoriteList(updatedBuild.favorite);
-				if (onBuildUpdate) onBuildUpdate(updatedBuild);
+				const updated = await res.json();
+				setFavoriteList(updated.favorite);
+				onBuildUpdate?.(updated);
 			}
-		} catch (error) {
-			console.error("Error toggling favorite:", error);
+		} catch (err) {
+			console.error("Lỗi yêu thích:", err);
 		}
 	};
 
+	// === Sửa / Xóa ===
 	const handleEdit = e => {
-		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+		e.stopPropagation();
 		setBuildToEdit(build);
 		setIsMenuOpen(false);
 	};
 
-	const handleConfirmEdit = updatedBuild => {
-		if (onBuildUpdate) {
-			onBuildUpdate(updatedBuild);
-		}
-		setBuildToEdit(null);
-	};
-
 	const handleDeleteClick = e => {
-		e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+		e.stopPropagation();
 		setBuildToDelete(build);
 		setIsMenuOpen(false);
 	};
 
-	const handleConfirmDelete = deletedBuildId => {
-		if (onBuildDelete) {
-			onBuildDelete(deletedBuildId);
-		}
+	const handleConfirmEdit = updated => {
+		onBuildUpdate?.(updated);
+		setBuildToEdit(null);
+	};
+
+	const handleConfirmDelete = id => {
+		onBuildDelete?.(id);
 		setBuildToDelete(null);
 	};
 
+	// === Helper: normalize & find image ===
 	const normalizeName = val =>
 		val && typeof val === "object" ? val.S || "" : String(val || "");
-
 	const findImage = (list, name) =>
 		list.find(item => item?.name === normalizeName(name))?.assetAbsolutePath ||
 		null;
 
 	const championImage = useMemo(() => {
-		const championName = normalizeName(build?.championName);
-		return Array.isArray(championsList)
-			? championsList.find(c => c?.name === championName)?.assets?.[0]?.M
-					?.avatar?.S || "/images/placeholder.png"
-			: "/images/placeholder.png";
+		const name = normalizeName(build?.championName);
+		return (
+			championsList.find(c => c?.name === name)?.assets?.[0]?.M?.avatar?.S ||
+			"/images/placeholder.png"
+		);
 	}, [championsList, build?.championName]);
 
 	const artifactImages = useMemo(
@@ -221,20 +222,22 @@ const BuildSummary = ({
 		[runesList, build.rune]
 	);
 
-	const renderImageWithTooltip = (name, src, buildId, type, index) => {
-		const key = `${buildId}-${type}-${normalizeName(name)}-${index}`;
+	const renderImageWithTooltip = (name, src, type, index) => {
+		const key = `${build.id}-${type}-${normalizeName(name)}-${index}`;
 		return (
 			<div key={key} className='group relative'>
 				<img
 					src={src || "/images/placeholder.png"}
 					alt={normalizeName(name)}
-					className='w-16 h-16 rounded-md border-2 border-[var(--color-border)]'
+					// Đồng bộ thẻ
+					className='w-16 h-16 rounded-md border-2 border-border object-cover'
 					onError={e => {
 						e.target.onerror = null;
 						e.target.src = "/images/placeholder.png";
 					}}
 				/>
-				<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-[var(--color-text-primary)] text-[var(--color-background)] text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'>
+				{/* Đồng bộ tooltip */}
+				<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10'>
 					{normalizeName(name)}
 				</div>
 			</div>
@@ -245,248 +248,210 @@ const BuildSummary = ({
 		<>
 			<div
 				style={style}
-				onClick={handleNavigate}
-				className='relative bg-[var(--color-build-summary-bg)] border-2 border-[var(--color-build-summary-border)] rounded-lg shadow-md hover:shadow-[0_8px_24px_var(--color-build-summary-shadow)] hover:-translate-y-1 hover:border-[var(--color-build-summary-hover-border)] transition-all duration-300 flex flex-col cursor-pointer'
+				// Đồng bộ thẻ: sử dụng bg-surface-bg, border-border, và shadow-primary-md
+				className='bg-surface-bg border-2 border-border rounded-lg shadow-md 
+        hover:shadow-primary-md hover:-translate-y-1 hover:border-primary-500 
+        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden'
+				onClick={() => navigate(`/builds/${build.id}`)}
 			>
-				<div
-					ref={contentRef}
-					className={`relative transition-all duration-500 ease-in-out ${
-						!isExpanded && isOverflowing ? "overflow-hidden" : ""
-					}`}
-					style={{
-						maxHeight:
-							!isExpanded && isOverflowing ? `${MAX_HEIGHT}px` : "none",
-					}}
-				>
-					<div className='p-4 flex flex-col gap-3'>
-						{/* Header */}
-						<div className='flex items-start justify-between'>
-							{/* Left side: Champion Info */}
-							<div className='flex items-center gap-3'>
-								<img
-									src={championImage}
-									alt={normalizeName(build.championName)}
-									className='w-16 h-16 rounded-full border-4 border-[var(--color-border)]'
-								/>
-								<div>
-									<h3 className='font-bold text-lg text-[var(--color-text-primary)]'>
-										{normalizeName(build.championName)}
-									</h3>
-									<div onClick={e => e.stopPropagation()}>
-										<p className='text-xs text-[var(--color-text-secondary)]'>
-											Tạo bởi: {creatorDisplayName || "Vô danh"}
-										</p>
-									</div>
-								</div>
+				<div className='p-5 flex flex-col gap-4'>
+					{/* Header */}
+					<div className='flex items-start justify-between'>
+						<div className='flex items-center gap-3'>
+							<img
+								src={championImage}
+								alt={normalizeName(build.championName)}
+								className='w-16 h-16 rounded-full object-cover border-2 border-border'
+							/>
+							<div>
+								<h3 className='font-bold text-lg text-text-primary'>
+									{normalizeName(build.championName)}
+								</h3>
+								<p className='text-sm text-text-secondary'>
+									by <span className='font-medium'>{creatorDisplayName}</span>
+								</p>
 							</div>
+						</div>
 
-							{/* Right side: Stats and Menu */}
-							<div className='flex flex-col items-end gap-1'>
-								{/* Top Row: Buttons */}
-								<div className='flex items-center gap-4'>
-									{/* Like Button & Count */}
-									<div
-										className='flex items-center gap-1.5 text-[var(--color-text-secondary)]'
-										onClick={e => e.stopPropagation()}
+						{/* Actions */}
+						<div className='flex flex-col items-end gap-1'>
+							<div className='flex items-center gap-4'>
+								{/* Like */}
+								<div
+									className='flex items-center gap-1.5 text-text-secondary'
+									onClick={e => e.stopPropagation()}
+								>
+									<button
+										onClick={handleLike}
+										disabled={isLiked}
+										className={`p-1.5 rounded-full transition-colors ${
+											isLiked
+												? "text-primary-500 cursor-not-allowed"
+												: "hover:bg-surface-hover"
+										}`}
 									>
-										<button
-											onClick={handleLike}
-											disabled={isLiked}
-											className={`p-1.5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${
-												isLiked
-													? "text-[var(--color-primary)] cursor-not-allowed"
-													: "hover:bg-[var(--color-border)]"
-											}`}
-											aria-label='Thích build này'
-										>
-											<ThumbsUp size={20} />
-										</button>
-										<span className='font-semibold text-lg'>{likeCount}</span>
-									</div>
-									{/* More Options Menu */}
-									<div
-										className='relative'
-										ref={menuRef}
-										onClick={e => e.stopPropagation()}
+										<ThumbsUp size={20} />
+									</button>
+									<span className='font-semibold text-lg'>{likeCount}</span>
+								</div>
+
+								{/* Menu */}
+								<div
+									className='relative'
+									ref={menuRef}
+									onClick={e => e.stopPropagation()}
+								>
+									<button
+										onClick={() => setIsMenuOpen(!isMenuOpen)}
+										className='p-1.5 rounded-full hover:bg-surface-hover transition-colors'
 									>
-										<button
-											onClick={() => setIsMenuOpen(!isMenuOpen)}
-											className='p-1.5 rounded-full hover:bg-[var(--color-border)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--color-text-secondary)]'
-											aria-label='Thêm tùy chọn'
-										>
-											<MoreVertical
-												size={22}
-												className='text-[var(--color-text-secondary)]'
-											/>
-										</button>
-										{isMenuOpen && (
-											<div className='absolute top-full right-0 mt-2 w-48 bg-[var(--color-background)] border border-[var(--color-border)] rounded-md shadow-lg z-10'>
-												<button
-													onClick={handleToggleFavorite}
-													className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] transition-colors'
-												>
-													<Heart
-														size={18}
-														className={`transition-all ${
-															isFavorite
-																? "text-[var(--color-danger)] fill-current"
-																: ""
-														}`}
-													/>
+										<MoreVertical size={22} className='text-text-secondary' />
+									</button>
+									{isMenuOpen && (
+										// Đồng bộ dropdown menu
+										<div className='absolute top-full right-0 mt-2 w-48 bg-surface-bg border border-border rounded-md shadow-lg z-20'>
+											<button
+												onClick={handleToggleFavorite}
+												className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-text-secondary hover:bg-surface-hover transition-colors'
+											>
+												<Heart
+													size={18}
+													className={`transition-all ${
+														isFavorite ? "text-danger-500 fill-danger-500" : ""
+													}`}
+												/>
+												<span>{isFavorite ? "Bỏ yêu thích" : "Yêu thích"}</span>
+											</button>
+											{build.hasOwnProperty("display") && (
+												<div className='flex items-center gap-3 px-4 py-2 text-sm text-text-secondary'>
+													{build.display ? (
+														<Eye size={18} className='text-success' />
+													) : (
+														<EyeOff size={18} className='text-danger-500' />
+													)}
 													<span>
-														{isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
+														{build.display ? "Công khai" : "Riêng tư"}
 													</span>
-												</button>
-												{build.hasOwnProperty("display") && (
-													<div className='flex items-center gap-3 px-4 py-2 text-sm text-[var(--color-text-secondary)]'>
-														{build.display ? (
-															<Eye size={18} className='text-green-500' />
-														) : (
-															<EyeOff
-																size={18}
-																className='text-[var(--color-danger)]'
-															/>
-														)}
-														<span>
-															{build.display ? "Công khai" : "Riêng tư"}
-														</span>
-													</div>
-												)}
-												{isOwner && (
-													<>
-														<div className='border-t border-[var(--color-border)] my-1'></div>
-														<button
-															onClick={handleEdit}
-															className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] transition-colors'
-														>
-															<Edit size={18} />
-															<span>Sửa</span>
-														</button>
-														<button
-															onClick={handleDeleteClick}
-															className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-[var(--color-danger)] hover:bg-[var(--color-surface)] transition-colors'
-														>
-															<Trash2 size={18} />
-															<span>Xóa</span>
-														</button>
-													</>
-												)}
-											</div>
-										)}
-									</div>
-								</div>
-
-								{/* Bottom Row: Stars */}
-								<div className='flex'>
-									{[1, 2, 3, 4, 5, 6, 7].map(starValue => (
-										<Star
-											key={starValue}
-											size={18}
-											className={`transition-colors ${
-												build.star >= starValue
-													? "text-[var(--color-star)]"
-													: "text-[var(--color-text-primary)]"
-											}`}
-											fill={build.star >= starValue ? "currentColor" : "none"}
-										/>
-									))}
+												</div>
+											)}
+											{isOwner && (
+												<>
+													<div className='border-t border-border my-1'></div>
+													<button
+														onClick={handleEdit}
+														className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-text-secondary hover:bg-surface-hover'
+													>
+														<Edit size={18} /> <span>Sửa</span>
+													</button>
+													<button
+														onClick={handleDeleteClick}
+														className='w-full flex items-center gap-3 px-4 py-2 text-left text-sm text-danger-500 hover:bg-surface-hover'
+													>
+														<Trash2 size={18} /> <span>Xóa</span>
+													</button>
+												</>
+											)}
+										</div>
+									)}
 								</div>
 							</div>
-						</div>
 
-						{/* Build Details */}
-						<div className='flex flex-col gap-3'>
-							{Array.isArray(build.artifacts) && build.artifacts.length > 0 && (
-								<div>
-									<p className='text-[var(--color-text-primary)] text-md font-semibold mb-1'>
-										Thánh tích:
-									</p>
-									<div className='flex flex-wrap gap-2 '>
-										{build.artifacts.map((a, i) =>
-											renderImageWithTooltip(
-												a,
-												artifactImages[i],
-												build.id,
-												"artifact",
-												i
-											)
-										)}
-									</div>
-								</div>
-							)}
-							{Array.isArray(build.rune) && build.rune.length > 0 && (
-								<div>
-									<p className='text-[var(--color-text-primary)] text-sm font-semibold mb-1'>
-										Ngọc bổ trợ:
-									</p>
-									<div className='flex flex-wrap gap-2'>
-										{build.rune.map((r, i) =>
-											renderImageWithTooltip(
-												r,
-												runeImages[i],
-												build.id,
-												"rune",
-												i
-											)
-										)}
-									</div>
-								</div>
-							)}
-							{Array.isArray(build.powers) && build.powers.length > 0 && (
-								<div>
-									<p className='text-[var(--color-text-primary)] text-md font-semibold mb-1'>
-										Sức mạnh:
-									</p>
-									<div className='flex flex-wrap gap-2'>
-										{build.powers.map((p, i) =>
-											renderImageWithTooltip(
-												p,
-												powerImages[i],
-												build.id,
-												"power",
-												i
-											)
-										)}
-									</div>
-								</div>
-							)}
+							{/* Stars */}
+							<div className='flex mt-1'>
+								{[1, 2, 3, 4, 5, 6, 7].map(s => (
+									<Star
+										key={s}
+										size={18}
+										className={`transition-colors ${
+											build.star >= s ? "text-icon-star" : "text-text-secondary"
+										}`}
+										fill={build.star >= s ? "currentColor" : "none"}
+									/>
+								))}
+							</div>
 						</div>
+					</div>
 
-						{/* Description */}
-						{build.description && (
-							<p className='text-[var(--color-text-secondary)] text-sm mt-4 italic'>
-								"{build.description}"
-							</p>
+					{/* Nội dung */}
+					<div className='flex flex-col gap-3'>
+						{build.artifacts?.length > 0 && (
+							<div>
+								<p className='text-text-primary font-semibold mb-1'>
+									Thánh tích:
+								</p>
+								<div className='flex flex-wrap gap-2'>
+									{build.artifacts.map((a, i) =>
+										renderImageWithTooltip(a, artifactImages[i], "artifact", i)
+									)}
+								</div>
+							</div>
+						)}
+						{build.rune?.length > 0 && (
+							<div>
+								<p className='text-text-primary font-semibold mb-1'>
+									Ngọc bổ trợ:
+								</p>
+								<div className='flex flex-wrap gap-2'>
+									{build.rune.map((r, i) =>
+										renderImageWithTooltip(r, runeImages[i], "rune", i)
+									)}
+								</div>
+							</div>
+						)}
+						{build.powers?.length > 0 && (
+							<div>
+								<p className='text-text-primary font-semibold mb-1'>
+									Sức mạnh:
+								</p>
+								<div className='flex flex-wrap gap-2'>
+									{build.powers.map((p, i) =>
+										renderImageWithTooltip(p, powerImages[i], "power", i)
+									)}
+								</div>
+							</div>
 						)}
 					</div>
 
-					{!isExpanded && isOverflowing && (
-						<div className='absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[var(--color-build-summary-bg)] to-transparent pointer-events-none' />
+					{/* Mô tả + Xem thêm... */}
+					{build.description && (
+						<div className='relative'>
+							<p
+								ref={descriptionRef}
+								className='text-text-secondary text-sm italic mt-2 line-clamp-none'
+								style={{
+									maxHeight: DESCRIPTION_MAX_HEIGHT,
+									overflow: "hidden",
+								}}
+							>
+								"{build.description}"
+							</p>
+
+							{/* Hiệu ứng mờ + Xem thêm */}
+							{isDescriptionOverflowing && (
+								<div className='absolute bottom-0 left-0 right-0 h-8' />
+							)}
+
+							{isDescriptionOverflowing && (
+								<button
+									onClick={handleViewDetail}
+									className='inline-flex items-center gap-1 text-primary-500 hover:underline text-sm font-medium mt-1'
+								>
+									Xem thêm...
+									<ChevronRight size={14} />
+								</button>
+							)}
+						</div>
 					)}
 				</div>
-
-				{isOverflowing && (
-					<div
-						className='w-full text-center py-2 border-t border-[var(--color-build-summary-border)]'
-						onClick={e => e.stopPropagation()}
-					>
-						<button
-							onClick={() => setIsExpanded(!isExpanded)}
-							className='font-semibold text-[var(--color-primary)] hover:underline text-sm'
-						>
-							{isExpanded ? "Ẩn bớt" : "Hiển thị thêm"}
-						</button>
-					</div>
-				)}
 			</div>
 
-			{/* Các Modal không thay đổi */}
+			{/* Modal đăng nhập */}
 			<Modal
 				isOpen={showLoginModal}
 				onClose={() => setShowLoginModal(false)}
 				title='Yêu cầu đăng nhập'
 			>
-				<p className='text-[var(--color-text-secondary)] mb-6'>
+				<p className='text-text-secondary mb-6'>
 					Bạn cần đăng nhập để thực hiện hành động này.
 				</p>
 				<div className='flex justify-end gap-4'>
@@ -500,7 +465,7 @@ const BuildSummary = ({
 							navigate("/login");
 						}}
 					>
-						Đến trang đăng nhập
+						Đăng nhập
 					</Button>
 				</div>
 			</Modal>

@@ -23,30 +23,31 @@ const Button = ({
 	...props
 }) => {
 	// --- STYLES ---
+	// 'focus:ring-offset-surface-bg' đảm bảo vòng focus có nền đúng (ví dụ: trắng)
 	const baseStyles =
-		"inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+		"inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-surface-bg disabled:opacity-50 disabled:cursor-not-allowed";
 
 	const getVariantStyles = variant => {
 		switch (variant) {
-			// Dành cho các hành động chính: Tạo, Cập nhật, Xác nhận, ...
 			case "primary":
-				return "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] cursor-pointer focus:ring-[var(--color-primary)] py-3";
+				return "bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover-bg focus:ring-primary-500";
+
+			// 'secondary' và 'outline' giờ là một
 			case "secondary":
-				return "bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] cursor-pointer focus:ring-[var(--color-text-secondary)]";
-			// Dành cho hành động nguy hiểm: Xóa, Đăng xuất
-			case "danger":
-				return "bg-[var(--color-danger)] text-white hover:bg-[var(--color-danger-hover)] cursor-pointer focus:ring-[var(--color-danger)]";
-			// Dành cho hành động cảnh báo: Sửa
-			case "warning":
-				return "bg-[var(--color-warning)] text-white hover:brightness-90 cursor-pointer focus:ring-[var(--color-warning)]";
-			// Dành cho hành động Hủy bỏ
-			case "ghost":
-				return "bg-transparent text-[var(--color-text-secondary)] hover:bg-black/5 cursor-pointer focus:ring-[var(--color-primary)]";
-			// Một lựa chọn khác cho Hủy hoặc các nút ít quan trọng hơn
 			case "outline":
-				return "bg-transparent border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-black/5 cursor-pointer focus:ring-[var(--color-primary)]";
+				return "bg-btn-secondary-bg text-btn-secondary-text border border-btn-secondary-border hover:bg-btn-secondary-hover-bg hover:text-btn-secondary-hover-text focus:ring-primary-500";
+
+			case "danger":
+				return "bg-btn-danger-bg text-btn-danger-text hover:bg-btn-danger-hover-bg focus:ring-danger-500";
+
+			case "warning":
+				return "bg-btn-warning-bg text-btn-warning-text hover:bg-btn-warning-hover-bg focus:ring-warning-500";
+
+			case "ghost":
+				return "bg-btn-ghost-bg text-btn-ghost-text hover:bg-btn-ghost-hover-bg focus:ring-primary-500";
+
 			default:
-				return "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] cursor-pointer focus:ring-[var(--color-primary)]";
+				return "bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover-bg focus:ring-primary-500";
 		}
 	};
 

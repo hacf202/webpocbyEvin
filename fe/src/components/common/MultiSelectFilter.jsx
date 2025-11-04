@@ -1,12 +1,12 @@
-// src/components/common/MultiSelectFilter.jsx
+// src/components/common/MultiSelectFilter.jsx (ĐÃ THÊM ICON TIÊU HAO)
 
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, Check, Star, Tag } from "lucide-react";
+import { ChevronDown, Check, Star, Tag } from "lucide-react"; // <-- 1. THÊM IMPORT 'Droplet'
 
 const MultiSelectFilter = ({
 	label,
 	options,
-	selectedValues = [], // <<< THAY ĐỔI: Thêm giá trị mặc định là một mảng rỗng
+	selectedValues = [],
 	onChange,
 	placeholder = "Chọn một hoặc nhiều",
 }) => {
@@ -38,39 +38,38 @@ const MultiSelectFilter = ({
 				<img src={option.iconUrl} alt={option.label} className='w-5 h-5' />
 			)}
 			{option.isCost && (
-				<div className='w-5 h-5 flex items-center justify-center bg-blue-500 text-white text-xs rounded-full'>
+				<div className='text-white absolute w-5 h-5 flex items-center justify-center bg-blue-600 border-2 rounded-full text-xs'>
 					{option.value}
 				</div>
 			)}
 			{option.isStar && (
 				<div className='flex items-center gap-1'>
 					<span className='text-sm font-medium'>{option.value}</span>
-					<Star size={16} className='text-yellow-500' />
+					<Star size={16} className='text-icon-star' />
 				</div>
 			)}
-			{option.isTag && (
-				<Tag size={16} className='text-[var(--color-text-secondary)]' />
-			)}
+			{option.isTag && <Tag size={16} className='text-text-secondary' />}
 			{option.label}
 		</div>
 	);
 
 	// --- Render selected chip content ---
 	const renderSelectedChip = option => (
-		<div className='flex items-center gap-1 bg-[var(--color-background)] px-2 py-0.5 rounded'>
+		// Sử dụng class ngữ nghĩa (bg-input-bg cho chip)
+		<div className='flex items-center gap-1 bg-input-bg px-2 py-0.5 rounded'>
 			{option.iconComponent}
 			{option.iconUrl && (
 				<img src={option.iconUrl} alt={option.label} className='w-4 h-4' />
 			)}
 			{option.isCost && (
-				<div className='w-4 h-4 flex items-center justify-center bg-blue-500 text-white text-xs rounded-full'>
+				<div className='text-white absolute w-5 h-5 flex items-center justify-center bg-blue-600 border-2 rounded-full text-xs'>
 					{option.value}
 				</div>
 			)}
 			{option.isStar && (
 				<div className='flex items-center gap-1'>
 					<span className='text-xs font-medium'>{option.value}</span>
-					<Star size={12} className='text-yellow-500' />
+					<Star size={12} className='text-icon-star' />
 				</div>
 			)}
 			{option.label && <span className='text-sm'>{option.label}</span>}
@@ -88,38 +87,42 @@ const MultiSelectFilter = ({
 					))}
 			</div>
 		) : (
-			<span className='text-[var(--color-text-secondary)]'>{placeholder}</span>
+			<span className='text-text-secondary'>{placeholder}</span>
 		);
 
 	return (
 		<div className='relative' ref={wrapperRef}>
-			<label className='block text-sm font-medium mb-1 text-[var(--color-text-secondary)]'>
+			<label className='block text-sm font-medium mb-1 text-text-secondary'>
 				{label}
 			</label>
+			{/* Đồng bộ style với InputField */}
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className='w-full flex justify-between items-center p-2 bg-[var(--color-background)] border border-[var(--color-border)] rounded-md text-left'
+				className='w-full flex justify-between items-center p-2 bg-input-bg border border-input-border rounded-md text-left 
+        text-text-primary min-h-[42px]
+        hover:border-input-focus-border'
 			>
 				<div className='flex-grow'>{displayContent}</div>
 				<ChevronDown
 					size={20}
-					className={`transition-transform flex-shrink-0 ${
+					className={`transition-transform flex-shrink-0 text-text-secondary ${
 						isOpen ? "rotate-180" : ""
 					}`}
 				/>
 			</button>
 
 			{isOpen && (
-				<div className='absolute z-10 w-full mt-1 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-md shadow-lg max-h-60 overflow-y-auto'>
+				// Đồng bộ style Dropdown
+				<div className='absolute z-10 w-full mt-1 bg-dropdown-bg border border-dropdown-border rounded-md shadow-lg max-h-60 overflow-y-auto animate-slide-down'>
 					{options.map(option => (
 						<div
 							key={option.value}
 							onClick={() => handleSelect(option.value)}
-							className='flex items-center justify-between p-2 hover:bg-[var(--color-background)] cursor-pointer'
+							className='flex items-center justify-between p-3 text-dropdown-item-text hover:bg-dropdown-item-hover-bg cursor-pointer'
 						>
 							{renderOptionContent(option)}
 							{selectedValues.includes(option.value) && (
-								<Check size={20} className='text-blue-500' />
+								<Check size={20} className='text-primary-500' />
 							)}
 						</div>
 					))}

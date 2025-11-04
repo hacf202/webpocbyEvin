@@ -10,11 +10,15 @@ import authRouter from "./src/routes/auth.js";
 import championsRouter from "./src/routes/champions.js";
 import usersRouter from "./src/routes/users.js";
 import buildsRouter from "./src/routes/builds.js";
+import commentsRouter from "./src/routes/comments.js";
+import favoritesRouter from "./src/routes/favorites.js";
 import powersRoutes from "./src/routes/powers.js";
 import generalPowersRoutes from "./src/routes/generalPower.js";
 import relicsRoutes from "./src/routes/relics.js";
 import itemsRoutes from "./src/routes/items.js";
 import runesRoutes from "./src/routes/runes.js";
+import buildsAdminRouter from "./src/routes/builds-admin.js";
+
 dotenv.config();
 
 // Kiểm tra các biến môi trường cần thiết
@@ -82,7 +86,11 @@ app.use("/api/runes", runesRoutes);
 app.use("/api", usersRouter);
 
 // Mọi request đến /api/builds sẽ được xử lý bởi buildsRouter
+app.use("/api/builds", commentsRouter); // /:buildId/comments
+app.use("/api/builds", favoritesRouter); // /:id/like, /:id/favorite, /favorites
 app.use("/api/builds", buildsRouter);
+
+app.use("/api/admin/builds", buildsAdminRouter);
 
 // API để kiểm tra "sức khỏe" của server
 app.get("/api/checkheal", (req, res) => {

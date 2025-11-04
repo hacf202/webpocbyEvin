@@ -54,24 +54,22 @@ export const resendConfirmationCode = username => {
 };
 
 export const confirmPasswordReset = (username, code, newPassword) => {
-	return cognitoApiRequest(
-		"AWSCognitoIdentityProviderService.ConfirmForgotPassword",
-		{
-			ClientId: CLIENT_ID,
-			Username: username,
-			ConfirmationCode: code,
-			Password: newPassword,
-		}
-	);
+	return backendApiRequest("/api/auth/confirm-password-reset", "POST", {
+		username,
+		code,
+		newPassword,
+	});
 };
 
 // --- Các hàm gọi tới Backend của bạn ---
 
+// src/services/authService.js
 export const forgotPassword = (username, email) => {
-	return backendApiRequest("/api/auth/forgot-password-strict", "POST", {
-		username,
-		email,
-	});
+	return backendApiRequest(
+		"/api/auth/forgot-password", // ĐÃ ĐỔI
+		"POST",
+		{ username, email }
+	);
 };
 
 export const changeName = (newName, token) => {
@@ -87,13 +85,17 @@ export const changePassword = (
 	oldPassword,
 	newPassword,
 	accessToken,
-	token
+	idToken // ← có thể dùng để xác thực thêm
 ) => {
 	return backendApiRequest(
 		"/api/user/change-password",
 		"POST",
-		{ oldPassword, newPassword, accessToken },
-		token
+		{
+			previousPassword: oldPassword, // ← Tên field đúng
+			proposedPassword: newPassword, // ← Tên field đúng
+			accessToken, // ← BẮT BUỘC
+		},
+		idToken // ← gửi ID token trong header Authorization
 	);
 };
 

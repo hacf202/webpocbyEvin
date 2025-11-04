@@ -26,15 +26,16 @@ function ChampionCard({ champion }) {
 
 			{/* Khung chứa thông tin chi tiết */}
 			<div className='absolute bottom-0 left-0 right-0 p-4 text-white'>
-				{/* Năng lượng của tướng */}
-				<div className='absolute -top-8 right-3 w-12 h-12 flex items-center justify-center bg-blue-600 border-2 border-white rounded-full text-xl font-bold shadow-md'>
-					{champion.cost}
+				<div>
+					{/* Tên tướng */}
+					<h3 className='text-2xl font-bold truncate drop-shadow-lg'>
+						{champion.name}
+					</h3>
+					{/* Năng lượng của tướng */}
+					<div className='absolute -top-64 left-4 w-12 h-12 flex items-center justify-center bg-blue-600 border-2 border-white rounded-full text-xl font-bold shadow-md'>
+						{champion.cost}
+					</div>
 				</div>
-
-				{/* Tên tướng */}
-				<h3 className='text-2xl font-bold truncate drop-shadow-lg'>
-					{champion.name}
-				</h3>
 
 				{/* Các vùng của tướng */}
 				<div className='flex items-center gap-2 mt-1'>

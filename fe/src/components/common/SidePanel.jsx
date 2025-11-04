@@ -1,12 +1,12 @@
-// SidePanel.jsx (Shared component for Editors)
+// src/components/common/SidePanel.jsx (ĐÃ ĐỒNG BỘ)
+
 import { memo } from "react";
-import InputField from "./InputField";
-import MultiSelectFilter from "./MultiSelectFilter";
-import DropdownFilter from "./DropdownFilter";
-import Button from "./Button";
+import InputField from "./inputField";
+import MultiSelectFilter from "./multiSelectFilter";
+import DropdownFilter from "./dropdownFilter";
+import Button from "./button";
 import { Search, Plus, RotateCw, XCircle } from "lucide-react";
 
-// --- COMPONENT: SidePanel (Generic toolbar với search, add, filters, sort) ---
 const SidePanel = memo(
 	({
 		searchPlaceholder = "Tìm kiếm...",
@@ -18,17 +18,18 @@ const SidePanel = memo(
 		onClearSearch,
 		onAddNew,
 		onResetFilters,
-		multiFilterConfigs = [], // Array of { label, options, selectedValues, onChange, placeholder }
+		multiFilterConfigs = [],
 		sortOptions = [],
 		sortSelectedValue,
 		onSortChange,
 	}) => {
 		return (
-			<div className='bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)] p-4 sm:p-6 mb-6'>
+			// Sử dụng class ngữ nghĩa
+			<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6 mb-6'>
 				<div className='space-y-4'>
 					{/* Search Block */}
 					<div>
-						<label className='block text-sm font-medium mb-1 text-[var(--color-text-secondary)]'>
+						<label className='block text-sm font-medium mb-1 text-text-secondary'>
 							Tìm kiếm
 						</label>
 						<div className='relative'>
@@ -41,7 +42,8 @@ const SidePanel = memo(
 							{searchInput && (
 								<button
 									onClick={onClearSearch}
-									className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600'
+									// Sử dụng class ngữ nghĩa
+									className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
 								>
 									<XCircle size={18} />
 								</button>
