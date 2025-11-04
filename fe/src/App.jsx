@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 // Context xác thực
-import { AuthProvider } from "./context/AuthContext.jsx";
+import { AuthProvider } from "./context/authContext.jsx";
 
 // trang chi tiết
 import ChampionDetail from "./components/champion/championDetail.jsx";

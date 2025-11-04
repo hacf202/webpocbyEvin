@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/authContext.jsx";
 import { Edit, Trash2, MessageSquare } from "lucide-react";
 import Modal from "../common/modal.jsx";
 import Button from "../common/button.jsx";

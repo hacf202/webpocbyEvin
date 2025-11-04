@@ -1,7 +1,7 @@
 // src/pages/auth/Profile.jsx
 
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Loader2, ChevronLeft, Eye, EyeOff } from "lucide-react";
 import InputField from "../common/inputField";

@@ -5,7 +5,7 @@ import BuildCreation from "../components/build/buildCreation";
 import MyBuilds from "../components/build/myBuilds";
 import MyFavorite from "../components/build/myFavoriteBuild";
 import CommunityBuilds from "../components/build/CommunityBuilds";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/authContext";
 import {
 	PlusCircle,
 	Globe,

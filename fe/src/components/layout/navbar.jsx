@@ -2,7 +2,7 @@
 
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/authContext";
 
 import Modal from "../common/modal";
 import Button from "../common/button";
