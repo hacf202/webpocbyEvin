@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useContext } from "react";
 import BuildCreation from "../components/build/buildCreation";
 import MyBuilds from "../components/build/myBuilds";
 import MyFavorite from "../components/build/myFavoriteBuild";
-import CommunityBuilds from "../components/build/CommunityBuilds";
+import CommunityBuilds from "../components/build/communityBuilds";
 import { AuthContext } from "../context/AuthContext.jsx";
 import {
 	PlusCircle,
