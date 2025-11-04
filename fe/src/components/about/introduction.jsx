@@ -14,7 +14,7 @@ function Introduction() {
 				setLoading(true);
 				setError(null);
 
-				const backendUrl = import.meta.env.VITE_BACKEND_URL;
+				const backendUrl = import.meta.env.VITE_API_URL;
 				const response = await fetch(`${backendUrl}/api/champions`);
 				if (!response.ok) throw new Error("Không thể tải dữ liệu");
 

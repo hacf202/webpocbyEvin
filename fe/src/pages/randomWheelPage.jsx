@@ -19,7 +19,7 @@ function RandomizerPage() {
 	const [activeFilters, setActiveFilters] = useState({});
 	const [isLoading, setIsLoading] = useState(true);
 
-	const backendUrl = import.meta.env.VITE_BACKEND_URL;
+	const backendUrl = import.meta.env.VITE_API_URL;
 
 	// Fetch data từ API
 	const fetchData = useCallback(async () => {

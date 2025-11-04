@@ -65,7 +65,7 @@ function PowerList() {
 		setLoading(true);
 		setError(null);
 		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL;
+			const backendUrl = import.meta.env.VITE_API_URL;
 			const response = await fetch(`${backendUrl}/api/powers`);
 			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
 			const data = await response.json();
