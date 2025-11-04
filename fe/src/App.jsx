@@ -32,7 +32,7 @@ import Footer from "./components/layout/footer.jsx";
 
 // Trang thông tin
 import AboutUs from "./components/about/aboutUs.jsx";
-import TermsOfUse from "./components/about/TermsOfUse.jsx";
+import TermsOfUse from "./components/about/termsOfUse.jsx";
 import Introduction from "./components/about/introduction.jsx";
 
 // Luồng admin
