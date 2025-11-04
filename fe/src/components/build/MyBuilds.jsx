@@ -1,7 +1,7 @@
 // src/components/build/MyBuilds.jsx (ĐÃ ĐỒNG BỘ)
 
 import React, { useEffect, useState, useMemo, useContext } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 import BuildSummary from "./buildSummary";
 import { filterBuilds } from "../../utils/filterBuilds";
 

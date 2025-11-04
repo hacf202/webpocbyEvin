@@ -1,6 +1,6 @@
 // src/components/build/BuildModal.jsx
 import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
-import { AuthContext } from "../../context/authContext";
+import { AuthContext } from "../../context/AuthContext";
 // XÓA DÒNG NÀY:
 // import championsData from "../../assets/data/champions.json";
 import Modal from "../common/modal";

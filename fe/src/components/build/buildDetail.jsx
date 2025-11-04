@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Star, ThumbsUp, Heart, Trash2, Edit, ChevronLeft } from "lucide-react";
 
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 import Modal from "../common/modal";
 import Button from "../common/button";
 import BuildEditModal from "./buildEditModal";

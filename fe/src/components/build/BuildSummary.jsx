@@ -12,7 +12,7 @@ import {
 	Trash2,
 	ChevronRight,
 } from "lucide-react";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 import Modal from "../common/modal";
 import Button from "../common/Button";
 import BuildDelete from "./buildDelete";
