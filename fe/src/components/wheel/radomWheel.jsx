@@ -17,25 +17,23 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 
 	const colors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444"];
 
+	// Idle animation
 	useEffect(() => {
 		let animationFrameId;
 		const rotationSpeed = 0.05;
 		const animateIdle = () => {
 			if (!isSpinning && !hasSpun) {
-				setRotation(prevRotation => (prevRotation + rotationSpeed) % 360000);
+				setRotation(prev => (prev + rotationSpeed) % 360000);
 				animationFrameId = requestAnimationFrame(animateIdle);
 			}
 		};
 		if (!isSpinning && !hasSpun) {
 			animationFrameId = requestAnimationFrame(animateIdle);
 		}
-		return () => {
-			if (animationFrameId) {
-				cancelAnimationFrame(animationFrameId);
-			}
-		};
+		return () => cancelAnimationFrame(animationFrameId);
 	}, [isSpinning, hasSpun]);
 
+	// Resize observer
 	useEffect(() => {
 		const wheelContainer = wheelContainerRef.current;
 		if (!wheelContainer) return;
@@ -51,6 +49,7 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 		return () => resizeObserver.unobserve(wheelContainer);
 	}, []);
 
+	// Draw wheel
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
@@ -100,6 +99,7 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 				context.strokeStyle = "#334155";
 				context.lineWidth = 1;
 				context.stroke();
+
 				context.save();
 				context.translate(centerX, centerY);
 				context.rotate(startAngle + angleStep / 2);
@@ -109,18 +109,21 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 				context.textBaseline = "middle";
 				const maxTextWidth = radius - buttonKeepOutRadius - 15;
 				const textToDraw = truncateText(item.name, maxTextWidth);
-				const textX = radius - 10;
-				context.fillText(textToDraw, textX, 0);
+				context.fillText(textToDraw, radius - 10, 0);
 				context.restore();
 			});
+
+			// Center circle
 			context.beginPath();
 			context.arc(centerX, centerY, 35, 0, Math.PI * 2);
 			context.fillStyle = "#1e293b";
 			context.fill();
 		};
+
 		drawWheel();
 	}, [rotation, currentSize, fontSize, items]);
 
+	// Spin logic
 	const spinWheel = () => {
 		if (isSpinning || items.length === 0) return;
 		setIsSpinning(true);
@@ -172,40 +175,55 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 			} else {
 				setRotation(initialRotation + fullTargetRotation);
 				setIsSpinning(false);
-				const winner = items[winnerIndex];
-
-				// --- ĐÃ CẬP NHẬT: Hiển thị thông báo kết quả với hình ảnh và lựa chọn ---
-				Swal.fire({
-					title: "Kết quả!",
-					html: `
-                        ${
-													winner.assetAbsolutePath
-														? `<SafeImage src="${winner.assetAbsolutePath}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
-														: ""
-												}
-                        <p>Bạn đã quay trúng:</p>
-                        <b class="text-blue-400 text-2xl">${winner.name}</b>
-                    `,
-					icon: "success",
-					showDenyButton: true,
-					confirmButtonText: "Giữ lại",
-					denyButtonText: `Loại bỏ`,
-					background: "#1e293b",
-					color: "#ffffff",
-					confirmButtonColor: "#3B82F6",
-					denyButtonColor: "#EF4444",
-				}).then(result => {
-					if (result.isDenied) {
-						if (onRemoveWinner) {
-							onRemoveWinner(winner);
-						}
-					}
-				});
+				showResult(items[winnerIndex]);
 			}
 		};
 		requestAnimationFrame(animate);
 	};
 
+	// Hiển thị kết quả với hình ảnh + tên + nút lựa chọn
+	const showResult = winner => {
+		Swal.fire({
+			title: "Kết quả!",
+			html: `
+        <div class="text-center">
+          ${
+						winner.assets[0].M.avatar.S
+							? `<img src="${winner.assets[0].M.avatar.S}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
+							: ""
+					}
+          <p class="mt-3">Bạn đã quay trúng:</p>
+          <b class="text-blue-400 text-2xl">${winner.name}</b>
+        </div>
+      `,
+			icon: "success",
+			showDenyButton: true,
+			confirmButtonText: "Giữ lại",
+			denyButtonText: "Loại bỏ",
+			background: "#1e293b",
+			color: "#ffffff",
+			confirmButtonColor: "#3B82F6",
+			denyButtonColor: "#EF4444",
+			customClass: {
+				popup: "swal-custom-popup",
+				htmlContainer: "swal-html-container",
+			},
+			didOpen: () => {
+				// Thêm CSS để căn giữa hình ảnh
+				const img = Swal.getHtmlContainer().querySelector("img");
+				if (img) {
+					img.style.display = "block";
+					img.style.margin = "0 auto";
+				}
+			},
+		}).then(result => {
+			if (result.isDenied && onRemoveWinner) {
+				onRemoveWinner(winner);
+			}
+		});
+	};
+
+	// Nếu không có item
 	if (!items || items.length === 0) {
 		return (
 			<div className='flex flex-col items-center justify-center text-center p-8'>
@@ -236,9 +254,11 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 					height={currentSize}
 					className='rounded-full -rotate-90'
 				/>
+				{/* Pointer */}
 				<div className='absolute top-1/2 right-0 -translate-y-1/2 z-20'>
 					<div className='w-0 h-0 border-t-[20px] border-b-[20px] border-r-[40px] border-t-transparent border-b-transparent border-r-blue-500' />
 				</div>
+				{/* Spin Button */}
 				<button
 					onClick={spinWheel}
 					disabled={isSpinning}
