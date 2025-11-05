@@ -89,7 +89,7 @@ function Navbar() {
 						onClick={closeAllMenus}
 					>
 						<img
-							src='../../../public/Yuumi.png'
+							src='./Yuumi.png'
 							alt='Web POC Logo'
 							className='h-10 w-auto object-contain rounded-lg transition-transform duration-300 group-hover:scale-110'
 						/>

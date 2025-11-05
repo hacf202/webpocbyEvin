@@ -1,6 +1,6 @@
 // src/components/Footer.jsx
 import { memo } from "react";
-import LogoBlack from "../../../public/ahriicon.png";
+import LogoBlack from "/ahriicon.png";
 import { Youtube, Facebook } from "lucide-react";
 
 function Footer() {
