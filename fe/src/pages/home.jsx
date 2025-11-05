@@ -1,6 +1,7 @@
 // src/pages/Home.jsx
 import React, { useEffect } from "react"; // Xóa useEffect chèn style
 import { NavLink } from "react-router-dom";
+import PageTitle from "../components/common/pageTitle";
 import {
 	Swords,
 	ScrollText,
@@ -46,36 +47,42 @@ const Home = () => {
 			bg: "bg-role-aggro",
 			label: "AGGRO",
 			shadow: "shadow-role-aggro/50",
+			link: "/champions",
 		},
 		{
 			icon: Zap,
 			bg: "bg-role-combo",
 			label: "COMBO",
 			shadow: "shadow-role-combo/60",
+			link: "/champions",
 		},
 		{
 			icon: Skull,
 			bg: "bg-role-mill",
 			label: "MILL (MAIKA)",
 			shadow: "shadow-role-mill/50",
+			link: "/champions",
 		},
 		{
 			icon: Shield,
 			bg: "bg-role-control",
 			label: "CONTROL",
 			shadow: "shadow-role-control/50",
+			link: "/champions",
 		},
 		{
 			icon: Target,
 			bg: "bg-role-midrange",
 			label: "MIDRANGE",
 			shadow: "shadow-role-midrange/50",
+			link: "/champions",
 		},
 		{
 			icon: Flame,
 			bg: "bg-role-burn",
 			label: "BURN",
 			shadow: "shadow-role-burn/50",
+			link: "/champions",
 		},
 
 		{
@@ -83,6 +90,7 @@ const Home = () => {
 			bg: "bg-role-ftk-otk",
 			label: "FTK / OTK",
 			shadow: "shadow-role-ftk-otk/50",
+			link: "/champions",
 		},
 	];
 
@@ -128,36 +136,41 @@ const Home = () => {
 	];
 
 	return (
-		// ĐỔI SANG FONT CHÍNH (SPACE GROTESK) CHO TIÊU ĐỀ
-		<div className='text-white overflow-x-hidden font-primary'>
-			{/* Lớp phủ này giờ đọc từ theme.css (thông qua tailwind.config) */}
-			<div className='fixed inset-0 -z-20 pointer-events-none bg-page-overlay' />
+		<div>
+			<PageTitle
+				title='Con Đường Anh Hùng'
+				description='GUIDE POC: Danh sách tướng, cổ vật, vòng quay may mắn, vai trò chiến thuật.'
+			/>
 
-			{sections.map((section, idx) => (
-				<section
-					key={idx}
-					className='relative min-h-screen flex overflow-hidden'
-					style={{
-						padding:
-							section.align === "center" ? "0 1.5rem md:3rem lg:6rem" : "0",
-					}}
-				>
-					{/* Ảnh nền */}
-					<div
-						className='absolute inset-0 w-full h-full -z-10 bg-cover bg-center'
+			<div className='text-white overflow-x-hidden font-primary'>
+				{/* Lớp phủ này giờ đọc từ theme.css (thông qua tailwind.config) */}
+				<div className='fixed inset-0 -z-20 pointer-events-none bg-page-overlay' />
+
+				{sections.map((section, idx) => (
+					<section
+						key={idx}
+						className='relative min-h-screen flex overflow-hidden'
 						style={{
-							backgroundImage: `url(${
-								BACKGROUND_IMAGES[idx % BACKGROUND_IMAGES.length]
-							})`,
-							filter: "brightness(0.9) contrast(1.1) saturate(1.2)",
+							padding:
+								section.align === "center" ? "0 1.5rem md:3rem lg:6rem" : "0",
 						}}
-					/>
-					{/* Lớp phủ mờ trên ảnh */}
-					<div className='absolute inset-0 bg-black/15 -z-10' />
+					>
+						{/* Ảnh nền */}
+						<div
+							className='absolute inset-0 w-full h-full -z-10 bg-cover bg-center'
+							style={{
+								backgroundImage: `url(${
+									BACKGROUND_IMAGES[idx % BACKGROUND_IMAGES.length]
+								})`,
+								filter: "brightness(0.9) contrast(1.1) saturate(1.2)",
+							}}
+						/>
+						{/* Lớp phủ mờ trên ảnh */}
+						<div className='absolute inset-0 bg-black/15 -z-10' />
 
-					{/* === NỘI DUNG – DÍNH SÁT GÓC DƯỚI === */}
-					<div
-						className={`
+						{/* === NỘI DUNG – DÍNH SÁT GÓC DƯỚI === */}
+						<div
+							className={`
               absolute bottom-0 w-full
               ${section.align === "left" ? "left-0 pl-6 md:pl-12 lg:pl-20" : ""}
               ${
@@ -172,23 +185,23 @@ const Home = () => {
 							}
               pb-12 md:pb-16 z-10
             `}
-					>
-						{/* Badge */}
-						{idx === 0 && section.align === "center" && (
-							<div className='flex justify-center mb-8'>
-								{/* SỬ DỤNG CLASS MỚI TỪ theme.css VÀ TAILWIND CONFIG */}
-								<div className='inline-flex items-center gap-3 px-7 py-3 bg-accent1-badge-bg rounded-full shadow-xl animate-badgeBounce'>
-									<Crown className='w-7 h-7 text-white' />
-									<span className='font-bold uppercase tracking-wider text-white text-lg'>
-										Con Đường Anh Hùng
-									</span>
+						>
+							{/* Badge */}
+							{idx === 0 && section.align === "center" && (
+								<div className='flex justify-center mb-8'>
+									{/* SỬ DỤNG CLASS MỚI TỪ theme.css VÀ TAILWIND CONFIG */}
+									<div className='inline-flex items-center gap-3 px-7 py-3 bg-accent1-badge-bg rounded-full shadow-xl animate-badgeBounce'>
+										<Crown className='w-7 h-7 text-white' />
+										<span className='font-bold uppercase tracking-wider text-white text-lg'>
+											Con Đường Anh Hùng
+										</span>
+									</div>
 								</div>
-							</div>
-						)}
+							)}
 
-						{/* Tiêu đề */}
-						<h2
-							className={`
+							{/* Tiêu đề */}
+							<h2
+								className={`
                 text-5xl md:text-7xl lg:text-8xl font-bold mb-4 tracking-wider drop-shadow-2xl animate-fadeIn
                 ${
 									section.align === "left"
@@ -199,17 +212,17 @@ const Home = () => {
 								}
                 ${section.titleColor}
               `}
-							style={{
-								textShadow:
-									"0 0 20px rgba(255,255,255,0.4), 0 0 40px currentColor",
-							}}
-						>
-							{section.title}
-						</h2>
+								style={{
+									textShadow:
+										"0 0 20px rgba(255,255,255,0.4), 0 0 40px currentColor",
+								}}
+							>
+								{section.title}
+							</h2>
 
-						{/* Phụ đề */}
-						<p
-							className={`
+							{/* Phụ đề */}
+							<p
+								className={`
                 text-xl md:text-3xl lg:text-4xl font-bold uppercase tracking-widest mb-8 drop-shadow-xl animate-slideUp
                 ${
 									section.align === "left"
@@ -220,41 +233,79 @@ const Home = () => {
 								}
                 ${section.subtitleColor}
               `}
-							style={{ textShadow: "0 0 15px rgba(255,255,255,0.6)" }}
-						>
-							{section.subtitle}
-						</p>
+								style={{ textShadow: "0 0 15px rgba(255,255,255,0.6)" }}
+							>
+								{section.subtitle}
+							</p>
 
-						{/* CARD VAI TRÒ */}
-						{idx === 0 && section.align === "center" && (
-							<div className='flex justify-center gap-6 md:gap-10 mb-12 flex-wrap'>
-								{roles.map((role, i) => (
-									<div
-										key={i}
-										// SỬ DỤNG MÀU TỪ TAILWIND CONFIG
-										className={`group flex flex-col items-center gap-3 p-5 rounded-2xl bg-glass-bg backdrop-blur-md border-2 border-glass-border hover:bg-glass-hover-bg hover:border-glass-hover-border hover:scale-115 transition-all duration-500 cursor-pointer shadow-2xl animate-cardFloat ${role.shadow}`}
-										style={{
-											animationDelay: `${i * 120}ms`,
-											boxShadow: `0 0 20px var(--color-role-${role.label.toLowerCase()}), 0 10px 30px rgba(0,0,0,0.2)`,
-										}}
-									>
-										<div
-											className={`p-4 rounded-full ${role.bg} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+							{/* CARD VAI TRÒ */}
+							{idx === 0 && section.align === "center" && (
+								<div className='flex flex-wrap justify-center gap-3 sm:gap-6 md:gap-10 mb-8 px-4 sm:px-0'>
+									{roles.map((role, i) => (
+										<NavLink
+											key={i}
+											to={role.link}
+											className={`
+					group flex flex-col items-center gap-2 
+					p-3 sm:p-4 md:p-5 
+					rounded-xl md:rounded-2xl 
+					bg-glass-bg backdrop-blur-md 
+					border border-glass-border 
+					hover:bg-glass-hover-bg hover:border-glass-hover-border 
+					transition-all duration-500 cursor-pointer 
+					shadow-lg md:shadow-2xl 
+					animate-cardFloat 
+					${role.shadow}
+					/* Giảm scale trên mobile để tránh tràn */
+					hover:scale-105 sm:hover:scale-110 md:hover:scale-115
+				`}
+											style={{
+												animationDelay: `${i * 100}ms`,
+												boxShadow: `0 0 15px var(--color-role-${role.label
+													.toLowerCase()
+													.replace(
+														/[^a-z]/g,
+														""
+													)}), 0 8px 20px rgba(0,0,0,0.15)`,
+												maxWidth: "100px", // Giới hạn chiều rộng trên mobile
+											}}
 										>
-											<role.icon className='w-9 h-9 md:w-11 md:h-11 text-white drop-shadow-md' />
-										</div>
-										{/* ĐỔI SANG FONT PHỤ (OPEN SANS) CHO DỄ ĐỌC */}
-										<span className='text-sm md:text-base font-bold tracking-wide text-glass-text font-secondary'>
-											{role.label}
-										</span>
-									</div>
-								))}
-							</div>
-						)}
+											<div
+												className={`
+						p-2.5 sm:p-3 md:p-4 
+						rounded-full ${role.bg} 
+						shadow-md 
+						group-hover:scale-110 transition-transform duration-300
+					`}
+											>
+												<role.icon
+													className='
+						w-6 h-6 
+						sm:w-8 sm:h-8 
+						md:w-9 md:h-9 
+						lg:w-11 lg:h-11 
+						text-white drop-shadow-sm
+					'
+												/>
+											</div>
+											<span
+												className='
+					text-xs sm:text-sm md:text-base 
+					font-bold tracking-wider 
+					text-glass-text font-secondary 
+					text-center leading-tight
+				'
+											>
+												{role.label}
+											</span>
+										</NavLink>
+									))}
+								</div>
+							)}
 
-						{/* NÚT BẤM */}
-						<div
-							className={`
+							{/* NÚT BẤM */}
+							<div
+								className={`
                 flex flex-col sm:flex-row gap-6 animate-slideUp
                 ${
 									section.align === "left"
@@ -264,36 +315,37 @@ const Home = () => {
 										: "justify-center"
 								}
               `}
-						>
-							<NavLink
-								to={section.link}
-								className={`
+							>
+								<NavLink
+									to={section.link}
+									className={`
                   flex items-center justify-center gap-3 px-9 py-5 ${section.btnBg} rounded-full
                   font-bold text-lg md:text-xl text-white hover:scale-110 transition-all duration-300
                   shadow-2xl ${section.btnHover} backdrop-blur-md group
                 `}
-							>
-								{section.spin ? (
-									<section.icon className='w-6 h-6 animate-spin' />
-								) : (
-									<section.icon className='w-6 h-6' />
-								)}
-								{section.btnText}
-								<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
-							</NavLink>
+								>
+									{section.spin ? (
+										<section.icon className='w-6 h-6 animate-spin' />
+									) : (
+										<section.icon className='w-6 h-6' />
+									)}
+									{section.btnText}
+									<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
+								</NavLink>
 
-							<NavLink
-								to={section.link}
-								// SỬ DỤNG CLASS MÀU TỪ TAILWIND CONFIG
-								className='flex items-center justify-center gap-3 px-9 py-5 bg-glass-bg hover:bg-glass-hover-bg backdrop-blur-md rounded-full font-bold text-lg md:text-xl transition-all duration-300 hover:scale-110 border-2 border-glass-border shadow-xl group'
-							>
-								Khám Phá Ngay
-								<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
-							</NavLink>
+								<NavLink
+									to={section.link}
+									// SỬ DỤNG CLASS MÀU TỪ TAILWIND CONFIG
+									className='flex items-center justify-center gap-3 px-9 py-5 bg-glass-bg hover:bg-glass-hover-bg backdrop-blur-md rounded-full font-bold text-lg md:text-xl transition-all duration-300 hover:scale-110 border-2 border-glass-border shadow-xl group'
+								>
+									Khám Phá Ngay
+									<ChevronRight className='w-6 h-6 group-hover:translate-x-2 transition-transform duration-300' />
+								</NavLink>
+							</div>
 						</div>
-					</div>
-				</section>
-			))}
+					</section>
+				))}
+			</div>
 		</div>
 	);
 };

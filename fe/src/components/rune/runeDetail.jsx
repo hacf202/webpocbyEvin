@@ -1,9 +1,12 @@
 import { memo, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Loader2, ChevronLeft } from "lucide-react";
+import PageTitle from "../common/pageTitle";
+import Button from "../common/button";
 
 function RuneDetail() {
 	const { runeCode } = useParams();
+	const navigate = useNavigate(); // <-- Thêm useNavigate
 	const [rune, setRune] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -71,26 +74,43 @@ function RuneDetail() {
 
 	// Success state
 	return (
-		<div className='relative mx-auto max-w-[1200px] border border-border  p-4 sm:p-6 rounded-lg mt-10 bg-surface-bg text-text-primary font-secondary '>
-			<div className='flex flex-col md:flex-row gap-4 rounded-md p-2 bg-surface-hover'>
-				<img
-					className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg self-center md:self-start'
-					src={rune.assetAbsolutePath || "/images/placeholder.png"}
-					alt={rune.name || "Unknown Rune"}
-					loading='lazy'
-				/>
-				<div className='flex-1 flex flex-col '>
-					<div className='flex flex-col border border-border sm:flex-row sm:justify-between rounded-lg p-2 text-2xl sm:text-4xl font-bold m-1'>
-						<h1 className='font-primary'>{rune.name}</h1>
-						<h1 className='font-primary'>ĐỘ HIẾM: {rune.rarity}</h1>
-					</div>
-					{rune.description && (
-						<div className='flex-1 mt-4'>
-							<p className='text-base sm:text-xl rounded-lg overflow-y-auto p-4 h-full min-h-[150px] max-h-[300px] bg-surface-bg border text-text-secondary'>
-								{rune.description}
-							</p>
+		<div>
+			<PageTitle
+				title={rune.name}
+				description={`GUIDE POC: chi tiết ngọc bổ trợ ${rune.name}`}
+			/>
+
+			{/* --------------------------------------------------- */}
+			{/* NÚT QUAY LẠI – ĐỒNG BỘ 100% VỚI CÁC TRANG KHÁC */}
+			{/* --------------------------------------------------- */}
+			<div className='max-w-[1200px] mx-auto p-4 md:p-6 text-text-primary font-secondary'>
+				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
+					<ChevronLeft size={18} />
+					Quay lại
+				</Button>
+
+				<div className='relative mx-auto max-w-[1200px] border border-border p-4 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
+					<div className='flex flex-col md:flex-row gap-4 rounded-md p-2 bg-surface-hover'>
+						<img
+							className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg self-center md:self-start'
+							src={rune.assetAbsolutePath || "/images/placeholder.png"}
+							alt={rune.name || "Unknown Rune"}
+							loading='lazy'
+						/>
+						<div className='flex-1 flex flex-col'>
+							<div className='flex flex-col border border-border sm:flex-row sm:justify-between rounded-lg p-2 text-2xl sm:text-4xl font-bold m-1'>
+								<h1 className='font-primary'>{rune.name}</h1>
+								<h1 className='font-primary'>ĐỘ HIẾM: {rune.rarity}</h1>
+							</div>
+							{rune.description && (
+								<div className='flex-1 mt-4'>
+									<p className='text-base sm:text-xl rounded-lg overflow-y-auto p-4 h-full min-h-[150px] max-h-[300px] bg-surface-bg border text-text-secondary'>
+										{rune.description}
+									</p>
+								</div>
+							)}
 						</div>
-					)}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -268,7 +268,8 @@ const BuildSummary = ({
 									{normalizeName(build.championName)}
 								</h3>
 								<p className='text-sm text-text-secondary'>
-									by <span className='font-medium'>{creatorDisplayName}</span>
+									Tạo bởi:{" "}
+									<span className='font-medium'>{creatorDisplayName}</span>
 								</p>
 							</div>
 						</div>

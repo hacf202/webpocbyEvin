@@ -1,6 +1,7 @@
 // src/pages/Introduction.jsx
 import { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import PageTitle from "../common/pageTitle";
 
 function Introduction() {
 	const [champions, setChampions] = useState([]);
@@ -63,176 +64,184 @@ function Introduction() {
 	};
 
 	return (
-		<main className='min-h-screen bg-[var(--color-page-bg)] py-12'>
-			<div className='max-w-[1200px] mx-auto px-4 sm:px-6'>
-				{/* ==================== HERO ==================== */}
-				<section className='text-center mb-16'>
-					<h1 className='text-5xl sm:text-6xl font-bold text-[var(--color-text-primary)] mb-6'>
-						Chào mừng đến{" "}
-						<span className='text-[var(--color-primary-500)]'>
-							Path of Champions
-						</span>
-					</h1>
-					<p className='text-xl text-[var(--color-text-secondary)] max-w-4xl mx-auto leading-relaxed'>
-						Chế độ <strong>roguelike</strong> độc đáo trong{" "}
-						<i>Legends of Runeterra</i> – nơi mỗi lượt chơi là một hành trình
-						mới, mỗi quyết định có thể thay đổi toàn bộ cuộc chiến.
-					</p>
-				</section>
-
-				{/* ==================== 7 NGUYÊN TẮC CỐT LÕI ==================== */}
-				<section className='grid md:grid-cols-3 gap-8 mb-16'>
-					<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
-						<div className='w-16 h-16 mx-auto mb-4 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
-							1
-						</div>
-						<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
-							Đường đi ngẫu nhiên
-						</h3>
-						<p className='text-[var(--color-text-secondary)]'>
-							Mỗi bản đồ được tạo ngẫu nhiên – không có 2 lượt chơi giống nhau.
+		<div>
+			<PageTitle
+				title='Giới thiệu về Guide POC'
+				description='GUIDE POC: Giới thiệu về Guide POC'
+			/>
+			<main className='min-h-screen bg-[var(--color-page-bg)] py-12'>
+				<div className='max-w-[1200px] mx-auto px-4 sm:px-6'>
+					{/* ==================== HERO ==================== */}
+					<section className='text-center mb-16'>
+						<h1 className='text-5xl sm:text-6xl font-bold text-[var(--color-text-primary)] mb-6'>
+							Chào mừng đến{" "}
+							<span className='text-[var(--color-primary-500)]'>
+								Path of Champions
+							</span>
+						</h1>
+						<p className='text-xl text-[var(--color-text-secondary)] max-w-4xl mx-auto leading-relaxed'>
+							Chế độ <strong>roguelike</strong> độc đáo trong{" "}
+							<i>Legends of Runeterra</i> – nơi mỗi lượt chơi là một hành trình
+							mới, mỗi quyết định có thể thay đổi toàn bộ cuộc chiến.
 						</p>
-					</div>
+					</section>
 
-					<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
-						<div className='w-16 h-16 mx-auto mb-4 bg-amber-500 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
-							2
-						</div>
-						<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
-							Relic & Power
-						</h3>
-						<p className='text-[var(--color-text-secondary)]'>
-							Thu thập <strong>Relic</strong> và <strong>Power</strong> để biến
-							tướng thường thành quái vật.
-						</p>
-					</div>
-
-					<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
-						<div className='w-16 h-16 mx-auto mb-4 bg-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
-							3
-						</div>
-						<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
-							7 Sao – Thử thách tối thượng
-						</h3>
-						<p className='text-[var(--color-text-secondary)]'>
-							Hoàn thành mọi boss, mọi ngã rẽ để đạt <strong>7 sao</strong> cho
-							mỗi tướng.
-						</p>
-					</div>
-				</section>
-
-				{/* 10 TƯỚNG NGẪU NHIÊN – CHỈ HIỂN THỊ: TÊN + AVATAR + KHU VỰC */}
-				<section className='mb-16'>
-					<h2 className='text-3xl font-bold text-[var(--color-text-primary)] text-center mb-8'>
-						Nhân vật nổi bật
-					</h2>
-
-					{/* Loading */}
-					{loading && (
-						<div className='text-center py-12'>
-							<div className='inline-block animate-spin w-10 h-10 border-4 border-[var(--color-primary-500)] border-t-transparent rounded-full'></div>
-							<p className='mt-3 text-[var(--color-text-secondary)]'>
-								Đang tải...
+					{/* ==================== 7 NGUYÊN TẮC CỐT LÕI ==================== */}
+					<section className='grid md:grid-cols-3 gap-8 mb-16'>
+						<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
+							<div className='w-16 h-16 mx-auto mb-4 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
+								1
+							</div>
+							<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
+								Đường đi ngẫu nhiên
+							</h3>
+							<p className='text-[var(--color-text-secondary)]'>
+								Mỗi bản đồ được tạo ngẫu nhiên – không có 2 lượt chơi giống
+								nhau.
 							</p>
 						</div>
-					)}
 
-					{/* Error */}
-					{error && (
-						<div className='text-center py-12 text-[var(--color-danger-500)]'>
-							<p>{error}</p>
-							<button
-								onClick={() => window.location.reload()}
-								className='mt-3 px-5 py-2 bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)] rounded-md text-sm'
+						<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
+							<div className='w-16 h-16 mx-auto mb-4 bg-amber-500 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
+								2
+							</div>
+							<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
+								Relic & Power
+							</h3>
+							<p className='text-[var(--color-text-secondary)]'>
+								Thu thập <strong>Relic</strong> và <strong>Power</strong> để
+								biến tướng thường thành quái vật.
+							</p>
+						</div>
+
+						<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
+							<div className='w-16 h-16 mx-auto mb-4 bg-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
+								3
+							</div>
+							<h3 className='text-xl font-bold text-[var(--color-text-primary)] mb-2'>
+								7 Sao – Thử thách tối thượng
+							</h3>
+							<p className='text-[var(--color-text-secondary)]'>
+								Hoàn thành mọi boss, mọi ngã rẽ để đạt <strong>7 sao</strong>{" "}
+								cho mỗi tướng.
+							</p>
+						</div>
+					</section>
+
+					{/* 10 TƯỚNG NGẪU NHIÊN – CHỈ HIỂN THỊ: TÊN + AVATAR + KHU VỰC */}
+					<section className='mb-16'>
+						<h2 className='text-3xl font-bold text-[var(--color-text-primary)] text-center mb-8'>
+							Nhân vật nổi bật
+						</h2>
+
+						{/* Loading */}
+						{loading && (
+							<div className='text-center py-12'>
+								<div className='inline-block animate-spin w-10 h-10 border-4 border-[var(--color-primary-500)] border-t-transparent rounded-full'></div>
+								<p className='mt-3 text-[var(--color-text-secondary)]'>
+									Đang tải...
+								</p>
+							</div>
+						)}
+
+						{/* Error */}
+						{error && (
+							<div className='text-center py-12 text-[var(--color-danger-500)]'>
+								<p>{error}</p>
+								<button
+									onClick={() => window.location.reload()}
+									className='mt-3 px-5 py-2 bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)] rounded-md text-sm'
+								>
+									Tải lại
+								</button>
+							</div>
+						)}
+
+						{/* Empty */}
+						{!loading && !error && champions.length === 0 && (
+							<div className='text-center py-12 text-[var(--color-text-secondary)]'>
+								<p>Chưa có dữ liệu tướng.</p>
+							</div>
+						)}
+
+						{/* Grid: Tên + Avatar + Khu vực */}
+						{!loading && !error && champions.length > 0 && (
+							<div className='grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
+								{champions.map(champ => {
+									const region =
+										champ.region || champ.regions?.[0] || "Unknown";
+									const color = getRegionColor(region);
+
+									return (
+										<Link
+											key={champ.championID}
+											to={`/champion/${champ.name}`}
+											className='group block bg-[var(--color-surface-bg)] p-5 rounded-xl border border-[var(--color-border)] text-center hover:border-[var(--color-primary-500)] hover:shadow-lg transition-all'
+										>
+											{/* Avatar: ảnh thật từ API */}
+											<div className='w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden shadow-md group-hover:scale-110 transition-transform duration-300'>
+												<img
+													src={
+														// Ưu tiên avatarUrl nếu có, nếu không lấy từ assets
+														champ.avatarUrl ||
+														champ.assets?.[0]?.M?.avatar?.S ||
+														"/fallback-avatar.png" // fallback nếu không có ảnh
+													}
+													alt={champ.name}
+													className='w-full h-full object-cover'
+													loading='lazy'
+													onError={e => {
+														e.currentTarget.src = "/fallback-avatar.png"; // thay ảnh lỗi
+													}}
+												/>
+											</div>
+											{/* Tên tướng */}
+											<h4 className='font-bold text-[var(--color-text-primary)] text-lg truncate group-hover:text-[var(--color-primary-500)] transition-colors'>
+												{champ.name}
+											</h4>
+
+											{/* Khu vực */}
+											<p className='text-sm text-[var(--color-text-secondary)] mt-1'>
+												{region}
+											</p>
+										</Link>
+									);
+								})}
+							</div>
+						)}
+					</section>
+
+					{/* CTA */}
+					<section className='text-center'>
+						<h2 className='text-3xl font-bold text-[var(--color-text-primary)] mb-6'>
+							Bắt đầu ngay!
+						</h2>
+						<div className='flex flex-col sm:flex-row gap-4 justify-center'>
+							<Link
+								to='/champions'
+								className='px-8 py-3 bg-[var(--color-btn-secondary-bg)] text-[var(--color-btn-secondary-text)] border border-[var(--color-btn-secondary-border)] font-medium rounded-md hover:bg-[var(--color-btn-secondary-hover-bg)] transition-colors'
 							>
-								Tải lại
-							</button>
+								Xem Tất Cả Tướng
+							</Link>
+							<Link
+								to='/champions'
+								className='px-8 py-3 bg-[var(--color-btn-secondary-bg)] text-[var(--color-btn-secondary-text)] border border-[var(--color-btn-secondary-border)] font-medium rounded-md hover:bg-[var(--color-btn-secondary-hover-bg)] transition-colors'
+							>
+								Hướng Dẫn
+							</Link>
 						</div>
-					)}
-
-					{/* Empty */}
-					{!loading && !error && champions.length === 0 && (
-						<div className='text-center py-12 text-[var(--color-text-secondary)]'>
-							<p>Chưa có dữ liệu tướng.</p>
-						</div>
-					)}
-
-					{/* Grid: Tên + Avatar + Khu vực */}
-					{!loading && !error && champions.length > 0 && (
-						<div className='grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
-							{champions.map(champ => {
-								const region = champ.region || champ.regions?.[0] || "Unknown";
-								const color = getRegionColor(region);
-
-								return (
-									<Link
-										key={champ.championID}
-										to={`/champion/${champ.name}`}
-										className='group block bg-[var(--color-surface-bg)] p-5 rounded-xl border border-[var(--color-border)] text-center hover:border-[var(--color-primary-500)] hover:shadow-lg transition-all'
-									>
-										{/* Avatar: ảnh thật từ API */}
-										<div className='w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden shadow-md group-hover:scale-110 transition-transform duration-300'>
-											<img
-												src={
-													// Ưu tiên avatarUrl nếu có, nếu không lấy từ assets
-													champ.avatarUrl ||
-													champ.assets?.[0]?.M?.avatar?.S ||
-													"/fallback-avatar.png" // fallback nếu không có ảnh
-												}
-												alt={champ.name}
-												className='w-full h-full object-cover'
-												loading='lazy'
-												onError={e => {
-													e.currentTarget.src = "/fallback-avatar.png"; // thay ảnh lỗi
-												}}
-											/>
-										</div>
-										{/* Tên tướng */}
-										<h4 className='font-bold text-[var(--color-text-primary)] text-lg truncate group-hover:text-[var(--color-primary-500)] transition-colors'>
-											{champ.name}
-										</h4>
-
-										{/* Khu vực */}
-										<p className='text-sm text-[var(--color-text-secondary)] mt-1'>
-											{region}
-										</p>
-									</Link>
-								);
-							})}
-						</div>
-					)}
-				</section>
-
-				{/* CTA */}
-				<section className='text-center'>
-					<h2 className='text-3xl font-bold text-[var(--color-text-primary)] mb-6'>
-						Bắt đầu ngay!
-					</h2>
-					<div className='flex flex-col sm:flex-row gap-4 justify-center'>
-						<Link
-							to='/champions'
-							className='px-8 py-3 bg-[var(--color-btn-secondary-bg)] text-[var(--color-btn-secondary-text)] border border-[var(--color-btn-secondary-border)] font-medium rounded-md hover:bg-[var(--color-btn-secondary-hover-bg)] transition-colors'
-						>
-							Xem Tất Cả Tướng
-						</Link>
-						<Link
-							to='/champions'
-							className='px-8 py-3 bg-[var(--color-btn-secondary-bg)] text-[var(--color-btn-secondary-text)] border border-[var(--color-btn-secondary-border)] font-medium rounded-md hover:bg-[var(--color-btn-secondary-hover-bg)] transition-colors'
-						>
-							Hướng Dẫn
-						</Link>
-					</div>
-					<p className='mt-8 text-[var(--color-text-secondary)]'>
-						<Link
-							to='/'
-							className='px-8 py-3 bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)] font-medium rounded-md hover:bg-[var(--color-btn-primary-hover-bg)] transition-colors'
-						>
-							Quay về Trang chủ
-						</Link>
-					</p>
-				</section>
-			</div>
-		</main>
+						<p className='mt-8 text-[var(--color-text-secondary)]'>
+							<Link
+								to='/'
+								className='px-8 py-3 bg-[var(--color-btn-primary-bg)] text-[var(--color-btn-primary-text)] font-medium rounded-md hover:bg-[var(--color-btn-primary-hover-bg)] transition-colors'
+							>
+								Quay về Trang chủ
+							</Link>
+						</p>
+					</section>
+				</div>
+			</main>
+		</div>
 	);
 }
 

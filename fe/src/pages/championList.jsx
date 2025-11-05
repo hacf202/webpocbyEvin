@@ -9,6 +9,7 @@ import Button from "../components/common/button";
 import { Search, RotateCw, XCircle } from "lucide-react";
 import { removeAccents } from "../utils/vietnameseUtils";
 import iconRegions from "../assets/data/iconRegions.json";
+import PageTitle from "../components/common/pageTitle";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -208,144 +209,149 @@ function ChampionList() {
 	if (error) return <ErrorMessage message={error} onRetry={fetchChampions} />;
 
 	return (
-		// Sử dụng font-secondary (Open Sans) làm font chữ chính cho trang này
-		<div className='font-secondary'>
-			{/* Sử dụng class ngữ nghĩa 'text-text-primary' */}
-			<h1 className='text-3xl font-bold mb-6 text-text-primary'>
-				Danh Sách Tướng
-			</h1>
+		<div>
+			<PageTitle
+				title='Danh sách tướng'
+				description='GUIDE POC: Danh sách tướng.'
+			/>
+			<div className='font-secondary'>
+				{/* Sử dụng class ngữ nghĩa 'text-text-primary' */}
+				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
+					Danh Sách Tướng
+				</h1>
 
-			{/* BỐ CỤC MỚI: flex-col mặc định (mobile), lg:flex-row cho desktop */}
-			<div className='flex flex-col lg:flex-row gap-8'>
-				{/* THANH CÔNG CỤ (ĐÃ REFACTOR) */}
-				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
-					{/* Sử dụng class ngữ nghĩa 'border-border' và 'bg-surface-bg' */}
-					<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
-						<div>
-							{/* Sử dụng class 'text-text-secondary' */}
-							<label className='block text-sm font-medium mb-1 text-text-secondary'>
-								Tìm kiếm tướng
-							</label>
-							<div className='relative'>
-								<InputField
-									value={searchInput}
-									onChange={e => setSearchInput(e.target.value)}
-									onKeyPress={e => e.key === "Enter" && handleSearch()}
-									placeholder='Nhập tên tướng...'
-								/>
-								{searchInput && (
-									<button
-										onClick={handleClearSearch}
-										// Sử dụng class ngữ nghĩa
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
-									>
-										<XCircle size={18} />
-									</button>
-								)}
-							</div>
-							<Button onClick={handleSearch} className='w-full mt-2'>
-								<Search size={16} className='mr-2' />
-								Tìm kiếm
-							</Button>
-						</div>
-						<MultiSelectFilter
-							label='Vùng'
-							options={filterOptions.regions}
-							selectedValues={selectedRegions}
-							onChange={setSelectedRegions}
-							placeholder='Tất cả Vùng'
-						/>
-						<MultiSelectFilter
-							label='Năng lượng'
-							options={filterOptions.costs}
-							selectedValues={selectedCosts}
-							onChange={setSelectedCosts}
-							placeholder='Tất cả Năng lượng'
-						/>
-						<MultiSelectFilter
-							label='Số sao tối đa'
-							options={filterOptions.maxStars}
-							selectedValues={selectedMaxStars}
-							onChange={setSelectedMaxStars}
-							placeholder='Tất cả Sao'
-						/>
-						<MultiSelectFilter
-							label='Thẻ'
-							options={filterOptions.tags}
-							selectedValues={selectedTags}
-							onChange={setSelectedTags}
-							placeholder='Tất cả Thẻ'
-						/>
-						<DropdownFilter
-							label='Sắp xếp'
-							options={filterOptions.sort}
-							selectedValue={sortOrder}
-							onChange={setSortOrder}
-						/>
-						<div className='pt-2'>
-							<Button
-								variant='outline'
-								onClick={handleResetFilters}
-								iconLeft={<RotateCw size={16} />}
-								className='w-full'
-							>
-								Đặt lại bộ lọc
-							</Button>
-						</div>
-					</div>
-				</aside>
-
-				{/* NỘI DUNG CHÍNH (ĐÃ REFACTOR) */}
-				{/* THAY ĐỔI Ở ĐÂY: Dùng `order-first` trên desktop để đẩy nó sang trái */}
-				<div className='lg:w-4/5 w-full lg:order-first'>
-					{/* Sử dụng class ngữ nghĩa 'bg-surface-bg' và 'border-border' */}
-					<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
-						{paginatedChampions.length > 0 ? (
-							<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
-								{paginatedChampions.map(champion => (
-									<Link
-										key={champion.name}
-										to={`/champion/${encodeURIComponent(champion.name)}`}
-										className='hover:scale-105 transition-transform duration-200'
-									>
-										<ChampionCard champion={champion} />
-									</Link>
-								))}
-							</div>
-						) : (
-							// Sử dụng class 'text-text-secondary'
-							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
-								<div>
-									<p className='font-semibold text-lg'>
-										Không tìm thấy tướng nào phù hợp.
-									</p>
-									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+				{/* BỐ CỤC MỚI: flex-col mặc định (mobile), lg:flex-row cho desktop */}
+				<div className='flex flex-col lg:flex-row gap-8'>
+					{/* THANH CÔNG CỤ (ĐÃ REFACTOR) */}
+					<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+						{/* Sử dụng class ngữ nghĩa 'border-border' và 'bg-surface-bg' */}
+						<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
+							<div>
+								{/* Sử dụng class 'text-text-secondary' */}
+								<label className='block text-sm font-medium mb-1 text-text-secondary'>
+									Tìm kiếm tướng
+								</label>
+								<div className='relative'>
+									<InputField
+										value={searchInput}
+										onChange={e => setSearchInput(e.target.value)}
+										onKeyPress={e => e.key === "Enter" && handleSearch()}
+										placeholder='Nhập tên tướng...'
+									/>
+									{searchInput && (
+										<button
+											onClick={handleClearSearch}
+											// Sử dụng class ngữ nghĩa
+											className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
+										>
+											<XCircle size={18} />
+										</button>
+									)}
 								</div>
+								<Button onClick={handleSearch} className='w-full mt-2'>
+									<Search size={16} className='mr-2' />
+									Tìm kiếm
+								</Button>
 							</div>
-						)}
+							<MultiSelectFilter
+								label='Vùng'
+								options={filterOptions.regions}
+								selectedValues={selectedRegions}
+								onChange={setSelectedRegions}
+								placeholder='Tất cả Vùng'
+							/>
+							<MultiSelectFilter
+								label='Năng lượng'
+								options={filterOptions.costs}
+								selectedValues={selectedCosts}
+								onChange={setSelectedCosts}
+								placeholder='Tất cả Năng lượng'
+							/>
+							<MultiSelectFilter
+								label='Số sao tối đa'
+								options={filterOptions.maxStars}
+								selectedValues={selectedMaxStars}
+								onChange={setSelectedMaxStars}
+								placeholder='Tất cả Sao'
+							/>
+							<MultiSelectFilter
+								label='Thẻ'
+								options={filterOptions.tags}
+								selectedValues={selectedTags}
+								onChange={setSelectedTags}
+								placeholder='Tất cả Thẻ'
+							/>
+							<DropdownFilter
+								label='Sắp xếp'
+								options={filterOptions.sort}
+								selectedValue={sortOrder}
+								onChange={setSortOrder}
+							/>
+							<div className='pt-2'>
+								<Button
+									variant='outline'
+									onClick={handleResetFilters}
+									iconLeft={<RotateCw size={16} />}
+									className='w-full'
+								>
+									Đặt lại bộ lọc
+								</Button>
+							</div>
+						</div>
+					</aside>
 
-						{totalPages > 1 && (
-							<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
-								<Button
-									onClick={() => handlePageChange(currentPage - 1)}
-									disabled={currentPage === 1}
-									variant='outline'
-								>
-									Trang trước
-								</Button>
-								{/* Sử dụng class 'text-text-primary' */}
-								<span className='text-lg font-medium text-text-primary'>
-									{currentPage} / {totalPages}
-								</span>
-								<Button
-									onClick={() => handlePageChange(currentPage + 1)}
-									disabled={currentPage === totalPages}
-									variant='outline'
-								>
-									Trang sau
-								</Button>
-							</div>
-						)}
+					{/* NỘI DUNG CHÍNH (ĐÃ REFACTOR) */}
+					{/* THAY ĐỔI Ở ĐÂY: Dùng `order-first` trên desktop để đẩy nó sang trái */}
+					<div className='lg:w-4/5 w-full lg:order-first'>
+						{/* Sử dụng class ngữ nghĩa 'bg-surface-bg' và 'border-border' */}
+						<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
+							{paginatedChampions.length > 0 ? (
+								<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
+									{paginatedChampions.map(champion => (
+										<Link
+											key={champion.name}
+											to={`/champion/${encodeURIComponent(champion.name)}`}
+											className='hover:scale-105 transition-transform duration-200'
+										>
+											<ChampionCard champion={champion} />
+										</Link>
+									))}
+								</div>
+							) : (
+								// Sử dụng class 'text-text-secondary'
+								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
+									<div>
+										<p className='font-semibold text-lg'>
+											Không tìm thấy tướng nào phù hợp.
+										</p>
+										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+									</div>
+								</div>
+							)}
+
+							{totalPages > 1 && (
+								<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
+									<Button
+										onClick={() => handlePageChange(currentPage - 1)}
+										disabled={currentPage === 1}
+										variant='outline'
+									>
+										Trang trước
+									</Button>
+									{/* Sử dụng class 'text-text-primary' */}
+									<span className='text-lg font-medium text-text-primary'>
+										{currentPage} / {totalPages}
+									</span>
+									<Button
+										onClick={() => handlePageChange(currentPage + 1)}
+										disabled={currentPage === totalPages}
+										variant='outline'
+									>
+										Trang sau
+									</Button>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

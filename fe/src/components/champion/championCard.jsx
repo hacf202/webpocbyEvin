@@ -41,7 +41,6 @@ function ChampionCard({ champion }) {
 				<div className='flex items-center gap-2 mt-1'>
 					{/* Lặp qua mảng `regions` để lấy tên hiển thị */}
 					{champion.regions?.map(regionName => {
-						// Tìm icon bằng cách so khớp tên hiển thị (`regionName`) với `name` trong JSON
 						const regionIcon = iconRegions.find(r => r.name === regionName);
 
 						return (
@@ -53,10 +52,11 @@ function ChampionCard({ champion }) {
 									<img
 										src={regionIcon.iconAbsolutePath}
 										alt={regionName}
-										className='w-8 h-8'
+										className='w-8 h-8 flex-shrink-0'
 									/>
 								)}
-								<span>{regionName}</span>
+								{/* Ẩn tên trên màn hình nhỏ, hiện từ md trở lên */}
+								<span className='hidden md:inline'>{regionName}</span>
 							</div>
 						);
 					})}

@@ -9,6 +9,7 @@ import Button from "../components/common/button";
 import RarityIcon from "../components/common/rarityIcon";
 import { Search, RotateCw, XCircle, Loader2 } from "lucide-react"; // Thêm Loader2
 import { removeAccents } from "../utils/vietnameseUtils";
+import PageTitle from "../components/common/pageTitle";
 
 const ITEMS_PER_PAGE = 21;
 
@@ -152,130 +153,136 @@ function RuneList() {
 	if (error) return <ErrorMessage message={error} onRetry={fetchRunes} />;
 
 	return (
-		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Danh Sách Ngọc Bổ Trợ
-			</h1>
-			<div className='flex flex-col lg:flex-row gap-8'>
-				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
-					<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4 shadow-sm'>
-						<div>
-							<label className='block text-sm font-medium mb-1 text-text-secondary'>
-								Tìm kiếm
-							</label>
-							<div className='relative'>
-								<InputField
-									value={searchInput}
-									onChange={e => setSearchInput(e.target.value)}
-									onKeyPress={e => e.key === "Enter" && handleSearch()}
-									placeholder='Nhập tên ngọc bổ trợ...'
-								/>
-								{searchInput && (
-									<button
-										onClick={handleClearSearch}
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
-									>
-										<XCircle size={18} />
-									</button>
-								)}
-							</div>
-							<Button onClick={handleSearch} className='w-full mt-2'>
-								<Search size={16} className='mr-2' />
-								Tìm kiếm
-							</Button>
-						</div>
-
-						<MultiSelectFilter
-							label='Độ hiếm'
-							options={filterOptions.rarities}
-							selectedValues={selectedRarities}
-							onChange={setSelectedRarities}
-							placeholder='Tất cả Độ hiếm'
-						/>
-						<DropdownFilter
-							label='Sắp xếp'
-							options={filterOptions.sort}
-							selectedValue={sortOrder}
-							onChange={setSortOrder}
-						/>
-
-						<div className='pt-2'>
-							<Button
-								variant='outline'
-								onClick={handleResetFilters}
-								iconLeft={<RotateCw size={16} />}
-								className='w-full'
-							>
-								Đặt lại bộ lọc
-							</Button>
-						</div>
-					</div>
-				</aside>
-				<div className='lg:w-4/5 w-full lg:order-first'>
-					<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6 shadow-sm'>
-						{paginatedRunes.length > 0 ? (
-							<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'>
-								{paginatedRunes.map(rune => (
-									<Link
-										key={rune.runeCode}
-										to={`/rune/${encodeURIComponent(rune.runeCode)}`}
-										className='group relative flex items-center gap-4 bg-surface-bg p-4 rounded-lg hover:bg-surface-hover transition border border-border hover:border-primary-500'
-									>
-										<img
-											src={rune.assetAbsolutePath}
-											alt={rune.name}
-											className='w-16 h-16 object-cover rounded-md border'
-										/>
-										<div className='flex-grow'>
-											<h3 className='font-bold text-lg text-text-primary'>
-												{rune.name}
-											</h3>
-											<div className='flex items-center gap-2 text-sm text-text-secondary'>
-												<RarityIcon rarity={rune.rarity} />
-												<span>{rune.rarity}</span>
-											</div>
-										</div>
-										{/* Tooltip (ĐÃ ĐỒNG BỘ) */}
-										<div className='absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible pointer-events-none z-10'>
-											<p className='whitespace-pre-wrap'>
-												{rune.descriptionRaw}
-											</p>
-											<div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900'></div>
-										</div>
-									</Link>
-								))}
-							</div>
-						) : (
-							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
-								<div>
-									<p className='font-semibold text-lg'>
-										Không tìm thấy ngọc bổ trợ nào phù hợp.
-									</p>
-									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+		<div>
+			<PageTitle
+				title='Danh sách ngọc'
+				description='GUIDE POC: Danh sách ngọc'
+			/>
+			<div className='font-secondary'>
+				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
+					Danh Sách Ngọc Bổ Trợ
+				</h1>
+				<div className='flex flex-col lg:flex-row gap-8'>
+					<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+						<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4 shadow-sm'>
+							<div>
+								<label className='block text-sm font-medium mb-1 text-text-secondary'>
+									Tìm kiếm
+								</label>
+								<div className='relative'>
+									<InputField
+										value={searchInput}
+										onChange={e => setSearchInput(e.target.value)}
+										onKeyPress={e => e.key === "Enter" && handleSearch()}
+										placeholder='Nhập tên ngọc bổ trợ...'
+									/>
+									{searchInput && (
+										<button
+											onClick={handleClearSearch}
+											className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
+										>
+											<XCircle size={18} />
+										</button>
+									)}
 								</div>
-							</div>
-						)}
-						{totalPages > 1 && (
-							<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
-								<Button
-									onClick={() => handlePageChange(currentPage - 1)}
-									disabled={currentPage === 1}
-									variant='outline'
-								>
-									Trang trước
-								</Button>
-								<span className='text-lg font-medium text-text-primary'>
-									{currentPage} / {totalPages}
-								</span>
-								<Button
-									onClick={() => handlePageChange(currentPage + 1)}
-									disabled={currentPage === totalPages}
-									variant='outline'
-								>
-									Trang sau
+								<Button onClick={handleSearch} className='w-full mt-2'>
+									<Search size={16} className='mr-2' />
+									Tìm kiếm
 								</Button>
 							</div>
-						)}
+
+							<MultiSelectFilter
+								label='Độ hiếm'
+								options={filterOptions.rarities}
+								selectedValues={selectedRarities}
+								onChange={setSelectedRarities}
+								placeholder='Tất cả Độ hiếm'
+							/>
+							<DropdownFilter
+								label='Sắp xếp'
+								options={filterOptions.sort}
+								selectedValue={sortOrder}
+								onChange={setSortOrder}
+							/>
+
+							<div className='pt-2'>
+								<Button
+									variant='outline'
+									onClick={handleResetFilters}
+									iconLeft={<RotateCw size={16} />}
+									className='w-full'
+								>
+									Đặt lại bộ lọc
+								</Button>
+							</div>
+						</div>
+					</aside>
+					<div className='lg:w-4/5 w-full lg:order-first'>
+						<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6 shadow-sm'>
+							{paginatedRunes.length > 0 ? (
+								<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4'>
+									{paginatedRunes.map(rune => (
+										<Link
+											key={rune.runeCode}
+											to={`/rune/${encodeURIComponent(rune.runeCode)}`}
+											className='group relative flex items-center gap-4 bg-surface-bg p-4 rounded-lg hover:bg-surface-hover transition border border-border hover:border-primary-500'
+										>
+											<img
+												src={rune.assetAbsolutePath}
+												alt={rune.name}
+												className='w-16 h-16 object-cover rounded-md border'
+											/>
+											<div className='flex-grow'>
+												<h3 className='font-bold text-lg text-text-primary'>
+													{rune.name}
+												</h3>
+												<div className='flex items-center gap-2 text-sm text-text-secondary'>
+													<RarityIcon rarity={rune.rarity} />
+													<span>{rune.rarity}</span>
+												</div>
+											</div>
+											{/* Tooltip (ĐÃ ĐỒNG BỘ) */}
+											<div className='absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-72 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 invisible group-hover:visible pointer-events-none z-10'>
+												<p className='whitespace-pre-wrap'>
+													{rune.descriptionRaw}
+												</p>
+												<div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900'></div>
+											</div>
+										</Link>
+									))}
+								</div>
+							) : (
+								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
+									<div>
+										<p className='font-semibold text-lg'>
+											Không tìm thấy ngọc bổ trợ nào phù hợp.
+										</p>
+										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
+									</div>
+								</div>
+							)}
+							{totalPages > 1 && (
+								<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
+									<Button
+										onClick={() => handlePageChange(currentPage - 1)}
+										disabled={currentPage === 1}
+										variant='outline'
+									>
+										Trang trước
+									</Button>
+									<span className='text-lg font-medium text-text-primary'>
+										{currentPage} / {totalPages}
+									</span>
+									<Button
+										onClick={() => handlePageChange(currentPage + 1)}
+										disabled={currentPage === totalPages}
+										variant='outline'
+									>
+										Trang sau
+									</Button>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

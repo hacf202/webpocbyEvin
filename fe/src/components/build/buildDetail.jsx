@@ -9,6 +9,7 @@ import Button from "../common/button";
 import BuildEditModal from "./buildEditModal";
 import BuildDelete from "./buildDelete";
 import CommentsSection from "../comment/commentsSection";
+import PageTitle from "../common/pageTitle.jsx";
 
 // === CHỈ regionsData DÙNG IMPORT JSON ===
 import regionsData from "../../assets/data/iconRegions.json";
@@ -317,208 +318,215 @@ const BuildDetail = () => {
 
 	// === Render chính (ĐÃ ĐỒNG BỘ) ===
 	return (
-		<div className='max-w-4xl mx-auto p-4 md:p-6 text-text-primary font-secondary'>
-			<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
-				<ChevronLeft size={18} />
-				Quay lại
-			</Button>
+		<div>
+			<PageTitle
+				title={`Bộ cổ vật ${build.championName}`}
+				description='GUIDE POC: Danh sách bộ cổ vật.'
+			/>
+			<div className='max-w-4xl mx-auto p-4 md:p-6 text-text-primary font-secondary'>
+				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
+					<ChevronLeft size={18} />
+					Quay lại
+				</Button>
 
-			<div className='bg-surface-bg rounded-lg shadow-primary-md overflow-hidden p-4 sm:p-6 border border-border'>
-				{/* Header */}
-				<div className='flex flex-col sm:flex-row justify-between items-start gap-4 mb-6'>
-					<div className='flex items-center gap-4'>
-						<img
-							src={championImage}
-							alt={normalizeName(build.championName)}
-							className='w-20 h-20 rounded-full border-4 border-icon-star object-cover'
-						/>
-						<div>
-							<div className='flex items-center gap-2'>
-								<h1 className='font-bold text-3xl text-text-primary font-primary'>
-									{normalizeName(build.championName)}
-								</h1>
-								{championRegions.map(region => (
-									<img
-										key={region.name}
-										src={region.icon}
-										alt={region.name}
-										title={region.name}
-										className='w-6 h-6'
-									/>
-								))}
+				<div className='bg-surface-bg rounded-lg shadow-primary-md overflow-hidden p-4 sm:p-6 border border-border'>
+					{/* Header */}
+					<div className='flex flex-col sm:flex-row justify-between items-start gap-4 mb-6'>
+						<div className='flex items-center gap-4'>
+							<img
+								src={championImage}
+								alt={normalizeName(build.championName)}
+								className='w-20 h-20 rounded-full border-4 border-icon-star object-cover'
+							/>
+							<div>
+								<div className='flex items-center gap-2'>
+									<h1 className='font-bold text-3xl text-text-primary font-primary'>
+										{normalizeName(build.championName)}
+									</h1>
+									{championRegions.map(region => (
+										<img
+											key={region.name}
+											src={region.icon}
+											alt={region.name}
+											title={region.name}
+											className='w-6 h-6'
+										/>
+									))}
+								</div>
+								<p className='text-sm text-text-secondary'>
+									Tạo bởi: {creatorDisplayName}
+								</p>
+								<div className='flex mt-2'>
+									{[...Array(build.star || 0)].map((_, i) => (
+										<Star
+											key={i}
+											size={20}
+											className='text-icon-star'
+											fill='currentColor'
+										/>
+									))}
+									{[...Array(7 - (build.star || 0))].map((_, i) => (
+										<Star
+											key={i}
+											size={20}
+											className='text-border' // Dùng màu viền
+										/>
+									))}
+								</div>
 							</div>
-							<p className='text-sm text-text-secondary'>
-								Tạo bởi: {creatorDisplayName}
-							</p>
-							<div className='flex mt-2'>
-								{[...Array(build.star || 0)].map((_, i) => (
-									<Star
-										key={i}
-										size={20}
-										className='text-icon-star'
-										fill='currentColor'
-									/>
-								))}
-								{[...Array(7 - (build.star || 0))].map((_, i) => (
-									<Star
-										key={i}
-										size={20}
-										className='text-border' // Dùng màu viền
-									/>
-								))}
-							</div>
+						</div>
+
+						<div className='flex items-center gap-2 sm:gap-4'>
+							<button
+								onClick={handleLike}
+								disabled={isLiked}
+								className={`flex items-center gap-2 p-2 rounded-lg transition-colors focus:outline-none ${
+									isLiked
+										? "text-primary-500 cursor-not-allowed"
+										: "text-text-secondary hover:bg-surface-hover"
+								}`}
+								aria-label='Thích build này'
+							>
+								<ThumbsUp size={22} />
+								<span className='font-semibold text-lg'>{likeCount}</span>
+							</button>
+
+							<button
+								onClick={handleToggleFavorite}
+								className={`p-2 rounded-full transition-colors focus:outline-none hover:bg-surface-hover ${
+									isFavorite ? "text-danger-500" : "text-text-secondary"
+								}`}
+								aria-label='Yêu thích build này'
+							>
+								<Heart size={22} fill={isFavorite ? "currentColor" : "none"} />
+							</button>
+
+							{isOwner && (
+								<>
+									<button
+										onClick={() => setShowEditModal(true)}
+										className='p-2 rounded-full transition-colors text-text-secondary hover:bg-surface-hover hover:text-warning'
+										aria-label='Sửa build'
+									>
+										<Edit size={22} />
+									</button>
+									<button
+										onClick={() => setBuildToDelete(build)}
+										className='p-2 rounded-full transition-colors text-text-secondary hover:bg-surface-hover hover:text-danger-500'
+										aria-label='Xóa build'
+									>
+										<Trash2 size={22} />
+									</button>
+								</>
+							)}
 						</div>
 					</div>
 
-					<div className='flex items-center gap-2 sm:gap-4'>
-						<button
-							onClick={handleLike}
-							disabled={isLiked}
-							className={`flex items-center gap-2 p-2 rounded-lg transition-colors focus:outline-none ${
-								isLiked
-									? "text-primary-500 cursor-not-allowed"
-									: "text-text-secondary hover:bg-surface-hover"
-							}`}
-							aria-label='Thích build này'
-						>
-							<ThumbsUp size={22} />
-							<span className='font-semibold text-lg'>{likeCount}</span>
-						</button>
+					{/* Thánh tích */}
+					{fullArtifacts.length > 0 && (
+						<div className='mb-6'>
+							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
+								Thánh tích
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+								{fullArtifacts.map((item, index) => (
+									<RenderItem key={`${item.name}-${index}`} item={item} />
+								))}
+							</div>
+						</div>
+					)}
 
-						<button
-							onClick={handleToggleFavorite}
-							className={`p-2 rounded-full transition-colors focus:outline-none hover:bg-surface-hover ${
-								isFavorite ? "text-danger-500" : "text-text-secondary"
-							}`}
-							aria-label='Yêu thích build này'
-						>
-							<Heart size={22} fill={isFavorite ? "currentColor" : "none"} />
-						</button>
+					{/* Ngọc bổ trợ */}
+					{fullRunes.length > 0 && (
+						<div className='mb-6'>
+							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
+								Ngọc bổ trợ
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+								{fullRunes.map((item, index) => (
+									<RenderItem key={`${item.name}-${index}`} item={item} />
+								))}
+							</div>
+						</div>
+					)}
 
-						{isOwner && (
-							<>
-								<button
-									onClick={() => setShowEditModal(true)}
-									className='p-2 rounded-full transition-colors text-text-secondary hover:bg-surface-hover hover:text-warning'
-									aria-label='Sửa build'
-								>
-									<Edit size={22} />
-								</button>
-								<button
-									onClick={() => setBuildToDelete(build)}
-									className='p-2 rounded-full transition-colors text-text-secondary hover:bg-surface-hover hover:text-danger-500'
-									aria-label='Xóa build'
-								>
-									<Trash2 size={22} />
-								</button>
-							</>
-						)}
-					</div>
+					{/* Sức mạnh */}
+					{fullPowers.length > 0 && (
+						<div className='mb-6'>
+							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
+								Sức mạnh
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+								{fullPowers.map((item, index) => (
+									<RenderItem key={`${item.name}-${index}`} item={item} />
+								))}
+							</div>
+						</div>
+					)}
+					{/* Ghi chú */}
+					{build.description && (
+						<div className='mb-6'>
+							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
+								Ghi chú
+							</h2>
+							<p className='text-text-secondary italic bg-surface-hover p-3 rounded-md border-l-4 border-primary-500'>
+								"{build.description}"
+							</p>
+						</div>
+					)}
 				</div>
 
-				{/* Thánh tích */}
-				{fullArtifacts.length > 0 && (
-					<div className='mb-6'>
-						<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-							Thánh tích
-						</h2>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-							{fullArtifacts.map((item, index) => (
-								<RenderItem key={`${item.name}-${index}`} item={item} />
-							))}
-						</div>
+				<CommentsSection buildId={build.id} />
+
+				{/* Modal yêu cầu đăng nhập */}
+				<Modal
+					isOpen={showLoginModal}
+					onClose={() => setShowLoginModal(false)}
+					title='Yêu cầu đăng nhập'
+				>
+					<p className='text-text-secondary mb-6'>
+						Bạn cần đăng nhập để thực hiện hành động này.
+					</p>
+					<div className='flex justify-end gap-4'>
+						<Button variant='ghost' onClick={() => setShowLoginModal(false)}>
+							Hủy
+						</Button>
+						<Button
+							variant='primary'
+							onClick={() => {
+								setShowLoginModal(false);
+								navigate("/login");
+							}}
+						>
+							Đến trang đăng nhập
+						</Button>
 					</div>
+				</Modal>
+
+				{/* Modal sửa build */}
+				{isOwner && (
+					<BuildEditModal
+						isOpen={showEditModal}
+						onClose={() => setShowEditModal(false)}
+						build={build}
+						relicsList={relics}
+						powersList={powers}
+						runesList={runes}
+						onBuildUpdate={handleBuildUpdate}
+						onConfirm={handleBuildUpdate}
+					/>
 				)}
 
-				{/* Ngọc bổ trợ */}
-				{fullRunes.length > 0 && (
-					<div className='mb-6'>
-						<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-							Ngọc bổ trợ
-						</h2>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-							{fullRunes.map((item, index) => (
-								<RenderItem key={`${item.name}-${index}`} item={item} />
-							))}
-						</div>
-					</div>
-				)}
-
-				{/* Sức mạnh */}
-				{fullPowers.length > 0 && (
-					<div className='mb-6'>
-						<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-							Sức mạnh
-						</h2>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-							{fullPowers.map((item, index) => (
-								<RenderItem key={`${item.name}-${index}`} item={item} />
-							))}
-						</div>
-					</div>
-				)}
-				{/* Ghi chú */}
-				{build.description && (
-					<div className='mb-6'>
-						<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-							Ghi chú
-						</h2>
-						<p className='text-text-secondary italic bg-surface-hover p-3 rounded-md border-l-4 border-primary-500'>
-							"{build.description}"
-						</p>
-					</div>
+				{/* Modal xóa build */}
+				{isOwner && (
+					<BuildDelete
+						isOpen={!!buildToDelete}
+						onClose={() => setBuildToDelete(null)}
+						build={buildToDelete}
+						onBuildDelete={handleBuildDelete}
+					/>
 				)}
 			</div>
-
-			<CommentsSection buildId={build.id} />
-
-			{/* Modal yêu cầu đăng nhập */}
-			<Modal
-				isOpen={showLoginModal}
-				onClose={() => setShowLoginModal(false)}
-				title='Yêu cầu đăng nhập'
-			>
-				<p className='text-text-secondary mb-6'>
-					Bạn cần đăng nhập để thực hiện hành động này.
-				</p>
-				<div className='flex justify-end gap-4'>
-					<Button variant='ghost' onClick={() => setShowLoginModal(false)}>
-						Hủy
-					</Button>
-					<Button
-						variant='primary'
-						onClick={() => {
-							setShowLoginModal(false);
-							navigate("/login");
-						}}
-					>
-						Đến trang đăng nhập
-					</Button>
-				</div>
-			</Modal>
-
-			{/* Modal sửa build */}
-			{isOwner && (
-				<BuildEditModal
-					isOpen={showEditModal}
-					onClose={() => setShowEditModal(false)}
-					build={build}
-					relicsList={relics}
-					powersList={powers}
-					runesList={runes}
-					onBuildUpdate={handleBuildUpdate}
-				/>
-			)}
-
-			{/* Modal xóa build */}
-			{isOwner && (
-				<BuildDelete
-					isOpen={!!buildToDelete}
-					onClose={() => setBuildToDelete(null)}
-					build={buildToDelete}
-					onBuildDelete={handleBuildDelete}
-				/>
-			)}
 		</div>
 	);
 };

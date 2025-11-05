@@ -1,10 +1,12 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async"; // Import HelmetProvider
+
 // Context xác thực
 import { AuthProvider } from "./context/AuthContext.jsx";
 
-// trang chi tiết
+// Trang chi tiết
 import ChampionDetail from "./components/champion/championDetail.jsx";
 import RelicDetail from "./components/relic/relicDetail.jsx";
 import PowerDetail from "./components/power/powerDetail.jsx";
@@ -12,7 +14,7 @@ import ItemDetail from "./components/item/itemDetail.jsx";
 import BuildDetail from "./components/build/buildDetail.jsx";
 import RuneDetail from "./components/rune/runeDetail.jsx";
 
-//trang chính
+// Trang chính
 import Home from "./pages/home.jsx";
 import Champions from "./pages/championList.jsx";
 import Relics from "./pages/relicList.jsx";
@@ -22,7 +24,7 @@ import Builds from "./pages/buildList.jsx";
 import Runes from "./pages/runeList.jsx";
 import RandomizerPage from "./pages/randomWheelPage.jsx";
 
-//Đăng nhập / Đăng ký
+// Đăng nhập / Đăng ký
 import AuthContainer from "./components/auth/authContainer.jsx";
 import Profile from "./components/auth/profile.jsx";
 
@@ -50,7 +52,7 @@ function MainContent() {
 	const location = useLocation();
 
 	// Danh sách các trang full-width
-	const fullWidthPaths = ["/", "/randomizer"];
+	const fullWidthPaths = ["/", "/randomizer", "/home"];
 	const isFullWidth = fullWidthPaths.includes(location.pathname);
 
 	return (
@@ -105,15 +107,18 @@ function MainContent() {
 // --- Component App ---
 function App() {
 	return (
-		<AuthProvider>
-			<BrowserRouter>
-				<div className='flex flex-col min-h-screen'>
-					<Navbar />
-					<MainContent />
-					<Footer />
-				</div>
-			</BrowserRouter>
-		</AuthProvider>
+		<HelmetProvider>
+			{/* Bọc toàn bộ ứng dụng */}
+			<AuthProvider>
+				<BrowserRouter>
+					<div className='flex flex-col min-h-screen'>
+						<Navbar />
+						<MainContent />
+						<Footer />
+					</div>
+				</BrowserRouter>
+			</AuthProvider>
+		</HelmetProvider>
 	);
 }
 

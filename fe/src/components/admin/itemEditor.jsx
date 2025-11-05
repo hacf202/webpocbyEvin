@@ -295,7 +295,7 @@ function ItemEditor() {
 		message: "",
 	});
 	const [isBackNavigation, setIsBackNavigation] = useState(false);
-	const backendUrl = import.meta.env.VITE_BACKEND_URL;
+	const backendUrl = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
 
 	const fetchItems = useCallback(async () => {

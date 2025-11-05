@@ -18,8 +18,10 @@ import {
 import Button from "../components/common/button";
 import MultiSelectFilter from "../components/common/multiSelectFilter";
 import InputField from "../components/common/inputField";
+import PageTitle from "../components/common/pageTitle";
 
 import iconRegionsData from "../assets/data/iconRegions.json";
+import { NavLink } from "react-router-dom";
 
 const Builds = () => {
 	const { user } = useContext(AuthContext);
@@ -198,118 +200,133 @@ const Builds = () => {
 
 	// === GIAO DIỆN ===
 	return (
-		<div className='container mx-auto p-4 text-text-primary font-secondary'>
-			<div className='flex justify-between items-center mb-6'>
-				<h1 className='text-3xl font-bold text-primary-500 font-primary'>
-					Danh Sách Builds
-				</h1>
-				{user && (
-					<Button
-						variant='primary'
-						onClick={() => setShowCreateModal(true)}
-						iconLeft={<PlusCircle size={20} />}
-					>
-						Tạo Build Mới
-					</Button>
-				)}
-			</div>
+		<div>
+			<PageTitle
+				title='Danh sách bộ cổ vật'
+				description='GUIDE POC: Danh sách bộ cổ vật.'
+			/>
+			<div className='container mx-auto p-4 text-text-primary font-secondary'>
+				<div className='flex justify-between items-center mb-6'>
+					<h1 className='text-3xl font-bold text-primary-500 font-primary'>
+						Danh Sách Bộ Cổ Vật
+					</h1>
+				</div>
 
-			<div className='flex flex-wrap items-center space-x-2 border-b border-border mb-6'>
-				<Button
-					variant={activeTab === "community" ? "primary" : "ghost"}
-					onClick={() => setActiveTab("community")}
-					iconLeft={<Globe size={18} />}
-				>
-					Cộng Đồng
-				</Button>
-				{user && (
-					<>
+				<div className='flex flex-wrap justify-between *:items-center space-x-2 border-b border-border mb-6'>
+					<div>
 						<Button
-							variant={activeTab === "my-builds" ? "primary" : "ghost"}
-							onClick={() => setActiveTab("my-builds")}
-							iconLeft={<Shield size={18} />}
+							variant={activeTab === "community" ? "primary" : "ghost"}
+							onClick={() => setActiveTab("community")}
+							iconLeft={<Globe size={18} />}
 						>
-							Build Của Tôi
+							Cộng Đồng
 						</Button>
-						<Button
-							variant={activeTab === "my-favorites" ? "primary" : "ghost"}
-							onClick={() => setActiveTab("my-favorites")}
-							iconLeft={<Heart size={18} />}
-						>
-							Yêu Thích
-						</Button>
-					</>
-				)}
-			</div>
-
-			<div className='flex flex-col lg:flex-row gap-8'>
-				<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
-					<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
-						<div>
-							<label className='block text-sm font-medium mb-1 text-text-secondary'>
-								Tìm kiếm build
-							</label>
-							<div className='relative'>
-								<InputField
-									value={searchInput}
-									onChange={e => setSearchInput(e.target.value)}
-									onKeyPress={e => e.key === "Enter" && handleSearch()}
-									placeholder='Tìm theo từ khóa (mô tả, tướng, người tạo...)'
-								/>
-								{searchInput && (
-									<button
-										onClick={handleClearSearch}
-										className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
-									>
-										<XCircle size={18} />
-									</button>
-								)}
-							</div>
-							<Button onClick={handleSearch} className='w-full mt-2'>
-								<Search size={16} className='mr-2' />
-								Tìm kiếm
-							</Button>
-						</div>
-						<MultiSelectFilter
-							label='Cấp sao'
-							options={starLevelOptions}
-							selectedValues={selectedStarLevels}
-							onChange={setSelectedStarLevels}
-							placeholder='Tất cả cấp sao'
-						/>
-						<MultiSelectFilter
-							label='Khu vực'
-							options={regionOptions}
-							selectedValues={selectedRegions}
-							onChange={setSelectedRegions}
-							placeholder='Tất cả khu vực'
-						/>
-						<div className='pt-2'>
+						{user && (
 							<Button
-								variant='outline'
-								onClick={handleResetFilters}
-								iconLeft={<RotateCw size={16} />}
-								className='w-full'
+								variant={activeTab === "my-builds" ? "primary" : "ghost"}
+								onClick={() => setActiveTab("my-builds")}
+								iconLeft={<Shield size={18} />}
 							>
-								Đặt lại bộ lọc
+								Của Tôi
 							</Button>
-						</div>
+						)}
+						{user && (
+							<Button
+								variant={activeTab === "my-favorites" ? "primary" : "ghost"}
+								onClick={() => setActiveTab("my-favorites")}
+								iconLeft={<Heart size={18} />}
+							>
+								Yêu Thích
+							</Button>
+						)}
 					</div>
-				</aside>
+					{user ? (
+						<Button
+							variant='primary'
+							onClick={() => setShowCreateModal(true)}
+							iconLeft={<PlusCircle size={20} />}
+						>
+							Tạo Bộ Cổ Vật Mới
+						</Button>
+					) : (
+						<NavLink
+							className='block font-medium mb-1 text-text-secondary hover:underline hover:scale-105'
+							to='/auth'
+						>
+							<strong>Đăng nhập </strong>để tạo bộ cổ vật
+						</NavLink>
+					)}
+				</div>
 
-				<div className='lg:w-4/5 w-full lg:order-first'>
-					<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
-						{renderContent()}
+				<div className='flex flex-col lg:flex-row gap-8'>
+					<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
+						<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
+							<div>
+								<label className='block text-sm font-medium mb-1 text-text-secondary'>
+									Tìm kiếm bộ cổ vật
+								</label>
+								<div className='relative'>
+									<InputField
+										value={searchInput}
+										onChange={e => setSearchInput(e.target.value)}
+										onKeyPress={e => e.key === "Enter" && handleSearch()}
+										placeholder='Tìm theo từ khóa (mô tả, tướng, người tạo...)'
+									/>
+									{searchInput && (
+										<button
+											onClick={handleClearSearch}
+											className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
+										>
+											<XCircle size={18} />
+										</button>
+									)}
+								</div>
+								<Button onClick={handleSearch} className='w-full mt-2'>
+									<Search size={16} className='mr-2' />
+									Tìm kiếm
+								</Button>
+							</div>
+							<MultiSelectFilter
+								label='Cấp sao'
+								options={starLevelOptions}
+								selectedValues={selectedStarLevels}
+								onChange={setSelectedStarLevels}
+								placeholder='Tất cả cấp sao'
+							/>
+							<MultiSelectFilter
+								label='Khu vực'
+								options={regionOptions}
+								selectedValues={selectedRegions}
+								onChange={setSelectedRegions}
+								placeholder='Tất cả khu vực'
+							/>
+							<div className='pt-2'>
+								<Button
+									variant='outline'
+									onClick={handleResetFilters}
+									iconLeft={<RotateCw size={16} />}
+									className='w-full'
+								>
+									Đặt lại bộ lọc
+								</Button>
+							</div>
+						</div>
+					</aside>
+
+					<div className='lg:w-4/5 w-full lg:order-first'>
+						<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
+							{renderContent()}
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{showCreateModal && (
-				<BuildCreation
-					onConfirm={handleCreateSuccess}
-					onClose={() => setShowCreateModal(false)}
-				/>
-			)}
+				{showCreateModal && (
+					<BuildCreation
+						onConfirm={handleCreateSuccess}
+						onClose={() => setShowCreateModal(false)}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

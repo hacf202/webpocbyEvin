@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import VongQuayNgauNhien from "../components/wheel/radomWheel";
 import SidePanel from "../components/wheel/sidePanelWheel";
+import PageTitle from "../components/common/pageTitle";
 
 // Giữ nguyên import cho maps
 import mapsData from "../assets/data/map.json";
@@ -369,76 +370,82 @@ function RandomizerPage() {
 	}
 
 	return (
-		<div className='bg-gradient-to-br from-slate-600 to-gray-100 min-h-screen flex relative overflow-hidden'>
-			{isPanelOpen && (
-				<div
-					onClick={() => setIsPanelOpen(false)}
-					className='fixed inset-0 bg-black/0 z-20'
-				/>
-			)}
-			<main className='flex-grow p-4 flex items-center justify-center transition-all duration-300 ease-in-out'>
-				<div
-					className={`transition-opacity duration-300 w-full h-full flex justify-center items-center ${
-						isWheelVisible ? "opacity-100" : "opacity-0"
-					}`}
-				>
-					{activeWheel && (
-						<VongQuayNgauNhien
-							key={activeWheel.key}
-							items={itemsForWheel}
-							title={activeWheel.title}
-							onRemoveWinner={handleRemoveItem}
-						/>
-					)}
-				</div>
-			</main>
-			{!isPanelOpen && (
-				<button
-					onClick={() => setIsPanelOpen(true)}
-					className='fixed top-1/2 right-0 -translate-y-1/2 bg-slate-800 text-white p-3 rounded-l-lg shadow-lg z-40 hover:bg-slate-700 transition-colors'
-					title='Mở bảng điều khiển'
-				>
-					<svg
-						xmlns='http://www.w3.org/2000/svg'
-						className='h-6 w-6'
-						fill='none'
-						viewBox='0 0 24 24'
-						stroke='currentColor'
-						strokeWidth={2}
-					>
-						<path
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							d='M11 19l-7-7 7-7m8 14l-7-7 7-7'
-						/>
-					</svg>
-				</button>
-			)}
-			<aside
-				className={`fixed top-20 bottom-0 right-0 transition-transform duration-300 ease-in-out z-30 ${
-					isPanelOpen ? "translate-x-0" : "translate-x-full"
-				}`}
-				style={{ width: "24rem", maxWidth: "100vw" }}
-			>
-				{activeWheel && (
-					<SidePanel
-						wheelsData={originalWheelsData}
-						activeWheelKey={activeWheelKey}
-						onSelectWheel={handleSelectWheel}
-						setIsOpen={setIsPanelOpen}
-						customItemsText={customItemsText[activeWheelKey] || ""}
-						onCustomItemsChange={handleCustomItemsChange}
-						originalItems={filteredItems}
-						checkedItems={checkedItems[activeWheelKey]}
-						onCheckboxChange={handleCheckboxChange}
-						onSelectAll={handleSelectAll}
-						onDeselectAll={handleDeselectAll}
-						filters={filterCategories[activeWheelKey]}
-						activeFilter={activeFilters[activeWheelKey]}
-						onFilterChange={handleFilterChange}
+		<div>
+			<PageTitle
+				title='Vòng Quay'
+				description='GUIDE POC: Vòng Quay con đường anh hùng.'
+			/>
+			<div className='bg-gradient-to-br from-slate-600 to-gray-100 min-h-screen flex relative overflow-hidden'>
+				{isPanelOpen && (
+					<div
+						onClick={() => setIsPanelOpen(false)}
+						className='fixed inset-0 bg-black/0 z-20'
 					/>
 				)}
-			</aside>
+				<main className='flex-grow p-4 flex items-center justify-center transition-all duration-300 ease-in-out'>
+					<div
+						className={`transition-opacity duration-300 w-full h-full flex justify-center items-center ${
+							isWheelVisible ? "opacity-100" : "opacity-0"
+						}`}
+					>
+						{activeWheel && (
+							<VongQuayNgauNhien
+								key={activeWheel.key}
+								items={itemsForWheel}
+								title={activeWheel.title}
+								onRemoveWinner={handleRemoveItem}
+							/>
+						)}
+					</div>
+				</main>
+				{!isPanelOpen && (
+					<button
+						onClick={() => setIsPanelOpen(true)}
+						className='fixed top-1/2 right-0 -translate-y-1/2 bg-slate-800 text-white p-3 rounded-l-lg shadow-lg z-40 hover:bg-slate-700 transition-colors'
+						title='Mở bảng điều khiển'
+					>
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							className='h-6 w-6'
+							fill='none'
+							viewBox='0 0 24 24'
+							stroke='currentColor'
+							strokeWidth={2}
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								d='M11 19l-7-7 7-7m8 14l-7-7 7-7'
+							/>
+						</svg>
+					</button>
+				)}
+				<aside
+					className={`fixed top-20 bottom-0 right-0 transition-transform duration-300 ease-in-out z-30 ${
+						isPanelOpen ? "translate-x-0" : "translate-x-full"
+					}`}
+					style={{ width: "24rem", maxWidth: "100vw" }}
+				>
+					{activeWheel && (
+						<SidePanel
+							wheelsData={originalWheelsData}
+							activeWheelKey={activeWheelKey}
+							onSelectWheel={handleSelectWheel}
+							setIsOpen={setIsPanelOpen}
+							customItemsText={customItemsText[activeWheelKey] || ""}
+							onCustomItemsChange={handleCustomItemsChange}
+							originalItems={filteredItems}
+							checkedItems={checkedItems[activeWheelKey]}
+							onCheckboxChange={handleCheckboxChange}
+							onSelectAll={handleSelectAll}
+							onDeselectAll={handleDeselectAll}
+							filters={filterCategories[activeWheelKey]}
+							activeFilter={activeFilters[activeWheelKey]}
+							onFilterChange={handleFilterChange}
+						/>
+					)}
+				</aside>
+			</div>
 		</div>
 	);
 }
