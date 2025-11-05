@@ -6,6 +6,7 @@ import { ChevronLeft } from "lucide-react";
 import Button from "../common/button";
 import { Loader2 } from "lucide-react";
 import PageTitle from "../common/pageTitle";
+import SafeImage from "../common/SafeImage";
 
 // --- RenderItem Component ---
 const RenderItem = ({ item }) => {
@@ -28,16 +29,16 @@ const RenderItem = ({ item }) => {
 	};
 
 	const linkPath = getLinkPath(item);
-	const imgSrc = item.image || "/images/placeholder.png";
+	const imgSrc = item.image || "/fallback-image.svg";
 
 	const content = (
 		<div className='flex items-start gap-4 p-3 bg-surface-hover rounded-md border border-border h-full hover:border-primary-500 transition-colors'>
-			<img
+			<SafeImage
 				src={imgSrc}
 				alt={item.name}
 				className='w-16 h-16 rounded-md' // Đã sửa w-30 (không tồn tại) thành w-16
 				onError={e => {
-					e.target.src = "/images/placeholder.png";
+					e.target.src = "/fallback-image.svg";
 				}}
 				loading='lazy'
 			/>
@@ -134,7 +135,7 @@ function ChampionDetail() {
 
 	const findRegionIconLink = regionName => {
 		const region = iconRegions.find(item => item.name === regionName);
-		return region?.iconAbsolutePath || "/images/default-icon.png";
+		return region?.iconAbsolutePath || "/fallback-image.svg";
 	};
 
 	const powerStarsFull = useMemo(() => {
@@ -264,7 +265,7 @@ function ChampionDetail() {
 				<div className='relative mx-auto max-w-[1200px] p-4 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
 					{/* Champion Header */}
 					<div className='flex flex-col md:flex-row border border-border gap-4 rounded-md bg-surface-hover p-4'>
-						<img
+						<SafeImage
 							className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg'
 							src={
 								champion.assets?.[0]?.M?.gameAbsolutePath?.S ||
@@ -284,7 +285,7 @@ function ChampionDetail() {
 											key={index}
 											className='flex items-center gap-1 px-2 py-1 rounded'
 										>
-											<img
+											<SafeImage
 												src={findRegionIconLink(region)}
 												alt={region}
 												className='w-12 h-12'

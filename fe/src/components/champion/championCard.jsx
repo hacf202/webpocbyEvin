@@ -2,19 +2,20 @@
 import { memo } from "react";
 // Giả sử bạn có tệp này để lấy icon của các vùng, hãy đảm bảo đường dẫn chính xác
 import iconRegions from "../../assets/data/iconRegions.json";
+import SafeImage from "../common/SafeImage";
 
 function ChampionCard({ champion }) {
 	// Logic lấy URL hình ảnh, ưu tiên avatarUrl đã được xử lý trước, sau đó đến các đường dẫn khác
 	const imageUrl =
 		champion.avatarUrl ||
 		champion.assets?.[0]?.M?.gameAbsolutePath?.S ||
-		"/images/placeholder.png";
+		"/fallback-image.svg";
 
 	return (
 		// Khung thẻ chính với các class CSS tiện ích của Tailwind
 		<div className='group relative w-full aspect-[340/500] bg-gray-800 rounded-lg overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl'>
 			{/* Hình ảnh nền của tướng */}
-			<img
+			<SafeImage
 				className='absolute object-cover w-full h-full transition-transform duration-300 group-hover:scale-105'
 				src={imageUrl}
 				alt={champion.name || "Unknown Champion"}
@@ -49,7 +50,7 @@ function ChampionCard({ champion }) {
 								className='flex items-center gap-1 bg-black/50 px-2 py-1 rounded-full text-xs backdrop-blur-sm'
 							>
 								{regionIcon && (
-									<img
+									<SafeImage
 										src={regionIcon.iconAbsolutePath}
 										alt={regionName}
 										className='w-8 h-8 flex-shrink-0'

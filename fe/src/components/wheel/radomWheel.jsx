@@ -180,7 +180,7 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 					html: `
                         ${
 													winner.assetAbsolutePath
-														? `<img src="${winner.assetAbsolutePath}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
+														? `<SafeImage src="${winner.assetAbsolutePath}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
 														: ""
 												}
                         <p>Bạn đã quay trúng:</p>

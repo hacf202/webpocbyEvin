@@ -10,6 +10,7 @@ import RarityIcon from "../components/common/rarityIcon";
 import { Search, RotateCw, XCircle } from "lucide-react";
 import { removeAccents } from "../utils/vietnameseUtils";
 import PageTitle from "../components/common/pageTitle";
+import SafeImage from "../components/common/SafeImage";
 const ITEMS_PER_PAGE = 21;
 
 // --- Component phụ ---
@@ -226,7 +227,7 @@ function ItemList() {
 											to={`/item/${encodeURIComponent(item.itemCode)}`}
 											className='group relative flex items-center gap-4 bg-[var(--color-surface)] p-4 rounded-lg hover:bg-gray-200  transition border border-[var(--color-border)]'
 										>
-											<img
+											<SafeImage
 												src={item.assetAbsolutePath}
 												alt={item.name}
 												className='w-16 h-16 object-cover rounded-md border '

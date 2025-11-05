@@ -195,7 +195,11 @@ function ChampionEditor() {
 				return {
 					value: regionName,
 					label: regionName,
-					iconUrl: regionData ? regionData.iconAbsolutePath : null,
+					iconUrl: regionData?.iconAbsolutePath
+						? `${import.meta.env.VITE_CDN_URL || ""}${
+								regionData.iconAbsolutePath
+						  }`
+						: "/fallback-image.svg",
 				};
 			});
 		const costs = [...new Set(champions.map(c => c.cost))]

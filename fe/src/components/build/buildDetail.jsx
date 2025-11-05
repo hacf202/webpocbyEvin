@@ -13,6 +13,7 @@ import PageTitle from "../common/pageTitle.jsx";
 
 // === CHỈ regionsData DÙNG IMPORT JSON ===
 import regionsData from "../../assets/data/iconRegions.json";
+import SafeImage from "../common/SafeImage.jsx";
 
 const BuildDetail = () => {
 	const { buildId } = useParams();
@@ -268,7 +269,7 @@ const BuildDetail = () => {
 		const content = (
 			// Đồng bộ thẻ item
 			<div className='flex items-start gap-4 p-3 bg-surface-hover rounded-md border border-border h-full hover:border-primary-500 transition-colors'>
-				<img
+				<SafeImage
 					src={imgSrc}
 					alt={item.name}
 					className='w-12 h-12 rounded-md object-cover'
@@ -333,7 +334,7 @@ const BuildDetail = () => {
 					{/* Header */}
 					<div className='flex flex-col sm:flex-row justify-between items-start gap-4 mb-6'>
 						<div className='flex items-center gap-4'>
-							<img
+							<SafeImage
 								src={championImage}
 								alt={normalizeName(build.championName)}
 								className='w-20 h-20 rounded-full border-4 border-icon-star object-cover'
@@ -344,7 +345,7 @@ const BuildDetail = () => {
 										{normalizeName(build.championName)}
 									</h1>
 									{championRegions.map(region => (
-										<img
+										<SafeImage
 											key={region.name}
 											src={region.icon}
 											alt={region.name}

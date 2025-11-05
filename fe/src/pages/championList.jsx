@@ -10,6 +10,7 @@ import { Search, RotateCw, XCircle } from "lucide-react";
 import { removeAccents } from "../utils/vietnameseUtils";
 import iconRegions from "../assets/data/iconRegions.json";
 import PageTitle from "../components/common/pageTitle";
+import SafeImage from "@/components/common/SafeImage";
 
 const ITEMS_PER_PAGE = 20;
 
@@ -107,7 +108,11 @@ function ChampionList() {
 				return {
 					value: regionName,
 					label: regionName,
-					iconUrl: regionData ? regionData.iconAbsolutePath : null,
+					iconUrl: regionData?.iconAbsolutePath
+						? `${import.meta.env.VITE_CDN_URL || ""}${
+								regionData.iconAbsolutePath
+						  }`
+						: "/fallback-image.svg",
 				};
 			});
 		const costs = [...new Set(champions.map(c => c.cost))]

@@ -19,7 +19,7 @@ import Button from "../components/common/button";
 import MultiSelectFilter from "../components/common/multiSelectFilter";
 import InputField from "../components/common/inputField";
 import PageTitle from "../components/common/pageTitle";
-
+import SafeImage from "@/components/common/SafeImage";
 import iconRegionsData from "../assets/data/iconRegions.json";
 import { NavLink } from "react-router-dom";
 
@@ -115,7 +115,11 @@ const Builds = () => {
 			return {
 				value: regionName,
 				label: regionName,
-				iconUrl: regionData?.iconAbsolutePath || null,
+				iconUrl: regionData?.iconAbsolutePath
+					? `${import.meta.env.VITE_CDN_URL || ""}${
+							regionData.iconAbsolutePath
+					  }`
+					: "/fallback-image.svg",
 			};
 		});
 	}, [championsList, iconRegions]);

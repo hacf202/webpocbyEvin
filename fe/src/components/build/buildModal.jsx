@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import Modal from "../common/modal";
 import Button from "../common/button";
 import { Star, Eye, EyeOff, ChevronDown, AlertCircle, X } from "lucide-react";
+import SafeImage from "../common/SafeImage.jsx";
 
 // === Searchable Dropdown (giữ nguyên) ===
 const SearchableDropdown = ({
@@ -82,7 +83,7 @@ const SearchableDropdown = ({
 			>
 				<div className='flex items-center truncate'>
 					{selectedOption?.icon && (
-						<img
+						<SafeImage
 							src={selectedOption.icon}
 							alt={selectedOption.name}
 							className='w-6 h-6 mr-2 rounded-full object-cover flex-shrink-0'
@@ -141,7 +142,7 @@ const SearchableDropdown = ({
 										}`}
 									>
 										{opt.icon && (
-											<img
+											<SafeImage
 												src={opt.icon}
 												alt={opt.name}
 												className='w-6 h-6 mr-2 rounded-full object-cover flex-shrink-0'

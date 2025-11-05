@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Loader2, ChevronLeft } from "lucide-react";
 import PageTitle from "../common/pageTitle";
 import Button from "../common/button";
+import SafeImage from "../common/SafeImage";
 
 function RelicDetail() {
 	const { relicCode } = useParams();
@@ -114,7 +115,7 @@ function RelicDetail() {
 				<div className='relative mx-auto max-w-[1200px] border border-border p-4 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
 					{/* Thông tin cổ vật */}
 					<div className='flex flex-col md:flex-row gap-4 rounded-md p-2 bg-surface-hover'>
-						<img
+						<SafeImage
 							className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg self-center md:self-start'
 							src={relic.assetAbsolutePath || "/images/placeholder.png"}
 							alt={relic.name}
@@ -149,7 +150,7 @@ function RelicDetail() {
 									to={`/champion/${encodeURIComponent(champion.name)}`}
 									className='group rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105 bg-surface-bg border border-border'
 								>
-									<img
+									<SafeImage
 										className='w-full max-w-[120px] h-auto mx-auto rounded-full object-cover border-2 border-border group-hover:border-primary-500 transition-colors'
 										src={champion.image}
 										alt={champion.name}

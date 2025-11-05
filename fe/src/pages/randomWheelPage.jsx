@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import VongQuayNgauNhien from "../components/wheel/radomWheel";
 import SidePanel from "../components/wheel/sidePanelWheel";
 import PageTitle from "../components/common/pageTitle";
+import SafeImage from "@/components/common/SafeImage";
 
 // Giữ nguyên import cho maps
 import mapsData from "../assets/data/map.json";

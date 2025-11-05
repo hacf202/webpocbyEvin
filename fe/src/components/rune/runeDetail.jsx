@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Loader2, ChevronLeft } from "lucide-react";
 import PageTitle from "../common/pageTitle";
 import Button from "../common/button";
+import SafeImage from "../common/SafeImage";
 
 function RuneDetail() {
 	const { runeCode } = useParams();
@@ -91,7 +92,7 @@ function RuneDetail() {
 
 				<div className='relative mx-auto max-w-[1200px] border border-border p-4 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
 					<div className='flex flex-col md:flex-row gap-4 rounded-md p-2 bg-surface-hover'>
-						<img
+						<SafeImage
 							className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg self-center md:self-start'
 							src={rune.assetAbsolutePath || "/images/placeholder.png"}
 							alt={rune.name || "Unknown Rune"}

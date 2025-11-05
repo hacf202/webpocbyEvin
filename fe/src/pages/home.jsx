@@ -22,6 +22,7 @@ const BACKGROUND_IMAGES = [
 	"https://wiki.leagueoflegends.com/en-us/images/06SI012T1-full.png?0bfd7",
 	"https://wiki.leagueoflegends.com/en-us/images/06SH009-full.png?ff10a",
 ];
+import SafeImage from "@/components/common/SafeImage";
 
 // Hàm preload vẫn giữ nguyên
 const preloadBackgrounds = () => {
@@ -56,18 +57,19 @@ const Home = () => {
 			shadow: "shadow-role-combo/60",
 			link: "/champions",
 		},
-		{
-			icon: Skull,
-			bg: "bg-role-mill",
-			label: "MILL (MAIKA)",
-			shadow: "shadow-role-mill/50",
-			link: "/champions",
-		},
+
 		{
 			icon: Shield,
 			bg: "bg-role-control",
 			label: "CONTROL",
 			shadow: "shadow-role-control/50",
+			link: "/champions",
+		},
+		{
+			icon: Skull,
+			bg: "bg-role-mill",
+			label: "MILL (MAIKA)",
+			shadow: "shadow-role-mill/50",
 			link: "/champions",
 		},
 		{
@@ -98,7 +100,7 @@ const Home = () => {
 	const sections = [
 		{
 			title: "DANH SÁCH TƯỚNG",
-			subtitle: "KHÁM PHÁ SỨC MẠNH – TRỞ THÀNH TRANH CHỦ",
+			subtitle: "KHÁM PHÁ SỨC MẠNH – TRỞ THÀNH CAO THỦ",
 			titleColor: "text-accent1-title",
 			subtitleColor: "text-accent1-subtitle",
 			btnBg: "bg-accent1-cta-bg",

@@ -1,5 +1,3 @@
-// src/components/layout/Navbar.jsx (ĐÃ THAY BẰNG LOGO)
-
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.jsx";
@@ -17,25 +15,15 @@ import {
 	Shield,
 	Swords,
 	Package,
-	Wrench,
 	ScrollText,
-	Landmark,
-	Zap,
 	Gem,
+	Zap,
 	Dices,
+	BookOpen,
+	Wrench,
+	Sparkles,
+	LoaderPinwheel,
 } from "lucide-react";
-
-// Import logo (đảm bảo file tồn tại trong thư mục public hoặc assets)
-import logo from "./icon/Yuumi.png"; // Đường dẫn đến logo
-import championIcon from "./icon/champion.png";
-import itemIcon from "./icon/item.png";
-import listIcon from "./icon/list.png";
-import relicIcon from "./icon/relic.png";
-import powerIcon from "./icon/power.png";
-import reliclistIcon from "./icon/reliclist.png";
-import runeIcon from "./icon/rune.png";
-import wheelIcon from "./icon/wheel.png";
-import introductinonIcon from "./icon/introduction.png";
 
 function Navbar() {
 	const { user, logout, isAdmin } = useContext(AuthContext);
@@ -79,6 +67,7 @@ function Navbar() {
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
+
 	const navLinkClass = ({ isActive }) =>
 		`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 text-nav-link-text relative ${
 			isActive
@@ -93,14 +82,14 @@ function Navbar() {
 		<>
 			<header className='bg-header-bg text-header-text p-4 shadow-xl sticky top-0 z-50 transition-all duration-300 font-secondary'>
 				<div className='container mx-auto flex justify-between items-center'>
-					{/* LOGO - Thay thế bằng hình ảnh */}
+					{/* LOGO - GIỮ PNG */}
 					<NavLink
 						to='/'
 						className='flex items-center group'
 						onClick={closeAllMenus}
 					>
 						<img
-							src={logo}
+							src='../../../public/Yuumi.png'
 							alt='Web POC Logo'
 							className='h-10 w-auto object-contain rounded-lg transition-transform duration-300 group-hover:scale-110'
 						/>
@@ -109,7 +98,7 @@ function Navbar() {
 						</span>
 					</NavLink>
 
-					{/* Hamburger Button */}
+					{/* Hamburger */}
 					<button
 						className='xl:hidden focus:outline-none p-2 rounded-lg hover:bg-nav-hover-bg transition-colors'
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -126,56 +115,29 @@ function Navbar() {
 					<div
 						className={`${
 							isMenuOpen ? "block" : "hidden"
-						} xl:flex xl:items-center xl:gap-1 absolute xl:static top-16 left-0 w-full xl:w-auto bg-header-bg xl:bg-transparent z-40 shadow-lg xl:shadow-none transition-all duration-300`}
+						} xl:flex xl:items-center xl:gap-1 ...`}
 					>
-						<nav className='flex flex-col xl:flex-row xl:items-center p-4 xl:p-0 gap-2 xl:gap-1'>
-							{/* Danh sách tướng */}
+						<nav className='flex flex-col xl:flex-row gap-2 p-4 xl:p-0'>
+							{/* CHAMPION */}
 							<NavLink
 								to='/champions'
 								className={navLinkClass}
 								onClick={closeAllMenus}
 							>
-								<img
-									src={championIcon}
-									alt='Champion'
-									className='w-8 h-8 object-contain'
-									style={{ filter: "invert(1) brightness(2)" }}
-								/>
-								Danh sách tướng
+								<Swords className='w-6 h-6' />
+								Tướng
 							</NavLink>
 
-							{/* Bộ cổ vật */}
-							<NavLink
-								to='/builds'
-								className={navLinkClass}
-								onClick={closeAllMenus}
-							>
-								<img
-									src={reliclistIcon}
-									alt='Bộ cổ vật'
-									className='w-8 h-8 object-contain'
-									style={{ filter: "invert(1) brightness(2)" }}
-								/>
-								Bộ cổ vật
-							</NavLink>
-
-							{/* Dropdown: Trang bị */}
+							{/* ITEMS DROPDOWN */}
 							<div className='relative' ref={itemsDropdownRef}>
 								<button
 									onClick={() => setIsItemsDropdownOpen(!isItemsDropdownOpen)}
-									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text relative ${
-										isItemsDropdownOpen ? "font-bold underline-active" : ""
-									}`}
+									className='flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-nav-hover-bg transition-all'
 								>
-									<img
-										src={listIcon}
-										alt='weapon'
-										className='w-8 h-8 object-contain'
-										style={{ filter: "invert(1) brightness(2)" }}
-									/>
-									Trang bị
+									<Package className='w-6 h-6' />
+									Vật phẩm
 									<svg
-										className={`w-4 h-4 transition-transform duration-300 ${
+										className={`w-4 h-4 transition-transform ${
 											isItemsDropdownOpen ? "rotate-180" : ""
 										}`}
 										fill='none'
@@ -192,71 +154,63 @@ function Navbar() {
 								</button>
 
 								{isItemsDropdownOpen && (
-									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-56 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down duration-200'>
+									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-48 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down'>
+										<NavLink
+											to='/items'
+											className={dropdownLinkClass}
+											onClick={closeAllMenus}
+										>
+											<Package className='w-5 h-5' />
+											Vật phẩm
+										</NavLink>
 										<NavLink
 											to='/relics'
 											className={dropdownLinkClass}
 											onClick={closeAllMenus}
 										>
-											<img
-												src={relicIcon}
-												alt='relic'
-												className='w-8 h-8 object-contain'
-											/>
-											Cổ Vật
+											<Sparkles className='w-5 h-5' />
+											Cổ vật
 										</NavLink>
 										<NavLink
 											to='/powers'
 											className={dropdownLinkClass}
 											onClick={closeAllMenus}
 										>
-											<img
-												src={powerIcon}
-												alt='power'
-												className='w-8 h-8 object-contain'
-											/>
-											Sức Mạnh
-										</NavLink>
-										<NavLink
-											to='/items'
-											className={dropdownLinkClass}
-											onClick={closeAllMenus}
-										>
-											<img
-												src={itemIcon}
-												alt='item'
-												className='w-8 h-8 object-contain'
-											/>
-											Vật Phẩm
+											<Zap className='w-5 h-5' />
+											Sức mạnh
 										</NavLink>
 										<NavLink
 											to='/runes'
 											className={dropdownLinkClass}
 											onClick={closeAllMenus}
 										>
-											<img
-												src={runeIcon}
-												alt='rune'
-												className='w-8 h-8 object-contain'
-											/>
+											<Gem className='w-5 h-5' />
 											Ngọc
 										</NavLink>
 									</div>
 								)}
 							</div>
 
-							{/* Dropdown: Công cụ */}
+							{/* BUILD */}
+							<NavLink
+								to='/builds'
+								className={navLinkClass}
+								onClick={closeAllMenus}
+							>
+								<ScrollText className='w-6 h-6' />
+								Build
+							</NavLink>
+
+							{/* TOOLS DROPDOWN */}
 							<div className='relative' ref={toolsDropdownRef}>
 								<button
 									onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
-									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text relative ${
-										isToolsDropdownOpen ? "font-bold underline-active" : ""
-									}`}
+									className='flex items-center gap-2 py-2 px-4 rounded-lg hover:bg-nav-hover-bg transition-all'
 								>
-									<Wrench className='w-8 h-8' />
+									<Wrench className='w-6 h-6' />
 									Công cụ
 									<svg
-										className={`w-4 h-4 transition-transform duration-300 ${
+										className={`w-4 h-4 transition-transform ${
 											isToolsDropdownOpen ? "rotate-180" : ""
 										}`}
 										fill='none'
@@ -273,17 +227,13 @@ function Navbar() {
 								</button>
 
 								{isToolsDropdownOpen && (
-									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-48 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down duration-200'>
+									<div className='xl:absolute left-0 xl:mt-2 w-full xl:w-48 bg-dropdown-bg border border-dropdown-border rounded-lg shadow-xl py-2 animate-slide-down'>
 										<NavLink
 											to='/randomizer'
 											className={dropdownLinkClass}
 											onClick={closeAllMenus}
 										>
-											<img
-												src={wheelIcon}
-												alt='wheel'
-												className='w-8 h-8 object-contain'
-											/>
+											<LoaderPinwheel className='w-5 h-5' />
 											Vòng quay
 										</NavLink>
 										<NavLink
@@ -291,11 +241,7 @@ function Navbar() {
 											className={dropdownLinkClass}
 											onClick={closeAllMenus}
 										>
-											<img
-												src={introductinonIcon}
-												alt='introduction'
-												className='w-8 h-8 object-contain'
-											/>
+											<BookOpen className='w-5 h-5' />
 											Giới thiệu
 										</NavLink>
 									</div>
@@ -303,7 +249,7 @@ function Navbar() {
 							</div>
 						</nav>
 
-						{/* Auth Section */}
+						{/* Auth */}
 						<div className='flex items-center gap-4 p-4 xl:p-0 border-t xl:border-none border-header-border'>
 							{user ? (
 								<div className='relative' ref={profileMenuRef}>

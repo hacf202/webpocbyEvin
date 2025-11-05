@@ -2,6 +2,7 @@
 import { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageTitle from "../common/pageTitle";
+import SafeImage from "../common/SafeImage";
 
 function Introduction() {
 	const [champions, setChampions] = useState([]);
@@ -180,18 +181,18 @@ function Introduction() {
 										>
 											{/* Avatar: ảnh thật từ API */}
 											<div className='w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden shadow-md group-hover:scale-110 transition-transform duration-300'>
-												<img
+												<SafeImage
 													src={
 														// Ưu tiên avatarUrl nếu có, nếu không lấy từ assets
 														champ.avatarUrl ||
 														champ.assets?.[0]?.M?.avatar?.S ||
-														"/fallback-avatar.png" // fallback nếu không có ảnh
+														"/fallback-image.svg" // fallback nếu không có ảnh
 													}
 													alt={champ.name}
 													className='w-full h-full object-cover'
 													loading='lazy'
 													onError={e => {
-														e.currentTarget.src = "/fallback-avatar.png"; // thay ảnh lỗi
+														e.currentTarget.src = "/fallback-image.svg"; // thay ảnh lỗi
 													}}
 												/>
 											</div>

@@ -17,6 +17,7 @@ import Modal from "../common/modal";
 import Button from "../common/button";
 import BuildDelete from "./buildDelete";
 import BuildEditModal from "./buildEditModal";
+import SafeImage from "../common/SafeImage.jsx";
 
 const DESCRIPTION_MAX_HEIGHT = 80; // ~4 dòng
 
@@ -205,7 +206,7 @@ const BuildSummary = ({
 		const name = normalizeName(build?.championName);
 		return (
 			championsList.find(c => c?.name === name)?.assets?.[0]?.M?.avatar?.S ||
-			"/images/placeholder.png"
+			"/fallback-image.svg"
 		);
 	}, [championsList, build?.championName]);
 
@@ -226,15 +227,11 @@ const BuildSummary = ({
 		const key = `${build.id}-${type}-${normalizeName(name)}-${index}`;
 		return (
 			<div key={key} className='group relative'>
-				<img
-					src={src || "/images/placeholder.png"}
+				<SafeImage
+					src={src || "/fallback-image.svg"}
 					alt={normalizeName(name)}
 					// Đồng bộ thẻ
 					className='w-16 h-16 rounded-md border-2 border-border object-cover'
-					onError={e => {
-						e.target.onerror = null;
-						e.target.src = "/images/placeholder.png";
-					}}
 				/>
 				{/* Đồng bộ tooltip */}
 				<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10'>
@@ -258,7 +255,7 @@ const BuildSummary = ({
 					{/* Header */}
 					<div className='flex items-start justify-between'>
 						<div className='flex items-center gap-3'>
-							<img
+							<SafeImage
 								src={championImage}
 								alt={normalizeName(build.championName)}
 								className='w-16 h-16 rounded-full object-cover border-2 border-border'

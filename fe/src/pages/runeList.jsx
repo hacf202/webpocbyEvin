@@ -10,6 +10,7 @@ import RarityIcon from "../components/common/rarityIcon";
 import { Search, RotateCw, XCircle, Loader2 } from "lucide-react"; // Thêm Loader2
 import { removeAccents } from "../utils/vietnameseUtils";
 import PageTitle from "../components/common/pageTitle";
+import SafeImage from "@/components/common/SafeImage";
 
 const ITEMS_PER_PAGE = 21;
 
@@ -227,7 +228,7 @@ function RuneList() {
 											to={`/rune/${encodeURIComponent(rune.runeCode)}`}
 											className='group relative flex items-center gap-4 bg-surface-bg p-4 rounded-lg hover:bg-surface-hover transition border border-border hover:border-primary-500'
 										>
-											<img
+											<SafeImage
 												src={rune.assetAbsolutePath}
 												alt={rune.name}
 												className='w-16 h-16 object-cover rounded-md border'

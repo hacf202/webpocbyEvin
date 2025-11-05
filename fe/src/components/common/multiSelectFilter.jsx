@@ -35,7 +35,12 @@ const MultiSelectFilter = ({
 		<div className='flex items-center gap-2'>
 			{option.iconComponent}
 			{option.iconUrl && (
-				<img src={option.iconUrl} alt={option.label} className='w-5 h-5' />
+				<SafeImage
+					src={option.iconUrl}
+					alt={option.label}
+					className='w-5 h-5 flex-shrink-0'
+					fallback='/fallback-image.svg'
+				/>
 			)}
 			{option.isCost && (
 				<div className='text-white absolute w-5 h-5 flex items-center justify-center bg-blue-600 border-2 rounded-full text-xs'>
@@ -59,7 +64,12 @@ const MultiSelectFilter = ({
 		<div className='flex items-center gap-1 bg-input-bg px-2 py-0.5 rounded'>
 			{option.iconComponent}
 			{option.iconUrl && (
-				<img src={option.iconUrl} alt={option.label} className='w-4 h-4' />
+				<SafeImage
+					src={option.iconUrl}
+					alt={option.label}
+					className='w-5 h-5 flex-shrink-0'
+					fallback='/fallback-image.svg'
+				/>
 			)}
 			{option.isCost && (
 				<div className='text-white absolute w-5 h-5 flex items-center justify-center bg-blue-600 border-2 rounded-full text-xs'>

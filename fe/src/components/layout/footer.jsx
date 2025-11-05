@@ -1,6 +1,6 @@
 // src/components/Footer.jsx
 import { memo } from "react";
-import LogoBlack from "../layout/icon/Ahri.png"; // Đường dẫn giữ nguyên như bạn yêu cầu
+import LogoBlack from "../../../public/ahriicon.png";
 import { Youtube, Facebook } from "lucide-react";
 
 function Footer() {
