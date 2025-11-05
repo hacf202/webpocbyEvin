@@ -35,6 +35,7 @@ import powerIcon from "./icon/power.png";
 import reliclistIcon from "./icon/reliclist.png";
 import runeIcon from "./icon/rune.png";
 import wheelIcon from "./icon/wheel.png";
+import introductinonIcon from "./icon/introduction.png";
 
 function Navbar() {
 	const { user, logout, isAdmin } = useContext(AuthContext);
@@ -78,10 +79,11 @@ function Navbar() {
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
-
 	const navLinkClass = ({ isActive }) =>
-		`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 text-nav-link-text ${
-			isActive ? "bg-nav-active-bg font-bold" : ""
+		`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 text-nav-link-text relative ${
+			isActive
+				? "font-bold underline-active-center active"
+				: "underline-active-center"
 		}`;
 
 	const dropdownLinkClass =
@@ -161,8 +163,8 @@ function Navbar() {
 							<div className='relative' ref={itemsDropdownRef}>
 								<button
 									onClick={() => setIsItemsDropdownOpen(!isItemsDropdownOpen)}
-									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text ${
-										isItemsDropdownOpen ? "bg-nav-active-bg" : ""
+									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text relative ${
+										isItemsDropdownOpen ? "font-bold underline-active" : ""
 									}`}
 								>
 									<img
@@ -247,8 +249,8 @@ function Navbar() {
 							<div className='relative' ref={toolsDropdownRef}>
 								<button
 									onClick={() => setIsToolsDropdownOpen(!isToolsDropdownOpen)}
-									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text ${
-										isToolsDropdownOpen ? "bg-nav-active-bg" : ""
+									className={`flex items-center gap-2 py-2 px-4 rounded-lg transition-all duration-200 hover:bg-nav-hover-bg hover:scale-105 w-full xl:w-auto text-nav-link-text relative ${
+										isToolsDropdownOpen ? "font-bold underline-active" : ""
 									}`}
 								>
 									<Wrench className='w-8 h-8' />
@@ -290,7 +292,7 @@ function Navbar() {
 											onClick={closeAllMenus}
 										>
 											<img
-												src={wheelIcon}
+												src={introductinonIcon}
 												alt='introduction'
 												className='w-8 h-8 object-contain'
 											/>

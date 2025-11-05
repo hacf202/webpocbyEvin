@@ -196,5 +196,38 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [],
+	plugins: [
+		function ({ addUtilities }) {
+			addUtilities({
+				// Gạch chân active (dày 2px, màu theo text)
+				".underline-active::after": {
+					content: '""',
+					position: "absolute",
+					bottom: "0",
+					left: "0",
+					right: "0",
+					height: "2px",
+					backgroundColor: "currentColor",
+					borderRadius: "1px",
+					transition: "all 0.3s ease",
+				},
+				// Gạch chân mượt hơn (từ giữa ra)
+				".underline-active-center::after": {
+					content: '""',
+					position: "absolute",
+					bottom: "0",
+					left: "50%",
+					transform: "translateX(-50%)",
+					width: "0",
+					height: "2px",
+					backgroundColor: "currentColor",
+					borderRadius: "1px",
+					transition: "width 0.3s ease",
+				},
+				".underline-active-center.active::after": {
+					width: "100%",
+				},
+			});
+		},
+	],
 };
