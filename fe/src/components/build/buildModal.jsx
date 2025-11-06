@@ -196,7 +196,7 @@ const BuildModal = ({
 			rune: [null],
 			star: 3,
 			description: "",
-			display: false,
+			display: true,
 		}
 	);
 
