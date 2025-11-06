@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check, Star, Tag } from "lucide-react"; // <-- 1. THÊM IMPORT 'Droplet'
+import SafeImage from "./SafeImage";
 
 const MultiSelectFilter = ({
 	label,
