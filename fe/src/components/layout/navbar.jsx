@@ -1,7 +1,7 @@
 // components/layout/Navbar.jsx
 import React from "react";
-import DesktopNavbar from "./DesktopNavbar";
-import MobileSidebar from "./MobileSidebar";
+import DesktopNavbar from "./desktopNavbarView";
+import MobileSidebar from "./mobileNavbarView";
 
 function Navbar() {
 	return (

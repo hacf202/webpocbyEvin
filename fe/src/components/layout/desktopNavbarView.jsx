@@ -3,8 +3,8 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
-import Modal from "../common/modal";
-import Button from "../common/button";
+import Modal from "../common/modal.jsx";
+import Button from "../common/button.jsx";
 import Logo from "../../../Yuumi.png";
 
 import {
