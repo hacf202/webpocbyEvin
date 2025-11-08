@@ -83,7 +83,7 @@ app.use("/api/items", itemsRoutes);
 
 app.use("/api/runes", runesRoutes);
 
-app.use("/api/videos", VideoRoutes);
+app.use("/api/champion-videos", VideoRoutes);
 
 // Mọi request đến /api/users và /api/user sẽ được xử lý bởi usersRouter
 app.use("/api", usersRouter);

@@ -180,7 +180,7 @@ function ChampionEditor() {
 	const fetchVideoLinks = useCallback(async () => {
 		try {
 			setIsLoadingVideo(true);
-			const res = await fetch(`${API_BASE_URL}/api/videos`);
+			const res = await fetch(`${API_BASE_URL}/api/champion-videos`);
 			if (!res.ok) throw new Error("Không tải được video");
 			const data = await res.json();
 			setVideoLinks(data);
@@ -199,14 +199,14 @@ function ChampionEditor() {
 
 	useEffect(() => {
 		const handleBeforeUnload = e => {
-			if (viewMode === "edit" && selectedChampion?.isNew !== true) {
+			if (viewMode === "edit") {
 				e.preventDefault();
 				e.returnValue = "Bạn có thay đổi chưa lưu?";
 			}
 		};
 		window.addEventListener("beforeunload", handleBeforeUnload);
 		return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-	}, [viewMode, selectedChampion]);
+	}, [viewMode]);
 
 	const filterOptions = useMemo(() => {
 		if (champions.length === 0)
@@ -314,7 +314,11 @@ function ChampionEditor() {
 	};
 
 	const handleAddNewChampion = () => {
-		const newChamp = { ...NEW_CHAMPION_TEMPLATE, championID: Date.now() };
+		const newChamp = {
+			...NEW_CHAMPION_TEMPLATE,
+			championID: Date.now(),
+			isNew: true,
+		};
 		setSelectedChampion(newChamp);
 		setViewMode("edit");
 	};
@@ -325,6 +329,7 @@ function ChampionEditor() {
 			const videoData = videoLinks.find(v => v.name === champ.name);
 			setSelectedChampion({
 				...champ,
+				isNew: false,
 				videoLink: videoData?.link || "",
 				musicVideo: videoData?.MusicVideo || "",
 			});
@@ -344,22 +349,22 @@ function ChampionEditor() {
 			const token = localStorage.getItem("token");
 			if (!token) throw new Error("Không tìm thấy token.");
 
-			const champResponse = await fetch(
-				`${API_BASE_URL}/api/champions${
-					updatedChampion.isNew ? "" : `/${updatedChampion.championID}`
-				}`,
-				{
-					method: updatedChampion.isNew ? "POST" : "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify(updatedChampion),
-				}
-			);
+			// LUÔN DÙNG PUT /api/champions
+			const champResponse = await fetch(`${API_BASE_URL}/api/champions`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(updatedChampion),
+			});
 
-			if (!champResponse.ok) throw new Error("Lưu tướng thất bại.");
+			if (!champResponse.ok) {
+				const err = await champResponse.json();
+				throw new Error(err.error || "Lưu tướng thất bại.");
+			}
 
+			// Lưu video nếu có
 			const videoData = {
 				name: updatedChampion.name,
 				link: updatedChampion.videoLink || "",
@@ -381,7 +386,9 @@ function ChampionEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: `Đã lưu ${updatedChampion.name}!`,
+				message: `Đã ${updatedChampion.isNew ? "tạo" : "cập nhật"} ${
+					updatedChampion.name
+				}!`,
 			});
 
 			await Promise.all([fetchChampions(), fetchVideoLinks()]);
@@ -390,7 +397,7 @@ function ChampionEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Lỗi",
-				message: `Không thể lưu: ${e.message}`,
+				message: e.message,
 			});
 		} finally {
 			setIsSaving(false);
@@ -443,7 +450,7 @@ function ChampionEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Lỗi",
-				message: `Không thể xóa: ${e.message}`,
+				message: e.message,
 			});
 		} finally {
 			setIsSaving(false);
