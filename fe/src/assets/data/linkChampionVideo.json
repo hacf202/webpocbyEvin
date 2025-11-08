@@ -213,7 +213,8 @@
 	},
 	{
 		"name": "Swain",
-		"link": "https://www.youtube.com/embed/Kk7G2Jum9Kg?si=ZBQCyjZJHInl_SAE"
+		"link": "https://www.youtube.com/embed/Kk7G2Jum9Kg?si=ZBQCyjZJHInl_SAE",
+		"MusicVideo": "https://www.youtube.com/embed/_dZ05zpzUCw?si=2OOX9bNUYkjykmpu"
 	},
 	{
 		"name": "Tahm Kench",
@@ -225,7 +226,7 @@
 	},
 	{
 		"name": "Teemo",
-		"link": "https:www//youtube.com/embed/BEQJiel-t6A?si=yrwcoZGG6Fl_IJuM"
+		"link": "https://www.youtube.com/embed/BEQJiel-t6A?si=PZcuqlLydUVCF8_r"
 	},
 	{
 		"name": "Thresh",
@@ -273,15 +274,15 @@
 	},
 	{
 		"name": "Warwick",
-		"link": "https:www//youtube.com/embed/1hTuS7YU6mc?si=reVEgPAyY_gu-AOa"
+		"link": "https://www.youtube.com/embed/1hTuS7YU6mc?si=1sk7DfGsYyd4R4Pr"
 	},
 	{
 		"name": "Yasuo",
-		"link": "https:www//youtube.com/embed/1hTuS7YU6mc?si=reVEgPAyY_gu-AOa"
+		"link": "https://www.youtube.com/embed/1hTuS7YU6mc?si=1sk7DfGsYyd4R4Pr"
 	},
 	{
 		"name": "Yuumi",
-		"link": "https:www//youtube.com/embed/1hTuS7YU6mc?si=reVEgPAyY_gu-AOa"
+		"link": "https://www.youtube.com/embed/1hTuS7YU6mc?si=1sk7DfGsYyd4R4Pr"
 	},
 	{
 		"name": "Yasuo Anh Hùng Lãng Kiếm",
@@ -309,6 +310,14 @@
 	},
 	{
 		"name": "Mel",
+		"link": "https://www.youtube.com/embed/lpM19r66iCE?si=FnDg2UvZl5MnRKRV"
+	},
+	{
+		"name": "Shyvana",
+		"link": ""
+	},
+	{
+		"name": "Anivia",
 		"link": "https://www.youtube.com/embed/lpM19r66iCE?si=FnDg2UvZl5MnRKRV"
 	}
 ]

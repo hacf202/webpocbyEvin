@@ -324,7 +324,7 @@ const BuildDetail = () => {
 				title={`Bộ cổ vật ${build.championName}`}
 				description='GUIDE POC: Danh sách bộ cổ vật.'
 			/>
-			<div className='max-w-4xl mx-auto p-4 md:p-6 text-text-primary font-secondary'>
+			<div className='max-w-4xl mx-auto p-0 sm:p-6 text-text-primary font-secondary'>
 				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
 					<ChevronLeft size={18} />
 					Quay lại

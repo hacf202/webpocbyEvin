@@ -17,6 +17,7 @@ import generalPowersRoutes from "./src/routes/generalPower.js";
 import relicsRoutes from "./src/routes/relics.js";
 import itemsRoutes from "./src/routes/items.js";
 import runesRoutes from "./src/routes/runes.js";
+import VideoRoutes from "./src/routes/championVideos.js";
 import buildsAdminRouter from "./src/routes/builds-admin.js";
 
 dotenv.config();
@@ -81,6 +82,8 @@ app.use("/api/relics", relicsRoutes);
 app.use("/api/items", itemsRoutes);
 
 app.use("/api/runes", runesRoutes);
+
+app.use("/api/videos", VideoRoutes);
 
 // Mọi request đến /api/users và /api/user sẽ được xử lý bởi usersRouter
 app.use("/api", usersRouter);

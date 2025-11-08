@@ -245,26 +245,26 @@ const BuildSummary = ({
 		<>
 			<div
 				style={style}
-				// Đồng bộ thẻ: sử dụng bg-surface-bg, border-border, và shadow-primary-md
 				className='bg-surface-bg border-2 border-border rounded-lg shadow-md 
         hover:shadow-primary-md hover:-translate-y-1 hover:border-primary-500 
-        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden'
+        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden
+        p-3 sm:p-5' // Không padding ở màn nhỏ
 				onClick={() => navigate(`/builds/${build.id}`)}
 			>
-				<div className='p-5 flex flex-col gap-4'>
+				<div className='flex flex-col gap-4'>
 					{/* Header */}
 					<div className='flex items-start justify-between'>
 						<div className='flex items-center gap-3'>
 							<SafeImage
 								src={championImage}
 								alt={normalizeName(build.championName)}
-								className='w-16 h-16 rounded-full object-cover border-2 border-border'
+								className='w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-border'
 							/>
 							<div>
-								<h3 className='font-bold text-lg text-text-primary'>
+								<h3 className='font-bold text-base sm:text-lg text-text-primary'>
 									{normalizeName(build.championName)}
 								</h3>
-								<p className='text-sm text-text-secondary'>
+								<p className='text-xs sm:text-sm text-text-secondary'>
 									Tạo bởi:{" "}
 									<span className='font-medium'>{creatorDisplayName}</span>
 								</p>
@@ -273,26 +273,35 @@ const BuildSummary = ({
 
 						{/* Actions */}
 						<div className='flex flex-col items-end gap-1'>
-							<div className='flex items-center gap-4'>
+							<div className='flex items-center gap-2 sm:gap-4'>
 								{/* Like */}
 								<div
-									className='flex items-center gap-1.5 text-text-secondary'
+									className='flex items-center gap-1 text-text-secondary'
 									onClick={e => e.stopPropagation()}
 								>
 									<button
 										onClick={handleLike}
 										disabled={isLiked}
-										className={`p-1.5 rounded-full transition-colors ${
+										className={`p-1.5 rounded-full transition-all duration-200 flex items-center justify-center ${
 											isLiked
-												? "text-primary-500 cursor-not-allowed"
-												: "hover:bg-surface-hover"
+												? "text-primary-500 bg-primary-500/10 cursor-not-allowed"
+												: "hover:bg-surface-hover text-text-secondary"
 										}`}
 									>
-										<ThumbsUp size={20} />
+										<ThumbsUp
+											size={18}
+											className={isLiked ? "fill-blue-200" : ""}
+											strokeWidth={2}
+										/>
 									</button>
-									<span className='font-semibold text-lg'>{likeCount}</span>
+									<span
+										className={`font-semibold text-sm sm:text-lg ${
+											isLiked ? "text-primary-500" : ""
+										}`}
+									>
+										{likeCount}
+									</span>
 								</div>
-
 								{/* Menu */}
 								<div
 									className='relative'
@@ -303,10 +312,9 @@ const BuildSummary = ({
 										onClick={() => setIsMenuOpen(!isMenuOpen)}
 										className='p-1.5 rounded-full hover:bg-surface-hover transition-colors'
 									>
-										<MoreVertical size={22} className='text-text-secondary' />
+										<MoreVertical size={20} className='text-text-secondary' />
 									</button>
 									{isMenuOpen && (
-										// Đồng bộ dropdown menu
 										<div className='absolute top-full right-0 mt-2 w-48 bg-surface-bg border border-border rounded-md shadow-lg z-20'>
 											<button
 												onClick={handleToggleFavorite}
@@ -354,30 +362,43 @@ const BuildSummary = ({
 								</div>
 							</div>
 
-							{/* Stars */}
-							<div className='flex mt-1'>
-								{[1, 2, 3, 4, 5, 6, 7].map(s => (
-									<Star
-										key={s}
-										size={18}
-										className={`transition-colors ${
-											build.star >= s ? "text-icon-star" : "text-text-secondary"
-										}`}
-										fill={build.star >= s ? "currentColor" : "none"}
-									/>
-								))}
+							{/* Stars - Responsive */}
+							<div className='flex items-center mt-1'>
+								{/* Màn nhỏ: hiển thị số + icon */}
+								<div className='sm:hidden flex items-center gap-1'>
+									<Star size={16} className='text-icon-star fill-icon-star' />
+									<span className='text-sm font-semibold text-text-primary'>
+										{build.star}
+									</span>
+								</div>
+
+								{/* Màn lớn: hiển thị từng sao */}
+								<div className='hidden sm:flex'>
+									{[1, 2, 3, 4, 5, 6, 7].map(s => (
+										<Star
+											key={s}
+											size={18}
+											className={`transition-colors ${
+												build.star >= s
+													? "text-icon-star"
+													: "text-text-secondary"
+											}`}
+											fill={build.star >= s ? "currentColor" : "none"}
+										/>
+									))}
+								</div>
 							</div>
 						</div>
 					</div>
 
-					{/* Nội dung */}
-					<div className='flex flex-col gap-3'>
+					{/* Nội dung - thu gọn ở màn nhỏ */}
+					<div className='flex flex-col gap-3 text-sm'>
 						{build.artifacts?.length > 0 && (
 							<div>
-								<p className='text-text-primary font-semibold mb-1'>
+								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
 									Thánh tích:
 								</p>
-								<div className='flex flex-wrap gap-2'>
+								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
 									{build.artifacts.map((a, i) =>
 										renderImageWithTooltip(a, artifactImages[i], "artifact", i)
 									)}
@@ -386,10 +407,10 @@ const BuildSummary = ({
 						)}
 						{build.rune?.length > 0 && (
 							<div>
-								<p className='text-text-primary font-semibold mb-1'>
+								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
 									Ngọc bổ trợ:
 								</p>
-								<div className='flex flex-wrap gap-2'>
+								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
 									{build.rune.map((r, i) =>
 										renderImageWithTooltip(r, runeImages[i], "rune", i)
 									)}
@@ -398,10 +419,10 @@ const BuildSummary = ({
 						)}
 						{build.powers?.length > 0 && (
 							<div>
-								<p className='text-text-primary font-semibold mb-1'>
+								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
 									Sức mạnh:
 								</p>
-								<div className='flex flex-wrap gap-2'>
+								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
 									{build.powers.map((p, i) =>
 										renderImageWithTooltip(p, powerImages[i], "power", i)
 									)}
@@ -410,12 +431,12 @@ const BuildSummary = ({
 						)}
 					</div>
 
-					{/* Mô tả + Xem thêm... */}
+					{/* Mô tả */}
 					{build.description && (
 						<div className='relative'>
 							<p
 								ref={descriptionRef}
-								className='text-text-secondary text-sm italic mt-2 line-clamp-none'
+								className='text-text-secondary text-xs sm:text-sm italic mt-2 line-clamp-none'
 								style={{
 									maxHeight: DESCRIPTION_MAX_HEIGHT,
 									overflow: "hidden",
@@ -424,18 +445,17 @@ const BuildSummary = ({
 								"{build.description}"
 							</p>
 
-							{/* Hiệu ứng mờ + Xem thêm */}
 							{isDescriptionOverflowing && (
-								<div className='absolute bottom-0 left-0 right-0 h-8' />
+								<div className='absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-surface-bg to-transparent' />
 							)}
 
 							{isDescriptionOverflowing && (
 								<button
 									onClick={handleViewDetail}
-									className='inline-flex items-center gap-1 text-primary-500 hover:underline text-sm font-medium mt-1'
+									className='inline-flex items-center gap-1 text-primary-500 hover:underline text-xs sm:text-sm font-medium mt-1'
 								>
 									Xem thêm...
-									<ChevronRight size={14} />
+									<ChevronRight size={12} />
 								</button>
 							)}
 						</div>
@@ -443,7 +463,7 @@ const BuildSummary = ({
 				</div>
 			</div>
 
-			{/* Modal đăng nhập */}
+			{/* Modal & các component khác giữ nguyên */}
 			<Modal
 				isOpen={showLoginModal}
 				onClose={() => setShowLoginModal(false)}

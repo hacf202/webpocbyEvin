@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async"; // Import HelmetProvider
 
@@ -55,10 +55,14 @@ function MainContent() {
 	const fullWidthPaths = ["/", "/randomizer", "/home"];
 	const isFullWidth = fullWidthPaths.includes(location.pathname);
 
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location.pathname]);
+
 	return (
 		<main
 			className={`flex-grow ${
-				!isFullWidth ? "container mx-auto px-4 py-8" : ""
+				!isFullWidth ? "container mx-auto px-2 sm:px-4 py-4 sm:py-8" : ""
 			}`}
 		>
 			<Routes>

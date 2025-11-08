@@ -1,7 +1,6 @@
 import { memo, useMemo, useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import iconRegions from "../../assets/data/iconRegions.json";
-import championVideoLinks from "../../assets/data/linkChampionVideo.json";
 import { ChevronLeft } from "lucide-react";
 import Button from "../common/button";
 import { Loader2 } from "lucide-react";
@@ -69,6 +68,8 @@ function ChampionDetail() {
 	const [runes, setRunes] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [videoLinks, setVideoLinks] = useState([]);
+	const [loadingVideo, setLoadingVideo] = useState(true);
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
@@ -132,6 +133,26 @@ function ChampionDetail() {
 
 		if (name) fetchData();
 	}, [name, apiUrl]);
+
+	useEffect(() => {
+		const fetchVideoLinks = async () => {
+			try {
+				setLoadingVideo(true);
+				const apiUrl = import.meta.env.VITE_API_URL;
+				const res = await fetch(`${apiUrl}/api/videos`);
+				if (!res.ok) throw new Error("Không tải được video");
+				const data = await res.json();
+				setVideoLinks(data);
+			} catch (err) {
+				console.error("Lỗi tải video links:", err);
+				setVideoLinks([]);
+			} finally {
+				setLoadingVideo(false);
+			}
+		};
+
+		fetchVideoLinks();
+	}, [apiUrl]);
 
 	const findRegionIconLink = regionName => {
 		const region = iconRegions.find(item => item.name === regionName);
@@ -244,9 +265,10 @@ function ChampionDetail() {
 		);
 	}
 
+	const videoEntry = videoLinks.find(v => v.name === champion.name);
 	const videoLink =
-		championVideoLinks.find(video => video.name === champion.name)?.link ||
-		"https://www.youtube.com/embed/dQw4w9WgXcQ";
+		videoEntry?.link || "https://www.youtube.com/embed/dQw4w9WgXcQ";
+	const musicVideo = videoEntry?.MusicVideo;
 
 	const isSpiritBlossom = champion.regions.includes("Hoa Linh Lục Địa");
 
@@ -256,15 +278,20 @@ function ChampionDetail() {
 				title={champion.name}
 				description={`GUIDE POC: chi tiết tướng ${champion.name}`}
 			/>
-			<div className='max-w-[1200px] mx-auto p-4 md:p-6 text-text-primary font-secondary'>
+			<div className='max-w-[1200px] mx-auto p-0 sm:p-6 text-text-primary font-secondary'>
 				{/* Back Button */}
-				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
+				<Button
+					variant='outline'
+					onClick={() => navigate(-1)}
+					className='mb-3 sm:mb-4'
+				>
 					<ChevronLeft size={18} />
 					Quay lại
 				</Button>
-				<div className='relative mx-auto max-w-[1200px] p-4 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
+
+				<div className='relative mx-auto max-w-[1200px] p-2 sm:p-6 rounded-lg bg-surface-bg text-text-primary font-secondary'>
 					{/* Champion Header */}
-					<div className='flex flex-col md:flex-row border border-border gap-4 rounded-md bg-surface-hover p-4'>
+					<div className='flex flex-col md:flex-row border border-border gap-2 sm:gap-4 rounded-md bg-surface-hover p-2 sm:p-4'>
 						<SafeImage
 							className='h-auto max-h-[200px] sm:max-h-[300px] object-contain rounded-lg'
 							src={
@@ -275,11 +302,34 @@ function ChampionDetail() {
 							loading='lazy'
 						/>
 						<div className='flex-1 p-2'>
-							<div className='flex flex-col sm:flex-row sm:justify-between rounded-lg p-2 m-1'>
+							<div className='flex flex-col sm:flex-row sm:justify-between rounded-lg p-2 m-1 gap-2'>
+								{/* Tên tướng - Giữ nguyên */}
 								<h1 className='text-2xl sm:text-4xl font-bold m-1 font-primary'>
 									{champion.name}
 								</h1>
-								<div className='flex flex-wrap gap-2 mb-2'>
+
+								{/* Regions + Cost + MaxStar - Cùng hàng */}
+								<div className='flex flex-wrap gap-2 mb-2 items-center'>
+									{/* MAX STAR BADGE - Số + Icon sao */}
+									<div className='flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-yellow-500/20 border border-yellow-500 rounded-full shadow-sm'>
+										<span className='text-sm sm:text-base font-bold text-yellow-900'>
+											{champion.maxStar}
+										</span>
+										<svg
+											className='w-4 h-4 sm:w-5 sm:h-5 text-yellow-600 fill-current'
+											viewBox='0 0 20 20'
+										>
+											<path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
+										</svg>
+									</div>
+									{/* COST BADGE - Chấm tròn xanh dương */}
+									<div className='flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 border-2 border-white rounded-full shadow-md'>
+										<span className='text-white text-xs sm:text-sm font-bold'>
+											{champion.cost}
+										</span>
+									</div>
+
+									{/* Regions - Giữ nguyên */}
 									{champion.regions.map((region, index) => (
 										<div
 											key={index}
@@ -288,7 +338,7 @@ function ChampionDetail() {
 											<SafeImage
 												src={findRegionIconLink(region)}
 												alt={region}
-												className='w-12 h-12'
+												className='w-10 h-10 sm:w-12 sm:h-12'
 												loading='lazy'
 											/>
 										</div>
@@ -298,10 +348,12 @@ function ChampionDetail() {
 
 							{/* Mô tả với nút mở rộng */}
 							{champion.description && (
-								<div className='mt-4 mx-1'>
+								<div className='mt-3 sm:mt-4 mx-1'>
 									<p
-										className={`text-base sm:text-xl rounded-lg p-4 transition-all duration-300 border bg-surface-bg text-text-secondary ${
-											!isDescriptionExpanded ? "overflow-y-auto h-60" : "h-auto"
+										className={`text-sm sm:text-xl rounded-lg p-3 sm:p-4 transition-all duration-300 border bg-surface-bg text-text-secondary ${
+											!isDescriptionExpanded
+												? "overflow-y-auto h-48 sm:h-60"
+												: "h-auto"
 										}`}
 										style={{ whiteSpace: "pre-line" }}
 									>
@@ -311,7 +363,7 @@ function ChampionDetail() {
 										onClick={() =>
 											setIsDescriptionExpanded(!isDescriptionExpanded)
 										}
-										className='text-sm font-semibold mt-2 px-3 py-1 rounded text-primary-500 hover:bg-surface-hover transition'
+										className='text-xs sm:text-sm font-semibold mt-2 px-3 py-1 rounded text-primary-500 hover:bg-surface-hover transition'
 									>
 										{isDescriptionExpanded ? "Thu gọn" : "Hiển thị toàn bộ"}
 									</button>
@@ -321,106 +373,145 @@ function ChampionDetail() {
 					</div>
 
 					{/* Video Section */}
-					<h2 className='text-xl sm:text-3xl font-semibold mt-6 text-text-primary font-primary'>
+					<h2 className='text-lg sm:text-3xl font-semibold mt-4 sm:mt-6 text-text-primary font-primary'>
 						Video giới thiệu
 					</h2>
-					<div>
-						<h3 className='text-sm sm:text-lg font-semibold my-1 text-text-secondary'>
-							Đăng ký kênh Evin LoR tại:{" "}
-							<a
-								href='https://www.youtube.com/@Evin0126/'
-								target='_blank'
-								className='underline text-primary-500'
-								rel='noopener noreferrer'
-							>
-								https://www.youtube.com/@Evin0126/
-							</a>
-						</h3>
-						<div className='flex justify-center mb-6 p-4 aspect-video bg-surface-hover rounded-lg'>
-							<iframe
-								width='100%'
-								height='100%'
-								src={videoLink}
-								title='YouTube video player'
-								frameBorder='0'
-								allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-								referrerPolicy='strict-origin-when-cross-origin'
-								allowFullScreen
-							></iframe>
+					{loadingVideo ? (
+						<div className='flex justify-center p-8'>
+							<Loader2 className='animate-spin text-primary-500' size={32} />
 						</div>
-					</div>
+					) : (
+						<>
+							<div className='flex justify-center mb-4 sm:mb-6 p-2 sm:p-4 aspect-video bg-surface-hover rounded-lg'>
+								<iframe
+									width='100%'
+									height='100%'
+									src={videoLink}
+									title='Champion Video'
+									frameBorder='0'
+									allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+									allowFullScreen
+								></iframe>
+							</div>
 
-					{/* Power Stars */}
-					<h2 className='text-xl sm:text-3xl font-semibold pl-1 m-5 text-text-primary font-primary'>
-						Chòm sao
-					</h2>
-					{powerStarsFull.length > 0 && (
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md p-4 bg-surface-hover'>
-							{powerStarsFull.map((power, index) => (
-								<RenderItem key={index} item={power} />
-							))}
-						</div>
+							{/* Music Video - nếu có */}
+							{musicVideo && (
+								<div className='mt-6'>
+									<h3 className='text-lg font-semibold mb-2 text-text-primary'>
+										Music Video
+									</h3>
+									<div className='flex justify-center p-2 sm:p-4 aspect-video bg-surface-hover rounded-lg'>
+										<iframe
+											width='100%'
+											height='100%'
+											src={musicVideo}
+											title='Music Video'
+											frameBorder='0'
+											allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+											allowFullScreen
+										></iframe>
+									</div>
+								</div>
+							)}
+						</>
 					)}
 
-					{/* Rune - Chỉ Hoa Linh */}
-					{isSpiritBlossom && runesFull.length > 0 && (
+					{powerStarsFull.some(power => power.name) && (
 						<>
-							<h2 className='text-xl sm:text-3xl font-semibold m-5 text-text-primary font-primary'>
-								Ngọc
+							<h2 className='text-lg sm:text-3xl font-semibold pl-1 m-3 sm:m-5 text-text-primary font-primary'>
+								Chòm sao
 							</h2>
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md p-4 bg-surface-hover'>
-								{runesFull.map((rune, index) => (
-									<RenderItem key={index} item={rune} />
-								))}
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{powerStarsFull
+									.filter(power => power.name)
+									.map((power, index) => (
+										<RenderItem key={index} item={power} />
+									))}
 							</div>
 						</>
 					)}
 
-					{/* Adventure Powers */}
-					<h2 className='text-xl sm:text-3xl font-semibold m-5 text-text-primary font-primary'>
-						Sức mạnh khuyên dùng
-					</h2>
-					{adventurePowersFull.length > 0 && (
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md p-4 bg-surface-hover'>
-							{adventurePowersFull.map((power, index) => (
-								<RenderItem key={index} item={power} />
-							))}
-						</div>
-					)}
-
-					{/* Default Items */}
-					<h2 className='text-xl sm:text-3xl font-semibold m-5 text-text-primary font-primary'>
-						Vật phẩm khuyên dùng
-					</h2>
-					{defaultItemsFull.length > 0 && (
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-4 rounded-md p-4 bg-surface-hover'>
-							{defaultItemsFull.map((item, index) => (
-								<RenderItem key={index} item={item} />
-							))}
-						</div>
-					)}
-
-					{/* Relic Sets */}
-					<h2 className='text-xl sm:text-3xl font-semibold m-5 text-text-primary font-primary'>
-						Bộ cổ vật
-					</h2>
-					<div className='grid grid-cols-1 gap-4 rounded-md p-4 bg-surface-hover'>
-						{defaultRelicsSetsFull.map(set => (
-							<div
-								className='rounded-lg m-1 w-full bg-surface-bg border border-border'
-								key={set.setNumber}
-							>
-								<h3 className='text-base sm:text-xl font-semibold p-3 text-text-primary'>
-									Bộ cổ vật {set.setNumber}
-								</h3>
-								<div className='grid grid-cols-1 md:grid-cols-3 gap-4 p-3 pt-0'>
-									{set.relics.map((relic, index) => (
-										<RenderItem key={index} item={relic} />
+					{/* Rune - Chỉ Hoa Linh + ẨN NẾU KHÔNG CÓ TÊN */}
+					{isSpiritBlossom && runesFull.some(rune => rune.name) && (
+						<>
+							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
+								Ngọc
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{runesFull
+									.filter(rune => rune.name)
+									.map((rune, index) => (
+										<RenderItem key={index} item={rune} />
 									))}
-								</div>
 							</div>
-						))}
-					</div>
+						</>
+					)}
+
+					{/* Adventure Powers - ẨN NẾU KHÔNG CÓ TÊN */}
+					{adventurePowersFull.some(power => power.name) && (
+						<>
+							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
+								Sức mạnh khuyên dùng
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{adventurePowersFull
+									.filter(power => power.name)
+									.map((power, index) => (
+										<RenderItem key={index} item={power} />
+									))}
+							</div>
+						</>
+					)}
+
+					{/* Default Items - ẨN NẾU KHÔNG CÓ TÊN */}
+					{defaultItemsFull.some(item => item.name) && (
+						<>
+							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
+								Vật phẩm khuyên dùng
+							</h2>
+							<div className='grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{defaultItemsFull
+									.filter(item => item.name)
+									.map((item, index) => (
+										<RenderItem key={index} item={item} />
+									))}
+							</div>
+						</>
+					)}
+
+					{/* Relic Sets - ẨN NẾU TẤT CẢ RỖNG */}
+					{defaultRelicsSetsFull.some(
+						set => set.relics && set.relics.some(relic => relic.name)
+					) && (
+						<>
+							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
+								Bộ cổ vật
+							</h2>
+							<div className='grid grid-cols-1 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{defaultRelicsSetsFull
+									.filter(
+										set => set.relics && set.relics.some(relic => relic.name)
+									)
+									.map(set => (
+										<div
+											className='rounded-lg m-1 w-full bg-surface-bg border border-border'
+											key={set.setNumber}
+										>
+											<h3 className='text-sm sm:text-xl font-semibold p-2 sm:p-3 text-text-primary'>
+												Bộ cổ vật {set.setNumber}
+											</h3>
+											<div className='grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 p-2 sm:p-3 pt-0'>
+												{set.relics
+													.filter(relic => relic.name)
+													.map((relic, index) => (
+														<RenderItem key={index} item={relic} />
+													))}
+											</div>
+										</div>
+									))}
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

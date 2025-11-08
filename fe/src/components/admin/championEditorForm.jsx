@@ -1,10 +1,9 @@
-// ChampionEditorForm.jsx
+// src/pages/admin/championEditorForm.jsx
 import { useState, memo, useEffect } from "react";
 import Button from "../common/button";
-import InputField from "../common/inputField"; // <-- NÊN DÙNG InputField
+import InputField from "../common/inputField";
 import { XCircle, Plus } from "lucide-react";
 
-// --- Component con: Dành cho việc chỉnh sửa mảng (giữ nguyên) ---
 const ArrayInputComponent = ({ label, data = [], onChange }) => {
 	const handleItemChange = (index, newValue) => {
 		const newData = [...data];
@@ -27,8 +26,8 @@ const ArrayInputComponent = ({ label, data = [], onChange }) => {
 				<Button
 					onClick={handleAddItem}
 					type='button'
-					variant='outline' // Dùng variant 'outline'
-					size='sm' // Giả sử Button hỗ trợ size
+					variant='outline'
+					size='sm'
 					iconLeft={<Plus size={14} />}
 				>
 					Thêm
@@ -41,7 +40,6 @@ const ArrayInputComponent = ({ label, data = [], onChange }) => {
 							<span className='font-bold text-text-secondary'>
 								{index + 1}.
 							</span>
-							{/* Sử dụng InputField component cho nhất quán */}
 							<InputField
 								type='text'
 								value={item?.S || ""}
@@ -67,25 +65,30 @@ const ArrayInputComponent = ({ label, data = [], onChange }) => {
 	);
 };
 
-// --- COMPONENT: ChampionEditorForm (ĐÃ ĐỒNG BỘ) ---
 const ChampionEditorForm = memo(
-	({ champion, onSave, onCancel, onDelete, isSaving }) => {
+	({ champion, videoLinks, onSave, onCancel, onDelete, isSaving }) => {
 		const [formData, setFormData] = useState(champion);
 
 		useEffect(() => {
-			setFormData(champion);
-		}, [champion]);
+			if (!champion) return;
+			const videoData = videoLinks?.find(v => v.name === champion.name);
+			setFormData({
+				...champion,
+				videoLink: videoData?.link || "",
+				musicVideo: videoData?.MusicVideo || "",
+			});
+		}, [champion, videoLinks]);
 
 		const handleInputChange = event => {
 			const { name, value, type } = event.target;
-			setFormData(previousData => ({
-				...previousData,
+			setFormData(prev => ({
+				...prev,
 				[name]: type === "number" ? parseInt(value, 10) || 0 : value,
 			}));
 		};
 
 		const handleArrayChange = (fieldName, newArray) => {
-			setFormData(previousData => ({ ...previousData, [fieldName]: newArray }));
+			setFormData(prev => ({ ...prev, [fieldName]: newArray }));
 		};
 
 		const handleStringArrayChange = (fieldName, stringValue) => {
@@ -93,7 +96,7 @@ const ChampionEditorForm = memo(
 				.split(",")
 				.map(item => item.trim())
 				.filter(item => item);
-			setFormData(previousData => ({ ...previousData, [fieldName]: newArray }));
+			setFormData(prev => ({ ...prev, [fieldName]: newArray }));
 		};
 
 		const handleAssetLinkChange = (assetIndex, assetKey, newValue) => {
@@ -104,7 +107,6 @@ const ChampionEditorForm = memo(
 			}
 		};
 
-		// Component con cho Textarea (ĐÃ ĐỒNG BỘ)
 		const renderTextareaForStringArray = (label, fieldName, data = []) => (
 			<div className='flex flex-col gap-1'>
 				<label className='font-semibold text-text-secondary'>
@@ -113,10 +115,7 @@ const ChampionEditorForm = memo(
 				<textarea
 					rows={2}
 					defaultValue={(data || []).join(", ")}
-					onChange={event =>
-						handleStringArrayChange(fieldName, event.target.value)
-					}
-					// Đồng bộ style với InputField
+					onChange={e => handleStringArrayChange(fieldName, e.target.value)}
 					className='w-full p-2 bg-input-bg text-input-text rounded-md border border-input-border
             placeholder:text-input-placeholder
             focus:border-input-focus-border focus:ring-0 focus:outline-none 
@@ -126,9 +125,7 @@ const ChampionEditorForm = memo(
 		);
 
 		return (
-			// Sử dụng class ngữ nghĩa
 			<div className='p-4 bg-surface-bg rounded-lg border border-border'>
-				{/* Header của Form */}
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
 					<div className='flex items-center gap-2 mb-2 sm:mb-0'>
 						<h3 className='text-xl font-bold text-text-primary font-primary'>
@@ -154,9 +151,8 @@ const ChampionEditorForm = memo(
 					</div>
 				</div>
 
-				{/* Grid Layout cho Form */}
 				<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
-					{/* Section: Thông tin cơ bản */}
+					{/* 1. Thông tin cơ bản */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							1. Thông tin cơ bản
@@ -192,14 +188,13 @@ const ChampionEditorForm = memo(
 								value={formData.description || ""}
 								onChange={handleInputChange}
 								className='w-full p-2 bg-input-bg text-input-text rounded-md border border-input-border
-                  placeholder:text-input-placeholder
-                  focus:border-input-focus-border focus:ring-0 focus:outline-none 
+                  placeholder:text-input-placeholder focus:border-input-focus-border focus:ring-0 focus:outline-none 
                   transition-colors duration-200 resize-y'
 							></textarea>
 						</div>
 					</div>
 
-					{/* Section: Khu vực & Thẻ */}
+					{/* 2. Khu vực & Thẻ */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							2. Khu vực & Thẻ
@@ -217,7 +212,7 @@ const ChampionEditorForm = memo(
 						{renderTextareaForStringArray("Thẻ (Tags)", "tag", formData.tag)}
 					</div>
 
-					{/* Section: Sức mạnh & Nâng cấp */}
+					{/* 3. Sức mạnh & Nâng cấp */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							3. Sức mạnh & Nâng cấp
@@ -241,7 +236,7 @@ const ChampionEditorForm = memo(
 						/>
 					</div>
 
-					{/* Section: Trang bị & Cổ vật */}
+					{/* 4. Trang bị & Cổ vật */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							4. Trang bị & Cổ vật
@@ -263,7 +258,7 @@ const ChampionEditorForm = memo(
 						))}
 					</div>
 
-					{/* Section: Ngọc & Bộ bài */}
+					{/* 5. Ngọc & Bộ bài */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							5. Ngọc & Bộ bài
@@ -280,7 +275,7 @@ const ChampionEditorForm = memo(
 						/>
 					</div>
 
-					{/* Section: Dữ liệu Tài nguyên (Assets) */}
+					{/* 6. Dữ liệu Tài nguyên (Assets) */}
 					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
 						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
 							6. Dữ liệu Tài nguyên (Assets)
@@ -299,21 +294,67 @@ const ChampionEditorForm = memo(
 												handleAssetLinkChange(index, key, e.target.value)
 											}
 										/>
-										<img
-											src={value?.S || ""}
-											alt={`${key} preview`}
-											className='mt-2 rounded border border-border max-w-[60px] h-auto'
-											onError={e => {
-												e.targe.style.display = "none";
-											}}
-											onLoad={e => {
-												e.target.style.display = "block";
-											}}
-										/>
+										{value?.S && (
+											<img
+												src={value.S}
+												alt={`${key} preview`}
+												className='mt-2 rounded border border-border max-w-[60px] h-auto'
+												onError={e => {
+													e.target.style.display = "none";
+												}}
+												onLoad={e => {
+													e.target.style.display = "block";
+												}}
+											/>
+										)}
 									</div>
 								))}
 							</div>
 						))}
+					</div>
+
+					{/* 7. VIDEO LINKS – MỚI */}
+					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
+						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
+							7. Video Liên Kết
+						</h4>
+						<InputField
+							label='Video giới thiệu (YouTube embed URL):'
+							type='text'
+							name='videoLink'
+							value={formData.videoLink || ""}
+							onChange={handleInputChange}
+							placeholder='https://www.youtube.com/embed/...'
+						/>
+						{formData.videoLink && (
+							<div className='mt-2 aspect-video rounded overflow-hidden border'>
+								<iframe
+									src={formData.videoLink}
+									title='Preview'
+									className='w-full h-full'
+									allowFullScreen
+								/>
+							</div>
+						)}
+
+						<InputField
+							label='Music Video (YouTube embed URL):'
+							type='text'
+							name='musicVideo'
+							value={formData.musicVideo || ""}
+							onChange={handleInputChange}
+							placeholder='https://www.youtube.com/embed/...'
+						/>
+						{formData.musicVideo && (
+							<div className='mt-2 aspect-video rounded overflow-hidden border'>
+								<iframe
+									src={formData.musicVideo}
+									title='Music Preview'
+									className='w-full h-full'
+									allowFullScreen
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

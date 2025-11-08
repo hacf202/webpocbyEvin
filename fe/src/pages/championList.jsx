@@ -1,3 +1,4 @@
+// src/pages/championList.jsx
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { usePersistentState } from "../hooks/usePersistentState";
@@ -6,18 +7,23 @@ import MultiSelectFilter from "../components/common/multiSelectFilter";
 import DropdownFilter from "../components/common/dropdownFilter";
 import ChampionCard from "../components/champion/championCard";
 import Button from "../components/common/button";
-import { Search, RotateCw, XCircle } from "lucide-react";
+import {
+	Search,
+	RotateCw,
+	XCircle,
+	ChevronDown,
+	ChevronUp,
+} from "lucide-react";
 import { removeAccents } from "../utils/vietnameseUtils";
 import iconRegions from "../assets/data/iconRegions.json";
 import PageTitle from "../components/common/pageTitle";
-import SafeImage from "@/components/common/SafeImage";
+import SafeImage from "../components/common/SafeImage";
 
 const ITEMS_PER_PAGE = 20;
 
 // --- Component phụ ---
 const LoadingSpinner = () => (
 	<div className='flex justify-center items-center h-64'>
-		{/* Sử dụng màu 'primary' (Xanh-Tím) của theme */}
 		<div className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500'></div>
 	</div>
 );
@@ -34,7 +40,6 @@ const ErrorMessage = ({ message, onRetry }) => (
 
 // --- Component chính ---
 function ChampionList() {
-	// State quản lý dữ liệu và bộ lọc
 	const [champions, setChampions] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -70,8 +75,12 @@ function ChampionList() {
 		"championsCurrentPage",
 		1
 	);
+	const [isFilterOpen, setIsFilterOpen] = usePersistentState(
+		"championsIsFilterOpen",
+		false
+	);
 
-	// Hàm gọi API
+	// API
 	const fetchChampions = async () => {
 		setLoading(true);
 		setError(null);
@@ -79,7 +88,6 @@ function ChampionList() {
 			const backendUrl = import.meta.env.VITE_API_URL;
 			const response = await fetch(`${backendUrl}/api/champions`);
 			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
-
 			const data = await response.json();
 			const formattedData = data.map(champ => ({
 				...champ,
@@ -97,7 +105,7 @@ function ChampionList() {
 		fetchChampions();
 	}, []);
 
-	// Tạo các tùy chọn cho bộ lọc
+	// Filter options
 	const filterOptions = useMemo(() => {
 		if (champions.length === 0)
 			return { regions: [], costs: [], maxStars: [], tags: [], sort: [] };
@@ -108,11 +116,7 @@ function ChampionList() {
 				return {
 					value: regionName,
 					label: regionName,
-					iconUrl: regionData?.iconAbsolutePath
-						? `${import.meta.env.VITE_CDN_URL || ""}${
-								regionData.iconAbsolutePath
-						  }`
-						: "/fallback-image.svg",
+					iconUrl: regionData?.iconAbsolutePath ?? "/fallback-image.svg",
 				};
 			});
 		const costs = [...new Set(champions.map(c => c.cost))]
@@ -133,7 +137,7 @@ function ChampionList() {
 		return { regions, costs, maxStars, tags, sort };
 	}, [champions]);
 
-	// Lọc và sắp xếp danh sách tướng
+	// Filter & sort
 	const filteredChampions = useMemo(() => {
 		let filtered = [...champions];
 		if (searchTerm) {
@@ -157,20 +161,15 @@ function ChampionList() {
 
 		const [sortKey, sortDirection] = sortOrder.split("-");
 		filtered.sort((a, b) => {
-			const valA = a[sortKey];
-			const valB = b[sortKey];
-
-			// Nếu sắp xếp theo 'cost', so sánh như số
+			const valA = a[sortKey],
+				valB = b[sortKey];
 			if (sortKey === "cost" || sortKey === "maxStar") {
 				return sortDirection === "asc" ? valA - valB : valB - valA;
 			}
-
-			// Nếu không, so sánh như chuỗi
 			return sortDirection === "asc"
 				? (valA || "").toString().localeCompare((valB || "").toString())
 				: (valB || "").toString().localeCompare((valA || "").toString());
 		});
-
 		return filtered;
 	}, [
 		champions,
@@ -181,10 +180,12 @@ function ChampionList() {
 		selectedTags,
 		sortOrder,
 	]);
-	// Các hàm xử lý sự kiện
+
+	// Handlers
 	const handleSearch = () => {
 		setSearchTerm(searchInput);
 		setCurrentPage(1);
+		if (window.innerWidth < 1024) setIsFilterOpen(false); // Tự động đóng trên mobile
 	};
 	const handleClearSearch = () => {
 		setSearchInput("");
@@ -200,9 +201,7 @@ function ChampionList() {
 		setSortOrder("name-asc");
 		setCurrentPage(1);
 	};
-	const handlePageChange = page => {
-		setCurrentPage(page);
-	};
+	const handlePageChange = page => setCurrentPage(page);
 
 	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
 	const paginatedChampions = filteredChampions.slice(
@@ -220,19 +219,106 @@ function ChampionList() {
 				description='GUIDE POC: Danh sách tướng.'
 			/>
 			<div className='font-secondary'>
-				{/* Sử dụng class ngữ nghĩa 'text-text-primary' */}
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
 					Danh Sách Tướng
 				</h1>
-
-				{/* BỐ CỤC MỚI: flex-col mặc định (mobile), lg:flex-row cho desktop */}
 				<div className='flex flex-col lg:flex-row gap-8'>
-					{/* THANH CÔNG CỤ (ĐÃ REFACTOR) */}
+					{/* FILTER - MOBILE & DESKTOP */}
 					<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
-						{/* Sử dụng class ngữ nghĩa 'border-border' và 'bg-surface-bg' */}
-						<div className='p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
+						{/* Mobile: Collapsible */}
+						<div className='lg:hidden p-2 rounded-lg border border-border bg-surface-bg'>
+							<div className='flex items-center gap-2'>
+								<div className='flex-1 relative'>
+									<InputField
+										value={searchInput}
+										onChange={e => setSearchInput(e.target.value)}
+										onKeyPress={e => e.key === "Enter" && handleSearch()}
+										placeholder='Nhập tên tướng...'
+									/>
+									{searchInput && (
+										<button
+											onClick={handleClearSearch}
+											className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
+										>
+											<XCircle size={18} />
+										</button>
+									)}
+								</div>
+								<Button onClick={handleSearch} className='whitespace-nowrap'>
+									<Search size={16} />
+								</Button>
+								<Button
+									variant='outline'
+									onClick={() => setIsFilterOpen(prev => !prev)}
+									className='whitespace-nowrap'
+								>
+									{isFilterOpen ? (
+										<ChevronUp size={18} />
+									) : (
+										<ChevronDown size={18} />
+									)}
+								</Button>
+							</div>
+
+							<div
+								className={`transition-all duration-300 ease-in-out overflow-hidden ${
+									isFilterOpen
+										? "max-h-[1200px] opacity-100"
+										: "max-h-0 opacity-0"
+								}`}
+							>
+								<div className='pt-4 space-y-4 border-t border-border'>
+									<MultiSelectFilter
+										label='Vùng'
+										options={filterOptions.regions}
+										selectedValues={selectedRegions}
+										onChange={setSelectedRegions}
+										placeholder='Tất cả Vùng'
+									/>
+									<MultiSelectFilter
+										label='Năng lượng'
+										options={filterOptions.costs}
+										selectedValues={selectedCosts}
+										onChange={setSelectedCosts}
+										placeholder='Tất cả Năng lượng'
+									/>
+									<MultiSelectFilter
+										label='Số sao tối đa'
+										options={filterOptions.maxStars}
+										selectedValues={selectedMaxStars}
+										onChange={setSelectedMaxStars}
+										placeholder='Tất cả Sao'
+									/>
+									<MultiSelectFilter
+										label='Thẻ'
+										options={filterOptions.tags}
+										selectedValues={selectedTags}
+										onChange={setSelectedTags}
+										placeholder='Tất cả Thẻ'
+									/>
+									<DropdownFilter
+										label='Sắp xếp'
+										options={filterOptions.sort}
+										selectedValue={sortOrder}
+										onChange={setSortOrder}
+									/>
+									<div className='pt-2'>
+										<Button
+											variant='outline'
+											onClick={handleResetFilters}
+											iconLeft={<RotateCw size={16} />}
+											className='w-full'
+										>
+											Đặt lại bộ lọc
+										</Button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Desktop: Full */}
+						<div className='hidden lg:block p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
 							<div>
-								{/* Sử dụng class 'text-text-secondary' */}
 								<label className='block text-sm font-medium mb-1 text-text-secondary'>
 									Tìm kiếm tướng
 								</label>
@@ -246,7 +332,6 @@ function ChampionList() {
 									{searchInput && (
 										<button
 											onClick={handleClearSearch}
-											// Sử dụng class ngữ nghĩa
 											className='absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary'
 										>
 											<XCircle size={18} />
@@ -254,8 +339,7 @@ function ChampionList() {
 									)}
 								</div>
 								<Button onClick={handleSearch} className='w-full mt-2'>
-									<Search size={16} className='mr-2' />
-									Tìm kiếm
+									<Search size={16} className='mr-2' /> Tìm kiếm
 								</Button>
 							</div>
 							<MultiSelectFilter
@@ -305,25 +389,64 @@ function ChampionList() {
 						</div>
 					</aside>
 
-					{/* NỘI DUNG CHÍNH (ĐÃ REFACTOR) */}
-					{/* THAY ĐỔI Ở ĐÂY: Dùng `order-first` trên desktop để đẩy nó sang trái */}
+					{/* MAIN CONTENT */}
 					<div className='lg:w-4/5 w-full lg:order-first'>
-						{/* Sử dụng class ngữ nghĩa 'bg-surface-bg' và 'border-border' */}
-						<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
+						<div className='bg-surface-bg rounded-lg border border-border p-2 sm:p-6'>
 							{paginatedChampions.length > 0 ? (
-								<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
-									{paginatedChampions.map(champion => (
-										<Link
-											key={champion.name}
-											to={`/champion/${encodeURIComponent(champion.name)}`}
-											className='hover:scale-105 transition-transform duration-200'
-										>
-											<ChampionCard champion={champion} />
-										</Link>
-									))}
-								</div>
+								<>
+									<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
+										{paginatedChampions.map(champion => (
+											<Link
+												key={champion.name}
+												to={`/champion/${encodeURIComponent(champion.name)}`}
+												className='hover:scale-105 transition-transform duration-200'
+											>
+												<ChampionCard champion={champion} />
+											</Link>
+										))}
+									</div>
+
+									{/* Số lượng kết quả */}
+									<div className='text-center text-sm text-text-secondary mt-6 mb-2'>
+										Hiển thị{" "}
+										<span className='font-medium text-text-primary'>
+											{(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+											{Math.min(
+												currentPage * ITEMS_PER_PAGE,
+												filteredChampions.length
+											)}
+										</span>{" "}
+										trong{" "}
+										<span className='font-medium text-text-primary'>
+											{filteredChampions.length}
+										</span>{" "}
+										kết quả
+									</div>
+
+									{/* Phân trang */}
+									{totalPages > 1 && (
+										<div className='mt-4 flex justify-center items-center gap-2 md:gap-4'>
+											<Button
+												onClick={() => handlePageChange(currentPage - 1)}
+												disabled={currentPage === 1}
+												variant='outline'
+											>
+												Trang trước
+											</Button>
+											<span className='text-lg font-medium text-text-primary'>
+												{currentPage} / {totalPages}
+											</span>
+											<Button
+												onClick={() => handlePageChange(currentPage + 1)}
+												disabled={currentPage === totalPages}
+												variant='outline'
+											>
+												Trang sau
+											</Button>
+										</div>
+									)}
+								</>
 							) : (
-								// Sử dụng class 'text-text-secondary'
 								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 									<div>
 										<p className='font-semibold text-lg'>
@@ -331,29 +454,6 @@ function ChampionList() {
 										</p>
 										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 									</div>
-								</div>
-							)}
-
-							{totalPages > 1 && (
-								<div className='mt-8 flex justify-center items-center gap-2 md:gap-4'>
-									<Button
-										onClick={() => handlePageChange(currentPage - 1)}
-										disabled={currentPage === 1}
-										variant='outline'
-									>
-										Trang trước
-									</Button>
-									{/* Sử dụng class 'text-text-primary' */}
-									<span className='text-lg font-medium text-text-primary'>
-										{currentPage} / {totalPages}
-									</span>
-									<Button
-										onClick={() => handlePageChange(currentPage + 1)}
-										disabled={currentPage === totalPages}
-										variant='outline'
-									>
-										Trang sau
-									</Button>
 								</div>
 							)}
 						</div>

@@ -183,19 +183,27 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 
 	// Hiển thị kết quả với hình ảnh + tên + nút lựa chọn
 	const showResult = winner => {
+		// Xác định loại item để lấy đúng trường
+		const isChampion = winner.assets?.[0]?.M?.avatar?.S;
+		const isRelicOrItemOrPower = winner.assetAbsolutePath;
+
+		// Lấy hình ảnh
+		const imageHtml = isChampion
+			? `<img src="${winner.assets[0].M.avatar.S}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
+			: isRelicOrItemOrPower
+			? `<img src="${winner.assetAbsolutePath}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
+			: "";
+
 		Swal.fire({
 			title: "Kết quả!",
 			html: `
-        <div class="text-center">
-          ${
-						winner.assets[0].M.avatar.S
-							? `<img src="${winner.assets[0].M.avatar.S}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
-							: ""
-					}
-          <p class="mt-3">Bạn đã quay trúng:</p>
-          <b class="text-blue-400 text-2xl">${winner.name}</b>
-        </div>
-      `,
+      <div class="text-center ">
+        ${imageHtml}
+        <p class="mt-3">Bạn đã quay trúng:</p>
+        <b class="text-blue-400 text-2xl">${winner.name}</b>
+	
+      </div>
+    `,
 			icon: "success",
 			showDenyButton: true,
 			confirmButtonText: "Giữ lại",
@@ -209,7 +217,6 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 				htmlContainer: "swal-html-container",
 			},
 			didOpen: () => {
-				// Thêm CSS để căn giữa hình ảnh
 				const img = Swal.getHtmlContainer().querySelector("img");
 				if (img) {
 					img.style.display = "block";
@@ -222,7 +229,6 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 			}
 		});
 	};
-
 	// Nếu không có item
 	if (!items || items.length === 0) {
 		return (

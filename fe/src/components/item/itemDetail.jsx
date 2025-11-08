@@ -96,7 +96,7 @@ function ItemDetail() {
 				description={`GUIDE POC: chi tiết cổ vật ${item.name}`}
 			/>
 
-			<div className='max-w-[1200px] mx-auto p-4 md:p-6 text-text-primary font-secondary'>
+			<div className='max-w-[1200px] mx-auto p-0 sm:p-6 text-text-primary font-secondary'>
 				{/* NÚT QUAY LẠI – GIỐNG HỆT ChampionDetail */}
 				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>
 					<ChevronLeft size={18} />

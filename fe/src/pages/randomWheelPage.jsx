@@ -198,18 +198,6 @@ function RandomizerPage() {
 		fetchData();
 	}, [fetchData]);
 
-	// Define handleRemoveItem
-	const handleRemoveItem = itemName => {
-		// Logic to remove winner, e.g., uncheck it
-		setCheckedItems(prev => ({
-			...prev,
-			[activeWheelKey]: {
-				...prev[activeWheelKey],
-				[itemName]: false,
-			},
-		}));
-	};
-
 	// Các hàm xử lý khác giữ nguyên
 	const handleSelectWheel = key => {
 		setActiveWheelKey(key);
@@ -230,6 +218,24 @@ function RandomizerPage() {
 			},
 		}));
 	};
+
+	// Define handleRemoveItem
+	const handleRemoveItem = useCallback(
+		winner => {
+			// 1. Xóa khỏi danh sách quay
+			setOriginalWheelsData(prev => ({
+				...prev,
+				[activeWheelKey]: {
+					...prev[activeWheelKey],
+					items: prev[activeWheelKey].items.filter(
+						item => item.name !== winner.name
+					),
+				},
+			}));
+			handleCheckboxChange(activeWheelKey, winner.name, false);
+		},
+		[activeWheelKey, handleCheckboxChange]
+	);
 
 	const handleSelectAll = key => {
 		const wheel = originalWheelsData[key];
@@ -383,20 +389,36 @@ function RandomizerPage() {
 						className='fixed inset-0 bg-black/0 z-20'
 					/>
 				)}
-				<main className='flex-grow p-4 flex items-center justify-center transition-all duration-300 ease-in-out'>
-					<div
-						className={`transition-opacity duration-300 w-full h-full flex justify-center items-center ${
-							isWheelVisible ? "opacity-100" : "opacity-0"
-						}`}
-					>
-						{activeWheel && (
-							<VongQuayNgauNhien
-								key={activeWheel.key}
-								items={itemsForWheel}
-								title={activeWheel.title}
-								onRemoveWinner={handleRemoveItem}
-							/>
-						)}
+				<main className='relative flex-grow min-h-screen bg-gradient-to-br from-slate-600 to-gray-100 overflow-hidden'>
+					{/* CĂN GIỮA TUYỆT ĐỐI */}
+					<div className='absolute inset-0 flex items-center justify-center p-4'>
+						<div
+							className={`
+								transition-opacity duration-300
+								${isWheelVisible ? "opacity-100" : "opacity-0"}
+							`}
+						>
+							{activeWheel && (
+								<div
+									className='
+										scale-75
+										sm:scale-75
+										md:scale-90
+										lg:scale-90
+										xl:scale-90
+										transform-gpu
+									'
+									style={{ transformOrigin: "center center" }}
+								>
+									<VongQuayNgauNhien
+										key={activeWheel.key}
+										items={itemsForWheel}
+										title={activeWheel.title}
+										onRemoveWinner={handleRemoveItem}
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 				</main>
 				{!isPanelOpen && (

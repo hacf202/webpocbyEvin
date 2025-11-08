@@ -11,7 +11,7 @@ import SidePanel from "../common/sidePanel";
 import { Loader2, ChevronLeft } from "lucide-react";
 
 const NEW_CHAMPION_TEMPLATE = {
-	championID: null, // Sẽ được sinh sau
+	championID: null,
 	isNew: true,
 	name: "Tướng Mới",
 	cost: 1,
@@ -41,6 +41,8 @@ const NEW_CHAMPION_TEMPLATE = {
 			},
 		},
 	],
+	videoLink: "",
+	musicVideo: "",
 };
 
 const ITEMS_PER_PAGE = 20;
@@ -59,6 +61,7 @@ const MainContent = memo(
 		onDelete,
 		isSaving,
 		onBackToList,
+		videoLinks,
 	}) => {
 		return (
 			<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
@@ -112,6 +115,7 @@ const MainContent = memo(
 				) : (
 					<ChampionEditorForm
 						champion={selectedChampion}
+						videoLinks={videoLinks}
 						onSave={onSaveChampion}
 						onCancel={onCancel}
 						onDelete={onDelete}
@@ -126,7 +130,7 @@ const MainContent = memo(
 
 function ChampionEditor() {
 	const [champions, setChampions] = useState([]);
-	const [selectedChampion, setSelectedChampion] = useState(null); // Dùng object thay vì ID
+	const [selectedChampion, setSelectedChampion] = useState(null);
 	const [searchInput, setSearchInput] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
 	const [selectedRegions, setSelectedRegions] = useState([]);
@@ -148,6 +152,9 @@ function ChampionEditor() {
 		message: "",
 	});
 	const [isBackNavigation, setIsBackNavigation] = useState(false);
+	const [videoLinks, setVideoLinks] = useState([]);
+	const [isLoadingVideo, setIsLoadingVideo] = useState(false);
+
 	const API_BASE_URL = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
 
@@ -170,9 +177,25 @@ function ChampionEditor() {
 		}
 	}, [API_BASE_URL]);
 
+	const fetchVideoLinks = useCallback(async () => {
+		try {
+			setIsLoadingVideo(true);
+			const res = await fetch(`${API_BASE_URL}/api/videos`);
+			if (!res.ok) throw new Error("Không tải được video");
+			const data = await res.json();
+			setVideoLinks(data);
+		} catch (err) {
+			console.error("Lỗi tải video links:", err);
+			setVideoLinks([]);
+		} finally {
+			setIsLoadingVideo(false);
+		}
+	}, [API_BASE_URL]);
+
 	useEffect(() => {
 		fetchChampions();
-	}, [fetchChampions]);
+		fetchVideoLinks();
+	}, [fetchChampions, fetchVideoLinks]);
 
 	useEffect(() => {
 		const handleBeforeUnload = e => {
@@ -243,8 +266,8 @@ function ChampionEditor() {
 
 		const [sortKey, sortDirection] = sortOrder.split("-");
 		filtered.sort((a, b) => {
-			const valA = a[sortKey];
-			const valB = b[sortKey];
+			const valA = a[sortKey],
+				valB = b[sortKey];
 			if (sortKey === "cost" || sortKey === "maxStar") {
 				return sortDirection === "asc" ? valA - valB : valB - valA;
 			}
@@ -252,7 +275,6 @@ function ChampionEditor() {
 				? (valA || "").toString().localeCompare((valB || "").toString())
 				: (valB || "").toString().localeCompare((valA || "").toString());
 		});
-
 		return filtered;
 	}, [
 		champions,
@@ -265,37 +287,10 @@ function ChampionEditor() {
 	]);
 
 	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
-	const paginatedChampions = useMemo(
-		() =>
-			filteredChampions.slice(
-				(currentPage - 1) * ITEMS_PER_PAGE,
-				currentPage * ITEMS_PER_PAGE
-			),
-		[filteredChampions, currentPage]
+	const paginatedChampions = filteredChampions.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
 	);
-
-	const handleSelectChampion = championId => {
-		const champ = champions.find(c => c.championID === championId);
-		setSelectedChampion({ ...champ, isNew: false });
-		setViewMode("edit");
-	};
-
-	const handleBackToList = () => {
-		setViewMode("list");
-		setSelectedChampion(null);
-		setCurrentPage(1);
-	};
-
-	const handleAddNewChampion = () => {
-		const newId = Date.now();
-		const newChampion = {
-			...NEW_CHAMPION_TEMPLATE,
-			championID: newId,
-			isNew: true,
-		};
-		setSelectedChampion(newChampion);
-		setViewMode("edit");
-	};
 
 	const handleSearch = () => {
 		setSearchTerm(searchInput);
@@ -318,46 +313,79 @@ function ChampionEditor() {
 		setCurrentPage(1);
 	};
 
-	const handleSaveChampion = async updatedChampionData => {
+	const handleAddNewChampion = () => {
+		const newChamp = { ...NEW_CHAMPION_TEMPLATE, championID: Date.now() };
+		setSelectedChampion(newChamp);
+		setViewMode("edit");
+	};
+
+	const handleSelectChampion = id => {
+		const champ = champions.find(c => c.championID === id);
+		if (champ) {
+			const videoData = videoLinks.find(v => v.name === champ.name);
+			setSelectedChampion({
+				...champ,
+				videoLink: videoData?.link || "",
+				musicVideo: videoData?.MusicVideo || "",
+			});
+			setViewMode("edit");
+		}
+	};
+
+	const handleBackToList = () => {
+		setSelectedChampion(null);
+		setViewMode("list");
+		setCurrentPage(1);
+	};
+
+	const handleSaveChampion = async updatedChampion => {
 		setIsSaving(true);
 		try {
 			const token = localStorage.getItem("token");
-			if (!token)
-				throw new Error("Không tìm thấy token. Vui lòng đăng nhập lại.");
+			if (!token) throw new Error("Không tìm thấy token.");
 
-			// Gửi isNew đúng cách
-			const payload = updatedChampionData.isNew
-				? { ...updatedChampionData }
-				: { ...updatedChampionData, isNew: false };
+			const champResponse = await fetch(
+				`${API_BASE_URL}/api/champions${
+					updatedChampion.isNew ? "" : `/${updatedChampion.championID}`
+				}`,
+				{
+					method: updatedChampion.isNew ? "POST" : "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(updatedChampion),
+				}
+			);
 
-			const response = await fetch(`${API_BASE_URL}/api/champions`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify(payload),
-			});
+			if (!champResponse.ok) throw new Error("Lưu tướng thất bại.");
 
-			if (!response.ok) {
-				const errorText = await response.text();
-				throw new Error(
-					response.status === 401
-						? "Xác thực thất bại."
-						: `Lỗi từ máy chủ: ${errorText}`
-				);
+			const videoData = {
+				name: updatedChampion.name,
+				link: updatedChampion.videoLink || "",
+				MusicVideo: updatedChampion.musicVideo || "",
+			};
+
+			if (videoData.link || videoData.MusicVideo) {
+				const videoRes = await fetch(`${API_BASE_URL}/api/champion-videos`, {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(videoData),
+				});
+				if (!videoRes.ok) console.warn("Lưu video thất bại");
 			}
 
-			await fetchChampions();
-			setSelectedChampion(null);
-			setViewMode("list");
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: updatedChampionData.isNew
-					? "Tạo tướng mới thành công!"
-					: "Cập nhật tướng thành công!",
+				message: `Đã lưu ${updatedChampion.name}!`,
 			});
+
+			await Promise.all([fetchChampions(), fetchVideoLinks()]);
+			setViewMode("list");
 		} catch (e) {
 			setNotification({
 				isOpen: true,
@@ -377,9 +405,7 @@ function ChampionEditor() {
 	const handleConfirmClose = () => {
 		setIsCloseConfirmModalOpen(false);
 		handleBackToList();
-		if (isBackNavigation) {
-			navigate(-1);
-		}
+		if (isBackNavigation) navigate(-1);
 		setIsBackNavigation(false);
 	};
 
@@ -426,7 +452,6 @@ function ChampionEditor() {
 	};
 
 	const handlePageChange = page => setCurrentPage(page);
-
 	const handleBackNavigation = () => {
 		if (viewMode === "edit") {
 			handleAttemptClose(true);
@@ -435,7 +460,7 @@ function ChampionEditor() {
 		}
 	};
 
-	if (isLoading) {
+	if (isLoading || isLoadingVideo) {
 		return (
 			<div className='flex flex-col items-center justify-center min-h-screen text-text-secondary'>
 				<Loader2 className='animate-spin text-primary-500' size={48} />
@@ -443,6 +468,7 @@ function ChampionEditor() {
 			</div>
 		);
 	}
+
 	if (error)
 		return (
 			<div className='text-center text-lg p-10 text-danger-text-dark'>
@@ -510,6 +536,7 @@ function ChampionEditor() {
 						onDelete={handleAttemptDelete}
 						isSaving={isSaving}
 						onBackToList={handleBackToList}
+						videoLinks={videoLinks}
 					/>
 				</div>
 
