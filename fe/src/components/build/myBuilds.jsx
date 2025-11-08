@@ -1,5 +1,4 @@
-// src/components/build/MyBuilds.jsx (ĐÃ ĐỒNG BỘ)
-
+// src/components/build/myBuilds.jsx
 import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
@@ -18,13 +17,16 @@ const MyBuilds = ({
 	championNameToRegionsMap,
 	onEditSuccess,
 	onDeleteSuccess,
+	getCache,
+	setCache,
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [myBuilds, setMyBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// FETCH BUILD CỦA USER
+	const apiUrl = import.meta.env.VITE_API_URL;
+
 	useEffect(() => {
 		const fetchMyBuilds = async () => {
 			if (!user || !token) {
@@ -32,47 +34,51 @@ const MyBuilds = ({
 				setIsLoading(false);
 				return;
 			}
+
 			setIsLoading(true);
 			setError(null);
+
+			const cacheKey = "my-builds";
+			const cached = getCache?.(cacheKey);
+			if (cached) {
+				setMyBuilds(cached);
+				setIsLoading(false);
+				return;
+			}
+
 			try {
-				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/api/builds/my-builds`,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					}
-				);
-				if (!response.ok) {
+				const response = await fetch(`${apiUrl}/api/builds/my-builds`, {
+					headers: { Authorization: `Bearer ${token}` },
+				});
+				if (!response.ok)
 					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
-				}
+
 				const data = await response.json();
 				const sortedData = (data.items || []).sort(
 					(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 				);
+
 				setMyBuilds(sortedData);
+				setCache?.(cacheKey, sortedData);
 			} catch (err) {
 				setError(err.message);
 			} finally {
 				setIsLoading(false);
 			}
 		};
-		fetchMyBuilds();
-	}, [user, token, refreshKey]);
 
-	// XỬ LÝ CẬP NHẬT BUILD
+		fetchMyBuilds();
+	}, [user, token, refreshKey, getCache, setCache]);
+
 	const handleBuildUpdated = updatedBuild => {
-		setMyBuilds(currentBuilds =>
-			currentBuilds.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+		setMyBuilds(current =>
+			current.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
 		);
 		if (onEditSuccess) onEditSuccess();
 	};
 
-	// XỬ LÝ XÓA BUILD
 	const handleBuildDeleted = deletedBuildId => {
-		setMyBuilds(currentBuilds =>
-			currentBuilds.filter(b => b.id !== deletedBuildId)
-		);
+		setMyBuilds(current => current.filter(b => b.id !== deletedBuildId));
 		if (onDeleteSuccess) onDeleteSuccess();
 	};
 
@@ -94,7 +100,6 @@ const MyBuilds = ({
 		championNameToRegionsMap,
 	]);
 
-	// RENDER
 	if (isLoading)
 		return (
 			<p className='text-center mt-8 text-text-secondary'>
@@ -112,7 +117,7 @@ const MyBuilds = ({
 	if (filteredMyBuilds.length === 0)
 		return (
 			<p className='text-center mt-8 text-text-secondary'>
-				Không tìm thấy build nào phù hợp với tiêu chí của bạn.
+				Không tìm thấy build nào phù hợp.
 			</p>
 		);
 

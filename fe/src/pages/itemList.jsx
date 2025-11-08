@@ -190,7 +190,7 @@ function ItemList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên đồ vật...'
+										placeholder='Nhập tên vật phẩm...'
 									/>
 									{searchInput && (
 										<button
@@ -263,7 +263,7 @@ function ItemList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên đồ vật...'
+										placeholder='Nhập tên vật phẩm...'
 									/>
 									{searchInput && (
 										<button

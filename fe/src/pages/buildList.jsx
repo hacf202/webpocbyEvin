@@ -26,6 +26,50 @@ import iconRegionsData from "../assets/data/iconRegions.json";
 import { NavLink } from "react-router-dom";
 import { usePersistentState } from "../hooks/usePersistentState";
 
+// === CACHE CONFIG ===
+const CACHE_KEY_PREFIX = "buildsCache_v1";
+const CACHE_DURATION = 5 * 60 * 1000; // 5 phút
+
+const getCacheKey = (tab, filters) => {
+	const filterStr = JSON.stringify({
+		search: filters.searchTerm || "",
+		stars: filters.selectedStarLevels || [],
+		regions: filters.selectedRegions || [],
+	});
+	return `${CACHE_KEY_PREFIX}_${tab}_${filterStr}`;
+};
+
+const getCachedData = key => {
+	try {
+		const cached = localStorage.getItem(key);
+		if (!cached) return null;
+		const { data, timestamp } = JSON.parse(cached);
+		if (Date.now() - timestamp > CACHE_DURATION) {
+			localStorage.removeItem(key);
+			return null;
+		}
+		return data;
+	} catch (err) {
+		console.warn("Lỗi đọc cache:", err);
+		return null;
+	}
+};
+
+const setCachedData = (key, data) => {
+	try {
+		const cacheObj = { data, timestamp: Date.now() };
+		localStorage.setItem(key, JSON.stringify(cacheObj));
+	} catch (err) {
+		console.warn("Không thể lưu cache:", err);
+	}
+};
+
+const clearAllBuildsCache = () => {
+	Object.keys(localStorage)
+		.filter(key => key.startsWith(CACHE_KEY_PREFIX))
+		.forEach(key => localStorage.removeItem(key));
+};
+
 const Builds = () => {
 	const { user } = useContext(AuthContext);
 	const [showCreateModal, setShowCreateModal] = useState(false);
@@ -153,7 +197,7 @@ const Builds = () => {
 	const handleSearch = () => {
 		setSearchTerm(searchInput);
 		if (window.innerWidth < 1024) {
-			setIsFilterOpen(false); // TỰ ĐỘNG ĐÓNG FILTER TRÊN MOBILE
+			setIsFilterOpen(false);
 		}
 	};
 
@@ -168,15 +212,59 @@ const Builds = () => {
 		setSelectedRegions([]);
 	};
 
-	const triggerRefresh = () => setRefreshKey(prev => prev + 1);
+	const triggerRefresh = () => {
+		clearAllBuildsCache(); // XÓA TOÀN BỘ CACHE
+		setRefreshKey(prev => prev + 1);
+	};
+
 	const handleCreateSuccess = () => {
 		setShowCreateModal(false);
 		triggerRefresh();
 		setActiveTab("my-builds");
 	};
+
 	const handleEditSuccess = () => triggerRefresh();
 	const handleDeleteSuccess = () => triggerRefresh();
 	const handleFavoriteToggle = () => triggerRefresh();
+
+	// === CACHE UTILS ===
+	const cacheUtils = {
+		getCache: tab => {
+			const key = getCacheKey(tab, {
+				searchTerm,
+				selectedStarLevels,
+				selectedRegions,
+			});
+			return getCachedData(key);
+		},
+		setCache: (tab, data) => {
+			const key = getCacheKey(tab, {
+				searchTerm,
+				selectedStarLevels,
+				selectedRegions,
+			});
+			setCachedData(key, data);
+		},
+		clearCache: clearAllBuildsCache,
+	};
+
+	// === COMMON PROPS ===
+	const commonProps = {
+		searchTerm,
+		selectedStarLevels,
+		selectedRegions,
+		championsList,
+		relicsList,
+		powersList,
+		runesList,
+		refreshKey,
+		powerMap,
+		championNameToRegionsMap,
+		onEditSuccess: handleEditSuccess,
+		onDeleteSuccess: handleDeleteSuccess,
+		onFavoriteToggle: handleFavoriteToggle,
+		...cacheUtils,
+	};
 
 	// === RENDER CONTENT ===
 	const renderContent = () => {
@@ -199,22 +287,6 @@ const Builds = () => {
 				</div>
 			);
 		}
-
-		const commonProps = {
-			searchTerm,
-			selectedStarLevels,
-			selectedRegions,
-			championsList,
-			relicsList,
-			powersList,
-			runesList,
-			refreshKey,
-			powerMap,
-			championNameToRegionsMap,
-			onEditSuccess: handleEditSuccess,
-			onDeleteSuccess: handleDeleteSuccess,
-			onFavoriteToggle: handleFavoriteToggle,
-		};
 
 		switch (activeTab) {
 			case "community":

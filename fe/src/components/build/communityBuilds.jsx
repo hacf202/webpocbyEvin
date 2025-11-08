@@ -1,5 +1,4 @@
-// src/components/build/CommunityBuilds.jsx (ĐÃ ĐỒNG BỘ)
-
+// src/components/build/communityBuilds.jsx
 import React, { useEffect, useState, useMemo } from "react";
 import BuildSummary from "./buildSummary";
 import { filterBuilds } from "../../utils/filterBuilds";
@@ -18,53 +17,66 @@ const CommunityBuilds = ({
 	onEditSuccess,
 	onDeleteSuccess,
 	onFavoriteToggle,
+	getCache,
+	setCache,
 }) => {
 	const [communityBuilds, setCommunityBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
-	// FETCH CÁC BUILD CÔNG KHAI
+	const apiUrl = import.meta.env.VITE_API_URL;
+
 	useEffect(() => {
 		const fetchCommunityBuilds = async () => {
 			setIsLoading(true);
 			setError(null);
-			const url = `${import.meta.env.VITE_API_URL}/api/builds`;
+
+			// 1. KIỂM TRA CACHE
+			const cacheKey = "community";
+			const cached = getCache?.(cacheKey);
+			if (cached) {
+				setCommunityBuilds(cached);
+				setIsLoading(false);
+				return;
+			}
+
+			// 2. GỌI API
 			try {
-				const response = await fetch(url);
-				if (!response.ok) {
+				const response = await fetch(`${apiUrl}/api/builds`);
+				if (!response.ok)
 					throw new Error(`Tải dữ liệu thất bại (${response.status})`);
-				}
+
 				const data = await response.json();
 				const sortedData = (data.items || []).sort(
 					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
 				);
+
 				setCommunityBuilds(sortedData);
+				setCache?.(cacheKey, sortedData); // LƯU CACHE
 			} catch (err) {
 				setError(err.message);
 			} finally {
 				setIsLoading(false);
 			}
 		};
-		fetchCommunityBuilds();
-	}, [refreshKey]);
 
-	// XỬ LÝ CẬP NHẬT BUILD
+		fetchCommunityBuilds();
+	}, [refreshKey, getCache, setCache]);
+
+	// === XỬ LÝ CẬP NHẬT / XÓA ===
 	const handleBuildUpdated = updatedBuild => {
-		setCommunityBuilds(currentBuilds =>
-			currentBuilds.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+		setCommunityBuilds(current =>
+			current.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
 		);
 		if (onEditSuccess) onEditSuccess();
 	};
 
-	// XỬ LÝ XÓA BUILD
 	const handleBuildDeleted = deletedBuildId => {
-		setCommunityBuilds(currentBuilds =>
-			currentBuilds.filter(b => b.id !== deletedBuildId)
-		);
+		setCommunityBuilds(current => current.filter(b => b.id !== deletedBuildId));
 		if (onDeleteSuccess) onDeleteSuccess();
 	};
 
-	// BỘ LỌC
+	// === LỌC ===
 	const filteredCommunityBuilds = useMemo(() => {
 		return filterBuilds(
 			communityBuilds,
@@ -83,7 +95,7 @@ const CommunityBuilds = ({
 		championNameToRegionsMap,
 	]);
 
-	// RENDER
+	// === RENDER ===
 	if (isLoading)
 		return (
 			<p className='text-center mt-8 text-text-secondary'>

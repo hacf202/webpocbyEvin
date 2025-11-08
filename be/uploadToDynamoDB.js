@@ -14,7 +14,7 @@ dotenv.config();
 
 // --- CẤU HÌNH ---
 // THAY ĐỔI 1: Cập nhật tên bảng đích
-const DYNAMODB_TABLE_NAME = "guidePocVideoAndMusic";
+const DYNAMODB_TABLE_NAME = "guidePocRelics";
 const AWS_REGION = process.env.AWS_REGION;
 
 // --- KHỞI TẠO DYNAMODB CLIENT ---
@@ -38,7 +38,7 @@ async function uploadRelicsData() {
 			"src",
 			"assets",
 			"data",
-			"linkChampionVideo.json"
+			"relics-vi_vn.json"
 		);
 
 		console.log(`Đang đọc dữ liệu từ: ${relicsFilePath}`);
@@ -46,9 +46,7 @@ async function uploadRelicsData() {
 		const relicsData = JSON.parse(fileContent);
 
 		if (!Array.isArray(relicsData) || relicsData.length === 0) {
-			console.log(
-				"Không có dữ liệu trong tệp linkChampionVideo.json để tải lên."
-			);
+			console.log("Không có dữ liệu trong tệp để tải lên.");
 			return;
 		}
 

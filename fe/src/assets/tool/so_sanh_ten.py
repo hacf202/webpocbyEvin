@@ -51,8 +51,14 @@ def tim_ten_khong_trung_lap(duong_dan_tep_mot, duong_dan_tep_hai):
 # Thay thế 'relics-vi_vn.json' và 'relics-vi_vn_new.json' bằng
 # đường dẫn chính xác đến hai tệp dữ liệu của bạn.
 
-duong_dan_file_1 = 'items-vi_vn.json'
-duong_dan_file_2 = 'items-vi_vn1.json' # Giả sử đây là tên tệp thứ hai
+# duong_dan_file_1 = 'items-vi_vn.json'
+# duong_dan_file_2 = 'items-vi_vn1.json' 
+
+duong_dan_file_1 = 'powers-vi_vn.json'
+duong_dan_file_2 = 'powers-vi_vn1.json' 
+
+# duong_dan_file_1 = 'relics-vi_vn.json'
+# duong_dan_file_2 = 'relics-vi_vn1.json' 
 
 danh_sach_ten = tim_ten_khong_trung_lap(duong_dan_file_1, duong_dan_file_2)
 

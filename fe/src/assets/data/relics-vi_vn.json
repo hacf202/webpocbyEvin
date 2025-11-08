@@ -1,5 +1,41 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0150.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0150-full.png",
+		"description": "<link=keyword.Spirit><sprite name=Spirit><style=Keyword>Linh Hồn</style></link>, <link=keyword.Impact><sprite name=Impact><style=Keyword>Khí Lực</style></link>, <link=keyword.Evolve><sprite name=Evolve><style=Keyword>Tiến Hóa</style></link>.<br><link=vocab.PathPower><style=Vocab>Sức Mạnh</style></link>: Đồng minh <link=keyword.Fearsome><sprite name=Fearsome><style=Keyword>Đáng Sợ</style></link> chỉ có thể bị chặn đòn bởi bài quân có 5 Sức Mạnh hoặc nhiều hơn.",
+		"descriptionRaw": "Linh Hồn, Khí Lực, Tiến Hóa.Sức Mạnh: Đồng minh Đáng Sợ chỉ có thể bị chặn đòn bởi bài quân có 5 Sức Mạnh hoặc nhiều hơn.",
+		"name": "Vòng Tay Nữ Hoàng",
+		"relicCode": "R0150",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0146.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0146-full.png",
+		"description": "Ban +2|+0 và <link=keyword.Challenger><sprite name=Challenger><style=Keyword>Thách Đấu</style></link>.\r\n<link=vocab.Play><style=Vocab>Xuất Trận</style></link>: Sử dụng <link=card.self><style=AssociatedCard>Bắt Giữ</style></link> lên kẻ địch <link=vocab.Strongest><style=Vocab>mạnh nhất</style></link>.",
+		"descriptionRaw": "Ban +2|+0 và Thách Đấu.\r\nXuất Trận: Sử dụng Bắt Giữ lên kẻ địch mạnh nhất.",
+		"name": "Đại Tướng Noxus",
+		"relicCode": "R0146",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0149.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0149-full.png",
+		"description": "Nếu ta là Rồng, ban cho ta +4|+0 và <link=keyword.Overwhelm><sprite name=Overwhelm><style=Keyword>Áp Đảo</style></link>. Nếu không, ban cho ta +2|+0 và <link=keyword.Fury><sprite name=Fury><style=Keyword>Cuồng Nộ</style></link>.<br>",
+		"descriptionRaw": "Nếu ta là Rồng, ban cho ta +4|+0 và Áp Đảo. Nếu không, ban cho ta +2|+0 và Cuồng Nộ.",
+		"name": "Ngọc Rồng",
+		"relicCode": "R0149",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0147.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_10_0/adventure/vi_vn/img/relics/R0147-full.png",
 		"description": "Ban +0|+3 <br><link=vocab.PathPower><style=Vocab>Sức Mạnh</style></link>: Khi ngươi xuất trận hoặc biến đổi 1 Darkin, bài quân đó <link=vocab.Strike><style=Vocab>Ra Đòn</style></link> lên kẻ địch <link=keyword.Weakest><style=Keyword>yếu nhất</style></link>.",

@@ -223,7 +223,7 @@ function RelicList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên di vật...'
+										placeholder='Nhập tên cổ vật...'
 									/>
 									{searchInput && (
 										<button
@@ -310,7 +310,7 @@ function RelicList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên di vật...'
+										placeholder='Nhập tên cổ vật...'
 									/>
 									{searchInput && (
 										<button
@@ -450,7 +450,7 @@ function RelicList() {
 								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 									<div>
 										<p className='font-semibold text-lg'>
-											Không tìm thấy di vật nào phù hợp.
+											Không tìm thấy cổ vật nào phù hợp.
 										</p>
 										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 									</div>
