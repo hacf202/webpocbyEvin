@@ -380,7 +380,7 @@ function RandomizerPage() {
 		<div>
 			<PageTitle
 				title='Vòng Quay'
-				description='GUIDE POC: Vòng Quay con đường anh hùng.'
+				description='POC GUIDE: Vòng Quay con đường anh hùng.'
 			/>
 			<div className='bg-gradient-to-br from-slate-600 to-gray-100 min-h-screen flex relative overflow-hidden'>
 				{isPanelOpen && (

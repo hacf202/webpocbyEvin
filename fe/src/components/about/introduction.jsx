@@ -68,7 +68,8 @@ function Introduction() {
 		<div>
 			<PageTitle
 				title='Giới thiệu về Guide POC'
-				description='GUIDE POC: Giới thiệu về Guide POC'
+				description='POC GUIDE - Wiki Hướng Dẫn Con Đường Anh Hùng (Path of Champions) Path of Champions: Tier list tướng S/A/B mới nhất, build relic Epic/Rare/Common tối ưu cho Jinx, LeBlanc, Swain, A.Sol, Viktor... Hướng dẫn farm relic, unlock slot Epic, chiến thuật đánh boss Galio/A.Sol. 50+ relics, powers, support champs chi tiết!'
+				type='website'
 			/>
 			<main className='min-h-screen bg-[var(--color-page-bg)] py-12'>
 				<div className='max-w-[1200px] mx-auto px-4 sm:px-6'>

@@ -205,7 +205,11 @@ function RelicList() {
 		<div>
 			<PageTitle
 				title='Danh sách cổ vật'
-				description='GUIDE POC: Danh sách cổ vật'
+				description='
+Danh sách đầy đủ tất cả bộ cổ vật (Relics) trong Path of Champions: Common, Rare, Epic relics với hiệu ứng chi tiết, tier list, combo mạnh nhất cho từng tướng và cách farm relic hiệu quả.
+Tổng 50+ relics từ Common (xanh lá) đến Epic (tím), chia theo rarity. Lọc theo tướng, vùng đất (Demacia, Noxus...), tier S/A/B. Build relic tối ưu cho Jinx, LeBlanc, Swain, A.Sol... + hướng dẫn unlock slot Epic!'
+				image='/og/relics-list.jpg'
+				type='article'
 			/>
 			<div className='font-secondary'>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>

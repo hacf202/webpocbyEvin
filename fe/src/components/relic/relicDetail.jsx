@@ -100,7 +100,8 @@ function RelicDetail() {
 		<div>
 			<PageTitle
 				title={relic.name}
-				description={`GUIDE POC: chi tiết cổ vật ${relic.name}`}
+				description={`POC GUIDE: Hiệu ứng chi tiết cổ vật ${relic.name} Path of Champions (Độ hiếm: ${relic.rarity}). Tier S/A/B, combo power/item mạnh nhất với Jinx, Swain, LeBlanc, A.Sol... Hướng dẫn farm reliquary, upgrade slot Epic (Soul Forge), equip tối ưu + mẹo dùng đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 
 			{/* --------------------------------------------------- */}

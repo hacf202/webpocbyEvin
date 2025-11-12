@@ -93,7 +93,8 @@ function ItemDetail() {
 		<div>
 			<PageTitle
 				title={item.name}
-				description={`GUIDE POC: chi tiết cổ vật ${item.name}`}
+				description={`POC GUIDE: Hiệu ứng chi tiết vật phẩm ${item.name} Path of Champions (Độ hiếm: ${item.rarity}). Tier S/A/B, combo relic/power mạnh nhất với Jinx, Ornn, LeBlanc, A.Sol... Hướng dẫn mua shop (Type B/Glory Store), gắn unit/spell/landmark + mẹo dùng đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 
 			<div className='max-w-[1200px] mx-auto p-0 sm:p-6 text-text-primary font-secondary'>

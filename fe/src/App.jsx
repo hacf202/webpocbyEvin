@@ -36,6 +36,7 @@ import Footer from "./components/layout/footer.jsx";
 import AboutUs from "./components/about/aboutUs.jsx";
 import TermsOfUse from "./components/about/termsOfUse.jsx";
 import Introduction from "./components/about/introduction.jsx";
+import AnnouncementPopup from "./components/common/AnnouncementPopup";
 
 // Luồng admin
 import AdminPanel from "./components/admin/adminPanel.jsx";
@@ -117,6 +118,7 @@ function App() {
 				<BrowserRouter>
 					<div className='flex flex-col min-h-screen'>
 						<Navbar />
+						<AnnouncementPopup />
 						<MainContent />
 						<Footer />
 					</div>

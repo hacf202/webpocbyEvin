@@ -72,7 +72,7 @@ function MobileSidebar() {
 			<header className='bg-header-bg text-header-text p-4 shadow-xl sticky top-0 z-50 xl:hidden flex items-center justify-between'>
 				<NavLink to='/' className='flex items-center gap-2'>
 					<img src={Logo} alt='Logo' className='h-8 w-auto rounded' />
-					<span className='font-primary text-xl'>GUIDE POC</span>
+					<span className='font-primary text-xl'>POC GUIDE</span>
 				</NavLink>
 
 				<button
@@ -95,7 +95,7 @@ function MobileSidebar() {
 						<div className='flex items-center gap-2'>
 							<img src={Logo} alt='Logo' className='h-8 w-auto rounded' />
 							<span className='font-primary text-xl text-header-text'>
-								GUIDE POC
+								POC GUIDE
 							</span>
 						</div>
 						<button

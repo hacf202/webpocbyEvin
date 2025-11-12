@@ -155,7 +155,7 @@ const Profile = () => {
 
 	return (
 		<div>
-			<PageTitle title='Trang cá nhân' description='GUIDE POC: Trang cá nhân' />
+			<PageTitle title='Trang cá nhân' description='POC GUIDE: Trang cá nhân' />
 			<div className='min-h-screen flex items-center justify-center p-4 font-secondary'>
 				<div className='max-w-md w-full relative'>
 					{/* Nút Quay Lại */}

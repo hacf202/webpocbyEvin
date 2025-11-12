@@ -95,7 +95,7 @@ function DesktopNavbar() {
 							alt='Logo'
 							className='h-10 w-auto object-contain rounded-lg transition-transform duration-300 group-hover:scale-110'
 						/>
-						<span className='ml-2 font-primary text-3xl'>GUIDE POC</span>
+						<span className='ml-2 font-primary text-3xl'>POC GUIDE</span>
 					</NavLink>
 
 					<nav className='flex items-center gap-1'>

@@ -313,7 +313,8 @@ const Builds = () => {
 		<div>
 			<PageTitle
 				title='Danh sách bộ cổ vật'
-				description='GUIDE POC: Danh sách bộ cổ vật.'
+				description='xem toàn bộ danh sách bộ cổ vật, xây dựng bộ cổ vật, đầy đủ đa dạng cho tác tướng, phong phú phù hợp cho tất cả các tướng Swain, Jinx, Leblanc, Aurelion Sol, Shyvana, Elise, Nidalee,...'
+				type='website'
 			/>
 			<div className='container mx-auto p-2 sm:p-4 text-text-primary font-secondary'>
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4'>

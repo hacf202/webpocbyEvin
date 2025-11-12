@@ -322,7 +322,8 @@ const BuildDetail = () => {
 		<div>
 			<PageTitle
 				title={`Bộ cổ vật ${build.championName}`}
-				description='GUIDE POC: Danh sách bộ cổ vật.'
+				description={`POC GUIDE: Build bộ cổ vật (Relic) tối ưu tier S/A cho ${build.championName} Path of Champions. Combo Epic/Rare/Common mạnh nhất (Starforged Gauntlets, Death’s Foil, Guardian Orb, Loose Cannon's Payload...), hiệu ứng chi tiết, cách farm & equip relic đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 			<div className='max-w-4xl mx-auto p-0 sm:p-6 text-text-primary font-secondary'>
 				<Button variant='outline' onClick={() => navigate(-1)} className='mb-4'>

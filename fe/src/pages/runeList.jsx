@@ -173,7 +173,8 @@ function RuneList() {
 		<div>
 			<PageTitle
 				title='Danh sách ngọc'
-				description='GUIDE POC: Danh sách ngọc'
+				description='POC GUIDE: Danh sách đầy đủ ngọc bổ trợ (Runes) Path of Champions: Common, Rare, Epic với hiệu ứng chi tiết, tier list S/A/B, combo mạnh nhất cho Jinx, LeBlanc, Swain, A.Sol... Lọc theo độ hiếm, tooltip mô tả + hướng dẫn chọn rune đánh boss Galio/A.Sol dễ dàng!'
+				type='website'
 			/>
 			<div className='font-secondary'>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>

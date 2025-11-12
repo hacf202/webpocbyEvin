@@ -190,7 +190,8 @@ function PowerList() {
 		<div>
 			<PageTitle
 				title='Danh sách sức mạnh'
-				description='GUIDE POC: Danh sách sức mạnh.'
+				description='POC GUIDE: Danh sách đầy đủ sức mạnh (Powers) Path of Champions: Common, Rare, Epic với hiệu ứng chi tiết, tier list S/A/B, combo mạnh nhất cho Jinx, LeBlanc, Swain... Lọc theo độ hiếm/loại, tooltip mô tả đầy đủ + hướng dẫn chọn power đánh boss Galio/A.Sol!'
+				type='website'
 			/>
 			<div className='font-secondary'>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>

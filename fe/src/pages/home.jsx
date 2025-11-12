@@ -141,7 +141,8 @@ const Home = () => {
 		<div>
 			<PageTitle
 				title='Con Đường Anh Hùng'
-				description='GUIDE POC: Danh sách tướng, cổ vật, vòng quay may mắn, vai trò chiến thuật.'
+				description='POC GUIDE - Wiki Hướng Dẫn Con Đường Anh Hùng (Path of Champions): Tier list tướng S/A/B mới nhất 2025 (Jinx, LeBlanc, Swain, A.Sol dẫn đầu), build relic/power/rune tối ưu, cổ vật Epic, vòng quay may mắn. Chiến thuật AGGRO/COMBO/CONTROL đánh boss Galio/A.Sol dễ dàng!'
+				type='website'
 			/>
 
 			<div className='text-white overflow-x-hidden font-primary'>

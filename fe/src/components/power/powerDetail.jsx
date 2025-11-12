@@ -104,7 +104,8 @@ function PowerDetail() {
 		<div>
 			<PageTitle
 				title={power.name}
-				description={`GUIDE POC: chi tiết sức mạnh ${power.name}`}
+				description={`POC GUIDE: Hiệu ứng chi tiết sức mạnh ${power.name} Path of Champions (Độ hiếm: ${power.rarity}). Tier S/A/B, combo relic/item mạnh nhất với Jinx, Swain, LeBlanc, A.Sol... Hướng dẫn unlock star power (1*/2*/3*/6*), equip constellation + mẹo dùng đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 
 			{/* --------------------------------------------------- */}

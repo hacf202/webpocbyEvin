@@ -216,7 +216,8 @@ function ChampionList() {
 		<div>
 			<PageTitle
 				title='Danh sách tướng'
-				description='GUIDE POC: Danh sách tướng.'
+				description='POC GUIDE: Tier list tướng S/A/B Path of Champions mới nhất 2025: Jinx, LeBlanc, Swain, A.Sol, Viktor dẫn đầu! Lọc theo vùng (Demacia/Noxus), năng lượng, sao tối đa, thẻ. Build relic/power/rune tối ưu + chiến thuật đánh boss Galio dễ dàng!'
+				type='website'
 			/>
 			<div className='font-secondary'>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>

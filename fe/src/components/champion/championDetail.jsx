@@ -139,7 +139,7 @@ function ChampionDetail() {
 			try {
 				setLoadingVideo(true);
 				const apiUrl = import.meta.env.VITE_API_URL;
-				const res = await fetch(`${apiUrl}/api/videos`);
+				const res = await fetch(`${apiUrl}/api/champion-videos`);
 				if (!res.ok) throw new Error("Không tải được video");
 				const data = await res.json();
 				setVideoLinks(data);
@@ -276,7 +276,8 @@ function ChampionDetail() {
 		<div>
 			<PageTitle
 				title={champion.name}
-				description={`GUIDE POC: chi tiết tướng ${champion.name}`}
+				description={`POC GUIDE: Build bộ cổ vật (Relic) tối ưu tier S/A cho ${champion.name} Path of Champions. Combo Epic/Rare/Common mạnh nhất (Starforged Gauntlets, Death’s Foil, Guardian Orb, Loose Cannon's Payload...), hiệu ứng chi tiết, cách farm & equip relic đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 			<div className='max-w-[1200px] mx-auto p-0 sm:p-6 text-text-primary font-secondary'>
 				{/* Back Button */}

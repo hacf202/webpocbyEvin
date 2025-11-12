@@ -172,7 +172,8 @@ function ItemList() {
 		<div>
 			<PageTitle
 				title='Danh sách vật phẩm'
-				description='GUIDE POC: Danh sách vật phẩm.'
+				description='POC GUIDE: Danh sách đầy đủ vật phẩm (Items) Path of Champions: Common, Rare, Epic gắn lên unit/spell/landmark với hiệu ứng chi tiết, tier list S/A/B, combo mạnh nhất cho Jinx, LeBlanc, Ornn... Lọc theo độ hiếm, tooltip mô tả + hướng dẫn mua shop & equip đánh boss Galio/A.Sol!'
+				type='website'
 			/>
 			<div>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>

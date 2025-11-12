@@ -78,7 +78,8 @@ function RuneDetail() {
 		<div>
 			<PageTitle
 				title={rune.name}
-				description={`GUIDE POC: chi tiết ngọc bổ trợ ${rune.name}`}
+				description={`POC GUIDE: Hiệu ứng chi tiết ngọc bổ trợ ${rune.name} Path of Champions (Độ hiếm: ${rune.rarity}). Tier S/A/B, combo relic/power mạnh nhất với Jinx, LeBlanc, Swain, A.Sol... Hướng dẫn farm rune Epic, equip slot tối ưu + mẹo dùng đánh boss Galio/A.Sol dễ dàng!`}
+				type='article'
 			/>
 
 			{/* --------------------------------------------------- */}

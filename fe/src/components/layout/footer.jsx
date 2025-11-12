@@ -19,7 +19,7 @@ function Footer() {
 							/>
 						</a>
 						<p className='text-sm leading-relaxed'>
-							<b className='font-bold'>GUIDE POC (Path of champions)</b> là kho
+							<b className='font-bold'>POC GUIDE (Path of champions)</b> là kho
 							tài nguyên độc lập do cộng đồng người chơi chia sẻ.
 						</p>
 						<p className='text-sm leading-relaxed mt-2'>
@@ -74,7 +74,7 @@ function Footer() {
 					{/* === CỘT 3: Giới thiệu === */}
 					<div className='md:col-span-2'>
 						<h3 className='font-bold text-lg mb-4 text-[var(--color-footer-text)]'>
-							Giới thiệu về GUIDE POC
+							Giới thiệu về POC GUIDE
 						</h3>
 						<ul className='space-y-2 text-sm'>
 							<li>

@@ -37,10 +37,7 @@ const AuthContainer = () => {
 
 	return (
 		<div>
-			<PageTitle
-				title='Đăng nhập / đăng ký'
-				description='GUIDE POC: Trang cá nhân'
-			/>
+			<PageTitle title='Đăng nhập / đăng ký' />
 			<div className='flex justify-center min-h-screen p-4 pt-16 sm:pt-20 font-secondary'>
 				<div className='w-full max-w-lg'>
 					{/* === NÚT QUAY LẠI - NẰM TRÊN FORM === */}
