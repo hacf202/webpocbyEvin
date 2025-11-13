@@ -18,7 +18,7 @@ import {
 
 // Mảng ảnh nền vẫn giữ nguyên
 const BACKGROUND_IMAGES = [
-	"http://dd.b.pvp.net/6_3_0/set2/vi_vn/img/cards/02NX007T2-full.png",
+	"https://dd.b.pvp.net/6_3_0/set2/vi_vn/img/cards/02NX007T2-full.png",
 	"https://wiki.leagueoflegends.com/en-us/images/06SI012T1-full.png?0bfd7",
 	"https://wiki.leagueoflegends.com/en-us/images/06SH009-full.png?ff10a",
 ];
