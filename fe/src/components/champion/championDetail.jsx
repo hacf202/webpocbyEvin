@@ -267,7 +267,7 @@ function ChampionDetail() {
 
 	const videoEntry = videoLinks.find(v => v.name === champion.name);
 	const videoLink =
-		videoEntry?.link || "https://www.youtube.com/embed/dQw4w9WgXcQ";
+		videoEntry?.link || "https://www.youtube.com/embed/mZgnjMeTI5E";
 	const musicVideo = videoEntry?.MusicVideo;
 
 	const isSpiritBlossom = champion.regions.includes("Hoa Linh Lục Địa");
