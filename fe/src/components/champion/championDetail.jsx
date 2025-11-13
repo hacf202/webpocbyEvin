@@ -416,7 +416,39 @@ function ChampionDetail() {
 							)}
 						</>
 					)}
-
+					{/* Relic Sets - ẨN NẾU TẤT CẢ RỖNG */}
+					{defaultRelicsSetsFull.some(
+						set => set.relics && set.relics.some(relic => relic.name)
+					) && (
+						<>
+							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
+								Bộ cổ vật
+							</h2>
+							<div className='grid grid-cols-1 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
+								{defaultRelicsSetsFull
+									.filter(
+										set => set.relics && set.relics.some(relic => relic.name)
+									)
+									.map(set => (
+										<div
+											className='rounded-lg m-1 w-full bg-surface-bg border border-border'
+											key={set.setNumber}
+										>
+											<h3 className='text-sm sm:text-xl font-semibold p-2 sm:p-3 text-text-primary'>
+												Bộ cổ vật {set.setNumber}
+											</h3>
+											<div className='grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 p-2 sm:p-3 pt-0'>
+												{set.relics
+													.filter(relic => relic.name)
+													.map((relic, index) => (
+														<RenderItem key={index} item={relic} />
+													))}
+											</div>
+										</div>
+									))}
+							</div>
+						</>
+					)}
 					{powerStarsFull.some(power => power.name) && (
 						<>
 							<h2 className='text-lg sm:text-3xl font-semibold pl-1 m-3 sm:m-5 text-text-primary font-primary'>
@@ -475,40 +507,6 @@ function ChampionDetail() {
 									.filter(item => item.name)
 									.map((item, index) => (
 										<RenderItem key={index} item={item} />
-									))}
-							</div>
-						</>
-					)}
-
-					{/* Relic Sets - ẨN NẾU TẤT CẢ RỖNG */}
-					{defaultRelicsSetsFull.some(
-						set => set.relics && set.relics.some(relic => relic.name)
-					) && (
-						<>
-							<h2 className='text-lg sm:text-3xl font-semibold m-3 sm:m-5 text-text-primary font-primary'>
-								Bộ cổ vật
-							</h2>
-							<div className='grid grid-cols-1 gap-2 sm:gap-4 rounded-md p-2 sm:p-4 bg-surface-hover'>
-								{defaultRelicsSetsFull
-									.filter(
-										set => set.relics && set.relics.some(relic => relic.name)
-									)
-									.map(set => (
-										<div
-											className='rounded-lg m-1 w-full bg-surface-bg border border-border'
-											key={set.setNumber}
-										>
-											<h3 className='text-sm sm:text-xl font-semibold p-2 sm:p-3 text-text-primary'>
-												Bộ cổ vật {set.setNumber}
-											</h3>
-											<div className='grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4 p-2 sm:p-3 pt-0'>
-												{set.relics
-													.filter(relic => relic.name)
-													.map((relic, index) => (
-														<RenderItem key={index} item={relic} />
-													))}
-											</div>
-										</div>
 									))}
 							</div>
 						</>
