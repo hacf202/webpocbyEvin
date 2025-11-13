@@ -176,7 +176,7 @@ const ItemCard = memo(({ item, onSelect }) => {
 				<img
 					src={item.assetAbsolutePath || "/images/placeholder.png"}
 					alt={item.name}
-					className='w-16 h-16 object-cover rounded-md border border-border'
+					className='w-16 h-16 object-cover rounded-md border'
 				/>
 				<div className='flex-grow'>
 					<h3 className='font-bold text-lg text-text-primary'>{item.name}</h3>
@@ -527,14 +527,6 @@ function ItemEditor() {
 		setCurrentPage(page);
 	};
 
-	const handleBackNavigation = () => {
-		if (viewMode === "edit") {
-			handleAttemptClose(true);
-		} else {
-			navigate(-1);
-		}
-	};
-
 	const selectedItem = items.find(i => i.itemCode === selectedItemId);
 
 	if (isLoading)
@@ -566,14 +558,6 @@ function ItemEditor() {
 
 	return (
 		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản Lý Đồ Vật
-			</h1>
-
-			<Button variant='outline' onClick={handleBackNavigation} className='mb-4'>
-				Quay Lại
-			</Button>
-
 			{/* Layout: MainContent và SidePanel */}
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* MainContent */}

@@ -8,7 +8,7 @@ function ChampionCard({ champion }) {
 	// Logic lấy URL hình ảnh, ưu tiên avatarUrl đã được xử lý trước, sau đó đến các đường dẫn khác
 	const imageUrl =
 		champion.avatarUrl ||
-		champion.assets?.[0]?.M?.gameAbsolutePath?.S ||
+		champion.assets?.[0]?.M?.avatar?.S ||
 		"/fallback-image.svg";
 
 	return (

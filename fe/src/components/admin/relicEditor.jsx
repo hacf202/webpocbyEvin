@@ -193,7 +193,7 @@ const RelicCard = memo(({ relic, onSelect }) => {
 				<img
 					src={relic.assetAbsolutePath || "/images/placeholder.png"}
 					alt={relic.name}
-					className='w-16 h-16 object-cover rounded-md border border-border'
+					className='w-16 h-16 object-cover rounded-md border '
 				/>
 				<div className='flex-grow'>
 					<h3 className='font-bold text-lg text-text-primary'>{relic.name}</h3>
@@ -572,14 +572,6 @@ function RelicEditor() {
 		setCurrentPage(page);
 	};
 
-	const handleBackNavigation = () => {
-		if (viewMode === "edit") {
-			handleAttemptClose(true); // <-- THÊM ĐỔI: Set isBack = true
-		} else {
-			navigate(-1);
-		}
-	};
-
 	const selectedRelic = relics.find(r => r.relicCode === selectedRelicId);
 
 	if (isLoading)
@@ -625,15 +617,6 @@ function RelicEditor() {
 
 	return (
 		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản Lý Di Vật
-			</h1>
-
-			<Button variant='outline' onClick={handleBackNavigation} className='mb-4'>
-				<ChevronLeft size={18} className='mr-1' />
-				Quay Lại
-			</Button>
-
 			{/* Layout: SidePanel và MainContent */}
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* MainContent */}

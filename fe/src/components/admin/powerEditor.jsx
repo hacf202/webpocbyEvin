@@ -240,7 +240,7 @@ const PowerCard = memo(({ power, onSelect }) => {
 				<img
 					src={power.assetAbsolutePath || "/images/placeholder.png"}
 					alt={power.name}
-					className='w-16 h-16 object-cover rounded-md border border-border'
+					className='w-16 h-16 object-cover rounded-md border '
 				/>
 				<div className='flex-grow'>
 					<h3 className='font-bold text-lg text-text-primary'>{power.name}</h3>
@@ -605,14 +605,6 @@ function PowerEditor() {
 		setCurrentPage(page);
 	};
 
-	const handleBackNavigation = () => {
-		if (viewMode === "edit") {
-			handleAttemptClose(true); // <-- THAY ĐỔI: Set isBack = true
-		} else {
-			navigate(-1);
-		}
-	};
-
 	const selectedPower = powers.find(p => p.powerCode === selectedPowerId);
 
 	if (isLoading)
@@ -651,14 +643,6 @@ function PowerEditor() {
 
 	return (
 		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản Lý Năng Lực
-			</h1>
-
-			<Button variant='outline' onClick={handleBackNavigation} className='mb-4'>
-				Quay Lại
-			</Button>
-
 			{/* Layout: SidePanel và MainContent */}
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* MainContent */}

@@ -8,7 +8,8 @@ import { removeAccents } from "../../utils/vietnameseUtils";
 import iconRegions from "../../assets/data/iconRegions.json";
 import ChampionEditorForm from "./championEditorForm";
 import SidePanel from "../common/sidePanel";
-import { Loader2, ChevronLeft } from "lucide-react";
+import DropDragSidePanel from "./DropDragSidePanel";
+import { Loader2 } from "lucide-react";
 
 const NEW_CHAMPION_TEMPLATE = {
 	championID: null,
@@ -60,11 +61,11 @@ const MainContent = memo(
 		onCancel,
 		onDelete,
 		isSaving,
-		onBackToList,
 		videoLinks,
+		cachedData,
 	}) => {
 		return (
-			<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
+			<div className='bg-surface-bg rounded-lg'>
 				{viewMode === "list" ? (
 					<>
 						{paginatedChampions.length > 0 ? (
@@ -116,11 +117,11 @@ const MainContent = memo(
 					<ChampionEditorForm
 						champion={selectedChampion}
 						videoLinks={videoLinks}
+						cachedData={cachedData}
 						onSave={onSaveChampion}
 						onCancel={onCancel}
 						onDelete={onDelete}
 						isSaving={isSaving}
-						onBackToList={onBackToList}
 					/>
 				)}
 			</div>
@@ -130,6 +131,12 @@ const MainContent = memo(
 
 function ChampionEditor() {
 	const [champions, setChampions] = useState([]);
+	const [videoLinks, setVideoLinks] = useState([]);
+	const [runes, setRunes] = useState([]);
+	const [relics, setRelics] = useState([]);
+	const [powers, setPowers] = useState([]);
+	const [items, setItems] = useState([]);
+
 	const [selectedChampion, setSelectedChampion] = useState(null);
 	const [searchInput, setSearchInput] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
@@ -152,62 +159,124 @@ function ChampionEditor() {
 		message: "",
 	});
 	const [isBackNavigation, setIsBackNavigation] = useState(false);
-	const [videoLinks, setVideoLinks] = useState([]);
-	const [isLoadingVideo, setIsLoadingVideo] = useState(false);
 
 	const API_BASE_URL = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
 
+	// === FETCH ===
 	const fetchChampions = useCallback(async () => {
-		setIsLoading(true);
-		setError(null);
 		try {
 			const response = await fetch(`${API_BASE_URL}/api/champions`);
 			if (!response.ok) throw new Error(`Lỗi mạng: ${response.status}`);
 			const data = await response.json();
-			const formattedData = data.map(champ => ({
-				...champ,
-				avatarUrl: champ.assets?.[0]?.M?.avatar?.S || "",
-			}));
-			setChampions(formattedData);
+			setChampions(
+				data.map(champ => ({
+					...champ,
+					avatarUrl: champ.assets?.[0]?.M?.avatar?.S || "",
+				}))
+			);
 		} catch (e) {
 			setError("Không thể tải dữ liệu từ máy chủ.");
-		} finally {
-			setIsLoading(false);
 		}
 	}, [API_BASE_URL]);
 
 	const fetchVideoLinks = useCallback(async () => {
 		try {
-			setIsLoadingVideo(true);
 			const res = await fetch(`${API_BASE_URL}/api/champion-videos`);
 			if (!res.ok) throw new Error("Không tải được video");
-			const data = await res.json();
-			setVideoLinks(data);
-		} catch (err) {
-			console.error("Lỗi tải video links:", err);
+			setVideoLinks(await res.json());
+		} catch {
 			setVideoLinks([]);
-		} finally {
-			setIsLoadingVideo(false);
 		}
 	}, [API_BASE_URL]);
 
-	useEffect(() => {
-		fetchChampions();
-		fetchVideoLinks();
-	}, [fetchChampions, fetchVideoLinks]);
+	const fetchRunes = useCallback(async () => {
+		try {
+			const res = await fetch(`${API_BASE_URL}/api/runes`);
+			if (!res.ok) throw new Error("Không tải được runes");
+			setRunes(await res.json());
+		} catch {
+			setRunes([]);
+		}
+	}, [API_BASE_URL]);
 
-	useEffect(() => {
-		const handleBeforeUnload = e => {
-			if (viewMode === "edit") {
-				e.preventDefault();
-				e.returnValue = "Bạn có thay đổi chưa lưu?";
-			}
-		};
-		window.addEventListener("beforeunload", handleBeforeUnload);
-		return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-	}, [viewMode]);
+	const fetchRelics = useCallback(async () => {
+		try {
+			const res = await fetch(`${API_BASE_URL}/api/relics`);
+			if (!res.ok) throw new Error("Không tải được relics");
+			setRelics(await res.json());
+		} catch {
+			setRelics([]);
+		}
+	}, [API_BASE_URL]);
 
+	const fetchPowers = useCallback(async () => {
+		try {
+			const res = await fetch(`${API_BASE_URL}/api/powers`);
+			if (!res.ok) throw new Error("Không tải được powers");
+			setPowers(await res.json());
+		} catch {
+			setPowers([]);
+		}
+	}, [API_BASE_URL]);
+
+	const fetchItems = useCallback(async () => {
+		try {
+			const res = await fetch(`${API_BASE_URL}/api/items`);
+			if (!res.ok) throw new Error("Không tải được items");
+			setItems(await res.json());
+		} catch {
+			setItems([]);
+		}
+	}, [API_BASE_URL]);
+
+	// === LOAD ALL ===
+	useEffect(() => {
+		Promise.all([
+			fetchChampions(),
+			fetchVideoLinks(),
+			fetchRunes(),
+			fetchRelics(),
+			fetchPowers(),
+			fetchItems(),
+		]).finally(() => setIsLoading(false));
+	}, [
+		fetchChampions,
+		fetchVideoLinks,
+		fetchRunes,
+		fetchRelics,
+		fetchPowers,
+		fetchItems,
+	]);
+
+	// === CACHE ===
+	const cachedData = useMemo(
+		() => ({
+			runes: runes.map(r => ({
+				...r,
+				value: r.name,
+				label: `${r.name} (${r.rarity})`,
+			})),
+			relics: relics.map(r => ({
+				...r,
+				value: r.name,
+				label: `${r.name} (${r.rarity})`,
+			})),
+			powers: powers.map(p => ({
+				...p,
+				value: p.name,
+				label: `${p.name} (${p.rarity})`,
+			})),
+			items: items.map(i => ({
+				...i,
+				value: i.name,
+				label: `${i.name} (${i.rarity})`,
+			})),
+		}),
+		[runes, relics, powers, items]
+	);
+
+	// === FILTER & PAGINATION ===
 	const filterOptions = useMemo(() => {
 		if (champions.length === 0)
 			return { regions: [], costs: [], maxStars: [], tags: [], sort: [] };
@@ -292,17 +361,16 @@ function ChampionEditor() {
 		currentPage * ITEMS_PER_PAGE
 	);
 
+	// === HANDLERS ===
 	const handleSearch = () => {
 		setSearchTerm(searchInput);
 		setCurrentPage(1);
 	};
-
 	const handleClearSearch = () => {
 		setSearchInput("");
 		setSearchTerm("");
 		setCurrentPage(1);
 	};
-
 	const handleResetFilters = () => {
 		handleClearSearch();
 		setSelectedRegions([]);
@@ -349,7 +417,6 @@ function ChampionEditor() {
 			const token = localStorage.getItem("token");
 			if (!token) throw new Error("Không tìm thấy token.");
 
-			// LUÔN DÙNG PUT /api/champions
 			const champResponse = await fetch(`${API_BASE_URL}/api/champions`, {
 				method: "PUT",
 				headers: {
@@ -364,7 +431,6 @@ function ChampionEditor() {
 				throw new Error(err.error || "Lưu tướng thất bại.");
 			}
 
-			// Lưu video nếu có
 			const videoData = {
 				name: updatedChampion.name,
 				link: updatedChampion.videoLink || "",
@@ -394,11 +460,7 @@ function ChampionEditor() {
 			await Promise.all([fetchChampions(), fetchVideoLinks()]);
 			setViewMode("list");
 		} catch (e) {
-			setNotification({
-				isOpen: true,
-				title: "Lỗi",
-				message: e.message,
-			});
+			setNotification({ isOpen: true, title: "Lỗi", message: e.message });
 		} finally {
 			setIsSaving(false);
 		}
@@ -422,7 +484,6 @@ function ChampionEditor() {
 
 	const handleConfirmDelete = async () => {
 		if (!selectedChampion || selectedChampion.isNew) return;
-
 		setIsSaving(true);
 		try {
 			const token = localStorage.getItem("token");
@@ -447,11 +508,7 @@ function ChampionEditor() {
 			setSelectedChampion(null);
 			setViewMode("list");
 		} catch (e) {
-			setNotification({
-				isOpen: true,
-				title: "Lỗi",
-				message: e.message,
-			});
+			setNotification({ isOpen: true, title: "Lỗi", message: e.message });
 		} finally {
 			setIsSaving(false);
 			setIsDeleteConfirmModalOpen(false);
@@ -459,15 +516,8 @@ function ChampionEditor() {
 	};
 
 	const handlePageChange = page => setCurrentPage(page);
-	const handleBackNavigation = () => {
-		if (viewMode === "edit") {
-			handleAttemptClose(true);
-		} else {
-			navigate(-1);
-		}
-	};
 
-	if (isLoading || isLoadingVideo) {
+	if (isLoading) {
 		return (
 			<div className='flex flex-col items-center justify-center min-h-screen text-text-secondary'>
 				<Loader2 className='animate-spin text-primary-500' size={48} />
@@ -476,15 +526,16 @@ function ChampionEditor() {
 		);
 	}
 
-	if (error)
+	if (error) {
 		return (
 			<div className='text-center text-lg p-10 text-danger-text-dark'>
-				{error}{" "}
+				{error}
 				<Button onClick={fetchChampions} variant='primary' className='mt-4'>
 					Thử lại
 				</Button>
 			</div>
 		);
+	}
 
 	const multiFilterConfigs = [
 		{
@@ -519,15 +570,6 @@ function ChampionEditor() {
 
 	return (
 		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản Lý Tướng
-			</h1>
-
-			<Button variant='outline' onClick={handleBackNavigation} className='mb-4'>
-				<ChevronLeft size={18} />
-				Quay Lại
-			</Button>
-
 			<div className='flex flex-col lg:flex-row gap-6'>
 				<div className='lg:w-4/5'>
 					<MainContent
@@ -542,31 +584,38 @@ function ChampionEditor() {
 						onCancel={() => handleAttemptClose(false)}
 						onDelete={handleAttemptDelete}
 						isSaving={isSaving}
-						onBackToList={handleBackToList}
 						videoLinks={videoLinks}
+						cachedData={cachedData}
 					/>
 				</div>
 
+				{/* SIDE PANEL ĐỘNG */}
 				<div className='lg:w-1/5'>
-					<SidePanel
-						searchPlaceholder='Nhập tên tướng...'
-						addLabel='Thêm Tướng Mới'
-						resetLabel='Đặt lại bộ lọc'
-						searchInput={searchInput}
-						onSearchInputChange={e => setSearchInput(e.target.value)}
-						onSearch={handleSearch}
-						onClearSearch={handleClearSearch}
-						onAddNew={handleAddNewChampion}
-						onResetFilters={handleResetFilters}
-						multiFilterConfigs={multiFilterConfigs}
-						sortOptions={filterOptions.sort}
-						sortSelectedValue={sortOrder}
-						onSortChange={setSortOrder}
-					/>
+					{viewMode === "list" ? (
+						<SidePanel
+							searchPlaceholder='Nhập tên tướng...'
+							addLabel='Thêm Tướng Mới'
+							resetLabel='Đặt lại bộ lọc'
+							searchInput={searchInput}
+							onSearchInputChange={e => setSearchInput(e.target.value)}
+							onSearch={handleSearch}
+							onClearSearch={handleClearSearch}
+							onAddNew={handleAddNewChampion}
+							onResetFilters={handleResetFilters}
+							multiFilterConfigs={multiFilterConfigs}
+							sortOptions={filterOptions.sort}
+							sortSelectedValue={sortOrder}
+							onSortChange={setSortOrder}
+						/>
+					) : (
+						<DropDragSidePanel
+							cachedData={cachedData}
+							onClose={handleBackToList}
+						/>
+					)}
 				</div>
 			</div>
 
-			{/* Modal Xác nhận đóng */}
 			<Modal
 				isOpen={isCloseConfirmModalOpen}
 				onClose={() => setIsCloseConfirmModalOpen(false)}
@@ -590,7 +639,6 @@ function ChampionEditor() {
 				</div>
 			</Modal>
 
-			{/* Modal Xác nhận xóa */}
 			<Modal
 				isOpen={isDeleteConfirmModalOpen}
 				onClose={() => setIsDeleteConfirmModalOpen(false)}
@@ -618,7 +666,6 @@ function ChampionEditor() {
 				</div>
 			</Modal>
 
-			{/* Modal Thông báo */}
 			<Modal
 				isOpen={notification.isOpen}
 				onClose={() => setNotification(p => ({ ...p, isOpen: false }))}

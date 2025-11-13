@@ -53,7 +53,7 @@ function MainContent() {
 	const location = useLocation();
 
 	// Danh sách các trang full-width
-	const fullWidthPaths = ["/", "/randomizer", "/home"];
+	const fullWidthPaths = ["/", "/randomizer", "/home", "/admin"];
 	const isFullWidth = fullWidthPaths.includes(location.pathname);
 
 	useEffect(() => {

@@ -157,7 +157,7 @@ const BuildEditorForm = memo(
 		};
 
 		return (
-			<div className=' mx-auto p-4 sm:p-6 bg-[var(--color-surface)] rounded-lg border border-[var(--color-border)]'>
+			<div className=' mx-auto p-4 sm:p-6 bg-[var(--color-surface)] rounded-lg '>
 				<div className='space-y-6'>
 					{/* Các section giữ nguyên */}
 					<div className='p-4 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)]'>

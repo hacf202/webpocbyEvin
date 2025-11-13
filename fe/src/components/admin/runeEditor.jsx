@@ -116,7 +116,7 @@ const RuneEditorForm = memo(
 					<div className='flex items-center gap-2 flex-wrap'>
 						{!rune.isNew && (
 							<Button variant='danger' onClick={onDelete}>
-								Xóa Ngọc Bổ Trợ
+								Xóa Ngọc
 							</Button>
 						)}
 						<Button variant='outline' onClick={onCancel}>
@@ -238,7 +238,7 @@ const RuneCard = memo(({ rune, onSelect }) => {
 				<img
 					src={rune.assetAbsolutePath || "/images/placeholder.png"}
 					alt={rune.name}
-					className='w-16 h-16 object-cover rounded-md border border-border'
+					className='w-16 h-16 object-cover rounded-md '
 				/>
 				<div className='flex-grow'>
 					<h3 className='font-bold text-lg text-text-primary'>{rune.name}</h3>
@@ -590,14 +590,6 @@ function RuneEditor() {
 		setCurrentPage(page);
 	};
 
-	const handleBackNavigation = () => {
-		if (viewMode === "edit") {
-			handleAttemptClose(true);
-		} else {
-			navigate(-1);
-		}
-	};
-
 	const selectedRune = runes.find(r => r.runeCode === selectedRuneId);
 
 	if (isLoading)
@@ -629,15 +621,6 @@ function RuneEditor() {
 
 	return (
 		<div className='font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản Lý Ngọc Bổ Trợ
-			</h1>
-
-			<Button variant='outline' onClick={handleBackNavigation} className='mb-4'>
-				<ChevronLeft size={18} className='mr-1' />
-				Quay Lại
-			</Button>
-
 			{/* Layout: MainContent và SidePanel */}
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* MainContent */}

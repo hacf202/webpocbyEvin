@@ -1,5 +1,5 @@
 // src/pages/admin/BuildEditor.jsx
-import { useState, useEffect, memo, useCallback, useMemo } from "react";
+import { useState, useEffect, memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../common/modal";
 import Button from "../common/button";
@@ -46,10 +46,9 @@ const MainContent = memo(
 		onCancel,
 		onDelete,
 		isSaving,
-		onBackToList,
 	}) => {
 		return (
-			<div className='bg-surface-bg rounded-lg border border-border p-4 sm:p-6'>
+			<div className='bg-surface-bg rounded-lg border border-border p-1 sm:p-2'>
 				{viewMode === "list" ? (
 					<>
 						{paginatedBuilds.length > 0 ? (
@@ -94,14 +93,10 @@ const MainContent = memo(
 					</>
 				) : (
 					<div>
-						<div className='mb-6 flex justify-between items-center'>
+						<div className='mb-2 flex justify-between items-center'>
 							<h2 className='text-2xl font-bold text-text-primary font-primary'>
 								Chỉnh sửa Build
 							</h2>
-							<Button onClick={onBackToList} variant='outline' size='sm'>
-								<ChevronLeft size={18} />
-								Quay lại danh sách
-							</Button>
 						</div>
 
 						<BuildEditorForm
@@ -340,11 +335,7 @@ function BuildEditor() {
 	}
 
 	return (
-		<div className='mx-auto max-w-[1600px] p-4 sm:p-6 font-secondary'>
-			<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-				Quản lý Build
-			</h1>
-
+		<div className='mx-auto max-w-[1600px] p-1 sm:p-2 font-secondary'>
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* MAIN CONTENT */}
 				<div className='lg:w-4/5 w-full lg:order-first'>

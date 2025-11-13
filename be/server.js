@@ -48,6 +48,7 @@ const allowedOrigins = [
 	process.env.FRONTEND_URL,
 	"http://localhost:5173",
 	"https://guidepoc.vercel.app",
+	"https://pocguide.top",
 ];
 app.use(
 	cors({
