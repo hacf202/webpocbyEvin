@@ -34,11 +34,13 @@ const requiredEnvVars = [
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 if (missingEnvVars.length > 0) {
 	console.error("Lỗi: Thiếu các biến môi trường:", missingEnvVars.join(", "));
-	process.exit(1);
+	// Khi chạy local, chúng ta nên thoát
+	if (!process.env.VERCEL) {
+		process.exit(1);
+	}
 }
 
 const app = express();
-const port = process.env.PORT;
 
 // --- Middleware ---
 app.use(morgan("dev")); // Ghi log request ra console
@@ -63,37 +65,24 @@ app.use(
 );
 
 // Middleware để phân tích cú pháp JSON
+// ⚠️ Cảnh báo: Vercel miễn phí có giới hạn ~4.5MB. 50mb sẽ thất bại trên Vercel.
 app.use(express.json({ limit: "50mb" }));
 
 // --- API Routes ---
 
 // Gắn các router vào ứng dụng
-// Mọi request đến /api/auth sẽ được xử lý bởi authRouter
 app.use("/api/auth", authRouter);
-
-// Mọi request đến /api/champions sẽ được xử lý bởi championsRouter
 app.use("/api/champions", championsRouter);
-
 app.use("/api/powers", powersRoutes);
-
 app.use("/api/generalPowers", generalPowersRoutes);
-
 app.use("/api/relics", relicsRoutes);
-
 app.use("/api/items", itemsRoutes);
-
 app.use("/api/runes", runesRoutes);
-
 app.use("/api/champion-videos", VideoRoutes);
-
-// Mọi request đến /api/users và /api/user sẽ được xử lý bởi usersRouter
 app.use("/api", usersRouter);
-
-// Mọi request đến /api/builds sẽ được xử lý bởi buildsRouter
-app.use("/api/builds", commentsRouter); // /:buildId/comments
-app.use("/api/builds", favoritesRouter); // /:id/like, /:id/favorite, /favorites
+app.use("/api/builds", commentsRouter);
+app.use("/api/builds", favoritesRouter);
 app.use("/api/builds", buildsRouter);
-
 app.use("/api/admin/builds", buildsAdminRouter);
 
 // API để kiểm tra "sức khỏe" của server
@@ -109,6 +98,18 @@ app.use((req, res) => {
 });
 
 // --- Khởi động Server ---
-app.listen(port, () => {
-	console.log(`Server đang chạy trên http://localhost:${port}`);
-});
+
+// 1. Export app cho Vercel (bắt buộc)
+// Vercel sẽ sử dụng app này để chạy serverless function
+export default app;
+
+// 2. Chạy server local (chỉ khi không ở trên Vercel)
+// Vercel tự động set biến môi trường 'VERCEL' = 1
+if (!process.env.VERCEL) {
+	const port = process.env.PORT || 3001; // Dùng port từ .env hoặc fallback 3001
+	app.listen(port, () => {
+		console.log(
+			`✅ Server đang chạy (chế độ local) trên http://localhost:${port}`
+		);
+	});
+}
