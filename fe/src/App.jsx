@@ -23,6 +23,7 @@ import Items from "./pages/itemList.jsx";
 import Builds from "./pages/buildList.jsx";
 import Runes from "./pages/runeList.jsx";
 import RandomizerPage from "./pages/randomWheelPage.jsx";
+// import BuildReelsPage from "./pages/BuildReelsPage";
 
 // Đăng nhập / Đăng ký
 import AuthContainer from "./components/auth/authContainer.jsx";
@@ -73,6 +74,7 @@ function MainContent() {
 				<Route path='/randomizer' element={<RandomizerPage />} />
 
 				{/* Các trang khác - có container */}
+
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/champions' element={<Champions />} />
 				<Route path='/champion/:name' element={<ChampionDetail />} />
@@ -86,6 +88,7 @@ function MainContent() {
 				<Route path='/builds/:buildId' element={<BuildDetail />} />
 				<Route path='/runes' element={<Runes />} />
 				<Route path='/rune/:runeCode' element={<RuneDetail />} />
+				{/* <Route path='/reels' element={<BuildReelsPage />} /> */}
 				<Route
 					path='/auth'
 					element={<AuthContainer onClose={() => window.history.back()} />}
