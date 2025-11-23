@@ -77,7 +77,6 @@ function Introduction() {
 					<section className='text-center mb-16'>
 						<h1 className='text-5xl sm:text-6xl font-bold text-[var(--color-text-primary)] mb-6'>
 							Chào mừng đến{" "}
-<<<<<<< HEAD
 							<span className='text-[var(--color-primary-500)]'>POC GUIDE</span>
 						</h1>
 						<p className='text-xl text-[var(--color-text-secondary)] mx-auto leading-relaxed'>
@@ -91,20 +90,6 @@ function Introduction() {
 						</p>
 					</section>
 
-=======
-							<span className='text-[var(--color-primary-500)]'>
-								Path of Champions
-							</span>
-						</h1>
-						<p className='text-xl text-[var(--color-text-secondary)] max-w-4xl mx-auto leading-relaxed'>
-							Chế độ <strong>roguelike</strong> độc đáo trong{" "}
-							<i>Legends of Runeterra</i> – nơi mỗi lượt chơi là một hành trình
-							mới, mỗi quyết định có thể thay đổi toàn bộ cuộc chiến.
-						</p>
-					</section>
-
-					{/* ==================== 7 NGUYÊN TẮC CỐT LÕI ==================== */}
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 					<section className='grid md:grid-cols-3 gap-8 mb-16'>
 						<div className='bg-[var(--color-surface-bg)] p-6 rounded-xl border border-[var(--color-border)] text-center shadow-sm hover:shadow-md transition-shadow'>
 							<div className='w-16 h-16 mx-auto mb-4 bg-red-500 rounded-full flex items-center justify-center text-white text-2xl font-bold'>
@@ -200,12 +185,7 @@ function Introduction() {
 											<div className='w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden shadow-md group-hover:scale-110 transition-transform duration-300'>
 												<SafeImage
 													src={
-<<<<<<< HEAD
 														// lấy từ assets
-=======
-														// Ưu tiên avatarUrl nếu có, nếu không lấy từ assets
-														champ.avatarUrl ||
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 														champ.assets?.[0]?.M?.avatar?.S ||
 														"/fallback-image.svg" // fallback nếu không có ảnh
 													}

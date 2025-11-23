@@ -23,10 +23,6 @@ import Items from "./pages/itemList.jsx";
 import Builds from "./pages/buildList.jsx";
 import Runes from "./pages/runeList.jsx";
 import RandomizerPage from "./pages/randomWheelPage.jsx";
-<<<<<<< HEAD
-=======
-// import BuildReelsPage from "./pages/BuildReelsPage";
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 
 // Đăng nhập / Đăng ký
 import AuthContainer from "./components/auth/authContainer.jsx";
@@ -40,11 +36,9 @@ import Footer from "./components/layout/footer.jsx";
 import AboutUs from "./components/about/aboutUs.jsx";
 import TermsOfUse from "./components/about/termsOfUse.jsx";
 import Introduction from "./components/about/introduction.jsx";
-<<<<<<< HEAD
 import StarterGuide from "./components/about/starterGuide.jsx";
 import RelicGuide from "./components/about/relicGuide.jsx";
-=======
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
+
 import AnnouncementPopup from "./components/common/AnnouncementPopup";
 
 // Luồng admin
@@ -62,7 +56,6 @@ function MainContent() {
 	const location = useLocation();
 
 	// Danh sách các trang full-width
-<<<<<<< HEAD
 	const fullWidthPaths = [
 		"/",
 		"/randomizer",
@@ -70,9 +63,6 @@ function MainContent() {
 		"/admin",
 		"/introduction",
 	];
-=======
-	const fullWidthPaths = ["/", "/randomizer", "/home", "/admin"];
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 	const isFullWidth = fullWidthPaths.includes(location.pathname);
 
 	useEffect(() => {
@@ -92,10 +82,7 @@ function MainContent() {
 				<Route path='/randomizer' element={<RandomizerPage />} />
 
 				{/* Các trang khác - có container */}
-<<<<<<< HEAD
-=======
 
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/champions' element={<Champions />} />
 				<Route path='/champion/:name' element={<ChampionDetail />} />
@@ -109,10 +96,7 @@ function MainContent() {
 				<Route path='/builds/:buildId' element={<BuildDetail />} />
 				<Route path='/runes' element={<Runes />} />
 				<Route path='/rune/:runeCode' element={<RuneDetail />} />
-<<<<<<< HEAD
-=======
 				{/* <Route path='/reels' element={<BuildReelsPage />} /> */}
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 				<Route
 					path='/auth'
 					element={<AuthContainer onClose={() => window.history.back()} />}
@@ -120,11 +104,8 @@ function MainContent() {
 				<Route path='/about-us' element={<AboutUs />} />
 				<Route path='/terms-of-use' element={<TermsOfUse />} />
 				<Route path='/introduction' element={<Introduction />} />
-<<<<<<< HEAD
 				<Route path='/guide/starterGuide' element={<StarterGuide />} />
 				<Route path='/guide/relicGuide' element={<RelicGuide />} />
-=======
->>>>>>> c47b8f082094c4b0e23aa9c03fdd972679f520ef
 
 				{/* Admin Routes - vẫn dùng container */}
 				<Route element={<PrivateRoute />}>
