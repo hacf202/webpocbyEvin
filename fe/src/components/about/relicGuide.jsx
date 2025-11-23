@@ -90,7 +90,7 @@ export default function RelicGuide() {
 						{/* Độ hiếm & ô cổ vật */}
 						<section className='mb-12'>
 							<h2 className='text-3xl font-bold text-white mb-6'>
-								01. Phân loại độ hiếm & ô cổ vật
+								01. Phân loại độ hiếm & ô Cổ Vật
 							</h2>
 							<div className='grid md:grid-cols-3 gap-6 my-8'>
 								<div className='text-center p-6 bg-gray-800 rounded-xl border border-gray-700'>
