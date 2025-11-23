@@ -1,9 +1,9 @@
 // server.js
 
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import dotenv from "dotenv";
+import express from "express"; //tạo server HTTP, các route GET, PUT, POST, DELETE,..
+import cors from "cors"; //cho phép front end gọi api của backend
+import morgan from "morgan"; //in ra console mỗi khi api được gọi (phương thức, đường dẫn, trạng thái, thời gian phản hồi)
+import dotenv from "dotenv"; //giúp tải biến môi trường
 
 // Import các router từ thư mục src/routes
 import authRouter from "./src/routes/auth.js";
@@ -20,16 +20,16 @@ import runesRoutes from "./src/routes/runes.js";
 import VideoRoutes from "./src/routes/championVideos.js";
 import buildsAdminRouter from "./src/routes/builds-admin.js";
 
-dotenv.config();
+dotenv.config(); //đọc .env tải biến môi trường
 
 // Kiểm tra các biến môi trường cần thiết
 const requiredEnvVars = [
-	"AWS_REGION",
-	"AWS_ACCESS_KEY_ID",
-	"AWS_SECRET_ACCESS_KEY",
-	"COGNITO_USER_POOL_ID",
-	"COGNITO_APP_CLIENT_ID",
-	"FRONTEND_URL",
+	"AWS_REGION", //khu vực
+	"AWS_ACCESS_KEY_ID", //Key IAM user
+	"AWS_SECRET_ACCESS_KEY", //Secret key của IAM user đó
+	"COGNITO_USER_POOL_ID", //id của user pool
+	"COGNITO_APP_CLIENT_ID", //client id của app
+	"FRONTEND_URL", //domain fe
 ];
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
 if (missingEnvVars.length > 0) {
@@ -87,7 +87,7 @@ app.use("/api/admin/builds", buildsAdminRouter);
 
 // API để kiểm tra "sức khỏe" của server
 app.get("/api/checkheal", (req, res) => {
-	res.status(200).json({ status: "OK", message: "Server is healthy" });
+	res.status(200).json({ status: "OK", message: "Se" });
 });
 
 // --- Xử lý lỗi ---

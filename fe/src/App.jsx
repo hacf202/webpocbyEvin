@@ -36,6 +36,8 @@ import Footer from "./components/layout/footer.jsx";
 import AboutUs from "./components/about/aboutUs.jsx";
 import TermsOfUse from "./components/about/termsOfUse.jsx";
 import Introduction from "./components/about/introduction.jsx";
+import StarterGuide from "./components/about/starterGuide.jsx";
+import RelicGuide from "./components/about/relicGuide.jsx";
 import AnnouncementPopup from "./components/common/AnnouncementPopup";
 
 // Luồng admin
@@ -53,7 +55,13 @@ function MainContent() {
 	const location = useLocation();
 
 	// Danh sách các trang full-width
-	const fullWidthPaths = ["/", "/randomizer", "/home", "/admin"];
+	const fullWidthPaths = [
+		"/",
+		"/randomizer",
+		"/home",
+		"/admin",
+		"/introduction",
+	];
 	const isFullWidth = fullWidthPaths.includes(location.pathname);
 
 	useEffect(() => {
@@ -93,6 +101,8 @@ function MainContent() {
 				<Route path='/about-us' element={<AboutUs />} />
 				<Route path='/terms-of-use' element={<TermsOfUse />} />
 				<Route path='/introduction' element={<Introduction />} />
+				<Route path='/guide/starterGuide' element={<StarterGuide />} />
+				<Route path='/guide/relicGuide' element={<RelicGuide />} />
 
 				{/* Admin Routes - vẫn dùng container */}
 				<Route element={<PrivateRoute />}>

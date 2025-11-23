@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 export function useSafeImage(
 	src,
-	fallbackSrc = "/fallback-image.svg", // ← DÙNG CHUNG
+	fallbackSrc = "/fallback-image.svg",
 	maxRetries = 1
 ) {
 	const [imgSrc, setImgSrc] = useState(src);
