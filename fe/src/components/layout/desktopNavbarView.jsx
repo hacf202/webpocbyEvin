@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 
 import Modal from "../common/modal.jsx";
 import Button from "../common/button.jsx";
-import Logo from "../../../Yuumi.png";
+import Logo from "/ahriicon.png";
 
 import {
 	User,
@@ -22,6 +22,8 @@ import {
 	Wrench,
 	Sparkles,
 	LoaderPinwheel,
+	BookMarked,
+	BookCopy,
 } from "lucide-react";
 
 function DesktopNavbar() {
@@ -193,6 +195,20 @@ function DesktopNavbar() {
 										onClick={handleNavClick}
 									>
 										<LoaderPinwheel className='w-5 h-5' /> Vòng quay
+									</NavLink>
+									<NavLink
+										to='/guide/starterGuide'
+										className={dropdownLinkClass}
+										onClick={handleNavClick}
+									>
+										<BookMarked className='w-5 h-5' /> Hướng Dẫn POC
+									</NavLink>
+									<NavLink
+										to='/guide/relicGuide'
+										className={dropdownLinkClass}
+										onClick={handleNavClick}
+									>
+										<BookCopy className='w-5 h-5' /> Hướng Dẫn Cổ Vật
 									</NavLink>
 									<NavLink
 										to='/introduction'

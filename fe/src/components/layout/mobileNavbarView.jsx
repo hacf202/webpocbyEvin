@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 
 import Modal from "../common/modal.jsx";
 import Button from "../common/button.jsx";
-import Logo from "../../../Yuumi.png";
+import Logo from "/ahriicon.png";
 
 import {
 	User,
@@ -24,6 +24,8 @@ import {
 	LoaderPinwheel,
 	Menu,
 	X,
+	BookMarked,
+	BookCopy,
 } from "lucide-react";
 
 function MobileSidebar() {
@@ -213,6 +215,20 @@ function MobileSidebar() {
 										onClick={closeSidebar}
 									>
 										<LoaderPinwheel className='w-4 h-4 ' /> Vòng quay
+									</NavLink>
+									<NavLink
+										to='/guide/starterGuide'
+										className={dropdownLinkClass}
+										onClick={closeSidebar}
+									>
+										<BookMarked className='w-4 h-4' /> Hướng Dẫn POC
+									</NavLink>
+									<NavLink
+										to='/guide/relicGuide'
+										className={dropdownLinkClass}
+										onClick={closeSidebar}
+									>
+										<BookCopy className='w-4 h-4' /> Hướng Dẫn Cổ Vật
 									</NavLink>
 									<NavLink
 										to='/introduction'

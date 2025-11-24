@@ -169,10 +169,37 @@ export default function GuideDetail() {
 							</div>
 						</section>
 
+						{/* Các phần tiếp theo */}
 						<section className='mb-12'>
 							<h2 className='text-3xl font-bold text-white mb-6 flex items-center gap-3'>
 								<span className='text-[var(--color-primary-500)]'>
-									03 Hệ Thống Cổ Vật Dành Cho Tướng
+									03 Hệ Thống Sức Mạnh Của Tướng
+								</span>
+							</h2>
+							<p className='text-[var(--color-text-secondary)] leading-relaxed text-lg mb-4'>
+								Mỗi tướng có các sức mạnh riêng biệt độc nhất, được tối ưu riêng
+								dành cho tướng đó. Bạn có thể nâng cấp sức mạnh của tướng bằng
+								cách thu thập các tài nguyên yêu cầu như mảnh tướng, mảnh pha
+								lê, mảnh sao băng để nâng cấp.
+							</p>
+							<p className='text-[var(--color-text-secondary)] leading-relaxed text-lg mb-4'>
+								Hệ thống sức mạnh cũng là nền tảng của chế độ chơi Con Đường Anh
+								Hùng với hơn 1000+ sức mạnh khác nhau gồm nhiều loại như: sức
+								mạnh của tướng, sức mạnh của kẻ địch, sức mạnh cổ vật,...
+							</p>
+							<div className='my-12 rounded-2xl overflow-hidden shadow-xl border border-[var(--color-border)]'>
+								<SafeImage
+									src='/image/power.png'
+									alt='Nâng sao cho tướng trong Con Đường Anh Hùng'
+									className='w-full'
+								/>
+							</div>
+						</section>
+
+						<section className='mb-12'>
+							<h2 className='text-3xl font-bold text-white mb-6 flex items-center gap-3'>
+								<span className='text-[var(--color-primary-500)]'>
+									04 Hệ Thống Cổ Vật Dành Cho Tướng
 								</span>
 							</h2>
 							<p className='text-[var(--color-text-secondary)] leading-relaxed text-lg mb-4'>
@@ -222,7 +249,7 @@ export default function GuideDetail() {
 						<section className='mb-12'>
 							<h2 className='text-3xl font-bold text-white mb-6 flex items-center gap-3'>
 								<span className='text-[var(--color-primary-500)]'>
-									04 Bản Đồ Phiêu Lưu
+									05 Bản Đồ Phiêu Lưu
 								</span>
 							</h2>
 							<p className='text-[var(--color-text-secondary)] leading-relaxed text-lg mb-4'>

@@ -102,7 +102,7 @@ const BuildCard = ({ build, onClick }) => {
 			<div className='text-xs space-y-1 text-[var(--color-text-secondary)]'>
 				{artifacts.length > 0 && (
 					<div className='flex items-center gap-1'>
-						<span className='font-medium'>Thánh tích:</span>
+						<span className='font-medium'>Cổ Vật:</span>
 						<span className='truncate max-w-[180px]'>
 							{artifacts.slice(0, 2).join(", ")}
 							{artifacts.length > 2 && ` +${artifacts.length - 2}`}

@@ -424,11 +424,11 @@ const BuildDetail = () => {
 						</div>
 					</div>
 
-					{/* Thánh tích */}
+					{/* Cổ vật */}
 					{fullArtifacts.length > 0 && (
 						<div className='mb-6'>
 							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-								Thánh tích
+								Cổ Vật
 							</h2>
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 								{fullArtifacts.map((item, index) => (
@@ -442,7 +442,7 @@ const BuildDetail = () => {
 					{fullRunes.length > 0 && (
 						<div className='mb-6'>
 							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
-								Ngọc bổ trợ
+								Ngọc
 							</h2>
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 								{fullRunes.map((item, index) => (
@@ -497,7 +497,7 @@ const BuildDetail = () => {
 							variant='primary'
 							onClick={() => {
 								setShowLoginModal(false);
-								navigate("/login");
+								navigate("/auth");
 							}}
 						>
 							Đến trang đăng nhập

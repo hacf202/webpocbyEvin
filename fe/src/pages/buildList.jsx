@@ -317,54 +317,54 @@ const Builds = () => {
 				type='website'
 			/>
 			<div className='container mx-auto p-2 sm:p-4 text-text-primary font-secondary'>
-				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4'>
-					<h1 className='text-3xl font-bold text-primary-500 font-primary'>
-						Danh Sách Bộ Cổ Vật
-					</h1>
+				<h1 className='text-3xl font-bold text-primary-500 font-primary mb-2'>
+					Danh Sách Bộ Cổ Vật
+				</h1>
+
+				{/* TABS */}
+				<div className='flex flex-wrap justify-between gap-2 border-b border-border mb-6'>
+					<div>
+						<Button
+							variant={activeTab === "community" ? "primary" : "ghost"}
+							onClick={() => setActiveTab("community")}
+							iconLeft={<Globe size={18} />}
+						>
+							Cộng Đồng
+						</Button>
+						{user && (
+							<Button
+								variant={activeTab === "my-builds" ? "primary" : "ghost"}
+								onClick={() => setActiveTab("my-builds")}
+								iconLeft={<Shield size={18} />}
+							>
+								Của Tôi
+							</Button>
+						)}
+						{user && (
+							<Button
+								variant={activeTab === "my-favorites" ? "primary" : "ghost"}
+								onClick={() => setActiveTab("my-favorites")}
+								iconLeft={<Heart size={18} />}
+							>
+								Yêu Thích
+							</Button>
+						)}
+					</div>
 					{user ? (
 						<Button
 							variant='primary'
 							onClick={() => setShowCreateModal(true)}
 							iconLeft={<PlusCircle size={20} />}
 						>
-							Tạo Bộ Mới
+							Tạo Bộ Cổ Vật Mới
 						</Button>
 					) : (
 						<NavLink
 							to='/auth'
-							className='text-sm text-text-secondary hover:underline'
+							className='text-md font-bold text-primary-500 hover:underline '
 						>
-							<strong>Đăng nhập</strong> để tạo bộ
+							Đăng Nhập Để Tạo Bộ Cổ Vật
 						</NavLink>
-					)}
-				</div>
-
-				{/* TABS */}
-				<div className='flex flex-wrap gap-2 border-b border-border mb-6'>
-					<Button
-						variant={activeTab === "community" ? "primary" : "ghost"}
-						onClick={() => setActiveTab("community")}
-						iconLeft={<Globe size={18} />}
-					>
-						Cộng Đồng
-					</Button>
-					{user && (
-						<Button
-							variant={activeTab === "my-builds" ? "primary" : "ghost"}
-							onClick={() => setActiveTab("my-builds")}
-							iconLeft={<Shield size={18} />}
-						>
-							Của Tôi
-						</Button>
-					)}
-					{user && (
-						<Button
-							variant={activeTab === "my-favorites" ? "primary" : "ghost"}
-							onClick={() => setActiveTab("my-favorites")}
-							iconLeft={<Heart size={18} />}
-						>
-							Yêu Thích
-						</Button>
 					)}
 				</div>
 

@@ -231,7 +231,7 @@ const BuildEditorForm = memo(
 						</h3>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 							<ArrayInputComponent
-								label='Thánh tích'
+								label='Cổ vật'
 								data={formData.artifacts}
 								onChange={data => handleArrayChange("artifacts", data)}
 							/>

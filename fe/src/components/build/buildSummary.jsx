@@ -396,7 +396,7 @@ const BuildSummary = ({
 						{build.artifacts?.length > 0 && (
 							<div>
 								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
-									Thánh tích:
+									Cổ Vật:
 								</p>
 								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
 									{build.artifacts.map((a, i) =>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import Button from "./button";
-import Logo from "../../../Yuumi.png";
+import Logo from "/ahriicon.png";
 
 const ANNOUNCEMENT_KEY = "pocguide_announcement_2025";
 const ANNOUNCEMENT_TEXT = "Tên miền chính thức: pocguide.top";

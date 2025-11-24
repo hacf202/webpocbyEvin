@@ -67,15 +67,16 @@ export default function RelicGuide() {
 								Cổ vật (Relics) là gì?
 							</h2>
 							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)]'>
-								Cổ vật là những trang bị đặc biệt chỉ tồn tại trong chế độ{" "}
-								<strong>Con Đường Anh Hùng (The Path of Champions)</strong>.
-								Chúng mang lại hiệu ứng cực kỳ mạnh mẽ và đa dạng, giúp thay đổi
-								hoàn toàn lối chơi của từng vị tướng.
+								Cổ vật là những trang bị đặc biệt dành cho tướng trong chế độ{" "}
+								<strong>Con Đường Anh Hùng (The Path of Champions)</strong>. Bạn
+								có thể trang bị cổ vật cho tướng trước khi phiêu lưu, phối kết
+								hợp các cổ vật để tối ưu sức mạnh cho tướng của bạn.
 							</p>
 							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)] mt-4'>
-								Mỗi tướng tối đa được mang <strong>3 cổ vật</strong>. Sự kết hợp
-								cổ vật đúng cách có thể biến một tướng 1-2 sao thành “quái vật”
-								có thể clear cả bản đồ Ác Mộng và các event khó nhất.
+								Mỗi tướng được mang tối đa <strong>3 cổ vật</strong>. Sự kết hợp
+								cổ vật đúng cách giúp tướng có thể phát huy tối đa sức mạnh, với
+								các tổ hợp cổ vật khác nhau sẽ mang đến các lối chơi khác nhau
+								dù cho cùng một tướng.
 							</p>
 						</section>
 
@@ -89,32 +90,60 @@ export default function RelicGuide() {
 
 						{/* Độ hiếm & ô cổ vật */}
 						<section className='mb-12'>
-							<h2 className='text-3xl font-bold text-white mb-6'>
+							<h2 className='text-3xl font-bold text-[var(--color-primary-500)] mb-6'>
 								01. Phân loại độ hiếm & ô Cổ Vật
 							</h2>
-							<div className='grid md:grid-cols-3 gap-6 my-8'>
-								<div className='text-center p-6 bg-gray-800 rounded-xl border border-gray-700'>
-									<div className='text-2xl font-bold text-gray-400 mb-2'>
-										Thường (Common)
-									</div>
-									<Package className='w-12 h-12 mx-auto text-gray-500' />
-									<p className='mt-3'>Ô đầu tiên luôn là Thường</p>
+
+							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)]'>
+								Cổ vật được chia làm 3 độ hiếm tăng dần là: Thường, Hiếm, Sử
+								Thi.
+							</p>
+							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)] mt-4'>
+								Chỉ trang bị được cổ vật có độ hiếm bằng hoặc thấp hơn. Ví dụ Ô
+								Hiếm thì có thể trang bị được cổ vật Hiếm và Thường, Ô thường
+								thì chỉ trang bị được cổ vật Thường.
+							</p>
+							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)] mt-4'>
+								Độ hiếm của ô sẽ tăng dần dựa theo cấp tướng hoặc được nâng cấp
+								nhờ vật phẩm. Cụ thể:
+							</p>
+							<ul className='list-disc list-inside space-y-3 text-[var(--color-text-secondary)] ml-4 mt-4 text-lg'>
+								<li>
+									<strong>Cấp 1 - 7:</strong> 1 ô cổ vật Thường
+								</li>
+								<li>
+									<strong>Cấp 8 - 12:</strong> 1 ô cổ vật Hiếm
+								</li>
+								<li>
+									<strong>Cấp 13 - 18:</strong> 1 ô cổ vật Thường và 1 ô cổ vật
+									Hiếm
+								</li>
+								<li>
+									<strong>Cấp 19 - 24:</strong> 2 ô cổ vật Hiếm
+								</li>
+								<li>
+									<strong>Cấp 19 - 24:</strong> 2 ô cổ vật Hiếm
+								</li>
+								<li>
+									<strong>Cấp 25 - 29:</strong> 1 ô cổ vật Thường và 2 ô cổ vật
+									Hiếm
+								</li>
+								<li>
+									<strong>Cấp 30 trở lên:</strong> 3 ô cổ vật Hiếm
+								</li>
+								<li>
+									Để nâng cấp 1 ô cổ vật từ <strong>Hiếm lên Sử Thi</strong> cần
+									sử dụng <strong>Tôi Luyện Linh Hồn</strong> lắp vào ô cổ vật
+									và hoàn thành 1 chuyến phiêu lưu 3 sao trở lên.
+								</li>
+								<div className='my-12 rounded-2xl overflow-hidden shadow-xl border border-[var(--color-border)]'>
+									<SafeImage
+										src='/image/relicforge.png'
+										alt='3 ô cổ vật trên tướng'
+										className='w-full'
+									/>
 								</div>
-								<div className='text-center p-6 bg-blue-950 rounded-xl border border-blue-800'>
-									<div className='text-2xl font-bold text-blue-400 mb-2'>
-										Hiếm (Rare)
-									</div>
-									<Package className='w-12 h-12 mx-auto text-blue-500' />
-									<p className='mt-3'>Mở ở cấp tướng khoảng 15-20</p>
-								</div>
-								<div className='text-center p-6 bg-purple-950 rounded-xl border border-purple-700'>
-									<div className='text-2xl font-bold text-purple-400 mb-2'>
-										Sử Thi (Epic)
-									</div>
-									<Package className='w-12 h-12 mx-auto text-purple-500' />
-									<p className='mt-3'>Chỉ có được bằng Tôi Luyện Linh Hồn</p>
-								</div>
-							</div>
+							</ul>
 						</section>
 
 						{/* Cách thu thập */}
@@ -139,13 +168,19 @@ export default function RelicGuide() {
 								<li className='flex items-start gap-3'>
 									<Zap className='w-6 h-6 text-yellow-500 mt-1 flex-shrink-0' />
 									<div>
-										<strong>Cửa Hàng Vinh Danh</strong> (dùng Vinh Danh đổi)
+										<strong>Cửa Hàng Vinh Danh</strong> (dùng xu Vinh Danh đổi)
 									</div>
 								</li>
 								<li className='flex items-start gap-3'>
 									<Zap className='w-6 h-6 text-yellow-500 mt-1 flex-shrink-0' />
 									<div>
-										<strong>Sự kiện đặc biệt</strong> (thường có rương Sử Thi)
+										<strong>Sự kiện đặc biệt bản đồ đặc biệt</strong>
+									</div>
+								</li>
+								<li className='flex items-start gap-3'>
+									<Zap className='w-6 h-6 text-yellow-500 mt-1 flex-shrink-0' />
+									<div>
+										<strong>Các gói ưu đãi giới hạn </strong>(bundle)
 									</div>
 								</li>
 							</ul>
@@ -159,114 +194,84 @@ export default function RelicGuide() {
 							/>
 						</div>
 
-						{/* Tôi luyện linh hồn */}
-						<section className='mb-12'>
-							<h2 className='text-3xl font-bold text-purple-400 mb-6'>
-								03. Tôi Luyện Linh Hồn – Nâng cấp ô Hiếm → Sử Thi
-							</h2>
-							<p className='text-lg leading-relaxed text-[var(--color-text-secondary)]'>
-								Khi tướng đạt cấp đủ cao, bạn sẽ mở tính năng{" "}
-								<strong>Tôi Luyện Linh Hồn</strong> (Consume). Bạn hy sinh 1 cổ
-								vật cùng loại (cùng tên) để biến ô Hiếm thành ô Sử Thi, cho phép
-								trang bị cổ vật tím.
-							</p>
-							<p className='text-lg text-orange-400 font-bold mt-4'>
-								Lưu ý: Chỉ nên tiêu thụ bản thừa, tuyệt đối không tiêu bản
-								unique quý hiếm!
-							</p>
-						</section>
-
 						{/* Top cổ vật mạnh nhất */}
 						<section className='mb-12'>
 							<h2 className='text-3xl font-bold text-[var(--color-primary-500)] mb-8'>
-								04. Top 15 Cổ vật mạnh nhất hiện tại (cập nhật 2025)
+								03. Top các cổ vật mạnh nhất hiện tại (2025)
 							</h2>
-							<div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+							<div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6 '>
 								{[
 									{
-										name: "The Collector’s Might",
+										name: "Găng Tinh Vân Sư #1",
 										rarity: "Sử Thi",
-										desc: "+2/+2 cho mọi lá bài trong tay & bộ bài",
+										desc: "Sức mạnh: Bắt Đầu Trận Đấu: Nếu ta đang ở trong bộ bài hoặc trên tay và Khổng Lồ, +1 cho Năng Lượng Khởi Điểm. Ngươi có thể tìm thấy Anh Hùng Cấp 2 khi Hiệu Triệu hoặc Hình Thành.",
 									},
 									{
-										name: "Archangel’s Staff",
+										name: "Đội Quân Quạ Của Swain",
 										rarity: "Sử Thi",
-										desc: "Mỗi round đầu +2 mana gem",
+										desc: "Sức Mạnh: Bắt Đầu Trận Đấu: Hấp Thụ 5 máu từ Nhà Chính của đối thủ.Xuất Trận: Nếu ta là Swain, hồi đầy năng lượng bài phép.",
 									},
 									{
-										name: "Garen’s Judgment",
+										name: "Lõi Công Nghệ Hoàn Hảo",
 										rarity: "Sử Thi",
-										desc: "Khi đồng minh chết → triệu hồi Elite khác",
+										desc: "Sức mạnh: Bắt Đầu Vòng Đấu: Tạo trên tay 1 lá Nâng Cấp Lõi Công Nghệ. Lá Nâng Cấp Lõi Công Nghệ có Đồng Hồ Ngưng Đọng và thể nâng cấp bất kỳ đồng minh nào.",
 									},
 									{
-										name: "Targon’s Peak",
+										name: "Lời Thề Hộ Vệ",
 										rarity: "Sử Thi",
-										desc: "Invoke lá bài 8 mana mỗi round",
+										desc: "Xuất Trận: Tráo 5 anh hùng cấp 2 vào bộ bài và tăng gấp đôi chỉ số của họ, rồi rút 1 trong các lá đó.",
 									},
 									{
-										name: "Crownguard Inheritance",
-										rarity: "Hiếm",
-										desc: "Lá bài đắt nhất giảm 2 mana",
-									},
-									{
-										name: "Ravenous Hydra",
+										name: "Linh Hồn Vang Vọng",
 										rarity: "Sử Thi",
-										desc: "Khi tấn công → gây sát thương bằng Attack cho tất cả kẻ địch",
+										desc: "Bắt Đầu Trận Đấu: Tạo 7 bản sao của ta trong bộ bài. Giảm 1 tiêu hao cho Bài Phép Anh Hùng.",
 									},
 									{
-										name: "Warmog’s Armor",
-										rarity: "Hiếm",
-										desc: "+15 máu khởi đầu",
-									},
-									{
-										name: "Banshee’s Veil",
-										rarity: "Hiếm",
-										desc: "Round đầu miễn nhiễm spell địch",
-									},
-									{
-										name: "Zhonya’s Hourglass",
+										name: "Quái Thú Bên Trong",
 										rarity: "Sử Thi",
-										desc: "Lần đầu sắp chết → bất tử 1 round",
+										desc: "Sức Mạnh: Đồng minh nhận Áp Đảo, và nếu có nhóm phụ, nhận thêm +1|+1.",
 									},
 									{
-										name: "Gatebreaker",
+										name: "Kéo Cắt Ma Quái",
+										rarity: "Sử Thi",
+										desc: "+2|+0Hỗ Trợ: Nếu đồng minh được ta hỗ trợ là tùy tùng, ban Cảm Tử cho nó và triệu hồi bản sao y hệt của đồng minh đó ở vị trí tấn công.",
+									},
+									{
+										name: "Đệ Tử Bóng Đêm",
+										rarity: "Sử Thi",
+										desc: "Ta được giảm 1 tiêu hao với mỗi đồng minh trên bàn.Xuất Trận: Gây 3 sát thương lên tất cả đồng minh khác.",
+									},
+									{
+										name: "Máy Sao Chép Hóa Kỹ",
 										rarity: "Hiếm",
-										desc: "Round đầu +4/+4 cho unit mạnh nhất",
+										desc: "Khi ngươi sử dụng 1 bài phép, nếu ngươi có 6+ ngọc năng lượng, sao chép hiệu ứng bài phép đó lên cùng mục tiêu.",
 									},
 									{
-										name: "The Scargrounds",
+										name: "Di Sản Crownguard",
 										rarity: "Hiếm",
-										desc: "Khi unit chết → +1/+1 cho tất cả đồng minh",
+										desc: "Khi ta thăng cấp, Tiến Công.",
 									},
 									{
-										name: "Lost Chapter",
-										rarity: "Thường",
-										desc: "Round đầu refill 1 mana",
+										name: "Bộ Bài Đầy Ắp",
+										rarity: "Sử Thi",
+										desc: "+200 Vàng Khởi Điểm.Sức Mạnh: Đồng minh nhận +1|+1 với mỗi 12 lá bài vượt quá lá thứ 18 trong bộ bài của ngươi khi bắt đầu trận đấu.",
 									},
 									{
-										name: "Overwhelming Power",
-										rarity: "Hiếm",
-										desc: "Mỗi spell gây thêm 1 sát thương",
-									},
-									{
-										name: "Guardian’s Orb",
-										rarity: "Thường",
-										desc: "Khởi đầu với SpellShield",
-									},
-									{
-										name: "Titanic Strength",
-										rarity: "Hiếm",
-										desc: "Khi triệu hồi unit 5+ mana → +3/+3",
+										name: "Thuốc Nổ Nén Chặt",
+										rarity: "Sử Thi",
+										desc: "Cưỡng Đoạt: Ta được giảm 2 tiêu hao.Ta nhận +1|+1 với mỗi vòng đấu ngươi đã gây sát thương lên Nhà Chính của đối thủ.",
 									},
 								].map((relic, i) => (
 									<div
 										key={i}
-										className='bg-gray-900 border border-gray-700 rounded-xl p-5 hover:border-purple-500 transition-all'
+										className=' border border-gray-700 rounded-xl p-5 hover:border-purple-500 transition-all'
 									>
 										<div className='flex items-center justify-between mb-2'>
-											<h4 className='font-bold text-white'>{relic.name}</h4>
+											<h4 className='font-bold text-primary-500 text-xl'>
+												{relic.name}
+											</h4>
 											<span
-												className={`text-xs px-2 py-1 rounded ${
+												className={`text-xs px-2 py-1 rounded text-nowrap ${
 													relic.rarity === "Sử Thi"
 														? "bg-purple-900 text-purple-300"
 														: "bg-blue-900 text-blue-300"
@@ -275,22 +280,22 @@ export default function RelicGuide() {
 												{relic.rarity}
 											</span>
 										</div>
-										<p className='text-sm text-gray-400'>{relic.desc}</p>
+										<p className='text-md text-gray-400'>{relic.desc}</p>
 									</div>
 								))}
 							</div>
 						</section>
 
 						{/* Kết luận */}
-						<section className='mt-16 rounded-3xl p-10 text-center border border-[var(--color-border)] bg-gradient-to-b from-purple-900/20 to-transparent'>
+						<section className='mt-16 rounded-3xl p-10 text-center border border-[var(--color-border)] '>
 							<h2 className='text-4xl font-bold text-[var(--color-primary-500)] mb-6'>
 								Hãy thử nghiệm và tìm ra combo cổ vật của riêng bạn!
 							</h2>
 							<p className='text-xl text-[var(--color-text-secondary)] max-w-3xl mx-auto'>
 								Cổ vật chính là yếu tố tạo nên sự khác biệt giữa một người chơi
-								bình thường và một cao thủ Path of Champions. Đừng ngại thử
-								nghiệm những combo “điên rồ” – đôi khi chúng lại là chìa khóa để
-								vượt qua Asol Ác Mộng hay các event mới nhất!
+								bình thường và một người chơi kỳ cựu của Con Đường Anh Hùng.
+								Đừng ngại thử nghiệm những combo mới lạ đôi khi chúng lại là
+								chìa khóa để mở khóa tối đa sức mạnh của tướng.
 							</p>
 						</section>
 					</div>
