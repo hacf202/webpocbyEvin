@@ -211,7 +211,7 @@ const BuildDetail = () => {
 	}, [build?.championName, champions]);
 
 	const championImage = useMemo(
-		() => championInfo?.assets?.[0]?.M?.avatar?.S || "/images/placeholder.png",
+		() => championInfo?.assets?.[0]?.avatar || "/images/placeholder.png",
 		[championInfo]
 	);
 
@@ -233,12 +233,10 @@ const BuildDetail = () => {
 		return list.find(item => item.name === n);
 	};
 
-	const fullArtifacts = useMemo(
+	const fullrelicSet = useMemo(
 		() =>
-			(build?.artifacts || [])
-				.map(a => findFullItem(relics, a))
-				.filter(Boolean),
-		[build?.artifacts, relics]
+			(build?.relicSet || []).map(a => findFullItem(relics, a)).filter(Boolean),
+		[build?.relicSet, relics]
 	);
 
 	const fullPowers = useMemo(
@@ -425,13 +423,13 @@ const BuildDetail = () => {
 					</div>
 
 					{/* Cổ vật */}
-					{fullArtifacts.length > 0 && (
+					{fullrelicSet.length > 0 && (
 						<div className='mb-6'>
 							<h2 className='text-xl sm:text-2xl font-semibold mb-3 font-primary'>
 								Cổ Vật
 							</h2>
 							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-								{fullArtifacts.map((item, index) => (
+								{fullrelicSet.map((item, index) => (
 									<RenderItem key={`${item.name}-${index}`} item={item} />
 								))}
 							</div>

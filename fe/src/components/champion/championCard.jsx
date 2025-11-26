@@ -6,10 +6,7 @@ import SafeImage from "../common/SafeImage";
 
 function ChampionCard({ champion }) {
 	// Logic lấy URL hình ảnh, ưu tiên avatarUrl đã được xử lý trước, sau đó đến các đường dẫn khác
-	const imageUrl =
-		champion.avatarUrl ||
-		champion.assets?.[0]?.M?.avatar?.S ||
-		"/fallback-image.svg";
+	const imageUrl = champion.assets?.[0]?.avatar || "/fallback-image.svg";
 
 	return (
 		// Khung thẻ chính với các class CSS tiện ích của Tailwind

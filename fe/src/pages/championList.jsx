@@ -17,11 +17,9 @@ import {
 import { removeAccents } from "../utils/vietnameseUtils";
 import iconRegions from "../assets/data/iconRegions.json";
 import PageTitle from "../components/common/pageTitle";
-import SafeImage from "../components/common/SafeImage";
 
 const ITEMS_PER_PAGE = 20;
 
-// --- Component phụ ---
 const LoadingSpinner = () => (
 	<div className='flex justify-center items-center h-64'>
 		<div className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500'></div>
@@ -38,11 +36,11 @@ const ErrorMessage = ({ message, onRetry }) => (
 	</div>
 );
 
-// --- Component chính ---
 function ChampionList() {
 	const [champions, setChampions] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+
 	const [searchInput, setSearchInput] = usePersistentState(
 		"championsSearchInput",
 		""
@@ -80,7 +78,7 @@ function ChampionList() {
 		false
 	);
 
-	// API
+	// === FETCH DATA ===
 	const fetchChampions = async () => {
 		setLoading(true);
 		setError(null);
@@ -89,13 +87,24 @@ function ChampionList() {
 			const response = await fetch(`${backendUrl}/api/champions`);
 			if (!response.ok) throw new Error(`Lỗi server: ${response.status}`);
 			const data = await response.json();
-			const formattedData = data.map(champ => ({
+
+			// Chuẩn hóa dữ liệu cho frontend (avatar + đảm bảo kiểu dữ liệu)
+			const formatted = data.map(champ => ({
 				...champ,
-				avatarUrl: champ.assets?.[0]?.M?.avatar?.S || "",
+				// Lấy avatar đúng theo cấu trúc mới
+				avatarUrl:
+					champ.assets?.[0]?.avatar ||
+					champ.assets?.[0]?.fullAbsolutePath ||
+					"/fallback-champion.png",
+				// Đảm bảo cost và maxStar là số
+				cost: Number(champ.cost) || 0,
+				maxStar: Number(champ.maxStar) || 3,
 			}));
-			setChampions(formattedData);
+
+			setChampions(formatted);
 		} catch (err) {
 			setError(err.message);
+			console.error(err);
 		} finally {
 			setLoading(false);
 		}
@@ -105,11 +114,12 @@ function ChampionList() {
 		fetchChampions();
 	}, []);
 
-	// Filter options
+	// === FILTER OPTIONS ===
 	const filterOptions = useMemo(() => {
 		if (champions.length === 0)
 			return { regions: [], costs: [], maxStars: [], tags: [], sort: [] };
-		const regions = [...new Set(champions.flatMap(c => c.regions))]
+
+		const regions = [...new Set(champions.flatMap(c => c.regions || []))]
 			.sort()
 			.map(regionName => {
 				const regionData = iconRegions.find(r => r.name === regionName);
@@ -119,36 +129,45 @@ function ChampionList() {
 					iconUrl: regionData?.iconAbsolutePath ?? "/fallback-image.svg",
 				};
 			});
+
 		const costs = [...new Set(champions.map(c => c.cost))]
+			.filter(c => c > 0)
 			.sort((a, b) => a - b)
 			.map(cost => ({ value: cost, isCost: true }));
+
 		const maxStars = [...new Set(champions.map(c => c.maxStar))]
 			.sort((a, b) => a - b)
 			.map(star => ({ value: star, isStar: true }));
+
 		const tags = [...new Set(champions.flatMap(c => c.tag || []))]
 			.sort()
 			.map(tag => ({ value: tag, label: tag, isTag: true }));
+
 		const sort = [
 			{ value: "name-asc", label: "Tên A-Z" },
 			{ value: "name-desc", label: "Tên Z-A" },
 			{ value: "cost-asc", label: "Năng lượng thấp-cao" },
 			{ value: "cost-desc", label: "Năng lượng cao-thấp" },
 		];
+
 		return { regions, costs, maxStars, tags, sort };
 	}, [champions]);
 
-	// Filter & sort
+	// === FILTER + SORT ===
 	const filteredChampions = useMemo(() => {
 		let filtered = [...champions];
+
+		// Tìm kiếm không dấu
 		if (searchTerm) {
-			const normalized = removeAccents(searchTerm.toLowerCase());
+			const term = removeAccents(searchTerm.toLowerCase());
 			filtered = filtered.filter(c =>
-				removeAccents(c.name.toLowerCase()).includes(normalized)
+				removeAccents(c.name.toLowerCase()).includes(term)
 			);
 		}
+
 		if (selectedRegions.length > 0)
 			filtered = filtered.filter(c =>
-				c.regions.some(r => selectedRegions.includes(r))
+				c.regions?.some(r => selectedRegions.includes(r))
 			);
 		if (selectedCosts.length > 0)
 			filtered = filtered.filter(c => selectedCosts.includes(c.cost));
@@ -159,17 +178,20 @@ function ChampionList() {
 				c.tag?.some(t => selectedTags.includes(t))
 			);
 
-		const [sortKey, sortDirection] = sortOrder.split("-");
+		// Sắp xếp
+		const [sortKey, sortDir] = sortOrder.split("-");
 		filtered.sort((a, b) => {
-			const valA = a[sortKey],
-				valB = b[sortKey];
-			if (sortKey === "cost" || sortKey === "maxStar") {
-				return sortDirection === "asc" ? valA - valB : valB - valA;
+			let valA = sortKey === "name" ? a.name : a[sortKey];
+			let valB = sortKey === "name" ? b.name : b[sortKey];
+
+			if (typeof valA === "string") {
+				return sortDir === "asc"
+					? valA.localeCompare(valB)
+					: valB.localeCompare(valA);
 			}
-			return sortDirection === "asc"
-				? (valA || "").toString().localeCompare((valB || "").toString())
-				: (valB || "").toString().localeCompare((valA || "").toString());
+			return sortDir === "asc" ? valA - valB : valB - valA;
 		});
+
 		return filtered;
 	}, [
 		champions,
@@ -181,11 +203,18 @@ function ChampionList() {
 		sortOrder,
 	]);
 
+	// Pagination
+	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
+	const paginatedChampions = filteredChampions.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
+
 	// Handlers
 	const handleSearch = () => {
-		setSearchTerm(searchInput);
+		setSearchTerm(searchInput.trim());
 		setCurrentPage(1);
-		if (window.innerWidth < 1024) setIsFilterOpen(false); // Tự động đóng trên mobile
+		if (window.innerWidth < 1024) setIsFilterOpen(false);
 	};
 	const handleClearSearch = () => {
 		setSearchInput("");
@@ -201,13 +230,6 @@ function ChampionList() {
 		setSortOrder("name-asc");
 		setCurrentPage(1);
 	};
-	const handlePageChange = page => setCurrentPage(page);
-
-	const totalPages = Math.ceil(filteredChampions.length / ITEMS_PER_PAGE);
-	const paginatedChampions = filteredChampions.slice(
-		(currentPage - 1) * ITEMS_PER_PAGE,
-		currentPage * ITEMS_PER_PAGE
-	);
 
 	if (loading) return <LoadingSpinner />;
 	if (error) return <ErrorMessage message={error} onRetry={fetchChampions} />;
@@ -223,10 +245,11 @@ function ChampionList() {
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
 					Danh Sách Tướng
 				</h1>
+
 				<div className='flex flex-col lg:flex-row gap-8'>
-					{/* FILTER - MOBILE & DESKTOP */}
+					{/* === FILTER SIDEBAR (giữ nguyên hoàn toàn giao diện cũ) === */}
 					<aside className='lg:w-1/5 w-full lg:sticky lg:top-24 h-fit'>
-						{/* Mobile: Collapsible */}
+						{/* Mobile */}
 						<div className='lg:hidden p-2 rounded-lg border border-border bg-surface-bg'>
 							<div className='flex items-center gap-2'>
 								<div className='flex-1 relative'>
@@ -250,7 +273,7 @@ function ChampionList() {
 								</Button>
 								<Button
 									variant='outline'
-									onClick={() => setIsFilterOpen(prev => !prev)}
+									onClick={() => setIsFilterOpen(p => !p)}
 									className='whitespace-nowrap'
 								>
 									{isFilterOpen ? (
@@ -317,7 +340,7 @@ function ChampionList() {
 							</div>
 						</div>
 
-						{/* Desktop: Full */}
+						{/* Desktop */}
 						<div className='hidden lg:block p-4 rounded-lg border border-border bg-surface-bg space-y-4'>
 							<div>
 								<label className='block text-sm font-medium mb-1 text-text-secondary'>
@@ -343,6 +366,7 @@ function ChampionList() {
 									<Search size={16} className='mr-2' /> Tìm kiếm
 								</Button>
 							</div>
+
 							<MultiSelectFilter
 								label='Vùng'
 								options={filterOptions.regions}
@@ -390,7 +414,7 @@ function ChampionList() {
 						</div>
 					</aside>
 
-					{/* MAIN CONTENT */}
+					{/* === MAIN CONTENT === */}
 					<div className='lg:w-4/5 w-full lg:order-first'>
 						<div className='bg-surface-bg rounded-lg border border-border p-2 sm:p-6'>
 							{paginatedChampions.length > 0 ? (
@@ -398,8 +422,8 @@ function ChampionList() {
 									<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'>
 										{paginatedChampions.map(champion => (
 											<Link
-												key={champion.name}
-												to={`/champion/${encodeURIComponent(champion.name)}`}
+												key={champion.championID} // Dùng championID làm key thay vì name
+												to={`/champion/${champion.championID}`} // Link theo ID, không bị lỗi ký tự đặc biệt
 												className='hover:scale-105 transition-transform duration-200'
 											>
 												<ChampionCard champion={champion} />
@@ -407,7 +431,6 @@ function ChampionList() {
 										))}
 									</div>
 
-									{/* Số lượng kết quả */}
 									<div className='text-center text-sm text-text-secondary mt-6 mb-2'>
 										Hiển thị{" "}
 										<span className='font-medium text-text-primary'>
@@ -424,11 +447,10 @@ function ChampionList() {
 										kết quả
 									</div>
 
-									{/* Phân trang */}
 									{totalPages > 1 && (
 										<div className='mt-4 flex justify-center items-center gap-2 md:gap-4'>
 											<Button
-												onClick={() => handlePageChange(currentPage - 1)}
+												onClick={() => setCurrentPage(p => p - 1)}
 												disabled={currentPage === 1}
 												variant='outline'
 											>
@@ -438,7 +460,7 @@ function ChampionList() {
 												{currentPage} / {totalPages}
 											</span>
 											<Button
-												onClick={() => handlePageChange(currentPage + 1)}
+												onClick={() => setCurrentPage(p => p + 1)}
 												disabled={currentPage === totalPages}
 												variant='outline'
 											>

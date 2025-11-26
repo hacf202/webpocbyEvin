@@ -41,15 +41,19 @@ const BuildSummary = ({
 		useState(false);
 	const [likeCount, setLikeCount] = useState(build.like || 0);
 	const [isLiked, setIsLiked] = useState(false);
+
+	// Thay đổi hoàn toàn: dùng API riêng để lấy favorite
 	const [isFavorite, setIsFavorite] = useState(false);
-	const [favoriteList, setFavoriteList] = useState(build.favorite || []);
+	const [favoriteCount, setFavoriteCount] = useState(0);
+	const [isLoadingFavorite, setIsLoadingFavorite] = useState(true);
+
 	const [showLoginModal, setShowLoginModal] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [buildToDelete, setBuildToDelete] = useState(null);
 	const [buildToEdit, setBuildToEdit] = useState(null);
 	const [creatorDisplayName, setCreatorDisplayName] = useState(build.creator);
 
-	// === Kiểm tra overflow mô tả ===
+	// Kiểm tra overflow mô tả
 	useEffect(() => {
 		const element = descriptionRef.current;
 		if (!element || !build.description) {
@@ -65,21 +69,18 @@ const BuildSummary = ({
 
 		const resizeObserver = new ResizeObserver(checkOverflow);
 		resizeObserver.observe(element);
-		checkOverflow(); // Gọi ngay lập tức
+		checkOverflow();
 
 		return () => resizeObserver.disconnect();
 	}, [build.description]);
 
-	// === Like / Favorite / Menu / Creator ===
+	// Kiểm tra đã like chưa (dùng sessionStorage như cũ)
 	useEffect(() => {
 		const liked = sessionStorage.getItem(`liked_${build.id}`);
 		if (liked) setIsLiked(true);
 	}, [build.id]);
 
-	useEffect(() => {
-		setIsFavorite(user && favoriteList.includes(user.sub));
-	}, [user, favoriteList]);
-
+	// Click outside để đóng menu
 	useEffect(() => {
 		const handleClickOutside = e => {
 			if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -90,6 +91,7 @@ const BuildSummary = ({
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
+	// Lấy tên người tạo
 	useEffect(() => {
 		const fetchCreatorName = async () => {
 			if (user && build.sub === user.sub) {
@@ -116,21 +118,64 @@ const BuildSummary = ({
 		fetchCreatorName();
 	}, [build.creator, build.sub, user, apiUrl]);
 
+	// Lấy trạng thái yêu thích & số lượng yêu thích từ API
+	useEffect(() => {
+		const fetchFavoriteData = async () => {
+			if (!build?.id) return;
+
+			try {
+				setIsLoadingFavorite(true);
+
+				const [statusRes, countRes] = await Promise.all([
+					user
+						? fetch(`${apiUrl}/api/builds/${build.id}/favorite/status`, {
+								headers: { Authorization: `Bearer ${token}` },
+						  })
+						: Promise.resolve(null),
+					fetch(`${apiUrl}/api/builds/${build.id}/favorite/count`),
+				]);
+
+				// Trạng thái yêu thích của user hiện tại
+				if (statusRes && statusRes.ok) {
+					const { isFavorited } = await statusRes.json();
+					setIsFavorite(isFavorited);
+				} else {
+					setIsFavorite(false);
+				}
+
+				// Tổng số lượt yêu thích
+				if (countRes.ok) {
+					const { count } = await countRes.json();
+					setFavoriteCount(count);
+				}
+			} catch (err) {
+				console.error("Lỗi tải dữ liệu yêu thích:", err);
+				setIsFavorite(false);
+				setFavoriteCount(0);
+			} finally {
+				setIsLoadingFavorite(false);
+			}
+		};
+
+		fetchFavoriteData();
+	}, [build.id, user, token, apiUrl]);
+
 	const isOwner = useMemo(
 		() => user && build.sub === user.sub,
 		[user, build.sub]
 	);
 
-	// === Xem chi tiết ===
+	// Xem chi tiết
 	const handleViewDetail = e => {
 		e.stopPropagation();
 		navigate(`/builds/${build.id}`);
 	};
 
-	// === Like ===
+	// Like
 	const handleLike = async e => {
 		e.stopPropagation();
 		if (isLiked) return;
+
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
 				method: "PATCH",
@@ -147,13 +192,21 @@ const BuildSummary = ({
 		}
 	};
 
-	// === Yêu thích ===
+	// Toggle yêu thích (dùng bảng riêng)
 	const handleToggleFavorite = async e => {
 		e.stopPropagation();
 		if (!user) {
 			setShowLoginModal(true);
 			return;
 		}
+
+		const previousFavorite = isFavorite;
+		const previousCount = favoriteCount;
+
+		// Optimistic update
+		setIsFavorite(!previousFavorite);
+		setFavoriteCount(previousFavorite ? previousCount - 1 : previousCount + 1);
+
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/favorite`, {
 				method: "PATCH",
@@ -162,17 +215,32 @@ const BuildSummary = ({
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			if (res.ok) {
-				const updated = await res.json();
-				setFavoriteList(updated.favorite);
-				onBuildUpdate?.(updated);
+
+			if (!res.ok) throw new Error("Toggle failed");
+
+			const result = await res.json();
+			setIsFavorite(result.isFavorited);
+
+			// Tùy chọn: gọi lại count để đảm bảo chính xác 100%
+			const countRes = await fetch(
+				`${apiUrl}/api/builds/${build.id}/favorite/count`
+			);
+			if (countRes.ok) {
+				const { count } = await countRes.json();
+				setFavoriteCount(count);
 			}
+
+			onBuildUpdate?.(result);
 		} catch (err) {
-			console.error("Lỗi yêu thích:", err);
+			console.error("Lỗi toggle yêu thích:", err);
+			// Revert
+			setIsFavorite(previousFavorite);
+			setFavoriteCount(previousCount);
+			alert("Có lỗi xảy ra khi yêu thích build");
 		}
 	};
 
-	// === Sửa / Xóa ===
+	// Sửa / Xóa
 	const handleEdit = e => {
 		e.stopPropagation();
 		setBuildToEdit(build);
@@ -195,7 +263,7 @@ const BuildSummary = ({
 		setBuildToDelete(null);
 	};
 
-	// === Helper: normalize & find image ===
+	// Helper: tìm ảnh
 	const normalizeName = val =>
 		val && typeof val === "object" ? val.S || "" : String(val || "");
 	const findImage = (list, name) =>
@@ -205,14 +273,14 @@ const BuildSummary = ({
 	const championImage = useMemo(() => {
 		const name = normalizeName(build?.championName);
 		return (
-			championsList.find(c => c?.name === name)?.assets?.[0]?.M?.avatar?.S ||
+			championsList.find(c => c?.name === name)?.assets?.[0]?.avatar ||
 			"/fallback-image.svg"
 		);
 	}, [championsList, build?.championName]);
 
 	const artifactImages = useMemo(
-		() => (build.artifacts || []).map(a => findImage(relicsList, a)),
-		[relicsList, build.artifacts]
+		() => (build.relicSet || []).map(a => findImage(relicsList, a)),
+		[relicsList, build.relicSet]
 	);
 	const powerImages = useMemo(
 		() => (build.powers || []).map(p => findImage(powersList, p)),
@@ -230,10 +298,8 @@ const BuildSummary = ({
 				<SafeImage
 					src={src || "/fallback-image.svg"}
 					alt={normalizeName(name)}
-					// Đồng bộ thẻ
 					className='w-16 h-16 rounded-md border-2 border-border object-cover'
 				/>
-				{/* Đồng bộ tooltip */}
 				<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10'>
 					{normalizeName(name)}
 				</div>
@@ -247,8 +313,7 @@ const BuildSummary = ({
 				style={style}
 				className='bg-surface-bg border-2 border-border rounded-lg shadow-md 
         hover:shadow-primary-md hover:-translate-y-1 hover:border-primary-500 
-        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden
-        p-3 sm:p-5' // Không padding ở màn nhỏ
+        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden p-3 sm:p-5'
 				onClick={() => navigate(`/builds/${build.id}`)}
 			>
 				<div className='flex flex-col gap-4'>
@@ -272,20 +337,20 @@ const BuildSummary = ({
 						</div>
 
 						{/* Actions */}
-						<div className='flex flex-col items-end gap-1'>
-							<div className='flex items-center gap-2 sm:gap-4'>
+						<div className='flex flex-col items-end gap-2'>
+							<div
+								className='flex items-center gap-1'
+								onClick={e => e.stopPropagation()}
+							>
 								{/* Like */}
-								<div
-									className='flex items-center gap-1 text-text-secondary'
-									onClick={e => e.stopPropagation()}
-								>
+								<div className='flex items-center gap-1 text-text-secondary'>
 									<button
 										onClick={handleLike}
 										disabled={isLiked}
-										className={`p-1.5 rounded-full transition-all duration-200 flex items-center justify-center ${
+										className={`p-1.5 rounded-full transition-all ${
 											isLiked
 												? "text-primary-500 bg-primary-500/10 cursor-not-allowed"
-												: "hover:bg-surface-hover text-text-secondary"
+												: "hover:bg-surface-hover"
 										}`}
 									>
 										<ThumbsUp
@@ -302,18 +367,34 @@ const BuildSummary = ({
 										{likeCount}
 									</span>
 								</div>
+
+								{/* Favorite */}
+								<div className='flex items-center gap-1 text-text-secondary'>
+									<button
+										onClick={handleToggleFavorite}
+										disabled={isLoadingFavorite}
+										className={`p-1.5 rounded-full transition-all ${
+											isFavorite
+												? "text-danger-500 bg-danger-500/10"
+												: "hover:bg-surface-hover"
+										}`}
+									>
+										<Heart
+											size={18}
+											className={isFavorite ? "fill-current" : ""}
+										/>
+									</button>
+								</div>
+
 								{/* Menu */}
-								<div
-									className='relative'
-									ref={menuRef}
-									onClick={e => e.stopPropagation()}
-								>
+								<div className='relative' ref={menuRef}>
 									<button
 										onClick={() => setIsMenuOpen(!isMenuOpen)}
 										className='p-1.5 rounded-full hover:bg-surface-hover transition-colors'
 									>
 										<MoreVertical size={20} className='text-text-secondary' />
 									</button>
+
 									{isMenuOpen && (
 										<div className='absolute top-full right-0 mt-2 w-48 bg-surface-bg border border-border rounded-md shadow-lg z-20'>
 											<button
@@ -326,8 +407,12 @@ const BuildSummary = ({
 														isFavorite ? "text-danger-500 fill-danger-500" : ""
 													}`}
 												/>
-												<span>{isFavorite ? "Bỏ yêu thích" : "Yêu thích"}</span>
+												<span>
+													{isFavorite ? "Bỏ yêu thích" : "Yêu thích"}{" "}
+													{favoriteCount > 0 && `(${favoriteCount})`}
+												</span>
 											</button>
+
 											{build.hasOwnProperty("display") && (
 												<div className='flex items-center gap-3 px-4 py-2 text-sm text-text-secondary'>
 													{build.display ? (
@@ -340,6 +425,7 @@ const BuildSummary = ({
 													</span>
 												</div>
 											)}
+
 											{isOwner && (
 												<>
 													<div className='border-t border-border my-1'></div>
@@ -362,17 +448,14 @@ const BuildSummary = ({
 								</div>
 							</div>
 
-							{/* Stars - Responsive */}
+							{/* Stars */}
 							<div className='flex items-center mt-1'>
-								{/* Màn nhỏ: hiển thị số + icon */}
 								<div className='sm:hidden flex items-center gap-1'>
 									<Star size={16} className='text-icon-star fill-icon-star' />
 									<span className='text-sm font-semibold text-text-primary'>
 										{build.star}
 									</span>
 								</div>
-
-								{/* Màn lớn: hiển thị từng sao */}
 								<div className='hidden sm:flex'>
 									{[1, 2, 3, 4, 5, 6, 7].map(s => (
 										<Star
@@ -391,15 +474,15 @@ const BuildSummary = ({
 						</div>
 					</div>
 
-					{/* Nội dung - thu gọn ở màn nhỏ */}
+					{/* Nội dung build */}
 					<div className='flex flex-col gap-3 text-sm'>
-						{build.artifacts?.length > 0 && (
+						{build.relicSet?.length > 0 && (
 							<div>
 								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
 									Cổ Vật:
 								</p>
 								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
-									{build.artifacts.map((a, i) =>
+									{build.relicSet.map((a, i) =>
 										renderImageWithTooltip(a, artifactImages[i], "artifact", i)
 									)}
 								</div>
@@ -444,11 +527,9 @@ const BuildSummary = ({
 							>
 								"{build.description}"
 							</p>
-
 							{isDescriptionOverflowing && (
 								<div className='absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-surface-bg to-transparent' />
 							)}
-
 							{isDescriptionOverflowing && (
 								<button
 									onClick={handleViewDetail}
@@ -463,7 +544,7 @@ const BuildSummary = ({
 				</div>
 			</div>
 
-			{/* Modal & các component khác giữ nguyên */}
+			{/* Modal đăng nhập */}
 			<Modal
 				isOpen={showLoginModal}
 				onClose={() => setShowLoginModal(false)}

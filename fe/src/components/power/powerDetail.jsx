@@ -62,17 +62,16 @@ function PowerDetail() {
 		? champions
 				.filter(champion => {
 					const powerStarsMatch = champion.powerStars?.some(
-						p => p.S === power.name
+						p => p === power.name
 					);
 					const adventurePowersMatch = champion.adventurePowers?.some(
-						p => p.S === power.name
+						p => p === power.name
 					);
 					return powerStarsMatch || adventurePowersMatch;
 				})
 				.map(champion => ({
-					name: champion.name,
-					image:
-						champion.assets?.[0]?.M?.avatar?.S || "/images/placeholder.png",
+					championID: champion.championID,
+					image: champion.assets?.[0]?.avatar || "/images/placeholder.png",
 				}))
 		: [];
 
@@ -152,7 +151,7 @@ function PowerDetail() {
 							{compatibleChampions.map((champion, index) => (
 								<Link
 									key={index}
-									to={`/champion/${encodeURIComponent(champion.name)}`}
+									to={`/champion/${champion.championID}`}
 									className='group rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105 bg-surface-bg border border-border'
 								>
 									<SafeImage

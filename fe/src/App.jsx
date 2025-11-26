@@ -85,7 +85,7 @@ function MainContent() {
 
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/champions' element={<Champions />} />
-				<Route path='/champion/:name' element={<ChampionDetail />} />
+				<Route path='/champion/:championID' element={<ChampionDetail />} />
 				<Route path='/relics' element={<Relics />} />
 				<Route path='/relic/:relicCode' element={<RelicDetail />} />
 				<Route path='/powers' element={<Powers />} />

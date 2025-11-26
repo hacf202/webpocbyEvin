@@ -1,8 +1,6 @@
 // src/components/build/BuildModal.jsx
 import React, { useState, useEffect, useMemo, useContext, useRef } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
-// XÓA DÒNG NÀY:
-// import championsData from "../../assets/data/champions.json";
 import Modal from "../common/modal";
 import Button from "../common/button";
 import { Star, Eye, EyeOff, ChevronDown, AlertCircle, X } from "lucide-react";
@@ -191,7 +189,7 @@ const BuildModal = ({
 	const [formData, setFormData] = useState(
 		initialData || {
 			championName: "",
-			artifacts: [null, null, null],
+			relicSet: [null, null, null],
 			powers: [null, null, null, null, null, null],
 			rune: [null],
 			star: 3,
@@ -250,7 +248,7 @@ const BuildModal = ({
 				setChampions(
 					championData.map(c => ({
 						name: c.name,
-						icon: c.assets?.[0]?.M?.avatar?.S,
+						icon: c.assets?.[0]?.avatar,
 						regions: c.regions,
 					}))
 				);
@@ -297,15 +295,15 @@ const BuildModal = ({
 	};
 
 	const handleArtifactChange = (value, index) => {
-		const newArtifacts = [...formData.artifacts];
-		newArtifacts[index] = value;
-		setFormData(prev => ({ ...prev, artifacts: newArtifacts }));
+		const newrelicSet = [...formData.relicSet];
+		newrelicSet[index] = value;
+		setFormData(prev => ({ ...prev, relicSet: newrelicSet }));
 		markChange();
-		validateArtifacts();
+		validaterelicSet();
 	};
 
-	const validateArtifacts = () => {
-		const selected = formData.artifacts.filter(Boolean);
+	const validaterelicSet = () => {
+		const selected = formData.relicSet.filter(Boolean);
 		const stack1Relics = relics.filter(r => r.stack === "1").map(r => r.name);
 		const errors = [null, null, null];
 
@@ -343,10 +341,10 @@ const BuildModal = ({
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		if (!isChampionSelected || formData.artifacts.filter(Boolean).length === 0)
+		if (!isChampionSelected || formData.relicSet.filter(Boolean).length === 0)
 			return;
 
-		if (!validateArtifacts() || !validatePowers()) return;
+		if (!validaterelicSet() || !validatePowers()) return;
 
 		if (formData.star > maxStar) {
 			alert(`Tối đa chỉ được chọn ${maxStar} sao cho tướng này!`);
@@ -370,11 +368,10 @@ const BuildModal = ({
 					description: formData.description,
 					star: formData.star,
 					display: formData.display,
-					artifacts: formData.artifacts.filter(Boolean),
+					relicSet: formData.relicSet.filter(Boolean),
 					powers: formData.powers.filter(Boolean),
 					rune: formData.rune.filter(Boolean),
 					like: initialData?.like || 0,
-					favorite: initialData?.favorite || [],
 				}),
 			});
 
@@ -456,26 +453,26 @@ const BuildModal = ({
 							</div>
 						</div>
 
-						{/* Artifacts, Rune, Powers */}
+						{/* relicSet, Rune, Powers */}
 						<div>
 							<label className='block text-sm font-medium text-text-secondary mb-2'>
 								Cổ vật (Bắt buộc ít nhất 1):
 							</label>
 							<div className='grid grid-cols-3 gap-3'>
-								{formData.artifacts.map((_, index) => (
+								{formData.relicSet.map((_, index) => (
 									<SearchableDropdown
 										key={`artifact-${index}`}
 										options={relics}
-										selectedValue={formData.artifacts[index]}
+										selectedValue={formData.relicSet[index]}
 										onChange={v => handleArtifactChange(v, index)}
 										placeholder={`Cổ vật ${index + 1}`}
 										loading={loadingRelics}
 										error={artifactErrors[index]}
 										allowDuplicate={
-											relics.find(r => r.name === formData.artifacts[index])
+											relics.find(r => r.name === formData.relicSet[index])
 												?.stack !== "1"
 										}
-										selectedValues={formData.artifacts.filter(
+										selectedValues={formData.relicSet.filter(
 											(_, i) => i !== index
 										)}
 									/>

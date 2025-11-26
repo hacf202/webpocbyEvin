@@ -33,7 +33,7 @@ export const getChampionAvatar = async championName => {
 			else if (Array.isArray(data)) champions = data;
 
 			avatarMap = champions.reduce((map, champ) => {
-				const url = champ?.assets?.[0]?.M?.avatar?.S || champ?.avatar;
+				const url = champ?.assets?.[0]?.avatar || champ?.avatar;
 				if (champ.name && url) {
 					map[champ.name] = url;
 				}

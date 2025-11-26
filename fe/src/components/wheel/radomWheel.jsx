@@ -184,12 +184,12 @@ const VongQuayNgauNhien = ({ title, items, onRemoveWinner }) => {
 	// Hiển thị kết quả với hình ảnh + tên + nút lựa chọn
 	const showResult = winner => {
 		// Xác định loại item để lấy đúng trường
-		const isChampion = winner.assets?.[0]?.M?.avatar?.S;
+		const isChampion = winner.assets?.[0]?.avatar;
 		const isRelicOrItemOrPower = winner.assetAbsolutePath;
 
 		// Lấy hình ảnh
 		const imageHtml = isChampion
-			? `<img src="${winner.assets[0].M.avatar.S}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
+			? `<img src="${winner.assets[0].avatar}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
 			: isRelicOrItemOrPower
 			? `<img src="${winner.assetAbsolutePath}" alt="${winner.name}" class="mx-auto my-4 rounded-lg border-2 border-blue-400" style="max-height: 150px;" />`
 			: "";

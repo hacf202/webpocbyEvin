@@ -195,14 +195,14 @@ function BuildEditor() {
 					build.creatorName?.toLowerCase() ||
 					build.creator?.toLowerCase() ||
 					"";
-				const artifacts = (build.artifacts || []).join(" ").toLowerCase();
+				const relicSet = (build.relicSet || []).join(" ").toLowerCase();
 				const powers = (build.powers || []).join(" ").toLowerCase();
 				const rune = (build.rune || []).join(" ").toLowerCase();
 
 				return (
 					champ.includes(q) ||
 					creator.includes(q) ||
-					artifacts.includes(q) ||
+					relicSet.includes(q) ||
 					powers.includes(q) ||
 					rune.includes(q)
 				);

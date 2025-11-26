@@ -110,6 +110,13 @@ function MobileSidebar() {
 
 					<nav className='flex-1 p-4 space-y-1  text-header-text'>
 						<NavLink
+							to='/builds'
+							className='flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-nav-hover-bg transition-all'
+							onClick={closeSidebar}
+						>
+							<ScrollText className='w-5 h-5' /> Bộ Cổ Vật
+						</NavLink>
+						<NavLink
 							to='/champions'
 							className='flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-nav-hover-bg transition-all'
 							onClick={closeSidebar}
@@ -174,14 +181,6 @@ function MobileSidebar() {
 								</div>
 							)}
 						</div>
-
-						<NavLink
-							to='/builds'
-							className='flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-nav-hover-bg transition-all'
-							onClick={closeSidebar}
-						>
-							<ScrollText className='w-5 h-5' /> Build
-						</NavLink>
 
 						<div>
 							<button

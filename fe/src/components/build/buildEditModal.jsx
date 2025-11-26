@@ -61,7 +61,7 @@ const BuildEditModal = ({ build, isOpen, onClose, onConfirm }) => {
 				description: build.description || "",
 				star: build.star || 3,
 				display: build.display ?? true,
-				artifacts: [...(build.artifacts || []), null, null, null].slice(0, 3),
+				relicSet: [...(build.relicSet || []), null, null, null].slice(0, 3),
 				powers: [
 					...(build.powers || []),
 					null,

@@ -16,7 +16,6 @@ import generalPowersRoutes from "./src/routes/generalPower.js";
 import relicsRoutes from "./src/routes/relics.js";
 import itemsRoutes from "./src/routes/items.js";
 import runesRoutes from "./src/routes/runes.js";
-import VideoRoutes from "./src/routes/championVideos.js";
 import buildsAdminRouter from "./src/routes/builds-admin.js";
 
 dotenv.config(); //đọc .env tải biến môi trường
@@ -77,11 +76,10 @@ app.use("/api/generalPowers", generalPowersRoutes);
 app.use("/api/relics", relicsRoutes);
 app.use("/api/items", itemsRoutes);
 app.use("/api/runes", runesRoutes);
-app.use("/api/champion-videos", VideoRoutes);
 app.use("/api", usersRouter);
 app.use("/api/builds", commentsRouter);
 app.use("/api/builds", favoritesRouter);
-app.use("/api/builds", buildsRouter);
+app.use("/api/builds", buildsRouter); // ĐỂ CUỐI CÙNG!
 app.use("/api/admin/builds", buildsAdminRouter);
 
 // API để kiểm tra "sức khỏe" của server
@@ -105,7 +103,7 @@ export default app;
 // 2. Chạy server local (chỉ khi không ở trên Vercel)
 // Vercel tự động set biến môi trường 'VERCEL' = 1
 if (!process.env.VERCEL) {
-	const port = process.env.PORT || 3001; // Dùng port từ .env hoặc fallback 3001
+	const port = process.env.PORT; // Dùng port từ .env hoặc fallback 3001
 	app.listen(port, () => {
 		console.log(
 			`✅ Server đang chạy (chế độ local) trên http://localhost:${port}`

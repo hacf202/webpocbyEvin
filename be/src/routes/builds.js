@@ -115,17 +115,17 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 	const {
 		championName,
 		description = "",
-		artifacts = [],
+		relicSet = [],
 		powers = [],
 		rune = [],
 		star = 0,
 		display = false,
 	} = req.body;
 
-	if (!championName || !Array.isArray(artifacts) || artifacts.length === 0) {
+	if (!championName || !Array.isArray(relicSet) || relicSet.length === 0) {
 		return res
 			.status(400)
-			.json({ error: "Champion name and artifacts are required." });
+			.json({ error: "Champion name and relicSet are required." });
 	}
 
 	const build = prepareBuildForDynamo({
@@ -134,13 +134,12 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 		creator: req.user["cognito:username"],
 		description,
 		championName,
-		artifacts,
+		relicSet,
 		powers,
 		rune,
 		like: 0,
 		star,
 		display,
-		favorite: [],
 		views: 0,
 		createdAt: new Date().toISOString(),
 	});
@@ -168,7 +167,7 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 // PUT /api/builds/:id
 router.put("/:id", authenticateCognitoToken, async (req, res) => {
 	const { id } = req.params;
-	const { description, artifacts, powers, rune, star, display } = req.body;
+	const { description, relicSet, powers, rune, star, display } = req.body;
 	const userSub = req.user.sub;
 
 	try {
@@ -187,7 +186,7 @@ router.put("/:id", authenticateCognitoToken, async (req, res) => {
 		const expressionAttributeValues = {};
 		let hasUpdates = false;
 
-		const fields = { description, artifacts, powers, rune, star, display };
+		const fields = { description, relicSet, powers, rune, star, display };
 		Object.entries(fields).forEach(([key, value]) => {
 			if (value !== undefined) {
 				hasUpdates = true;
@@ -253,6 +252,57 @@ router.delete("/:id", authenticateCognitoToken, async (req, res) => {
 	} catch (error) {
 		console.error("Error deleting build:", error);
 		res.status(500).json({ error: "Could not delete build" });
+	}
+});
+
+// THÊM VÀO CUỐI FILE builds.js (trước export default router)
+
+router.patch("/:id/like", async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		// Kiểm tra build tồn tại
+		const { Item } = await client.send(
+			new GetItemCommand({
+				TableName: BUILDS_TABLE,
+				Key: marshall({ id }),
+			})
+		);
+
+		if (!Item) {
+			return res.status(404).json({ error: "Build not found" });
+		}
+
+		const build = unmarshall(Item);
+
+		// Tăng like
+		const result = await client.send(
+			new UpdateItemCommand({
+				TableName: BUILDS_TABLE,
+				Key: marshall({ id }),
+				UpdateExpression: "SET #like = if_not_exists(#like, :zero) + :inc",
+				ExpressionAttributeNames: { "#like": "like" },
+				ExpressionAttributeValues: marshall({
+					":inc": 1,
+					":zero": 0,
+				}),
+				ReturnValues: "UPDATED_NEW",
+			})
+		);
+
+		const newLikeCount = result.Attributes
+			? unmarshall(result.Attributes).like
+			: (build.like || 0) + 1;
+
+		// Invalidate cache nếu là public build
+		if (build.display === true) {
+			invalidatePublicBuildsCache();
+		}
+
+		res.json({ like: newLikeCount });
+	} catch (error) {
+		console.error("Like error:", error);
+		res.status(500).json({ error: "Could not like build" });
 	}
 });
 

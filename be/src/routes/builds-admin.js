@@ -53,7 +53,6 @@ router.post("/", authenticateCognitoToken, requireAdmin, async (req, res) => {
 		createdAt: new Date().toISOString(),
 		views: 0,
 		like: 0,
-		favorite: [],
 		display: buildData.display === true,
 	};
 
@@ -106,7 +105,7 @@ router.put("/:id", authenticateCognitoToken, requireAdmin, async (req, res) => {
 		const allowedFields = [
 			"championName",
 			"description",
-			"artifacts",
+			"relicSet",
 			"powers",
 			"rune",
 			"star",

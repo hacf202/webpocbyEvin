@@ -20,6 +20,7 @@ import {
 import Button from "../components/common/button";
 import MultiSelectFilter from "../components/common/multiSelectFilter";
 import InputField from "../components/common/inputField";
+import DropdownFilter from "../components/common/dropdownFilter"; // Đảm bảo bạn có component này
 import PageTitle from "../components/common/pageTitle";
 import SafeImage from "../components/common/SafeImage.jsx";
 import iconRegionsData from "../assets/data/iconRegions.json";
@@ -30,11 +31,22 @@ import { usePersistentState } from "../hooks/usePersistentState";
 const CACHE_KEY_PREFIX = "buildsCache_v1";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 phút
 
+// === OPTIONS SẮP XẾP ===
+const SORT_OPTIONS = [
+	{ value: "newest", label: "Mới nhất" },
+	{ value: "oldest", label: "Cũ nhất" },
+	{ value: "champion_asc", label: "Tên tướng (A-Z)" },
+	{ value: "champion_desc", label: "Tên tướng (Z-A)" },
+	{ value: "likes_desc", label: "Lượt thích (Cao nhất)" },
+	{ value: "likes_asc", label: "Lượt thích (Thấp nhất)" },
+];
+
 const getCacheKey = (tab, filters) => {
 	const filterStr = JSON.stringify({
 		search: filters.searchTerm || "",
 		stars: filters.selectedStarLevels || [],
 		regions: filters.selectedRegions || [],
+		sort: filters.sortBy || "newest",
 	});
 	return `${CACHE_KEY_PREFIX}_${tab}_${filterStr}`;
 };
@@ -96,6 +108,8 @@ const Builds = () => {
 		"buildsSelectedRegions",
 		[]
 	);
+	const [sortBy, setSortBy] = usePersistentState("buildsSortBy", "newest");
+
 	const [isFilterOpen, setIsFilterOpen] = usePersistentState(
 		"buildsIsFilterOpen",
 		false
@@ -210,10 +224,11 @@ const Builds = () => {
 		handleClearSearch();
 		setSelectedStarLevels([]);
 		setSelectedRegions([]);
+		setSortBy("newest");
 	};
 
 	const triggerRefresh = () => {
-		clearAllBuildsCache(); // XÓA TOÀN BỘ CACHE
+		clearAllBuildsCache();
 		setRefreshKey(prev => prev + 1);
 	};
 
@@ -234,6 +249,7 @@ const Builds = () => {
 				searchTerm,
 				selectedStarLevels,
 				selectedRegions,
+				sortBy,
 			});
 			return getCachedData(key);
 		},
@@ -242,6 +258,7 @@ const Builds = () => {
 				searchTerm,
 				selectedStarLevels,
 				selectedRegions,
+				sortBy,
 			});
 			setCachedData(key, data);
 		},
@@ -253,6 +270,7 @@ const Builds = () => {
 		searchTerm,
 		selectedStarLevels,
 		selectedRegions,
+		sortBy, // Thêm prop sortBy
 		championsList,
 		relicsList,
 		powersList,
@@ -427,6 +445,15 @@ const Builds = () => {
 										onChange={setSelectedRegions}
 										placeholder='Tất cả khu vực'
 									/>
+									{/* Mobile Sort */}
+									<div className='mt-2'>
+										<DropdownFilter
+											label='Sắp xếp theo'
+											options={SORT_OPTIONS}
+											selectedValue={sortBy}
+											onChange={setSortBy}
+										/>
+									</div>
 									<div className='pt-2'>
 										<Button
 											variant='outline'
@@ -480,6 +507,13 @@ const Builds = () => {
 								selectedValues={selectedRegions}
 								onChange={setSelectedRegions}
 								placeholder='Tất cả khu vực'
+							/>
+							{/* Desktop Sort */}
+							<DropdownFilter
+								label='Sắp xếp theo'
+								options={SORT_OPTIONS}
+								selectedValue={sortBy}
+								onChange={setSortBy}
 							/>
 							<div className='pt-2'>
 								<Button

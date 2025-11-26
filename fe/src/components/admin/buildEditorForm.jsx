@@ -81,7 +81,7 @@ const BuildEditorForm = memo(
 			id: "",
 			championName: "",
 			description: "",
-			artifacts: [],
+			relicSet: [],
 			powers: [],
 			rune: [],
 			star: 0,
@@ -101,7 +101,7 @@ const BuildEditorForm = memo(
 					id: build.id || "",
 					championName: build.championName || "",
 					description: build.description || "",
-					artifacts: Array.isArray(build.artifacts) ? [...build.artifacts] : [],
+					relicSet: Array.isArray(build.relicSet) ? [...build.relicSet] : [],
 					powers: Array.isArray(build.powers) ? [...build.powers] : [],
 					rune: Array.isArray(build.rune) ? [...build.rune] : [],
 					star: Number(build.star) || 0,
@@ -137,7 +137,7 @@ const BuildEditorForm = memo(
 		const handleSave = () => {
 			const cleaned = {
 				...formData,
-				artifacts: formData.artifacts.filter(Boolean),
+				relicSet: formData.relicSet.filter(Boolean),
 				powers: formData.powers.filter(Boolean),
 				rune: formData.rune.filter(Boolean),
 			};
@@ -232,8 +232,8 @@ const BuildEditorForm = memo(
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 							<ArrayInputComponent
 								label='Cổ vật'
-								data={formData.artifacts}
-								onChange={data => handleArrayChange("artifacts", data)}
+								data={formData.relicSet}
+								onChange={data => handleArrayChange("relicSet", data)}
 							/>
 							<ArrayInputComponent
 								label='Sức mạnh'

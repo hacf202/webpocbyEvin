@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
-import { filterBuilds } from "../../utils/filterBuilds";
+import { useFavoriteStatus } from "../../hooks/useFavoriteStatus";
 
 const MyFavorite = ({
 	searchTerm,
@@ -19,12 +19,12 @@ const MyFavorite = ({
 	onDeleteSuccess,
 	getCache,
 	setCache,
+	sortBy, // <--- Nhận prop sắp xếp
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [favoriteBuilds, setFavoriteBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-
 	const apiUrl = import.meta.env.VITE_API_URL;
 
 	useEffect(() => {
@@ -34,10 +34,7 @@ const MyFavorite = ({
 				setIsLoading(false);
 				return;
 			}
-
 			setIsLoading(true);
-			setError(null);
-
 			const cacheKey = "my-favorites";
 			const cached = getCache?.(cacheKey);
 			if (cached) {
@@ -51,37 +48,112 @@ const MyFavorite = ({
 					headers: { Authorization: `Bearer ${token}` },
 				});
 				if (!response.ok) throw new Error("Không thể tải danh sách yêu thích");
-
 				const data = await response.json();
-				const sortedData = data.sort(
-					(a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-				);
-
-				setFavoriteBuilds(sortedData);
-				setCache?.(cacheKey, sortedData);
+				setFavoriteBuilds(data);
+				setCache?.(cacheKey, data);
 			} catch (err) {
 				setError(err.message);
 			} finally {
 				setIsLoading(false);
 			}
 		};
-
 		fetchFavoriteBuilds();
 	}, [token, refreshKey, getCache, setCache]);
 
-	const handleBuildUpdated = updatedBuild => {
-		const isStillFavorite = user && updatedBuild.favorite?.includes(user.sub);
+	const buildIds = favoriteBuilds.map(b => b.id);
+	const { status: favoriteStatus } = useFavoriteStatus(buildIds, token);
 
-		if (!isStillFavorite) {
-			setFavoriteBuilds(current =>
-				current.filter(b => b.id !== updatedBuild.id)
-			);
-		} else {
-			setFavoriteBuilds(current =>
-				current.map(b => (b.id === updatedBuild.id ? updatedBuild : b))
+	const buildsWithStatus = favoriteBuilds.map(build => ({
+		...build,
+		isFavorited: true,
+	}));
+
+	// === XỬ LÝ LỌC & SẮP XẾP ===
+	const filteredBuilds = useMemo(() => {
+		let result = [...buildsWithStatus];
+
+		// 1. TÌM KIẾM
+		if (searchTerm) {
+			const q = searchTerm.toLowerCase();
+			result = result.filter(build => {
+				const champ = build.championName?.toLowerCase() || "";
+				const creator =
+					build.creatorName?.toLowerCase() ||
+					build.creator?.toLowerCase() ||
+					"";
+
+				const relicSet = (build.relicSet || []).join(" ").toLowerCase();
+				const powers = (build.powers || []).join(" ").toLowerCase();
+				const rune = (build.rune || []).join(" ").toLowerCase();
+
+				return (
+					champ.includes(q) ||
+					creator.includes(q) ||
+					relicSet.includes(q) ||
+					powers.includes(q) ||
+					rune.includes(q)
+				);
+			});
+		}
+
+		// 2. LỌC CẤP SAO
+		if (selectedStarLevels.length > 0) {
+			result = result.filter(build =>
+				selectedStarLevels.includes(String(build.star || 0))
 			);
 		}
 
+		// 3. LỌC KHU VỰC
+		if (selectedRegions.length > 0) {
+			result = result.filter(build => {
+				const championRegions =
+					championNameToRegionsMap.get(build.championName) || [];
+				return selectedRegions.some(region => championRegions.includes(region));
+			});
+		}
+
+		// 4. SẮP XẾP
+		result.sort((a, b) => {
+			switch (sortBy) {
+				case "newest":
+					return (
+						new Date(b.createdAt || b.updatedAt) -
+						new Date(a.createdAt || a.updatedAt)
+					);
+				case "oldest":
+					return (
+						new Date(a.createdAt || a.updatedAt) -
+						new Date(b.createdAt || b.updatedAt)
+					);
+				case "champion_asc":
+					return (a.championName || "").localeCompare(b.championName || "");
+				case "champion_desc":
+					return (b.championName || "").localeCompare(a.championName || "");
+				case "likes_desc":
+					return (b.like || 0) - (a.like || 0);
+				case "likes_asc":
+					return (a.like || 0) - (b.like || 0);
+				default:
+					return 0;
+			}
+		});
+
+		return result;
+	}, [
+		buildsWithStatus,
+		searchTerm,
+		selectedStarLevels,
+		selectedRegions,
+		championNameToRegionsMap,
+		sortBy, // Thêm dependency
+	]);
+
+	const handleBuildUpdated = updatedBuild => {
+		if (!updatedBuild.isFavorited) {
+			setFavoriteBuilds(current =>
+				current.filter(b => b.id !== updatedBuild.id)
+			);
+		}
 		if (onFavoriteToggle) onFavoriteToggle();
 	};
 
@@ -90,30 +162,8 @@ const MyFavorite = ({
 		if (onDeleteSuccess) onDeleteSuccess();
 	};
 
-	const filteredBuilds = useMemo(() => {
-		return filterBuilds(
-			favoriteBuilds,
-			searchTerm,
-			selectedStarLevels,
-			selectedRegions,
-			powerMap,
-			championNameToRegionsMap
-		);
-	}, [
-		favoriteBuilds,
-		searchTerm,
-		selectedStarLevels,
-		selectedRegions,
-		powerMap,
-		championNameToRegionsMap,
-	]);
-
 	if (isLoading)
-		return (
-			<p className='text-center mt-8 text-text-secondary'>
-				Đang tải dữ liệu...
-			</p>
-		);
+		return <p className='text-center mt-8 text-text-secondary'>Đang tải...</p>;
 	if (error)
 		return <p className='text-danger-text-dark text-center mt-8'>{error}</p>;
 	if (favoriteBuilds.length === 0)

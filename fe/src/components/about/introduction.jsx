@@ -29,7 +29,7 @@ function Introduction() {
 				// Format + thêm avatarUrl nếu chưa có
 				const formatted = allChampions.map(champ => ({
 					...champ,
-					avatarUrl: champ.avatarUrl || champ.assets?.[0]?.M?.avatar?.S || null,
+					avatarUrl: champ.assets?.[0]?.avatar || null,
 				}));
 
 				const shuffled = [...formatted].sort(() => 0.5 - Math.random());
@@ -186,8 +186,7 @@ function Introduction() {
 												<SafeImage
 													src={
 														// lấy từ assets
-														champ.assets?.[0]?.M?.avatar?.S ||
-														"/fallback-image.svg" // fallback nếu không có ảnh
+														champ.assets?.[0]?.avatar || "/fallback-image.svg" // fallback nếu không có ảnh
 													}
 													alt={champ.name}
 													className='w-full h-full object-cover'
@@ -226,7 +225,7 @@ function Introduction() {
 								Xem Tất Cả Tướng
 							</Link>
 							<Link
-								to='/champions'
+								to='/guide/starterGuide'
 								className='px-8 py-3 bg-[var(--color-btn-secondary-bg)] text-[var(--color-btn-secondary-text)] border border-[var(--color-btn-secondary-border)] font-medium rounded-md hover:bg-[var(--color-btn-secondary-hover-bg)] transition-colors'
 							>
 								Hướng Dẫn

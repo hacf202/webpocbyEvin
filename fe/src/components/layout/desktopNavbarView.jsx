@@ -101,13 +101,13 @@ function DesktopNavbar() {
 					</NavLink>
 
 					<nav className='flex items-center gap-1'>
+						<NavLink to='/builds' className={navLinkClass}>
+							<ScrollText className='w-6 h-6' /> Bộ cổ vật
+						</NavLink>
 						<NavLink to='/champions' className={navLinkClass}>
 							<Swords className='w-6 h-6' /> Tướng
 						</NavLink>
 
-						<NavLink to='/builds' className={navLinkClass}>
-							<ScrollText className='w-6 h-6' /> Bộ cổ vật
-						</NavLink>
 						<div className='relative' ref={itemsDropdownRef}>
 							<button
 								onClick={() => setIsItemsDropdownOpen(!isItemsDropdownOpen)}

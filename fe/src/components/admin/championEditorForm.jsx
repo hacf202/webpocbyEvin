@@ -1,23 +1,24 @@
 // src/pages/admin/championEditorForm.jsx
-import { useState, memo, useEffect } from "react";
+import { useState, memo } from "react";
 import Button from "../common/button";
 import InputField from "../common/inputField";
-import { XCircle, Plus } from "lucide-react";
+import { XCircle, Plus, Link2 } from "lucide-react";
 
 const ArrayInputComponent = ({
 	label,
 	data = [],
 	onChange,
 	cachedData = {},
+	placeholder = "Nhập tên hoặc kéo thả vào đây",
 }) => {
 	const handleItemChange = (index, newValue) => {
 		const newData = [...data];
-		newData[index] = { S: newValue };
-		onChange(newData);
+		newData[index] = newValue.trim();
+		onChange(newData.filter(Boolean));
 	};
 
 	const handleAddItem = () => {
-		onChange([...data, { S: "" }]);
+		onChange([...data, ""]);
 	};
 
 	const handleRemoveItem = index => {
@@ -26,120 +27,86 @@ const ArrayInputComponent = ({
 
 	const getItemData = name => cachedData[name] || {};
 
-	// Xử lý DROP
 	const handleDrop = (e, index) => {
 		e.preventDefault();
 		e.stopPropagation();
 		try {
-			const draggedData = JSON.parse(e.dataTransfer.getData("text/plain"));
-			if (draggedData.name) {
-				handleItemChange(index, draggedData.name);
-			}
+			const dragged = JSON.parse(e.dataTransfer.getData("text/plain"));
+			if (dragged.name) handleItemChange(index, dragged.name);
 		} catch (err) {
-			console.warn("Invalid drag data:", err);
+			console.warn("Drag data không hợp lệ");
 		}
 	};
 
-	const handleDragOver = e => {
-		e.preventDefault();
-		e.dataTransfer.dropEffect = "copy";
-	};
-
-	const handleDragEnter = e => {
-		e.currentTarget.classList.add("border-primary-500");
-	};
-
-	const handleDragLeave = e => {
-		e.currentTarget.classList.remove("border-primary-500");
-	};
+	const handleDragOver = e => e.preventDefault();
 
 	return (
-		<div className='flex flex-col'>
-			<div className='flex justify-between items-center mb-2'>
-				<label className='font-semibold text-text-secondary'>{label}:</label>
+		<div className='flex flex-col gap-3'>
+			<div className='flex justify-between items-center'>
+				<label className='font-semibold text-text-primary'>{label}</label>
 				<Button
-					onClick={handleAddItem}
 					type='button'
 					variant='outline'
 					size='sm'
-					iconLeft={<Plus size={14} />}
+					onClick={handleAddItem}
+					iconLeft={<Plus size={16} />}
 				>
 					Thêm
 				</Button>
 			</div>
-			<div className='flex flex-col gap-2'>
-				{data.length > 0 ? (
-					data.map((item, index) => {
-						const itemData = getItemData(item?.S);
+
+			<div className='space-y-2'>
+				{data.length === 0 ? (
+					<p className='text-center text-sm text-text-secondary py-4 bg-surface-hover/50 rounded-lg border border-dashed border-border'>
+						Chưa có dữ liệu
+					</p>
+				) : (
+					data.map((value, index) => {
+						const item = getItemData(value);
 						return (
 							<div
 								key={index}
-								className='flex items-center gap-2 p-3 bg-surface-hover rounded-md border border-border hover:bg-surface-hover-active transition-colors relative'
+								className='flex items-center gap-3 p-3 bg-surface-hover rounded-lg border border-border hover:border-primary-500 transition-all'
+								onDrop={e => handleDrop(e, index)}
+								onDragOver={handleDragOver}
 							>
-								{/* Icon + Tooltip */}
 								<div className='relative group flex-shrink-0'>
-									{itemData.assetAbsolutePath ? (
+									{item.assetAbsolutePath ? (
 										<img
-											src={itemData.assetAbsolutePath}
-											alt={itemData.name || ""}
-											className='w-8 h-8 rounded border border-border object-contain bg-white'
-											onError={e => (e.target.style.display = "none")}
+											src={item.assetAbsolutePath}
+											alt={item.name}
+											className='w-10 h-10 rounded object-contain bg-white border border-border'
 										/>
 									) : (
-										<div className='w-8 h-8 bg-input-bg rounded border border-border flex items-center justify-center'>
-											<span className='text-xs text-text-secondary'>?</span>
+										<div className='w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center'>
+											<span className='text-xs text-gray-500'>?</span>
 										</div>
 									)}
 
-									{itemData.descriptionRaw && (
-										<div
-											className='
-											absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3
-											w-80 max-w-[90vw] p-3 bg-black text-white text-xs leading-relaxed
-											rounded-lg shadow-2xl opacity-0 group-hover:opacity-100
-											transition-all duration-300 pointer-events-none z-50
-											border border-gray-700
-										'
-										>
-											<div className='font-bold text-sm text-yellow-300 mb-1'>
-												{itemData.name}
+									{item.description && (
+										<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-80 p-3 bg-black text-white text-xs rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none border border-gray-600'>
+											<div className='font-bold text-yellow-400 mb-1'>
+												{item.name}
 											</div>
-											<div className='whitespace-pre-wrap'>
-												{itemData.descriptionRaw}
+											<div className='whitespace-pre-wrap text-gray-200'>
+												{item.description}
 											</div>
-											<div className='absolute top-full left-1/2 transform -translate-x-1/2 -mt-1'>
-												<div className='w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-t-8 border-t-black'></div>
-											</div>
+											<div className='absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-t-8 border-t-black'></div>
 										</div>
 									)}
 								</div>
 
-								{/* Input - DROP ZONE */}
-								<div
-									className='flex-grow relative border border-input-border rounded-md transition-colors'
-									onDrop={e => handleDrop(e, index)}
-									onDragOver={handleDragOver}
-									onDragEnter={handleDragEnter}
-									onDragLeave={handleDragLeave}
-								>
-									<InputField
-										type='text'
-										value={item?.S || ""}
-										onChange={e => handleItemChange(index, e.target.value)}
-										placeholder='Kéo thả vào đây...'
-										className='w-full p-2 bg-input-bg text-input-text rounded-md border-0 focus:ring-0 focus:outline-none'
-										style={{
-											overflow: "hidden",
-											textOverflow: "ellipsis",
-											whiteSpace: "nowrap",
-										}}
-									/>
-								</div>
+								<InputField
+									value={value}
+									onChange={e => handleItemChange(index, e.target.value)}
+									placeholder={placeholder}
+									className='flex-1'
+								/>
 
 								<button
-									onClick={() => handleRemoveItem(index)}
 									type='button'
-									className='text-danger-500 hover:text-danger-600 transition-colors flex-shrink-0 ml-1'
+									onClick={() => handleRemoveItem(index)}
+									className='text-red-500 hover:text-red-600 transition'
 									title='Xóa'
 								>
 									<XCircle size={20} />
@@ -147,10 +114,6 @@ const ArrayInputComponent = ({
 							</div>
 						);
 					})
-				) : (
-					<p className='text-sm text-center text-text-secondary bg-surface-hover p-3 rounded-md border border-dashed border-border'>
-						Chưa có mục nào.
-					</p>
 				)}
 			</div>
 		</div>
@@ -158,275 +121,230 @@ const ArrayInputComponent = ({
 };
 
 const ChampionEditorForm = memo(
-	({
-		champion,
-		videoLinks,
-		cachedData,
-		onSave,
-		onCancel,
-		onDelete,
-		isSaving,
-	}) => {
-		const [formData, setFormData] = useState(champion);
-		const [stringArrays, setStringArrays] = useState({
-			regions: "",
-			regionRefs: "",
-			tag: "",
-		});
+	({ champion, cachedData, onSave, onCancel, onDelete, isSaving }) => {
+		const [formData, setFormData] = useState(champion || {});
 
-		// === LOAD DỮ LIỆU ===
-		useEffect(() => {
-			if (!champion) return;
-			const videoData = videoLinks?.find(v => v.name === champion.name);
-			const newFormData = {
-				...champion,
-				videoLink: videoData?.link || "",
-				musicVideo: videoData?.MusicVideo || "",
-			};
-			setFormData(newFormData);
+		const handleInputChange = e => {
+			const { name, value } = e.target;
+			setFormData(prev => ({ ...prev, [name]: value }));
+		};
 
-			// SỬA LỖI: Tự động load string array
-			setStringArrays({
-				regions: (newFormData.regions || []).join(", "),
-				regionRefs: (newFormData.regionRefs || []).join(", "),
-				tag: (newFormData.tag || []).join(", "),
+		const handleNumberChange = e => {
+			const { name, value } = e.target;
+			setFormData(prev => ({ ...prev, [name]: parseInt(value) || 0 }));
+		};
+
+		const handleArrayChange = (field, newArray) => {
+			setFormData(prev => ({ ...prev, [field]: newArray }));
+		};
+
+		const handleAssetChange = (index, field, value) => {
+			setFormData(prev => {
+				const newAssets = [...(prev.assets || [])];
+				newAssets[index] = { ...newAssets[index], [field]: value };
+				return { ...prev, assets: newAssets };
 			});
-		}, [champion, videoLinks]);
+		};
 
-		const handleInputChange = event => {
-			const { name, value, type } = event.target;
+		const handleAddAsset = () => {
 			setFormData(prev => ({
 				...prev,
-				[name]: type === "number" ? parseInt(value, 10) || 0 : value,
+				assets: [
+					...(prev.assets || []),
+					{ fullAbsolutePath: "", gameAbsolutePath: "", avatar: "" },
+				],
 			}));
 		};
 
-		const handleArrayChange = (fieldName, newArray) => {
-			setFormData(prev => ({ ...prev, [fieldName]: newArray }));
+		const handleRemoveAsset = index => {
+			setFormData(prev => ({
+				...prev,
+				assets: prev.assets.filter((_, i) => i !== index),
+			}));
 		};
 
-		const handleStringArrayChange = (fieldName, stringValue) => {
-			const newArray = stringValue
-				.split(",")
-				.map(item => item.trim())
-				.filter(item => item); // Bỏ .map(s => ({ S: s }))
-			setFormData(prev => ({ ...prev, [fieldName]: newArray }));
-			setStringArrays(prev => ({ ...prev, [fieldName]: stringValue }));
+		const handleSubmit = e => {
+			e.preventDefault();
+			onSave(formData);
 		};
 
-		const handleAssetLinkChange = (assetIndex, assetKey, newValue) => {
-			const updatedAssets = JSON.parse(JSON.stringify(formData.assets));
-			if (updatedAssets[assetIndex]?.M[assetKey]) {
-				updatedAssets[assetIndex].M[assetKey].S = newValue;
-				setFormData(p => ({ ...p, assets: updatedAssets }));
-			}
-		};
-
-		// === TEXTAREA CONTROLLED ===
-		const renderTextareaForStringArray = (label, fieldName) => (
-			<div className='flex flex-col gap-1'>
-				<label className='font-semibold text-text-secondary'>
-					{label} (phân cách bởi dấu phẩy):
-				</label>
-				<textarea
-					rows={2}
-					value={stringArrays[fieldName] || ""}
-					onChange={e => handleStringArrayChange(fieldName, e.target.value)}
-					className='w-full p-2 bg-input-bg text-input-text rounded-md border border-input-border
-            placeholder:text-input-placeholder
-            focus:border-input-focus-border focus:ring-0 focus:outline-none 
-            transition-colors duration-200 resize-y'
-				/>
-			</div>
-		);
-
-		// === CACHE LOOKUP ===
 		const dataLookup = {
-			runes: Object.fromEntries((cachedData.runes || []).map(r => [r.name, r])),
-			relics: Object.fromEntries(
-				(cachedData.relics || []).map(r => [r.name, r])
-			),
 			powers: Object.fromEntries(
 				(cachedData.powers || []).map(p => [p.name, p])
 			),
+			relics: Object.fromEntries(
+				(cachedData.relics || []).map(r => [r.name, r])
+			),
 			items: Object.fromEntries((cachedData.items || []).map(i => [i.name, i])),
+			runes: Object.fromEntries((cachedData.runes || []).map(r => [r.name, r])),
 		};
 
 		return (
-			<div className='p-4 bg-surface-bg rounded-lg border border-border'>
-				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
-					<h3 className='text-xl font-bold text-text-primary font-primary'>
-						{champion.isNew ? "Tạo Tướng Mới" : `Chỉnh sửa: ${champion.name}`}
-					</h3>
-					<div className='flex items-center gap-2 flex-wrap mt-2 sm:mt-0'>
-						{!champion.isNew && (
-							<Button variant='danger' onClick={onDelete}>
-								Xóa Tướng
-							</Button>
-						)}
-						<Button variant='outline' onClick={onCancel}>
-							Hủy
-						</Button>
-						<Button
-							variant='primary'
-							onClick={() => onSave(formData)}
-							disabled={isSaving}
-						>
-							{isSaving ? "Đang lưu..." : "Lưu thay đổi"}
-						</Button>
-					</div>
-				</div>
-
-				<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
-					{/* 1. Thông tin cơ bản */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							1. Thông tin cơ bản
-						</h4>
+			<form onSubmit={handleSubmit} className='space-y-8'>
+				{/* ==================== 1. THÔNG TIN CƠ BẢN ==================== */}
+				<div className='grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 bg-surface-bg border border-border rounded-xl'>
+					<div className='space-y-5'>
 						<InputField
-							label='Tên Tướng:'
-							type='text'
+							label='Champion ID (VD: C056)'
+							name='championID'
+							value={formData.championID || ""}
+							onChange={handleInputChange}
+							required
+							disabled={!formData.isNew}
+							placeholder='C056, TFT9_Jinx...'
+						/>
+						<InputField
+							label='Tên tướng'
 							name='name'
 							value={formData.name || ""}
 							onChange={handleInputChange}
+							required
 						/>
-						<InputField
-							label='Giá (Cost):'
-							type='number'
-							name='cost'
-							value={formData.cost || 0}
-							onChange={handleInputChange}
-						/>
-						<InputField
-							label='Sao tối đa (Max Star):'
-							type='number'
-							name='maxStar'
-							value={formData.maxStar || 0}
-							onChange={handleInputChange}
-						/>
-						<div className='flex flex-col gap-1'>
-							<label className='font-semibold text-text-secondary'>
-								Mô tả:
-							</label>
-							<textarea
-								name='description'
-								rows={8}
-								value={formData.description || ""}
-								onChange={handleInputChange}
-								className='w-full p-2 bg-input-bg text-input-text rounded-md border border-input-border
-                  placeholder:text-input-placeholder focus:border-input-focus-border focus:ring-0 focus:outline-none 
-                  transition-colors duration-200 resize-y'
+						<div className='grid grid-cols-2 gap-4'>
+							<InputField
+								label='Năng lượng (Cost)'
+								name='cost'
+								type='number'
+								value={formData.cost || ""}
+								onChange={handleNumberChange}
+								min='1'
+								max='10'
+							/>
+							<InputField
+								label='Sao tối đa'
+								name='maxStar'
+								type='number'
+								value={formData.maxStar || ""}
+								onChange={handleNumberChange}
+								min='1'
+								max='7'
 							/>
 						</div>
 					</div>
 
-					{/* 2. Khu vực & Thẻ – ĐÃ SỬA LOAD */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						{/* ... (Nội dung mục 2 không đổi) ... */}
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							2. Khu vực & Thẻ
-						</h4>
-						{renderTextareaForStringArray("Khu vực (Regions)", "regions")}
-						{renderTextareaForStringArray(
-							"Tham chiếu Khu vực (Region Refs)",
-							"regionRefs"
+					<div className='flex flex-col items-center justify-center'>
+						<p className='text-sm font-medium text-text-secondary mb-3'>
+							Avatar Preview
+						</p>
+						{formData.assets?.[0]?.avatar ? (
+							<img
+								src={formData.assets[0].avatar}
+								alt='Avatar'
+								className='w-48 h-48 object-contain rounded-xl border-4 border-primary-500/20 shadow-xl'
+							/>
+						) : (
+							<div className='w-48 h-48 bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center text-6xl text-gray-400'>
+								?
+							</div>
 						)}
-						{renderTextareaForStringArray("Thẻ (Tags)", "tag")}
+					</div>
+				</div>
+
+				{/* ==================== 2. MÔ TẢ + VÙNG + VIDEO ==================== */}
+				<div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
+					<div className='xl:col-span-2 space-y-8'>
+						{/* MÔ TẢ CHI TIẾT – ĐÃ SỬA XUỐNG DÒNG HOÀN HẢO */}
+
 						<div>
-							<h5 className='font-semibold text-text-secondary'>
-								Hình ảnh (Assets):
-							</h5>
-							{(formData.assets || []).map((asset, index) => (
-								<div
-									key={index}
-									className='flex flex-col gap-3 p-3 bg-surface rounded border border-border'
-								>
-									{Object.entries(asset?.M || {}).map(([key, value]) => (
-										<div key={key} className='flex flex-col gap-1'>
-											<label className='text-sm font-medium text-text-secondary'>
-												{key}:
-											</label>
+							<label className='block font-semibold text-text-primary mb-2'>
+								Mô tả chi tiết
+							</label>
+
+							<textarea
+								name='description'
+								value={(formData.description || "")
+									.replace(/\\\\n/g, "\n")
+									.replace(/\\n/g, "\n")}
+								onChange={handleInputChange}
+								className='w-full p-4 rounded-lg border border-border bg-surface-bg text-text-primary placeholder:text-text-secondary focus:border-primary-500 resize-none font-mono text-sm'
+								rows={12}
+								placeholder='Nhấn Enter để xuống dòng...'
+							/>
+						</div>
+						<ArrayInputComponent
+							label='Vùng (Regions)'
+							data={formData.regions || []}
+							onChange={d => handleArrayChange("regions", d)}
+							cachedData={cachedData.regions || {}}
+						/>
+					</div>
+
+					{/* VIDEO – CHỈ DÙNG videoLink */}
+					<div>
+						<label className='block font-semibold text-text-primary mb-2'>
+							Video giới thiệu
+						</label>
+						<InputField
+							name='videoLink'
+							value={formData.videoLink || ""}
+							onChange={handleInputChange}
+							placeholder='https://www.youtube.com/embed/...'
+						/>
+						{formData.videoLink && (
+							<div className='mt-4 aspect-video rounded-xl overflow-hidden border border-border shadow-lg'>
+								<iframe
+									src={formData.videoLink}
+									title='Video Preview'
+									className='w-full h-full'
+									allowFullScreen
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+
+				{/* ==================== CÁC PHẦN CÒN LẠI GIỮ NGUYÊN ==================== */}
+				<div>
+					<h4 className='text-lg font-bold text-text-primary mb-4 flex items-center gap-2'>
+						<Link2 size={20} /> Assets (Ảnh)
+					</h4>
+					{formData.assets?.map((asset, index) => (
+						<div
+							key={index}
+							className='flex items-center gap-4 p-4 bg-surface-hover rounded-lg border border-border mb-3'
+						>
+							<div className='grid grid-cols-3 gap-3 flex-1'>
+								{["avatar", "fullAbsolutePath", "gameAbsolutePath"].map(
+									field => (
+										<div key={field}>
 											<InputField
-												type='text'
-												value={value?.S || ""}
+												label={field === "avatar" ? "Avatar URL" : field}
+												value={asset[field] || ""}
 												onChange={e =>
-													handleAssetLinkChange(index, key, e.target.value)
+													handleAssetChange(index, field, e.target.value)
 												}
+												placeholder='https://...'
 											/>
-											{value?.S && (
+											{asset[field] && (
 												<img
-													src={value.S}
-													alt={`${key} preview`}
-													className='mt-2 rounded border border-border max-w-[80px] h-auto'
-													onError={e => {
-														e.target.style.display = "none";
-													}}
-													onLoad={e => {
-														e.target.style.display = "block";
-													}}
+													src={asset[field]}
+													alt={field}
+													className='mt-2 w-full max-w-24 h-auto rounded border'
+													onError={e => (e.target.style.display = "none")}
 												/>
 											)}
 										</div>
-									))}
-								</div>
-							))}
-						</div>
-
-						{/* Video Links */}
-						<div className='flex flex-col gap-4'>
-							<h5 className='font-semibold text-text-secondary'>
-								Video liên kết:
-							</h5>
-							<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-								<div className='flex flex-col gap-3'>
-									<InputField
-										label='Video giới thiệu (YouTube embed URL):'
-										type='text'
-										name='videoLink'
-										value={formData.videoLink || ""}
-										onChange={handleInputChange}
-										placeholder='https://www.youtube.com/embed/...'
-									/>
-									{formData.videoLink && (
-										<div className='aspect-video rounded overflow-hidden border border-border'>
-											<iframe
-												src={formData.videoLink}
-												title='Preview'
-												className='w-full h-full'
-												allowFullScreen
-											/>
-										</div>
-									)}
-								</div>
-								<div className='flex flex-col gap-3'>
-									<InputField
-										label='Music Video (YouTube embed URL):'
-										type='text'
-										name='musicVideo'
-										value={formData.musicVideo || ""}
-										onChange={handleInputChange}
-										placeholder='https://www.youtube.com/embed/...'
-									/>
-									{formData.musicVideo && (
-										<div className='aspect-video rounded overflow-hidden border border-border'>
-											<iframe
-												src={formData.musicVideo}
-												title='Music Preview'
-												className='w-full h-full'
-												allowFullScreen
-											/>
-										</div>
-									)}
-								</div>
+									)
+								)}
 							</div>
+							{formData.assets.length > 1 && (
+								<button
+									type='button'
+									onClick={() => handleRemoveAsset(index)}
+									className='text-red-500'
+								>
+									<XCircle size={22} />
+								</button>
+							)}
 						</div>
-					</div>
+					))}
+					<Button type='button' variant='outline' onClick={handleAddAsset}>
+						Thêm Asset
+					</Button>
+				</div>
 
-					{/* 3. Sức mạnh & Nâng cấp */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							3. Sức mạnh & Nâng cấp
-						</h4>
+				<div className='space-y-6'>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<ArrayInputComponent
 							label='Chòm sao (Power Stars)'
 							data={formData.powerStars || []}
@@ -434,77 +352,54 @@ const ChampionEditorForm = memo(
 							cachedData={dataLookup.powers}
 						/>
 						<ArrayInputComponent
-							label='Sao thưởng (Bonus Stars)'
-							data={formData.bonusStars || []}
-							onChange={d => handleArrayChange("bonusStars", d)}
-							cachedData={dataLookup.powers}
-						/>
-						<ArrayInputComponent
-							label='Sức mạnh Phiêu lưu (Adventure Powers)'
+							label='Sức mạnh Phiêu lưu'
 							data={formData.adventurePowers || []}
 							onChange={d => handleArrayChange("adventurePowers", d)}
 							cachedData={dataLookup.powers}
 						/>
-					</div>
-
-					{/* 4. Cổ vật (ĐÃ SỬA LAYOUT) */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover xl:col-span-3'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							4. Cổ vật
-						</h4>
-						{/* Grid 3 cột cho các bộ cổ vật */}
-						<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-							{[1, 2, 3, 4, 5, 6].map(num => (
-								<ArrayInputComponent
-									key={`relic${num}`}
-									label={`Bộ Cổ vật ${num}`}
-									data={formData[`defaultRelicsSet${num}`] || []}
-									onChange={d => handleArrayChange(`defaultRelicsSet${num}`, d)}
-									cachedData={dataLookup.relics}
-								/>
-							))}
-						</div>
-					</div>
-					{/* 5. Ngọc (Runes) */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							5. Ngọc (Runes)
-						</h4>
 						<ArrayInputComponent
-							label='Ngọc (Runes)'
-							data={formData.rune || []}
-							onChange={d => handleArrayChange("rune", d)}
-							cachedData={dataLookup.runes}
-						/>
-					</div>
-
-					{/* 6. Vật phẩm mặc định */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							6. Vật phẩm mặc định
-						</h4>
-						<ArrayInputComponent
-							label='Vật phẩm mặc định (Default Items)'
+							label='Vật phẩm mặc định'
 							data={formData.defaultItems || []}
 							onChange={d => handleArrayChange("defaultItems", d)}
 							cachedData={dataLookup.items}
 						/>
 					</div>
 
-					{/* 7. Bộ bài khởi đầu */}
-					<div className='p-4 border border-border rounded-lg flex flex-col gap-4 bg-surface-hover'>
-						<h4 className='text-lg font-semibold text-link border-b border-border pb-2'>
-							7. Bộ bài khởi đầu
-						</h4>
-						<ArrayInputComponent
-							label='Bộ bài khởi đầu (Starting Deck)'
-							data={formData.startingDeck || []}
-							onChange={d => handleArrayChange("startingDeck", d)}
-							cachedData={dataLookup.items}
-						/>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+						{[1, 2, 3, 4, 5, 6].map(n => (
+							<ArrayInputComponent
+								key={n}
+								label={`Bộ Cổ vật ${n}`}
+								data={formData[`defaultRelicsSet${n}`] || []}
+								onChange={d => handleArrayChange(`defaultRelicsSet${n}`, d)}
+								cachedData={dataLookup.relics}
+							/>
+						))}
 					</div>
+
+					<ArrayInputComponent
+						label='Ngọc (Runes)'
+						data={formData.rune || []}
+						onChange={d => handleArrayChange("rune", d)}
+						cachedData={dataLookup.runes}
+					/>
 				</div>
-			</div>
+
+				{/* NÚT HÀNH ĐỘNG */}
+				<div className='flex justify-end gap-4 pt-6 border-t border-border'>
+					<Button type='button' variant='ghost' onClick={onCancel}>
+						Hủy
+					</Button>
+					{champion && !champion.isNew && (
+						<Button type='button' variant='danger' onClick={onDelete}>
+							Xóa tướng
+						</Button>
+					)}
+					<Button type='submit' variant='primary' disabled={isSaving}>
+						{isSaving ? "Đang lưu..." : champion?.isNew ? "Tạo mới" : "Lưu"}
+					</Button>
+				</div>
+			</form>
 		);
 	}
 );

@@ -13,7 +13,7 @@ import { authenticateCognitoToken } from "../middleware/authenticate.js";
 import { requireAdmin } from "../middleware/requireAdmin.js";
 
 const router = express.Router();
-const CHAMPIONS_TABLE = "guidePocChampions";
+const CHAMPIONS_TABLE = "guidePocChampionList";
 
 /**
  * @route   GET /api/champions
@@ -33,8 +33,8 @@ router.get("/", async (req, res) => {
 });
 
 /**
- * @route   GET /api/champions/search?name=Kai'sa
- * @desc    Tìm tướng theo tên (dùng name-index)
+ * @route   GET /api/champions/search?name=Miss%20Fortune
+ * @desc    Tìm tướng theo tên (exact match trên name-index)
  * @access  Public
  */
 router.get("/search", async (req, res) => {
@@ -67,58 +67,56 @@ router.get("/search", async (req, res) => {
 
 /**
  * @route   PUT /api/champions
- * @desc    Tạo mới hoặc cập nhật một tướng
+ * @desc    Tạo mới hoặc cập nhật một tướng (championID là String: C056, TFT9_, v.v.)
  * @access  Private (Admin only)
  */
 router.put("/", authenticateCognitoToken, requireAdmin, async (req, res) => {
-	const championData = req.body;
+	const rawData = req.body; // ← đúng
 
 	// === VALIDATION ===
-	if (!championData.championID || !championData.name?.trim()) {
-		return res.status(400).json({ error: "Champion ID và Name là bắt buộc." });
+	if (!rawData.championID || !rawData.name?.trim()) {
+		return res.status(400).json({ error: "championID và name là bắt buộc." });
 	}
 
-	// Cấm gửi isNew: true từ client nếu không hợp lệ
-	if (championData.isNew === true && typeof championData.isNew !== "boolean") {
-		return res.status(400).json({ error: "isNew phải là boolean." });
+	const championID = rawData.championID.trim();
+
+	if (championID.length < 2 || championID.length > 50) {
+		return res.status(400).json({ error: "championID phải từ 2-50 ký tự." });
+	}
+	if (!/^[A-Za-z0-9_-]+$/.test(championID)) {
+		return res.status(400).json({
+			error: "championID chỉ được chứa chữ cái, số, gạch dưới và gạch ngang.",
+		});
 	}
 
-	const championID = Number(championData.championID);
-	if (isNaN(championID) || championID <= 0) {
-		return res
-			.status(400)
-			.json({ error: "Champion ID phải là số nguyên dương." });
-	}
-
-	const maxStar = championData.maxStar ?? 7;
+	const maxStar = Number(rawData.maxStar) || 7;
 	if (!Number.isInteger(maxStar) || maxStar < 1 || maxStar > 7) {
-		return res
-			.status(400)
-			.json({ error: "maxStar phải là số nguyên từ 1 đến 7." });
+		return res.status(400).json({ error: "maxStar phải là số từ 1-7." });
 	}
+
+	// LOẠI BỎ isNew TRƯỚC KHI LƯU – QUAN TRỌNG NHẤT
+	const { isNew, ...dataToSave } = rawData;
 
 	const cleanData = {
-		...championData,
+		...dataToSave,
 		championID,
-		name: championData.name.trim(),
+		name: rawData.name.trim(),
 		maxStar,
 	};
 
 	try {
-		// === KIỂM TRA TỒN TẠI THEO LOẠI ===
 		const checkCmd = new GetItemCommand({
 			TableName: CHAMPIONS_TABLE,
-			Key: { championID: { N: championID.toString() } },
+			Key: marshall({ championID }),
 		});
 		const { Item } = await client.send(checkCmd);
 
-		if (championData.isNew === true) {
-			// TẠO MỚI → KHÔNG ĐƯỢC TỒN TẠI
+		// DÙNG isNew TỪ rawData ĐÃ DESTRUCTURING
+		if (isNew === true) {
 			if (Item) {
 				return res.status(400).json({ error: "Tướng với ID này đã tồn tại." });
 			}
 		} else {
-			// CẬP NHẬT → PHẢI TỒN TẠI
 			if (!Item) {
 				return res
 					.status(404)
@@ -126,20 +124,18 @@ router.put("/", authenticateCognitoToken, requireAdmin, async (req, res) => {
 			}
 		}
 
-		// === LƯU DỮ LIỆU ===
 		const command = new PutItemCommand({
 			TableName: CHAMPIONS_TABLE,
 			Item: marshall(cleanData, { removeUndefinedValues: true }),
-			// Chỉ kiểm tra điều kiện khi tạo mới
-			...(championData.isNew === true && {
+			...(isNew === true && {
 				ConditionExpression: "attribute_not_exists(championID)",
 			}),
 		});
 
 		await client.send(command);
 
-		res.status(200).json({
-			message: championData.isNew
+		res.json({
+			message: isNew
 				? "Tạo tướng mới thành công."
 				: "Cập nhật tướng thành công.",
 			champion: cleanData,
@@ -155,7 +151,7 @@ router.put("/", authenticateCognitoToken, requireAdmin, async (req, res) => {
 
 /**
  * @route   DELETE /api/champions/:championID
- * @desc    Xóa một tướng dựa trên ID
+ * @desc    Xóa tướng theo championID (String)
  * @access  Private (Admin only)
  */
 router.delete(
@@ -164,33 +160,39 @@ router.delete(
 	requireAdmin,
 	async (req, res) => {
 		const { championID } = req.params;
-		const parsedChampionID = parseInt(championID, 10);
 
-		if (isNaN(parsedChampionID) || parsedChampionID <= 0) {
-			return res.status(400).json({ error: "Champion ID không hợp lệ." });
+		if (
+			!championID ||
+			typeof championID !== "string" ||
+			championID.trim().length < 1
+		) {
+			return res.status(400).json({ error: "championID không hợp lệ." });
 		}
+
+		const id = championID.trim();
 
 		try {
 			const getCmd = new GetItemCommand({
 				TableName: CHAMPIONS_TABLE,
-				Key: { championID: { N: parsedChampionID.toString() } },
+				Key: marshall({ championID: id }),
 			});
 			const { Item } = await client.send(getCmd);
+
 			if (!Item) {
 				return res.status(404).json({ error: "Không tìm thấy tướng để xóa." });
 			}
 
 			const deleteCmd = new DeleteItemCommand({
 				TableName: CHAMPIONS_TABLE,
-				Key: { championID: { N: parsedChampionID.toString() } },
+				Key: marshall({ championID: id }),
 			});
 
 			await client.send(deleteCmd);
 
+			const deletedChampion = unmarshall(Item);
+
 			res.status(200).json({
-				message: `Tướng "${
-					unmarshall(Item).name
-				}" (ID: ${parsedChampionID}) đã được xóa thành công.`,
+				message: `Tướng "${deletedChampion.name}" (ID: ${id}) đã được xóa thành công.`,
 			});
 		} catch (error) {
 			console.error("Lỗi khi xóa tướng:", error);

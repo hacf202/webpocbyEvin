@@ -62,13 +62,12 @@ function RelicDetail() {
 		? champions
 				.filter(champion =>
 					[1, 2, 3, 4, 5, 6].some(set =>
-						champion[`defaultRelicsSet${set}`]?.some(r => r.S === relic.name)
+						champion[`defaultRelicsSet${set}`]?.some(r => r === relic.name)
 					)
 				)
 				.map(champion => ({
-					name: champion.name,
-					image:
-						champion.assets?.[0]?.M?.avatar?.S || "/images/placeholder.png",
+					championID: champion.championID,
+					image: champion.assets?.[0]?.avatar || "/images/placeholder.png",
 				}))
 		: [];
 
@@ -148,7 +147,7 @@ function RelicDetail() {
 							{compatibleChampions.map((champion, index) => (
 								<Link
 									key={index}
-									to={`/champion/${encodeURIComponent(champion.name)}`}
+									to={`/champion/${champion.championID}`}
 									className='group rounded-lg p-4 transition-all hover:shadow-lg hover:scale-105 bg-surface-bg border border-border'
 								>
 									<SafeImage
