@@ -1,7 +1,8 @@
 // src/components/build/communityBuilds.jsx
 import React, { useEffect, useState, useMemo } from "react";
 import BuildSummary from "./buildSummary";
-import { useFavoriteStatus } from "../../hooks/useFavoriteStatus";
+import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData"; // [MỚI]
+import { removeAccents } from "../../utils/vietnameseUtils";
 
 const CommunityBuilds = ({
 	searchTerm,
@@ -20,7 +21,7 @@ const CommunityBuilds = ({
 	getCache,
 	setCache,
 	token,
-	sortBy, // <--- Nhận prop sắp xếp
+	sortBy,
 }) => {
 	const [communityBuilds, setCommunityBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +29,6 @@ const CommunityBuilds = ({
 
 	const apiUrl = import.meta.env.VITE_API_URL;
 
-	// Lấy danh sách public builds
 	useEffect(() => {
 		const fetchCommunityBuilds = async () => {
 			setIsLoading(true);
@@ -44,7 +44,6 @@ const CommunityBuilds = ({
 				const response = await fetch(`${apiUrl}/api/builds`);
 				if (!response.ok) throw new Error("Failed to load");
 				const data = await response.json();
-				// Sắp xếp mặc định là mới nhất khi fetch
 				const sorted = (data.items || []).sort(
 					(a, b) =>
 						new Date(b.updatedAt || b.createdAt) -
@@ -61,34 +60,30 @@ const CommunityBuilds = ({
 		fetchCommunityBuilds();
 	}, [refreshKey, getCache, setCache]);
 
-	// Batch lấy trạng thái favorite
-	const buildIds = communityBuilds.map(b => b.id);
-	const { status: favoriteStatus } = useFavoriteStatus(buildIds, token);
+	// [MỚI] Gọi API Batch 1 lần duy nhất cho toàn bộ danh sách
+	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
+		communityBuilds,
+		token
+	);
 
-	// Gắn isFavorited vào từng build
-	const buildsWithStatus = communityBuilds.map(build => ({
-		...build,
-		isFavorited: !!favoriteStatus[build.id],
-	}));
-
-	// === XỬ LÝ LỌC & SẮP XẾP ===
 	const filteredAndSortedBuilds = useMemo(() => {
-		let result = [...buildsWithStatus];
+		// Logic lọc giữ nguyên...
+		let result = [...communityBuilds];
 
-		// 1. TÌM KIẾM (Mở rộng: Tên, Creator, RelicSet, Powers, Rune)
 		if (searchTerm) {
-			const q = searchTerm.toLowerCase();
+			const q = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = build.championName?.toLowerCase() || "";
-				const creator =
-					build.creatorName?.toLowerCase() ||
-					build.creator?.toLowerCase() ||
-					"";
-
-				// Chuyển mảng thành chuỗi để tìm kiếm
-				const relicSet = (build.relicSet || []).join(" ").toLowerCase();
-				const powers = (build.powers || []).join(" ").toLowerCase();
-				const rune = (build.rune || []).join(" ").toLowerCase();
+				const champ = removeAccents(build.championName?.toLowerCase() || "");
+				const creator = removeAccents(
+					build.creatorName?.toLowerCase() || build.creator?.toLowerCase() || ""
+				);
+				const relicSet = removeAccents(
+					(build.relicSet || []).join(" ").toLowerCase()
+				);
+				const powers = removeAccents(
+					(build.powers || []).join(" ").toLowerCase()
+				);
+				const rune = removeAccents((build.rune || []).join(" ").toLowerCase());
 
 				return (
 					champ.includes(q) ||
@@ -100,14 +95,12 @@ const CommunityBuilds = ({
 			});
 		}
 
-		// 2. LỌC CẤP SAO
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
 				selectedStarLevels.includes(String(build.star || 0))
 			);
 		}
 
-		// 3. LỌC KHU VỰC
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
 				const championRegions =
@@ -116,7 +109,6 @@ const CommunityBuilds = ({
 			});
 		}
 
-		// 4. SẮP XẾP
 		result.sort((a, b) => {
 			switch (sortBy) {
 				case "newest":
@@ -144,12 +136,12 @@ const CommunityBuilds = ({
 
 		return result;
 	}, [
-		buildsWithStatus,
+		communityBuilds,
 		searchTerm,
 		selectedStarLevels,
 		selectedRegions,
 		championNameToRegionsMap,
-		sortBy, // Thêm dependency
+		sortBy,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
@@ -190,6 +182,9 @@ const CommunityBuilds = ({
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
+					// [MỚI] Truyền dữ liệu batch xuống
+					initialIsFavorited={!!favoriteStatus[build.id]}
+					initialLikeCount={favoriteCounts[build.id] || 0}
 					onBuildUpdate={handleBuildUpdated}
 					onBuildDelete={handleBuildDeleted}
 				/>

@@ -93,7 +93,8 @@ function MainContent() {
 				<Route path='/items' element={<Items />} />
 				<Route path='/item/:itemCode' element={<ItemDetail />} />
 				<Route path='/builds' element={<Builds />} />
-				<Route path='/builds/:buildId' element={<BuildDetail />} />
+				<Route path='/builds/:tab' element={<Builds />} />
+				<Route path='/builds/detail/:buildId' element={<BuildDetail />} />
 				<Route path='/runes' element={<Runes />} />
 				<Route path='/rune/:runeCode' element={<RuneDetail />} />
 				{/* <Route path='/reels' element={<BuildReelsPage />} /> */}

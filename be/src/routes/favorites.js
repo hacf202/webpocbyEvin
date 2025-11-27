@@ -1,5 +1,4 @@
-// src/routes/favorites.js – HOÀN HẢO, KHÔNG LỖI, ĐÃ TEST THỰC TẾ
-
+// src/routes/favorites.js
 import express from "express";
 import {
 	PutItemCommand,
@@ -21,15 +20,14 @@ const FAVORITES_TABLE = "guidePocFavoriteBuilds";
 // 1. LẤY DANH SÁCH FAVORITE CỦA USER
 router.get("/favorites", authenticateCognitoToken, async (req, res) => {
 	const userSub = req.user.sub;
-
 	try {
 		const { Items: favItems } = await client.send(
 			new QueryCommand({
 				TableName: FAVORITES_TABLE,
-				IndexName: "user_sub-index", // TÊN GSI PHẢI LÀ user_sub-index
+				IndexName: "user_sub-index",
 				KeyConditionExpression: "user_sub = :userSub",
 				ExpressionAttributeValues: marshall({ ":userSub": userSub }),
-				ScanIndexForward: false, // mới nhất trước
+				ScanIndexForward: false,
 			})
 		);
 
@@ -62,7 +60,6 @@ router.patch("/:id/favorite", authenticateCognitoToken, async (req, res) => {
 	const username = req.user["cognito:username"] || "Anonymous";
 
 	try {
-		// Kiểm tra build tồn tại
 		const { Item: buildItem } = await client.send(
 			new GetItemCommand({
 				TableName: BUILDS_TABLE,
@@ -73,7 +70,6 @@ router.patch("/:id/favorite", authenticateCognitoToken, async (req, res) => {
 
 		const build = normalizeBuildFromDynamo(unmarshall(buildItem));
 
-		// Kiểm tra đã favorite chưa
 		const { Items } = await client.send(
 			new QueryCommand({
 				TableName: FAVORITES_TABLE,
@@ -86,9 +82,7 @@ router.patch("/:id/favorite", authenticateCognitoToken, async (req, res) => {
 		);
 
 		let isFavorited = false;
-
 		if (Items?.length > 0) {
-			// Bỏ favorite
 			await client.send(
 				new DeleteItemCommand({
 					TableName: FAVORITES_TABLE,
@@ -96,14 +90,13 @@ router.patch("/:id/favorite", authenticateCognitoToken, async (req, res) => {
 				})
 			);
 		} else {
-			// Thêm favorite
 			isFavorited = true;
 			await client.send(
 				new PutItemCommand({
 					TableName: FAVORITES_TABLE,
 					Item: marshall({
-						id: buildId, // PK
-						user_sub: userSub, // SK – CÓ GẠCH DƯỚI
+						id: buildId,
+						user_sub: userSub,
 						username,
 						championName: build.championName,
 						creatorName: build.creatorName || "Vô Danh",
@@ -126,14 +119,13 @@ router.patch("/:id/favorite", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// 3. CHECK STATUS
+// 3. CHECK STATUS (Single)
 router.get(
 	"/:id/favorite/status",
 	authenticateCognitoToken,
 	async (req, res) => {
 		const { id: buildId } = req.params;
 		const userSub = req.user.sub;
-
 		try {
 			const { Count } = await client.send(
 				new QueryCommand({
@@ -148,21 +140,19 @@ router.get(
 			);
 			res.json({ isFavorited: Count > 0 });
 		} catch (error) {
-			console.error("Check status error:", error);
-			res.status(500).json({ error: "Could not check status" });
+			res.status(500).json({ error: "Error checking status" });
 		}
 	}
 );
 
-// 4. COUNT
+// 4. COUNT (Single)
 router.get("/:id/favorite/count", async (req, res) => {
 	const { id: buildId } = req.params;
-
 	try {
 		const { Count } = await client.send(
 			new QueryCommand({
 				TableName: FAVORITES_TABLE,
-				IndexName: "id-index", // ← DÙNG GSI MỚI
+				IndexName: "id-index",
 				KeyConditionExpression: "id = :buildId",
 				ExpressionAttributeValues: marshall({ ":buildId": buildId }),
 				Select: "COUNT",
@@ -170,20 +160,16 @@ router.get("/:id/favorite/count", async (req, res) => {
 		);
 		res.json({ count: Count || 0 });
 	} catch (error) {
-		console.error(error);
 		res.json({ count: 0 });
 	}
 });
-// NEW: Batch lấy status cho nhiều build cùng lúc
+
+// 5. BATCH STATUS (Đã có, giữ nguyên)
 router.get("/favorites/batch", authenticateCognitoToken, async (req, res) => {
 	const { ids } = req.query;
 	const userSub = req.user.sub;
 
-	// ← SỬA DÒNG NÀY: bỏ { statusMap } và kiểm tra đúng
-	if (!ids || !userSub) {
-		return res.json({}); // ← trả object rỗng nếu thiếu
-	}
-
+	if (!ids || !userSub) return res.json({});
 	const buildIds = ids.split(",").filter(Boolean);
 	if (buildIds.length === 0) return res.json({});
 
@@ -213,10 +199,46 @@ router.get("/favorites/batch", authenticateCognitoToken, async (req, res) => {
 			results.map(r => [r.id, r.isFavorited])
 		);
 		res.setHeader("Cache-Control", "no-store");
-		res.json(statusMap); // ← TRẢ VỀ DATA THẬT, KHÔNG CÒN 204!
+		res.json(statusMap);
 	} catch (error) {
 		console.error("Batch error:", error);
 		res.status(500).json({ error: "Batch failed" });
+	}
+});
+
+// [MỚI] 6. BATCH COUNT (Thêm vào để giảm log spam)
+router.get("/favorites/count/batch", async (req, res) => {
+	const { ids } = req.query;
+	if (!ids) return res.json({});
+
+	const buildIds = ids.split(",").filter(Boolean);
+	if (buildIds.length === 0) return res.json({});
+
+	try {
+		const results = await Promise.all(
+			buildIds.map(async buildId => {
+				try {
+					const { Count } = await client.send(
+						new QueryCommand({
+							TableName: FAVORITES_TABLE,
+							IndexName: "id-index", // Index dùng cho đếm tổng
+							KeyConditionExpression: "id = :buildId",
+							ExpressionAttributeValues: marshall({ ":buildId": buildId }),
+							Select: "COUNT",
+						})
+					);
+					return { id: buildId, count: Count || 0 };
+				} catch {
+					return { id: buildId, count: 0 };
+				}
+			})
+		);
+
+		const countMap = Object.fromEntries(results.map(r => [r.id, r.count]));
+		res.json(countMap);
+	} catch (error) {
+		console.error("Batch count error:", error);
+		res.status(500).json({ error: "Batch count failed" });
 	}
 });
 

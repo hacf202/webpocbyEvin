@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
-import { useFavoriteStatus } from "../../hooks/useFavoriteStatus";
+import { removeAccents } from "../../utils/vietnameseUtils";
 
 const MyFavorite = ({
 	searchTerm,
@@ -19,12 +19,15 @@ const MyFavorite = ({
 	onDeleteSuccess,
 	getCache,
 	setCache,
-	sortBy, // <--- Nhận prop sắp xếp
+	sortBy,
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [favoriteBuilds, setFavoriteBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	// Lưu count
+	const [favoriteCounts, setFavoriteCounts] = useState({});
+
 	const apiUrl = import.meta.env.VITE_API_URL;
 
 	useEffect(() => {
@@ -47,44 +50,49 @@ const MyFavorite = ({
 				const response = await fetch(`${apiUrl}/api/builds/favorites`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
-				if (!response.ok) throw new Error("Không thể tải danh sách yêu thích");
+				if (!response.ok) throw new Error("Failed to load favorites");
 				const data = await response.json();
 				setFavoriteBuilds(data);
-				setCache?.(cacheKey, data);
+				if (setCache) setCache(cacheKey, data);
 			} catch (err) {
-				setError(err.message);
+				console.error(err);
+				setError("Lỗi tải danh sách yêu thích");
 			} finally {
 				setIsLoading(false);
 			}
 		};
 		fetchFavoriteBuilds();
-	}, [token, refreshKey, getCache, setCache]);
+	}, [refreshKey, token, apiUrl, getCache, setCache]);
 
-	const buildIds = favoriteBuilds.map(b => b.id);
-	const { status: favoriteStatus } = useFavoriteStatus(buildIds, token);
+	// [MỚI] Batch Fetch Count chỉ khi có danh sách favorite
+	useEffect(() => {
+		if (favoriteBuilds.length === 0) return;
+		const ids = favoriteBuilds.map(b => b.id).join(",");
 
-	const buildsWithStatus = favoriteBuilds.map(build => ({
-		...build,
-		isFavorited: true,
-	}));
+		fetch(`${apiUrl}/api/builds/favorites/count/batch?ids=${ids}`)
+			.then(res => res.json())
+			.then(data => setFavoriteCounts(data))
+			.catch(console.error);
+	}, [favoriteBuilds, apiUrl]);
 
-	// === XỬ LÝ LỌC & SẮP XẾP ===
 	const filteredBuilds = useMemo(() => {
-		let result = [...buildsWithStatus];
+		let result = [...favoriteBuilds];
 
-		// 1. TÌM KIẾM
+		// [CẬP NHẬT] Tìm kiếm không dấu
 		if (searchTerm) {
-			const q = searchTerm.toLowerCase();
+			const q = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = build.championName?.toLowerCase() || "";
-				const creator =
-					build.creatorName?.toLowerCase() ||
-					build.creator?.toLowerCase() ||
-					"";
-
-				const relicSet = (build.relicSet || []).join(" ").toLowerCase();
-				const powers = (build.powers || []).join(" ").toLowerCase();
-				const rune = (build.rune || []).join(" ").toLowerCase();
+				const champ = removeAccents(build.championName.toLowerCase());
+				const creator = removeAccents(
+					build.creatorName?.toLowerCase() || build.creator?.toLowerCase()
+				);
+				const relicSet = removeAccents(
+					(build.relicSet || []).join(" ").toLowerCase()
+				);
+				const powers = removeAccents(
+					(build.powers || []).join(" ").toLowerCase()
+				);
+				const rune = removeAccents((build.rune || []).join(" ")).toLowerCase();
 
 				return (
 					champ.includes(q) ||
@@ -96,14 +104,12 @@ const MyFavorite = ({
 			});
 		}
 
-		// 2. LỌC CẤP SAO
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
 				selectedStarLevels.includes(String(build.star || 0))
 			);
 		}
 
-		// 3. LỌC KHU VỰC
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
 				const championRegions =
@@ -112,7 +118,6 @@ const MyFavorite = ({
 			});
 		}
 
-		// 4. SẮP XẾP
 		result.sort((a, b) => {
 			switch (sortBy) {
 				case "newest":
@@ -140,12 +145,12 @@ const MyFavorite = ({
 
 		return result;
 	}, [
-		buildsWithStatus,
+		favoriteBuilds,
 		searchTerm,
 		selectedStarLevels,
 		selectedRegions,
 		championNameToRegionsMap,
-		sortBy, // Thêm dependency
+		sortBy,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
@@ -166,16 +171,10 @@ const MyFavorite = ({
 		return <p className='text-center mt-8 text-text-secondary'>Đang tải...</p>;
 	if (error)
 		return <p className='text-danger-text-dark text-center mt-8'>{error}</p>;
-	if (favoriteBuilds.length === 0)
-		return (
-			<p className='text-center mt-8 text-text-secondary'>
-				Bạn chưa có build yêu thích nào.
-			</p>
-		);
 	if (filteredBuilds.length === 0)
 		return (
 			<p className='text-center mt-8 text-text-secondary'>
-				Không tìm thấy build nào phù hợp.
+				Không tìm thấy build nào.
 			</p>
 		);
 
@@ -185,6 +184,10 @@ const MyFavorite = ({
 				<BuildSummary
 					key={build.id}
 					build={build}
+					// Trong tab My Favorite thì hiển nhiên là true
+					initialIsFavorited={true}
+					// Lấy count từ map batch
+					initialLikeCount={favoriteCounts[build.id] || 0}
 					championsList={championsList}
 					relicsList={relicsList}
 					powersList={powersList}

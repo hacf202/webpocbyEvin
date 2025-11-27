@@ -1,8 +1,9 @@
-// src/components/build/myBuilds.jsx
 import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
-import { useFavoriteStatus } from "../../hooks/useFavoriteStatus";
+import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
+
+import { removeAccents } from "../../utils/vietnameseUtils";
 
 const MyBuilds = ({
 	searchTerm,
@@ -19,7 +20,7 @@ const MyBuilds = ({
 	onDeleteSuccess,
 	getCache,
 	setCache,
-	sortBy, // <--- Nhận prop sắp xếp
+	sortBy,
 }) => {
 	const { user, token } = useContext(AuthContext);
 	const [myBuilds, setMyBuilds] = useState([]);
@@ -63,31 +64,30 @@ const MyBuilds = ({
 		fetchMyBuilds();
 	}, [token, refreshKey, getCache, setCache]);
 
-	const buildIds = myBuilds.map(b => b.id);
-	const { status: favoriteStatus } = useFavoriteStatus(buildIds, token);
+	// Batch Favorite Data
+	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
+		myBuilds,
+		token
+	);
 
-	const buildsWithStatus = myBuilds.map(build => ({
-		...build,
-		isFavorited: !!favoriteStatus[build.id],
-	}));
-
-	// === XỬ LÝ LỌC & SẮP XẾP ===
 	const filteredMyBuilds = useMemo(() => {
-		let result = [...buildsWithStatus];
+		let result = [...myBuilds];
 
-		// 1. TÌM KIẾM
+		// [CẬP NHẬT] Tìm kiếm không dấu
 		if (searchTerm) {
-			const q = searchTerm.toLowerCase();
+			const q = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = build.championName?.toLowerCase() || "";
-				const creator =
-					build.creatorName?.toLowerCase() ||
-					build.creator?.toLowerCase() ||
-					"";
-
-				const relicSet = (build.relicSet || []).join(" ").toLowerCase();
-				const powers = (build.powers || []).join(" ").toLowerCase();
-				const rune = (build.rune || []).join(" ").toLowerCase();
+				const champ = removeAccents(build.championName.toLowerCase());
+				const creator = removeAccents(
+					build.creatorName?.toLowerCase() || build.creator?.toLowerCase()
+				);
+				const relicSet = removeAccents(
+					(build.relicSet || []).join(" ").toLowerCase()
+				);
+				const powers = removeAccents(
+					(build.powers || []).join(" ").toLowerCase()
+				);
+				const rune = removeAccents((build.rune || []).join(" ")).toLowerCase();
 
 				return (
 					champ.includes(q) ||
@@ -99,14 +99,12 @@ const MyBuilds = ({
 			});
 		}
 
-		// 2. LỌC CẤP SAO
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
 				selectedStarLevels.includes(String(build.star || 0))
 			);
 		}
 
-		// 3. LỌC KHU VỰC
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
 				const championRegions =
@@ -115,7 +113,6 @@ const MyBuilds = ({
 			});
 		}
 
-		// 4. SẮP XẾP
 		result.sort((a, b) => {
 			switch (sortBy) {
 				case "newest":
@@ -143,12 +140,12 @@ const MyBuilds = ({
 
 		return result;
 	}, [
-		buildsWithStatus,
+		myBuilds,
 		searchTerm,
 		selectedStarLevels,
 		selectedRegions,
 		championNameToRegionsMap,
-		sortBy, // Thêm dependency
+		sortBy,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
@@ -190,6 +187,8 @@ const MyBuilds = ({
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
+					initialIsFavorited={!!favoriteStatus[build.id]}
+					initialLikeCount={favoriteCounts[build.id] || 0}
 					onBuildUpdate={handleBuildUpdated}
 					onBuildDelete={handleBuildDeleted}
 				/>

@@ -1,4 +1,4 @@
-// src/components/build/BuildSummary.jsx
+// src/components/build/buildSummary.jsx
 import React, { memo, useMemo, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -19,7 +19,7 @@ import BuildDelete from "./buildDelete";
 import BuildEditModal from "./buildEditModal";
 import SafeImage from "../common/SafeImage.jsx";
 
-const DESCRIPTION_MAX_HEIGHT = 80; // ~4 dòng
+const DESCRIPTION_MAX_HEIGHT = 80;
 
 const BuildSummary = ({
 	build,
@@ -30,6 +30,9 @@ const BuildSummary = ({
 	style,
 	onBuildUpdate,
 	onBuildDelete,
+	// [MỚI] Nhận dữ liệu từ cha, không tự fetch
+	initialIsFavorited = false,
+	initialLikeCount = 0, // Đây là favorite count
 }) => {
 	const { user, token } = useAuth();
 	const navigate = useNavigate();
@@ -39,19 +42,32 @@ const BuildSummary = ({
 
 	const [isDescriptionOverflowing, setIsDescriptionOverflowing] =
 		useState(false);
+
+	// Like count (System Like)
 	const [likeCount, setLikeCount] = useState(build.like || 0);
 	const [isLiked, setIsLiked] = useState(false);
 
-	// Thay đổi hoàn toàn: dùng API riêng để lấy favorite
-	const [isFavorite, setIsFavorite] = useState(false);
-	const [favoriteCount, setFavoriteCount] = useState(0);
-	const [isLoadingFavorite, setIsLoadingFavorite] = useState(true);
+	// Favorite (User Bookmark) - Init từ props
+	const [isFavorite, setIsFavorite] = useState(initialIsFavorited);
+	const [favoriteCount, setFavoriteCount] = useState(initialLikeCount);
 
 	const [showLoginModal, setShowLoginModal] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [buildToDelete, setBuildToDelete] = useState(null);
 	const [buildToEdit, setBuildToEdit] = useState(null);
-	const [creatorDisplayName, setCreatorDisplayName] = useState(build.creator);
+
+	// [TỐI ƯU] Dùng luôn tên creator có sẵn, bỏ fetch api user từng cái
+	// Nếu muốn hiển thị tên thật (display name), hãy fetch batch ở component cha
+	const creatorDisplayName = build.creatorName || build.creator || "Vô danh";
+
+	// Cập nhật state khi props thay đổi (quan trọng khi batch API trả về muộn)
+	useEffect(() => {
+		setIsFavorite(initialIsFavorited);
+	}, [initialIsFavorited]);
+
+	useEffect(() => {
+		setFavoriteCount(initialLikeCount);
+	}, [initialLikeCount]);
 
 	// Kiểm tra overflow mô tả
 	useEffect(() => {
@@ -60,27 +76,24 @@ const BuildSummary = ({
 			setIsDescriptionOverflowing(false);
 			return;
 		}
-
 		const checkOverflow = () => {
 			setIsDescriptionOverflowing(
 				element.scrollHeight > DESCRIPTION_MAX_HEIGHT
 			);
 		};
-
 		const resizeObserver = new ResizeObserver(checkOverflow);
 		resizeObserver.observe(element);
 		checkOverflow();
-
 		return () => resizeObserver.disconnect();
 	}, [build.description]);
 
-	// Kiểm tra đã like chưa (dùng sessionStorage như cũ)
+	// Kiểm tra đã like chưa (sessionStorage)
 	useEffect(() => {
 		const liked = sessionStorage.getItem(`liked_${build.id}`);
 		if (liked) setIsLiked(true);
 	}, [build.id]);
 
-	// Click outside để đóng menu
+	// Click outside menu
 	useEffect(() => {
 		const handleClickOutside = e => {
 			if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -91,91 +104,19 @@ const BuildSummary = ({
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
-	// Lấy tên người tạo
-	useEffect(() => {
-		const fetchCreatorName = async () => {
-			if (user && build.sub === user.sub) {
-				setCreatorDisplayName(user.name || build.creator);
-				return;
-			}
-			if (!build.creator) {
-				setCreatorDisplayName("Vô danh");
-				return;
-			}
-			try {
-				const res = await fetch(`${apiUrl}/api/users/${build.creator}`);
-				if (res.ok) {
-					const data = await res.json();
-					setCreatorDisplayName(data.name || build.creator);
-				} else {
-					setCreatorDisplayName(build.creator);
-				}
-			} catch (err) {
-				console.error("Lỗi lấy tên:", err);
-				setCreatorDisplayName(build.creator);
-			}
-		};
-		fetchCreatorName();
-	}, [build.creator, build.sub, user, apiUrl]);
-
-	// Lấy trạng thái yêu thích & số lượng yêu thích từ API
-	useEffect(() => {
-		const fetchFavoriteData = async () => {
-			if (!build?.id) return;
-
-			try {
-				setIsLoadingFavorite(true);
-
-				const [statusRes, countRes] = await Promise.all([
-					user
-						? fetch(`${apiUrl}/api/builds/${build.id}/favorite/status`, {
-								headers: { Authorization: `Bearer ${token}` },
-						  })
-						: Promise.resolve(null),
-					fetch(`${apiUrl}/api/builds/${build.id}/favorite/count`),
-				]);
-
-				// Trạng thái yêu thích của user hiện tại
-				if (statusRes && statusRes.ok) {
-					const { isFavorited } = await statusRes.json();
-					setIsFavorite(isFavorited);
-				} else {
-					setIsFavorite(false);
-				}
-
-				// Tổng số lượt yêu thích
-				if (countRes.ok) {
-					const { count } = await countRes.json();
-					setFavoriteCount(count);
-				}
-			} catch (err) {
-				console.error("Lỗi tải dữ liệu yêu thích:", err);
-				setIsFavorite(false);
-				setFavoriteCount(0);
-			} finally {
-				setIsLoadingFavorite(false);
-			}
-		};
-
-		fetchFavoriteData();
-	}, [build.id, user, token, apiUrl]);
-
 	const isOwner = useMemo(
 		() => user && build.sub === user.sub,
 		[user, build.sub]
 	);
 
-	// Xem chi tiết
 	const handleViewDetail = e => {
 		e.stopPropagation();
 		navigate(`/builds/${build.id}`);
 	};
 
-	// Like
 	const handleLike = async e => {
 		e.stopPropagation();
 		if (isLiked) return;
-
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${build.id}/like`, {
 				method: "PATCH",
@@ -192,7 +133,6 @@ const BuildSummary = ({
 		}
 	};
 
-	// Toggle yêu thích (dùng bảng riêng)
 	const handleToggleFavorite = async e => {
 		e.stopPropagation();
 		if (!user) {
@@ -217,30 +157,21 @@ const BuildSummary = ({
 			});
 
 			if (!res.ok) throw new Error("Toggle failed");
-
 			const result = await res.json();
-			setIsFavorite(result.isFavorited);
 
-			// Tùy chọn: gọi lại count để đảm bảo chính xác 100%
-			const countRes = await fetch(
-				`${apiUrl}/api/builds/${build.id}/favorite/count`
-			);
-			if (countRes.ok) {
-				const { count } = await countRes.json();
-				setFavoriteCount(count);
-			}
+			// Backend trả về status mới, update lại để đảm bảo đồng bộ
+			setIsFavorite(result.isFavorited);
+			// Có thể cần fetch lại count chính xác nếu muốn, hoặc tin tưởng optimistic
 
 			onBuildUpdate?.(result);
 		} catch (err) {
 			console.error("Lỗi toggle yêu thích:", err);
-			// Revert
 			setIsFavorite(previousFavorite);
 			setFavoriteCount(previousCount);
-			alert("Có lỗi xảy ra khi yêu thích build");
 		}
 	};
 
-	// Sửa / Xóa
+	// ... (Giữ nguyên các hàm handleEdit, handleDelete, findImage, renderImageWithTooltip)
 	const handleEdit = e => {
 		e.stopPropagation();
 		setBuildToEdit(build);
@@ -263,7 +194,6 @@ const BuildSummary = ({
 		setBuildToDelete(null);
 	};
 
-	// Helper: tìm ảnh
 	const normalizeName = val =>
 		val && typeof val === "object" ? val.S || "" : String(val || "");
 	const findImage = (list, name) =>
@@ -311,9 +241,7 @@ const BuildSummary = ({
 		<>
 			<div
 				style={style}
-				className='bg-surface-bg border-2 border-border rounded-lg shadow-md 
-        hover:shadow-primary-md hover:-translate-y-1 hover:border-primary-500 
-        transition-all duration-300 flex flex-col cursor-pointer overflow-hidden p-3 sm:p-5'
+				className='bg-surface-bg border-2 border-border rounded-lg shadow-md hover:shadow-primary-md hover:-translate-y-1 hover:border-primary-500 transition-all duration-300 flex flex-col cursor-pointer overflow-hidden p-3 sm:p-5'
 				onClick={() => navigate(`/builds/${build.id}`)}
 			>
 				<div className='flex flex-col gap-4'>
@@ -372,7 +300,6 @@ const BuildSummary = ({
 								<div className='flex items-center gap-1 text-text-secondary'>
 									<button
 										onClick={handleToggleFavorite}
-										disabled={isLoadingFavorite}
 										className={`p-1.5 rounded-full transition-all ${
 											isFavorite
 												? "text-danger-500 bg-danger-500/10"
@@ -384,6 +311,16 @@ const BuildSummary = ({
 											className={isFavorite ? "fill-current" : ""}
 										/>
 									</button>
+									{/* Hiển thị số lượng favorite nếu > 0 */}
+									{favoriteCount > 0 && (
+										<span
+											className={`text-sm ${
+												isFavorite ? "text-danger-500" : ""
+											}`}
+										>
+											{favoriteCount}
+										</span>
+									)}
 								</div>
 
 								{/* Menu */}
@@ -413,6 +350,7 @@ const BuildSummary = ({
 												</span>
 											</button>
 
+											{/* ... (Các item menu khác giữ nguyên) ... */}
 											{build.hasOwnProperty("display") && (
 												<div className='flex items-center gap-3 px-4 py-2 text-sm text-text-secondary'>
 													{build.display ? (
@@ -474,7 +412,7 @@ const BuildSummary = ({
 						</div>
 					</div>
 
-					{/* Nội dung build */}
+					{/* Nội dung build (Giữ nguyên) */}
 					<div className='flex flex-col gap-3 text-sm'>
 						{build.relicSet?.length > 0 && (
 							<div>
@@ -514,7 +452,7 @@ const BuildSummary = ({
 						)}
 					</div>
 
-					{/* Mô tả */}
+					{/* Mô tả (Giữ nguyên) */}
 					{build.description && (
 						<div className='relative'>
 							<p
@@ -544,12 +482,13 @@ const BuildSummary = ({
 				</div>
 			</div>
 
-			{/* Modal đăng nhập */}
+			{/* Modal đăng nhập (Giữ nguyên) */}
 			<Modal
 				isOpen={showLoginModal}
 				onClose={() => setShowLoginModal(false)}
 				title='Yêu cầu đăng nhập'
 			>
+				{/* ... content giữ nguyên ... */}
 				<p className='text-text-secondary mb-6'>
 					Bạn cần đăng nhập để thực hiện hành động này.
 				</p>

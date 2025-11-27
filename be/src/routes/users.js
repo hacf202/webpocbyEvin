@@ -1,6 +1,4 @@
 // src/routes/users.js
-// TỐI ƯU HOÀN CHỈNH
-
 import express from "express";
 import {
 	AdminGetUserCommand,
@@ -13,7 +11,42 @@ import { authenticateCognitoToken } from "../middleware/authenticate.js";
 const router = express.Router();
 const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 
-// GET /api/user/me
+// ==========================================
+// HỆ THỐNG IN-MEMORY CACHE ĐƠN GIẢN
+// ==========================================
+const userCache = new Map();
+const CACHE_TTL = 10 * 60 * 1000; // 10 Phút
+const MAX_CACHE_SIZE = 1000; // Giới hạn lưu 1000 users để bảo vệ RAM
+
+const getFromCache = key => {
+	const cached = userCache.get(key);
+	if (!cached) return null;
+
+	// Kiểm tra xem cache còn hạn không
+	if (Date.now() - cached.timestamp > CACHE_TTL) {
+		userCache.delete(key); // Hết hạn thì xóa
+		return null;
+	}
+	return cached.data;
+};
+
+const setToCache = (key, data) => {
+	// Cơ chế dọn dẹp đơn giản: Nếu đầy thì xóa phần tử cũ nhất (FIFO)
+	if (userCache.size >= MAX_CACHE_SIZE) {
+		const firstKey = userCache.keys().next().value;
+		userCache.delete(firstKey);
+	}
+	userCache.set(key, { data, timestamp: Date.now() });
+};
+
+const invalidateCache = key => {
+	if (userCache.has(key)) {
+		userCache.delete(key);
+	}
+};
+// ==========================================
+
+// 1. GET /api/user/me - Lấy thông tin bản thân (Không cache để đảm bảo realtime)
 router.get("/user/me", authenticateCognitoToken, async (req, res) => {
 	try {
 		const command = new AdminGetUserCommand({
@@ -32,9 +65,17 @@ router.get("/user/me", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// GET /api/users/:username
+// 2. GET /api/users/:username - Lấy thông tin công khai (CÓ CACHE)
 router.get("/users/:username", async (req, res) => {
 	const { username } = req.params;
+
+	// [CACHE] Bước 1: Kiểm tra cache
+	const cachedData = getFromCache(username);
+	if (cachedData) {
+		// Trả về dữ liệu từ RAM ngay lập tức
+		return res.json(cachedData);
+	}
+
 	try {
 		const command = new AdminGetUserCommand({
 			UserPoolId: COGNITO_USER_POOL_ID,
@@ -42,10 +83,15 @@ router.get("/users/:username", async (req, res) => {
 		});
 		const { UserAttributes } = await cognitoClient.send(command);
 		const nameAttribute = UserAttributes.find(attr => attr.Name === "name");
+
 		const publicProfile = {
 			username,
 			name: nameAttribute ? nameAttribute.Value : username,
 		};
+
+		// [CACHE] Bước 2: Lưu vào cache
+		setToCache(username, publicProfile);
+
 		res.json(publicProfile);
 	} catch (error) {
 		if (error.name === "UserNotFoundException") {
@@ -56,17 +102,19 @@ router.get("/users/:username", async (req, res) => {
 	}
 });
 
-// POST /api/user/change-password
+// 3. POST /api/user/change-password
 router.post(
 	"/user/change-password",
 	authenticateCognitoToken,
 	async (req, res) => {
 		const { previousPassword, proposedPassword, accessToken } = req.body;
+
 		if (!previousPassword || !proposedPassword || !accessToken) {
 			return res
 				.status(400)
 				.json({ error: "Both previous and new passwords are required" });
 		}
+
 		try {
 			const command = new ChangePasswordCommand({
 				PreviousPassword: previousPassword,
@@ -84,13 +132,15 @@ router.post(
 	}
 );
 
-// PUT /api/user/change-name
+// 4. PUT /api/user/change-name - Đổi tên hiển thị (XÓA CACHE)
 router.put("/user/change-name", authenticateCognitoToken, async (req, res) => {
 	const { name } = req.body;
 	const username = req.user["cognito:username"];
+
 	if (!name || name.trim().length < 3) {
 		return res.status(400).json({ error: "Tên phải có ít nhất 3 ký tự" });
 	}
+
 	try {
 		const command = new AdminUpdateUserAttributesCommand({
 			UserPoolId: COGNITO_USER_POOL_ID,
@@ -98,6 +148,10 @@ router.put("/user/change-name", authenticateCognitoToken, async (req, res) => {
 			UserAttributes: [{ Name: "name", Value: name.trim() }],
 		});
 		await cognitoClient.send(command);
+
+		// [CACHE] Bước 3: Quan trọng - Xóa cache cũ để hiển thị tên mới ngay
+		invalidateCache(username);
+
 		res.json({ message: "Cập nhật tên thành công" });
 	} catch (error) {
 		console.error("Change name error:", error);
@@ -105,18 +159,33 @@ router.put("/user/change-name", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// GET /api/user/info/:sub → DÙNG preferred_username = sub
+// 5. GET /api/user/info/:sub - Lấy info bằng sub (CÓ CACHE)
+// Route này thường được dùng khi hiển thị avatar/tên trong list builds
 router.get("/user/info/:sub", async (req, res) => {
 	const { sub } = req.params;
+
+	// [CACHE] Kiểm tra cache theo sub (ở đây giả định sub đóng vai trò như username trong hệ thống cũ)
+	// Nếu sub khác username, bạn cần lưu cache theo key riêng, ví dụ: `sub:${sub}`
+	const cachedData = getFromCache(sub);
+	if (cachedData) {
+		return res.json(cachedData);
+	}
+
 	try {
 		const command = new AdminGetUserCommand({
 			UserPoolId: COGNITO_USER_POOL_ID,
-			Username: sub, // BÂY GIỜ sub = username
+			Username: sub,
 		});
 		const { UserAttributes } = await cognitoClient.send(command);
 		const name =
 			UserAttributes.find(a => a.Name === "name")?.Value || "Người chơi";
-		res.json({ name });
+
+		const result = { name };
+
+		// [CACHE] Lưu cache
+		setToCache(sub, result);
+
+		res.json(result);
 	} catch (error) {
 		if (error.name === "UserNotFoundException") {
 			return res.status(404).json({ error: "User not found" });

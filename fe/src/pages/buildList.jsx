@@ -20,11 +20,10 @@ import {
 import Button from "../components/common/button";
 import MultiSelectFilter from "../components/common/multiSelectFilter";
 import InputField from "../components/common/inputField";
-import DropdownFilter from "../components/common/dropdownFilter"; // Đảm bảo bạn có component này
+import DropdownFilter from "../components/common/dropdownFilter";
 import PageTitle from "../components/common/pageTitle";
-import SafeImage from "../components/common/SafeImage.jsx";
 import iconRegionsData from "../assets/data/iconRegions.json";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom"; // [CẬP NHẬT] Thêm hook router
 import { usePersistentState } from "../hooks/usePersistentState";
 
 // === CACHE CONFIG ===
@@ -84,11 +83,22 @@ const clearAllBuildsCache = () => {
 
 const Builds = () => {
 	const { user } = useContext(AuthContext);
+
+	// [CẬP NHẬT] Hook Router
+	const { tab } = useParams();
+	const navigate = useNavigate();
+
+	// [CẬP NHẬT] Xác định activeTab từ URL
+	// Nếu không có tab trên URL (route /builds), mặc định là "community"
+	const activeTab = useMemo(() => {
+		const validTabs = ["community", "my-builds", "favorites"];
+		return validTabs.includes(tab) ? tab : "community";
+	}, [tab]);
+
 	const [showCreateModal, setShowCreateModal] = useState(false);
-	const [activeTab, setActiveTab] = usePersistentState(
-		"buildsActiveTab",
-		"community"
-	);
+
+	// [CẬP NHẬT] Đã xóa state activeTab cục bộ (usePersistentState("buildsActiveTab", ...))
+
 	const [refreshKey, setRefreshKey] = useState(0);
 
 	// === FILTER STATE (PERSISTENT) ===
@@ -235,17 +245,24 @@ const Builds = () => {
 	const handleCreateSuccess = () => {
 		setShowCreateModal(false);
 		triggerRefresh();
-		setActiveTab("my-builds");
+		// [CẬP NHẬT] Chuyển hướng URL thay vì set state
+		navigate("/builds/my-builds");
 	};
 
 	const handleEditSuccess = () => triggerRefresh();
 	const handleDeleteSuccess = () => triggerRefresh();
 	const handleFavoriteToggle = () => triggerRefresh();
 
+	// [CẬP NHẬT] Hàm chuyển tab sử dụng navigate
+	const changeTab = newTab => {
+		navigate(`/builds/${newTab}`);
+	};
+
 	// === CACHE UTILS ===
 	const cacheUtils = {
-		getCache: tab => {
-			const key = getCacheKey(tab, {
+		getCache: tabName => {
+			// Tham số tabName được truyền từ component con
+			const key = getCacheKey(tabName, {
 				searchTerm,
 				selectedStarLevels,
 				selectedRegions,
@@ -253,8 +270,8 @@ const Builds = () => {
 			});
 			return getCachedData(key);
 		},
-		setCache: (tab, data) => {
-			const key = getCacheKey(tab, {
+		setCache: (tabName, data) => {
+			const key = getCacheKey(tabName, {
 				searchTerm,
 				selectedStarLevels,
 				selectedRegions,
@@ -270,7 +287,7 @@ const Builds = () => {
 		searchTerm,
 		selectedStarLevels,
 		selectedRegions,
-		sortBy, // Thêm prop sortBy
+		sortBy,
 		championsList,
 		relicsList,
 		powersList,
@@ -306,6 +323,7 @@ const Builds = () => {
 			);
 		}
 
+		// [CẬP NHẬT] Switch case dựa trên URL values
 		switch (activeTab) {
 			case "community":
 				return <CommunityBuilds {...commonProps} />;
@@ -315,14 +333,14 @@ const Builds = () => {
 				) : (
 					<p className='text-center'>Đăng nhập để xem bộ của bạn.</p>
 				);
-			case "my-favorites":
+			case "favorites": // [CẬP NHẬT] Đổi từ my-favorites thành favorites cho ngắn gọn trên URL
 				return user ? (
 					<MyFavorite {...commonProps} />
 				) : (
 					<p className='text-center'>Đăng nhập để xem yêu thích.</p>
 				);
 			default:
-				return null;
+				return <CommunityBuilds {...commonProps} />;
 		}
 	};
 
@@ -344,7 +362,7 @@ const Builds = () => {
 					<div>
 						<Button
 							variant={activeTab === "community" ? "primary" : "ghost"}
-							onClick={() => setActiveTab("community")}
+							onClick={() => changeTab("community")}
 							iconLeft={<Globe size={18} />}
 						>
 							Cộng Đồng
@@ -352,7 +370,7 @@ const Builds = () => {
 						{user && (
 							<Button
 								variant={activeTab === "my-builds" ? "primary" : "ghost"}
-								onClick={() => setActiveTab("my-builds")}
+								onClick={() => changeTab("my-builds")}
 								iconLeft={<Shield size={18} />}
 							>
 								Của Tôi
@@ -360,8 +378,8 @@ const Builds = () => {
 						)}
 						{user && (
 							<Button
-								variant={activeTab === "my-favorites" ? "primary" : "ghost"}
-								onClick={() => setActiveTab("my-favorites")}
+								variant={activeTab === "favorites" ? "primary" : "ghost"}
+								onClick={() => changeTab("favorites")}
 								iconLeft={<Heart size={18} />}
 							>
 								Yêu Thích
