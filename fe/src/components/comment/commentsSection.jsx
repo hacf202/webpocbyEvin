@@ -27,8 +27,10 @@ const CommentForm = ({
 			setError("Bạn cần đăng nhập để bình luận.");
 			return;
 		}
+
 		setIsSubmitting(true);
 		setError("");
+
 		try {
 			const res = await fetch(`${apiUrl}/api/builds/${buildId}/comments`, {
 				method: "POST",
@@ -38,17 +40,21 @@ const CommentForm = ({
 				},
 				body: JSON.stringify({ content, parentId, replyToUsername }),
 			});
-			if (!res.ok) {
+
+			// ĐÚNG: Nếu thành công (201) → res.ok = true
+			if (res.ok) {
 				const newComment = await res.json();
-				onCommentPosted(newComment);
+				onCommentPosted(newComment); // Thêm vào UI ngay lập tức
 				setContent("");
 				onCancel?.();
 			} else {
-				const err = await res.json();
-				throw new Error(err.error || "Không thể gửi bình luận");
+				// Thất bại → lấy lỗi từ server
+				const errData = await res.json();
+				throw new Error(errData.error || "Không thể gửi bình luận");
 			}
 		} catch (err) {
-			setError(err.message);
+			console.error("Comment submit error:", err);
+			setError(err.message || "Có lỗi xảy ra khi gửi bình luận");
 		} finally {
 			setIsSubmitting(false);
 		}
