@@ -195,6 +195,7 @@ const BuildModal = ({
 			star: 3,
 			description: "",
 			display: true,
+			regions: [], // [ADD] Thêm trường regions
 		}
 	);
 
@@ -209,11 +210,11 @@ const BuildModal = ({
 	const [relics, setRelics] = useState([]);
 	const [powers, setPowers] = useState([]);
 	const [runes, setRunes] = useState([]);
-	const [champions, setChampions] = useState([]); // Thêm state cho champions
+	const [champions, setChampions] = useState([]);
 	const [loadingRelics, setLoadingRelics] = useState(true);
 	const [loadingPowers, setLoadingPowers] = useState(true);
 	const [loadingRunes, setLoadingRunes] = useState(true);
-	const [loadingChampions, setLoadingChampions] = useState(true); // Thêm loading
+	const [loadingChampions, setLoadingChampions] = useState(true);
 
 	useEffect(() => {
 		if (!isOpen) return;
@@ -224,7 +225,7 @@ const BuildModal = ({
 					fetch(`${baseURL}/api/relics`),
 					fetch(`${baseURL}/api/generalPowers`),
 					fetch(`${baseURL}/api/runes`),
-					fetch(`${baseURL}/api/champions`), // Gọi API champions
+					fetch(`${baseURL}/api/champions`),
 				]);
 
 				const relicData = await relicRes.json();
@@ -256,7 +257,7 @@ const BuildModal = ({
 				setLoadingRelics(false);
 				setLoadingPowers(false);
 				setLoadingRunes(false);
-				setLoadingChampions(false); // Tắt loading
+				setLoadingChampions(false);
 			} catch (err) {
 				console.error("Lỗi tải dữ liệu:", err);
 				setLoadingRelics(false);
@@ -268,8 +269,19 @@ const BuildModal = ({
 		fetchData();
 	}, [isOpen]);
 
-	// Sử dụng champions từ API thay vì championsData
 	const championOptions = useMemo(() => champions, [champions]);
+
+	// Cập nhật selectedChampion khi mở modal edit (để logic Hoa Linh hoạt động)
+	useEffect(() => {
+		if (initialData && champions.length > 0 && !selectedChampion) {
+			const currentChamp = champions.find(
+				c => c.name === initialData.championName
+			);
+			if (currentChamp) {
+				setSelectedChampion(currentChamp);
+			}
+		}
+	}, [initialData, champions, selectedChampion]);
 
 	const isChampionSelected = !!formData.championName;
 	const isHoaLinhChampion =
@@ -372,6 +384,7 @@ const BuildModal = ({
 					powers: formData.powers.filter(Boolean),
 					rune: formData.rune.filter(Boolean),
 					like: initialData?.like || 0,
+					regions: formData.regions, // [ADD] Gửi regions lên server
 				}),
 			});
 
@@ -413,12 +426,13 @@ const BuildModal = ({
 									rune: champ?.regions?.includes("Hoa Linh Lục Địa")
 										? prev.rune
 										: [null],
+									regions: champ?.regions || [], // [ADD] Cập nhật regions khi chọn tướng
 								}));
 								markChange();
 								onChampionChange(v);
 							}}
 							placeholder='Chọn hoặc tìm kiếm tướng...'
-							loading={loadingChampions} // Hiển thị loading
+							loading={loadingChampions}
 						/>
 					</div>
 

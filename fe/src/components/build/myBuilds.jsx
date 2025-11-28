@@ -71,40 +71,84 @@ const MyBuilds = ({
 	const filteredMyBuilds = useMemo(() => {
 		let result = myBuilds;
 
+		// --- TÌM KIẾM ---
 		if (searchTerm) {
 			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const championName =
-					championsList.find(c => c.id === build.championId)?.name || "";
+				const buildName = removeAccents((build.name || "").toLowerCase());
+				const championName = removeAccents(
+					(build.championName || "").toLowerCase()
+				);
+				const creatorName = removeAccents((user?.name || "").toLowerCase());
+				const description = removeAccents(
+					(build.description || "").toLowerCase()
+				);
+
+				const hasRelic = (build.relicSet || []).some(r =>
+					removeAccents(r.toLowerCase()).includes(lowerTerm)
+				);
+				const hasPower = (build.powers || []).some(p =>
+					removeAccents(p.toLowerCase()).includes(lowerTerm)
+				);
+
 				return (
-					removeAccents(championName.toLowerCase()).includes(lowerTerm) ||
-					removeAccents((build.name || "").toLowerCase()).includes(lowerTerm)
+					buildName.includes(lowerTerm) ||
+					championName.includes(lowerTerm) ||
+					creatorName.includes(lowerTerm) ||
+					description.includes(lowerTerm) ||
+					hasRelic ||
+					hasPower
 				);
 			});
 		}
 
+		// --- LỌC SAO ---
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
-				selectedStarLevels.includes(String(build.starLevel))
+				selectedStarLevels.includes(String(build.star))
 			);
 		}
 
+		// --- LỌC KHU VỰC (MỚI) ---
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				const championName =
-					championsList.find(c => c.id === build.championId)?.name || "";
-				const region = championNameToRegionsMap[championName];
-				return selectedRegions.includes(region);
+				// Ưu tiên build.regions
+				if (Array.isArray(build.regions) && build.regions.length > 0) {
+					return build.regions.some(r => selectedRegions.includes(r));
+				}
+				// Fallback map
+				if (championNameToRegionsMap) {
+					const championName = build.championName || "";
+					const region = championNameToRegionsMap[championName];
+					return selectedRegions.includes(region);
+				}
+				return false;
 			});
 		}
-
+		// --- SẮP XẾP ---
 		result = [...result].sort((a, b) => {
-			if (sortBy === "oldest") {
-				return new Date(a.createdAt) - new Date(b.createdAt);
-			} else if (sortBy === "likes") {
-				return (b.like || 0) - (a.like || 0);
-			} else {
-				return new Date(b.createdAt) - new Date(a.createdAt);
+			const nameA = (a.championName || "").toString();
+			const nameB = (b.championName || "").toString();
+
+			switch (sortBy) {
+				case "oldest":
+					return new Date(a.createdAt) - new Date(b.createdAt);
+
+				case "likes_desc":
+					return (b.like || 0) - (a.like || 0);
+
+				case "likes_asc":
+					return (a.like || 0) - (b.like || 0);
+
+				case "champion_asc":
+					return nameA.localeCompare(nameB);
+
+				case "champion_desc":
+					return nameB.localeCompare(nameA);
+
+				case "newest":
+				default:
+					return new Date(b.createdAt) - new Date(a.createdAt);
 			}
 		});
 
@@ -116,9 +160,8 @@ const MyBuilds = ({
 		selectedRegions,
 		championNameToRegionsMap,
 		sortBy,
-		championsList,
+		user,
 	]);
-
 	const handleBuildUpdated = updatedBuild => {
 		setMyBuilds(current =>
 			current.map(b => (b.id === updatedBuild.id ? updatedBuild : b))

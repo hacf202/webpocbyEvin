@@ -120,6 +120,7 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 		rune = [],
 		star = 0,
 		display = false,
+		regions = [], // [ADD] Nhận regions từ request
 	} = req.body;
 
 	if (!championName || !Array.isArray(relicSet) || relicSet.length === 0) {
@@ -141,6 +142,7 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 		star,
 		display,
 		views: 0,
+		regions, // [ADD] Thêm vào object để lưu
 		createdAt: new Date().toISOString(),
 	});
 
@@ -167,7 +169,15 @@ router.post("/", authenticateCognitoToken, async (req, res) => {
 // PUT /api/builds/:id
 router.put("/:id", authenticateCognitoToken, async (req, res) => {
 	const { id } = req.params;
-	const { description, relicSet, powers, rune, star, display } = req.body;
+	const {
+		description,
+		relicSet,
+		powers,
+		rune,
+		star,
+		display,
+		regions, // [ADD] Nhận regions khi update
+	} = req.body;
 	const userSub = req.user.sub;
 
 	try {
@@ -186,7 +196,15 @@ router.put("/:id", authenticateCognitoToken, async (req, res) => {
 		const expressionAttributeValues = {};
 		let hasUpdates = false;
 
-		const fields = { description, relicSet, powers, rune, star, display };
+		const fields = {
+			description,
+			relicSet,
+			powers,
+			rune,
+			star,
+			display,
+			regions, // [ADD] Thêm regions vào fields cần update
+		};
 		Object.entries(fields).forEach(([key, value]) => {
 			if (value !== undefined) {
 				hasUpdates = true;
@@ -255,13 +273,10 @@ router.delete("/:id", authenticateCognitoToken, async (req, res) => {
 	}
 });
 
-// THÊM VÀO CUỐI FILE builds.js (trước export default router)
-
 router.patch("/:id/like", async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		// Kiểm tra build tồn tại
 		const { Item } = await client.send(
 			new GetItemCommand({
 				TableName: BUILDS_TABLE,
@@ -275,7 +290,6 @@ router.patch("/:id/like", async (req, res) => {
 
 		const build = unmarshall(Item);
 
-		// Tăng like
 		const result = await client.send(
 			new UpdateItemCommand({
 				TableName: BUILDS_TABLE,
@@ -294,7 +308,6 @@ router.patch("/:id/like", async (req, res) => {
 			? unmarshall(result.Attributes).like
 			: (build.like || 0) + 1;
 
-		// Invalidate cache nếu là public build
 		if (build.display === true) {
 			invalidatePublicBuildsCache();
 		}

@@ -95,44 +95,93 @@ const CommunityBuilds = ({
 
 		fetchCommunityBuilds();
 	}, [refreshKey, apiUrl, getCache, setCache]);
-
 	const filteredAndSortedBuilds = useMemo(() => {
 		let result = communityBuilds;
 
+		// --- 1. TÌM KIẾM (Giữ nguyên logic search đa năng) ---
 		if (searchTerm) {
 			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const championName =
-					championsList.find(c => c.id === build.championId)?.name || "";
+				const buildName = removeAccents((build.name || "").toLowerCase());
+				const championName = removeAccents(
+					(build.championName || "").toLowerCase()
+				);
+				const creatorName = removeAccents(
+					(creatorNames[build.creator] || "").toLowerCase()
+				);
+				const description = removeAccents(
+					(build.description || "").toLowerCase()
+				);
+
+				const hasRelic = (build.relicSet || []).some(r =>
+					removeAccents(r.toLowerCase()).includes(lowerTerm)
+				);
+				const hasPower = (build.powers || []).some(p =>
+					removeAccents(p.toLowerCase()).includes(lowerTerm)
+				);
+
 				return (
-					removeAccents(championName.toLowerCase()).includes(lowerTerm) ||
-					removeAccents((build.name || "").toLowerCase()).includes(lowerTerm)
+					buildName.includes(lowerTerm) ||
+					championName.includes(lowerTerm) ||
+					creatorName.includes(lowerTerm) ||
+					description.includes(lowerTerm) ||
+					hasRelic ||
+					hasPower
 				);
 			});
 		}
 
+		// --- 2. LỌC SAO ---
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
-				selectedStarLevels.includes(String(build.starLevel))
+				selectedStarLevels.includes(String(build.star))
 			);
 		}
 
+		// --- 3. LỌC KHU VỰC (LOGIC MỚI) ---
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				const championName =
-					championsList.find(c => c.id === build.championId)?.name || "";
-				const region = championNameToRegionsMap[championName];
-				return selectedRegions.includes(region);
+				// CÁCH 1: Dùng dữ liệu regions trực tiếp trong build (Ưu tiên)
+				if (Array.isArray(build.regions) && build.regions.length > 0) {
+					// Kiểm tra xem có bất kỳ region nào của build nằm trong danh sách đã chọn không
+					return build.regions.some(r => selectedRegions.includes(r));
+				}
+
+				// CÁCH 2: Fallback cho build cũ chưa có regions (Dùng Map)
+				if (championNameToRegionsMap) {
+					const championName = build.championName || "";
+					const region = championNameToRegionsMap[championName];
+					return selectedRegions.includes(region);
+				}
+
+				return false;
 			});
 		}
 
+		// --- 4. SẮP XẾP ---
 		result = [...result].sort((a, b) => {
-			if (sortBy === "oldest") {
-				return new Date(a.createdAt) - new Date(b.createdAt);
-			} else if (sortBy === "likes") {
-				return (b.like || 0) - (a.like || 0);
-			} else {
-				return new Date(b.createdAt) - new Date(a.createdAt);
+			const nameA = (a.championName || "").toString();
+			const nameB = (b.championName || "").toString();
+
+			switch (sortBy) {
+				case "oldest":
+					return new Date(a.createdAt) - new Date(b.createdAt);
+
+				case "likes_desc": // Lượt thích cao nhất
+					return (b.like || 0) - (a.like || 0);
+
+				case "likes_asc": // Lượt thích thấp nhất
+					return (a.like || 0) - (b.like || 0);
+
+				case "champion_asc": // Tên tướng A-Z
+					return nameA.localeCompare(nameB);
+
+				case "champion_desc": // Tên tướng Z-A
+					return nameB.localeCompare(nameA);
+
+				case "newest":
+				default:
+					return new Date(b.createdAt) - new Date(a.createdAt);
 			}
 		});
 
@@ -144,7 +193,7 @@ const CommunityBuilds = ({
 		selectedRegions,
 		championNameToRegionsMap,
 		sortBy,
-		championsList,
+		creatorNames,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
