@@ -1,8 +1,9 @@
 // src/components/build/communityBuilds.jsx
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import BuildSummary from "./buildSummary";
-import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData"; // [MỚI]
+import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
 import { removeAccents } from "../../utils/vietnameseUtils";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 const CommunityBuilds = ({
 	searchTerm,
@@ -20,23 +21,59 @@ const CommunityBuilds = ({
 	onFavoriteToggle,
 	getCache,
 	setCache,
-	token,
+	// token, // Không nhận token từ props nữa
 	sortBy,
 }) => {
+	// [QUAN TRỌNG] Lấy token trực tiếp từ Context
+	const { token } = useContext(AuthContext);
+
 	const [communityBuilds, setCommunityBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [creatorNames, setCreatorNames] = useState({});
 
 	const apiUrl = import.meta.env.VITE_API_URL;
+
+	// [QUAN TRỌNG] Hook lấy trạng thái tim hàng loạt
+	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
+		communityBuilds,
+		token
+	);
+
+	const fetchCreatorNames = async builds => {
+		const userIds = [...new Set(builds.map(b => b.creator).filter(Boolean))];
+		const idsToFetch = userIds.filter(id => !creatorNames[id]);
+		if (idsToFetch.length === 0) return;
+
+		try {
+			const res = await fetch(`${apiUrl}/api/users/batch`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ userIds: idsToFetch }),
+			});
+			if (res.ok) {
+				const newNames = await res.json();
+				setCreatorNames(prev => ({ ...prev, ...newNames }));
+			}
+		} catch (err) {
+			console.error("Failed to fetch creator names:", err);
+		}
+	};
 
 	useEffect(() => {
 		const fetchCommunityBuilds = async () => {
 			setIsLoading(true);
 			const cacheKey = "community";
 			const cached = getCache?.(cacheKey);
-			if (cached) {
-				setCommunityBuilds(cached);
+
+			const processData = items => {
+				setCommunityBuilds(items);
 				setIsLoading(false);
+				fetchCreatorNames(items);
+			};
+
+			if (cached) {
+				processData(cached);
 				return;
 			}
 
@@ -45,92 +82,57 @@ const CommunityBuilds = ({
 				if (!response.ok) throw new Error("Failed to load");
 				const data = await response.json();
 				const sorted = (data.items || []).sort(
-					(a, b) =>
-						new Date(b.updatedAt || b.createdAt) -
-						new Date(a.updatedAt || a.createdAt)
+					(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 				);
-				setCommunityBuilds(sorted);
-				setCache?.(cacheKey, sorted);
+
+				processData(sorted);
+				if (setCache) setCache(cacheKey, sorted);
 			} catch (err) {
 				setError(err.message);
-			} finally {
 				setIsLoading(false);
 			}
 		};
-		fetchCommunityBuilds();
-	}, [refreshKey, getCache, setCache]);
 
-	// [MỚI] Gọi API Batch 1 lần duy nhất cho toàn bộ danh sách
-	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
-		communityBuilds,
-		token
-	);
+		fetchCommunityBuilds();
+	}, [refreshKey, apiUrl, getCache, setCache]);
 
 	const filteredAndSortedBuilds = useMemo(() => {
-		// Logic lọc giữ nguyên...
-		let result = [...communityBuilds];
+		let result = communityBuilds;
 
 		if (searchTerm) {
-			const q = removeAccents(searchTerm.toLowerCase());
+			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = removeAccents(build.championName?.toLowerCase() || "");
-				const creator = removeAccents(
-					build.creatorName?.toLowerCase() || build.creator?.toLowerCase() || ""
-				);
-				const relicSet = removeAccents(
-					(build.relicSet || []).join(" ").toLowerCase()
-				);
-				const powers = removeAccents(
-					(build.powers || []).join(" ").toLowerCase()
-				);
-				const rune = removeAccents((build.rune || []).join(" ").toLowerCase());
-
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
 				return (
-					champ.includes(q) ||
-					creator.includes(q) ||
-					relicSet.includes(q) ||
-					powers.includes(q) ||
-					rune.includes(q)
+					removeAccents(championName.toLowerCase()).includes(lowerTerm) ||
+					removeAccents((build.name || "").toLowerCase()).includes(lowerTerm)
 				);
 			});
 		}
 
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
-				selectedStarLevels.includes(String(build.star || 0))
+				selectedStarLevels.includes(String(build.starLevel))
 			);
 		}
 
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				const championRegions =
-					championNameToRegionsMap.get(build.championName) || [];
-				return selectedRegions.some(region => championRegions.includes(region));
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
+				const region = championNameToRegionsMap[championName];
+				return selectedRegions.includes(region);
 			});
 		}
 
-		result.sort((a, b) => {
-			switch (sortBy) {
-				case "newest":
-					return (
-						new Date(b.createdAt || b.updatedAt) -
-						new Date(a.createdAt || a.updatedAt)
-					);
-				case "oldest":
-					return (
-						new Date(a.createdAt || a.updatedAt) -
-						new Date(b.createdAt || b.updatedAt)
-					);
-				case "champion_asc":
-					return (a.championName || "").localeCompare(b.championName || "");
-				case "champion_desc":
-					return (b.championName || "").localeCompare(a.championName || "");
-				case "likes_desc":
-					return (b.like || 0) - (a.like || 0);
-				case "likes_asc":
-					return (a.like || 0) - (b.like || 0);
-				default:
-					return 0;
+		result = [...result].sort((a, b) => {
+			if (sortBy === "oldest") {
+				return new Date(a.createdAt) - new Date(b.createdAt);
+			} else if (sortBy === "likes") {
+				return (b.like || 0) - (a.like || 0);
+			} else {
+				return new Date(b.createdAt) - new Date(a.createdAt);
 			}
 		});
 
@@ -142,6 +144,7 @@ const CommunityBuilds = ({
 		selectedRegions,
 		championNameToRegionsMap,
 		sortBy,
+		championsList,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
@@ -177,16 +180,22 @@ const CommunityBuilds = ({
 			{filteredAndSortedBuilds.map(build => (
 				<BuildSummary
 					key={build.id}
-					build={build}
+					build={{
+						...build,
+						creatorName: creatorNames[build.creator],
+					}}
 					championsList={championsList}
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
-					// [MỚI] Truyền dữ liệu batch xuống
-					initialIsFavorited={!!favoriteStatus[build.id]}
-					initialLikeCount={favoriteCounts[build.id] || 0}
 					onBuildUpdate={handleBuildUpdated}
 					onBuildDelete={handleBuildDeleted}
+					onFavoriteToggle={onFavoriteToggle}
+					// Truyền trạng thái và count từ hook
+					initialIsFavorited={!!favoriteStatus[build.id]}
+					initialLikeCount={favoriteCounts[build.id] || 0}
+					// Mặc định false, không reload khi like/favorite
+					isFavoritePage={false}
 				/>
 			))}
 		</div>

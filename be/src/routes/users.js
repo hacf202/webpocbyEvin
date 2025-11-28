@@ -195,4 +195,62 @@ router.get("/user/info/:sub", async (req, res) => {
 	}
 });
 
+// 6. POST /api/users/batch - Lấy thông tin nhiều user cùng lúc (Tối ưu cho List)
+router.post("/users/batch", async (req, res) => {
+	const { userIds } = req.body; // Mảng các sub hoặc username: ["sub1", "sub2", "sub1"]
+
+	if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+		return res.json({});
+	}
+
+	// Loại bỏ trùng lặp để tiết kiệm request
+	const uniqueIds = [...new Set(userIds)];
+	const result = {};
+	const idsToFetch = [];
+
+	// 1. Kiểm tra Cache trước
+	uniqueIds.forEach(id => {
+		const cached = getFromCache(id);
+		if (cached) {
+			result[id] = cached.name;
+		} else {
+			idsToFetch.push(id);
+		}
+	});
+
+	// 2. Nếu cache chưa có đủ, fetch từ Cognito song song
+	if (idsToFetch.length > 0) {
+		try {
+			const fetchPromises = idsToFetch.map(async id => {
+				try {
+					const command = new AdminGetUserCommand({
+						UserPoolId: COGNITO_USER_POOL_ID,
+						Username: id,
+					});
+					const { UserAttributes } = await cognitoClient.send(command);
+					const name =
+						UserAttributes.find(a => a.Name === "name")?.Value || "Người chơi";
+
+					// Lưu vào cache
+					setToCache(id, { name });
+					return { id, name };
+				} catch (err) {
+					console.warn(`Failed to fetch user ${id}:`, err.message);
+					return { id, name: "Vô danh" }; // Fallback nếu lỗi
+				}
+			});
+
+			const fetchedUsers = await Promise.all(fetchPromises);
+			fetchedUsers.forEach(u => {
+				result[u.id] = u.name;
+			});
+		} catch (error) {
+			console.error("Batch fetch error:", error);
+		}
+	}
+
+	// Trả về map: { "sub1": "Tên A", "sub2": "Tên B" }
+	res.json(result);
+});
+
 export default router;

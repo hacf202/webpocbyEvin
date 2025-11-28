@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
 import { removeAccents } from "../../utils/vietnameseUtils";
+import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
 
 const MyFavorite = ({
 	searchTerm,
@@ -25,10 +26,32 @@ const MyFavorite = ({
 	const [favoriteBuilds, setFavoriteBuilds] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-	// Lưu count
-	const [favoriteCounts, setFavoriteCounts] = useState({});
+	const [creatorNames, setCreatorNames] = useState({});
 
 	const apiUrl = import.meta.env.VITE_API_URL;
+
+	// Vẫn dùng hook này để lấy COUNT (số lượng người thích)
+	const { favoriteCounts } = useBatchFavoriteData(favoriteBuilds, token);
+
+	const fetchCreatorNames = async builds => {
+		const userIds = [...new Set(builds.map(b => b.creator).filter(Boolean))];
+		const idsToFetch = userIds.filter(id => !creatorNames[id]);
+		if (idsToFetch.length === 0) return;
+
+		try {
+			const res = await fetch(`${apiUrl}/api/users/batch`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ userIds: idsToFetch }),
+			});
+			if (res.ok) {
+				const newNames = await res.json();
+				setCreatorNames(prev => ({ ...prev, ...newNames }));
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	useEffect(() => {
 		const fetchFavoriteBuilds = async () => {
@@ -40,9 +63,15 @@ const MyFavorite = ({
 			setIsLoading(true);
 			const cacheKey = "my-favorites";
 			const cached = getCache?.(cacheKey);
-			if (cached) {
-				setFavoriteBuilds(cached);
+
+			const processData = items => {
+				setFavoriteBuilds(items);
 				setIsLoading(false);
+				fetchCreatorNames(items);
+			};
+
+			if (cached) {
+				processData(cached);
 				return;
 			}
 
@@ -52,94 +81,54 @@ const MyFavorite = ({
 				});
 				if (!response.ok) throw new Error("Failed to load favorites");
 				const data = await response.json();
-				setFavoriteBuilds(data);
-				if (setCache) setCache(cacheKey, data);
+				const items = Array.isArray(data) ? data : data.items || [];
+
+				processData(items);
 			} catch (err) {
-				console.error(err);
-				setError("Lỗi tải danh sách yêu thích");
-			} finally {
+				setError(err.message);
 				setIsLoading(false);
 			}
 		};
 		fetchFavoriteBuilds();
-	}, [refreshKey, token, apiUrl, getCache, setCache]);
-
-	// [MỚI] Batch Fetch Count chỉ khi có danh sách favorite
-	useEffect(() => {
-		if (favoriteBuilds.length === 0) return;
-		const ids = favoriteBuilds.map(b => b.id).join(",");
-
-		fetch(`${apiUrl}/api/builds/favorites/count/batch?ids=${ids}`)
-			.then(res => res.json())
-			.then(data => setFavoriteCounts(data))
-			.catch(console.error);
-	}, [favoriteBuilds, apiUrl]);
+	}, [token, refreshKey, getCache, apiUrl]);
 
 	const filteredBuilds = useMemo(() => {
-		let result = [...favoriteBuilds];
+		let result = favoriteBuilds;
 
-		// [CẬP NHẬT] Tìm kiếm không dấu
 		if (searchTerm) {
-			const q = removeAccents(searchTerm.toLowerCase());
+			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = removeAccents(build.championName.toLowerCase());
-				const creator = removeAccents(
-					build.creatorName?.toLowerCase() || build.creator?.toLowerCase()
-				);
-				const relicSet = removeAccents(
-					(build.relicSet || []).join(" ").toLowerCase()
-				);
-				const powers = removeAccents(
-					(build.powers || []).join(" ").toLowerCase()
-				);
-				const rune = removeAccents((build.rune || []).join(" ")).toLowerCase();
-
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
 				return (
-					champ.includes(q) ||
-					creator.includes(q) ||
-					relicSet.includes(q) ||
-					powers.includes(q) ||
-					rune.includes(q)
+					removeAccents(championName.toLowerCase()).includes(lowerTerm) ||
+					removeAccents((build.name || "").toLowerCase()).includes(lowerTerm)
 				);
 			});
 		}
 
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
-				selectedStarLevels.includes(String(build.star || 0))
+				selectedStarLevels.includes(String(build.starLevel))
 			);
 		}
 
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				const championRegions =
-					championNameToRegionsMap.get(build.championName) || [];
-				return selectedRegions.some(region => championRegions.includes(region));
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
+				const region = championNameToRegionsMap[championName];
+				return selectedRegions.includes(region);
 			});
 		}
 
-		result.sort((a, b) => {
-			switch (sortBy) {
-				case "newest":
-					return (
-						new Date(b.createdAt || b.updatedAt) -
-						new Date(a.createdAt || a.updatedAt)
-					);
-				case "oldest":
-					return (
-						new Date(a.createdAt || a.updatedAt) -
-						new Date(b.createdAt || b.updatedAt)
-					);
-				case "champion_asc":
-					return (a.championName || "").localeCompare(b.championName || "");
-				case "champion_desc":
-					return (b.championName || "").localeCompare(a.championName || "");
-				case "likes_desc":
-					return (b.like || 0) - (a.like || 0);
-				case "likes_asc":
-					return (a.like || 0) - (b.like || 0);
-				default:
-					return 0;
+		result = [...result].sort((a, b) => {
+			if (sortBy === "oldest") {
+				return new Date(a.createdAt) - new Date(b.createdAt);
+			} else if (sortBy === "likes") {
+				return (b.like || 0) - (a.like || 0);
+			} else {
+				return new Date(b.createdAt) - new Date(a.createdAt);
 			}
 		});
 
@@ -151,9 +140,11 @@ const MyFavorite = ({
 		selectedRegions,
 		championNameToRegionsMap,
 		sortBy,
+		championsList,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
+		// Ở trang Favorite, nếu isFavorited = false, ta loại bỏ nó khỏi list
 		if (!updatedBuild.isFavorited) {
 			setFavoriteBuilds(current =>
 				current.filter(b => b.id !== updatedBuild.id)
@@ -183,17 +174,22 @@ const MyFavorite = ({
 			{filteredBuilds.map(build => (
 				<BuildSummary
 					key={build.id}
-					build={build}
-					// Trong tab My Favorite thì hiển nhiên là true
-					initialIsFavorited={true}
-					// Lấy count từ map batch
-					initialLikeCount={favoriteCounts[build.id] || 0}
+					build={{
+						...build,
+						creatorName: creatorNames[build.creator],
+					}}
+					initialIsFavorited={true} // Luôn luôn true ở trang này
 					championsList={championsList}
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
 					onBuildUpdate={handleBuildUpdated}
 					onBuildDelete={handleBuildDeleted}
+					onFavoriteToggle={onFavoriteToggle}
+					// Truyền count từ hook
+					initialLikeCount={favoriteCounts[build.id] || 0}
+					// [QUAN TRỌNG] Bật chế độ Favorite Page để kích hoạt tính năng xóa khỏi list khi bỏ tim
+					isFavoritePage={true}
 				/>
 			))}
 		</div>

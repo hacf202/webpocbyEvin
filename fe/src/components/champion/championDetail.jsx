@@ -125,58 +125,72 @@ function ChampionDetail() {
 	// === Xử lý dữ liệu mới (mảng string thường) ===
 	const powerStarsFull = useMemo(() => {
 		if (!champion?.powerStars || !Array.isArray(champion.powerStars)) return [];
-		return champion.powerStars.map(name => {
-			const p = powers.find(x => x.name === name);
-			return {
-				name,
-				image: p?.assetAbsolutePath || "/images/placeholder.png",
-				description: p?.description || "",
-				powerCode: p?.powerCode || null,
-			};
-		});
+		return (
+			champion.powerStars
+				.map(name => {
+					const p = powers.find(x => x.name === name);
+					return {
+						name,
+						image: p?.assetAbsolutePath || "/images/placeholder.png",
+						description: p?.description || "",
+						powerCode: p?.powerCode || null,
+					};
+				})
+				// THÊM DÒNG NÀY: Lọc bỏ các item có tên rỗng hoặc null
+				.filter(item => item.name && item.name.trim() !== "")
+		);
 	}, [champion, powers]);
 
 	const adventurePowersFull = useMemo(() => {
 		if (!champion?.adventurePowers || !Array.isArray(champion.adventurePowers))
 			return [];
-		return champion.adventurePowers.map(name => {
-			const p = powers.find(x => x.name === name);
-			return {
-				name,
-				image: p?.assetAbsolutePath || "/images/placeholder.png",
-				description: p?.description || "",
-				powerCode: p?.powerCode || null,
-			};
-		});
+		return champion.adventurePowers
+			.map(name => {
+				const p = powers.find(x => x.name === name);
+				return {
+					name,
+					image: p?.assetAbsolutePath || "/images/placeholder.png",
+					description: p?.description || "",
+					powerCode: p?.powerCode || null,
+				};
+			})
+			.filter(item => item.name && item.name.trim() !== ""); // <--- Lọc rỗng
 	}, [champion, powers]);
 
+	// 2. Vật phẩm khuyên dùng (Items)
 	const defaultItemsFull = useMemo(() => {
 		if (!champion?.defaultItems || !Array.isArray(champion.defaultItems))
 			return [];
-		return champion.defaultItems.map(name => {
-			const i = items.find(x => x.name === name);
-			return {
-				name,
-				image: i?.assetAbsolutePath || "/images/placeholder.png",
-				description: i?.description || "",
-				itemCode: i?.itemCode || null,
-			};
-		});
+		return champion.defaultItems
+			.map(name => {
+				const i = items.find(x => x.name === name);
+				return {
+					name,
+					image: i?.assetAbsolutePath || "/images/placeholder.png",
+					description: i?.description || "",
+					itemCode: i?.itemCode || null,
+				};
+			})
+			.filter(item => item.name && item.name.trim() !== ""); // <--- Lọc rỗng
 	}, [champion, items]);
 
+	// 3. Ngọc (Runes - Nếu có)
 	const runesFull = useMemo(() => {
 		if (!champion?.rune || !Array.isArray(champion.rune)) return [];
-		return champion.rune.map(name => {
-			const r = runes.find(x => x.name === name);
-			return {
-				name,
-				image: r?.assetAbsolutePath || "/images/placeholder.png",
-				description: r?.description || "",
-				runeCode: r?.runeCode || null,
-			};
-		});
+		return champion.rune
+			.map(name => {
+				const r = runes.find(x => x.name === name);
+				return {
+					name,
+					image: r?.assetAbsolutePath || "/images/placeholder.png",
+					description: r?.description || "",
+					runeCode: r?.runeCode || null,
+				};
+			})
+			.filter(item => item.name && item.name.trim() !== ""); // <--- Lọc rỗng
 	}, [champion, runes]);
 
+	// 4. Bộ cổ vật (Relics - Xử lý hơi khác vì nó lồng trong Set)
 	const defaultRelicsSetsFull = useMemo(() => {
 		if (!champion) return [];
 		const sets = [];
@@ -194,7 +208,8 @@ function ChampionDetail() {
 							relicCode: r?.relicCode || null,
 						};
 					})
-					.filter(r => r.name);
+					// Thay đổi điều kiện filter ở đây chặt chẽ hơn
+					.filter(r => r.name && r.name.trim() !== "");
 
 				if (relicsInSet.length > 0) {
 					sets.push({ setNumber: i, relics: relicsInSet });

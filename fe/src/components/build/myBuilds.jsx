@@ -1,8 +1,8 @@
+// src/components/build/myBuilds.jsx
 import React, { useEffect, useState, useMemo, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
 import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
-
 import { removeAccents } from "../../utils/vietnameseUtils";
 
 const MyBuilds = ({
@@ -28,6 +28,12 @@ const MyBuilds = ({
 	const [error, setError] = useState(null);
 	const apiUrl = import.meta.env.VITE_API_URL;
 
+	// Hook lấy trạng thái tim hàng loạt
+	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
+		myBuilds,
+		token
+	);
+
 	useEffect(() => {
 		const fetchMyBuilds = async () => {
 			if (!token) {
@@ -48,93 +54,57 @@ const MyBuilds = ({
 				const response = await fetch(`${apiUrl}/api/builds/my-builds`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
-				if (!response.ok) throw new Error("Failed");
+				if (!response.ok) throw new Error("Failed to load");
 				const data = await response.json();
-				const sorted = (data.items || []).sort(
-					(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-				);
-				setMyBuilds(sorted);
-				setCache?.(cacheKey, sorted);
+				const items = data.items || [];
+				setMyBuilds(items);
+				if (setCache) setCache(cacheKey, items);
+				setIsLoading(false);
 			} catch (err) {
 				setError(err.message);
-			} finally {
 				setIsLoading(false);
 			}
 		};
 		fetchMyBuilds();
-	}, [token, refreshKey, getCache, setCache]);
-
-	// Batch Favorite Data
-	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
-		myBuilds,
-		token
-	);
+	}, [token, refreshKey, getCache, apiUrl, setCache]);
 
 	const filteredMyBuilds = useMemo(() => {
-		let result = [...myBuilds];
+		let result = myBuilds;
 
-		// [CẬP NHẬT] Tìm kiếm không dấu
 		if (searchTerm) {
-			const q = removeAccents(searchTerm.toLowerCase());
+			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
-				const champ = removeAccents(build.championName.toLowerCase());
-				const creator = removeAccents(
-					build.creatorName?.toLowerCase() || build.creator?.toLowerCase()
-				);
-				const relicSet = removeAccents(
-					(build.relicSet || []).join(" ").toLowerCase()
-				);
-				const powers = removeAccents(
-					(build.powers || []).join(" ").toLowerCase()
-				);
-				const rune = removeAccents((build.rune || []).join(" ")).toLowerCase();
-
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
 				return (
-					champ.includes(q) ||
-					creator.includes(q) ||
-					relicSet.includes(q) ||
-					powers.includes(q) ||
-					rune.includes(q)
+					removeAccents(championName.toLowerCase()).includes(lowerTerm) ||
+					removeAccents((build.name || "").toLowerCase()).includes(lowerTerm)
 				);
 			});
 		}
 
 		if (selectedStarLevels.length > 0) {
 			result = result.filter(build =>
-				selectedStarLevels.includes(String(build.star || 0))
+				selectedStarLevels.includes(String(build.starLevel))
 			);
 		}
 
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				const championRegions =
-					championNameToRegionsMap.get(build.championName) || [];
-				return selectedRegions.some(region => championRegions.includes(region));
+				const championName =
+					championsList.find(c => c.id === build.championId)?.name || "";
+				const region = championNameToRegionsMap[championName];
+				return selectedRegions.includes(region);
 			});
 		}
 
-		result.sort((a, b) => {
-			switch (sortBy) {
-				case "newest":
-					return (
-						new Date(b.createdAt || b.updatedAt) -
-						new Date(a.createdAt || a.updatedAt)
-					);
-				case "oldest":
-					return (
-						new Date(a.createdAt || a.updatedAt) -
-						new Date(b.createdAt || b.updatedAt)
-					);
-				case "champion_asc":
-					return (a.championName || "").localeCompare(b.championName || "");
-				case "champion_desc":
-					return (b.championName || "").localeCompare(a.championName || "");
-				case "likes_desc":
-					return (b.like || 0) - (a.like || 0);
-				case "likes_asc":
-					return (a.like || 0) - (b.like || 0);
-				default:
-					return 0;
+		result = [...result].sort((a, b) => {
+			if (sortBy === "oldest") {
+				return new Date(a.createdAt) - new Date(b.createdAt);
+			} else if (sortBy === "likes") {
+				return (b.like || 0) - (a.like || 0);
+			} else {
+				return new Date(b.createdAt) - new Date(a.createdAt);
 			}
 		});
 
@@ -146,6 +116,7 @@ const MyBuilds = ({
 		selectedRegions,
 		championNameToRegionsMap,
 		sortBy,
+		championsList,
 	]);
 
 	const handleBuildUpdated = updatedBuild => {
@@ -182,15 +153,21 @@ const MyBuilds = ({
 			{filteredMyBuilds.map(build => (
 				<BuildSummary
 					key={build.id}
-					build={build}
+					build={{
+						...build,
+						creatorName: user?.name || "Tôi",
+					}}
 					championsList={championsList}
 					relicsList={relicsList}
 					powersList={powersList}
 					runesList={runesList}
-					initialIsFavorited={!!favoriteStatus[build.id]}
-					initialLikeCount={favoriteCounts[build.id] || 0}
 					onBuildUpdate={handleBuildUpdated}
 					onBuildDelete={handleBuildDeleted}
+					// Truyền trạng thái và count
+					initialIsFavorited={!!favoriteStatus[build.id]}
+					initialLikeCount={favoriteCounts[build.id] || 0}
+					// Mặc định false
+					isFavoritePage={false}
 				/>
 			))}
 		</div>
