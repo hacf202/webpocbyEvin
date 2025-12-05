@@ -1,5 +1,29 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/relics/R0151.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/relics/R0151-full.png",
+		"description": "Ban +1|+1, <link=keyword.Regeneration><sprite name=Regeneration><style=Keyword>Hồi Phục</style></link><br>Ta được giảm 1 tiêu hao với mỗi Poro đồng minh trên bàn.<br>",
+		"descriptionRaw": "Ban +1|+1, Hồi PhụcTa được giảm 1 tiêu hao với mỗi Poro đồng minh trên bàn.",
+		"name": "Món Ăn Hoàng Gia",
+		"relicCode": "R0151",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/relics/R0148.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/relics/R0148-full.png",
+		"description": "Ban +1|+1<br>Nếu ta là Thể Thăng Hoa, ta được giảm 1 tiêu hao.<br><link=vocab.Play><style=Vocab>Xuất Trận</style></link>: Đẩy lá <link=card.self><style=AssociatedCard>Đĩa Mặt Trời Bị Chôn Vùi</style></link> lên 3 vòng.<br>\t\t\t\t",
+		"descriptionRaw": "Ban +1|+1Nếu ta là Thể Thăng Hoa, ta được giảm 1 tiêu hao.Xuất Trận: Đẩy lá Đĩa Mặt Trời Bị Chôn Vùi lên 3 vòng.\t\t\t\t",
+		"name": "Quyền Trượng Azir",
+		"relicCode": "R0148",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic",
+		"type": "Relic",
+		"stack": "1"
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0150.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/relics/R0150-full.png",
 		"description": "<link=keyword.Spirit><sprite name=Spirit><style=Keyword>Linh Hồn</style></link>, <link=keyword.Impact><sprite name=Impact><style=Keyword>Khí Lực</style></link>, <link=keyword.Evolve><sprite name=Evolve><style=Keyword>Tiến Hóa</style></link>.<br><link=vocab.PathPower><style=Vocab>Sức Mạnh</style></link>: Đồng minh <link=keyword.Fearsome><sprite name=Fearsome><style=Keyword>Đáng Sợ</style></link> chỉ có thể bị chặn đòn bởi bài quân có 5 Sức Mạnh hoặc nhiều hơn.",

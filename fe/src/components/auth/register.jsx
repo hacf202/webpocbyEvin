@@ -8,7 +8,9 @@ import Button from "../common/button";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 
 const Register = ({ onClose, onSwitchToLogin }) => {
-	const { signUp } = useContext(AuthContext);
+	// Lấy thêm hàm resendConfirmationCode từ Context
+	const { signUp, resendConfirmationCode } = useContext(AuthContext);
+
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -56,7 +58,7 @@ const Register = ({ onClose, onSwitchToLogin }) => {
 		return !err.username && !err.email && !err.password && !err.confirmPassword;
 	};
 
-	// === Xử lý đăng ký ===
+	// === Xử lý đăng ký (Đã cập nhật logic) ===
 	const handleRegister = async e => {
 		e.preventDefault();
 		if (!validateForm()) return;
@@ -68,13 +70,47 @@ const Register = ({ onClose, onSwitchToLogin }) => {
 			username.trim(),
 			email.trim(),
 			password,
+			// === Case 1: Đăng ký thành công (Tài khoản mới) ===
 			() => {
 				setStep(2);
 				setIsLoading(false);
 			},
-			err => {
-				setErrors({ ...errors, username: "Tài khoản hoặc email đã tồn tại" });
-				setIsLoading(false);
+			// === Case 2: Đăng ký thất bại ===
+			async errMessage => {
+				// Kiểm tra xem lỗi có phải do tài khoản đã tồn tại không
+				// Cognito thường trả về "UsernameExistsException" hoặc message chứa "exist"
+				const isExistError =
+					errMessage.includes("exists") ||
+					errMessage.includes("UsernameExistsException");
+
+				if (isExistError) {
+					// Thử gửi lại mã xác nhận
+					// Logic: Nếu gửi được -> Tài khoản Unconfirmed -> Cho phép nhập OTP
+					//        Nếu lỗi -> Tài khoản Confirmed -> Báo lỗi đã tồn tại
+					await resendConfirmationCode(
+						username.trim(),
+						// Resend thành công:
+						msg => {
+							alert(
+								"Tài khoản đã tồn tại nhưng chưa kích hoạt. Mã OTP mới đã được gửi vào email."
+							);
+							setStep(2); // Chuyển sang bước nhập OTP
+							setIsLoading(false);
+						},
+						// Resend thất bại (nghĩa là tài khoản đã kích hoạt rồi):
+						err => {
+							setErrors({
+								...errors,
+								username: "Tài khoản hoặc email đã tồn tại.",
+							});
+							setIsLoading(false);
+						}
+					);
+				} else {
+					// Các lỗi khác (Mật khẩu yếu, lỗi mạng, v.v.)
+					setErrors({ ...errors, username: errMessage });
+					setIsLoading(false);
+				}
 			}
 		);
 	};
@@ -174,7 +210,12 @@ const Register = ({ onClose, onSwitchToLogin }) => {
 			) : (
 				<OTPConfirmation
 					username={username}
-					onSuccess={() => setTimeout(() => onClose(), 2000)}
+					// Sau khi OTP thành công, đóng modal (hoặc chuyển sang login)
+					onSuccess={() => {
+						// Tùy chọn: Gọi onSwitchToLogin() nếu bạn muốn chuyển hẳn sang form login
+						// Hoặc chỉ đóng modal như hiện tại:
+						setTimeout(() => onClose(), 2000);
+					}}
 					onClose={onClose}
 				/>
 			)}

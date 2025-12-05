@@ -4,6 +4,9 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import BuildSummary from "./buildSummary";
 import { removeAccents } from "../../utils/vietnameseUtils";
 import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Import icon
+
+const ITEMS_PER_PAGE = 24;
 
 const MyFavorite = ({
 	searchTerm,
@@ -14,12 +17,10 @@ const MyFavorite = ({
 	powersList,
 	runesList,
 	refreshKey,
-	powerMap,
 	championNameToRegionsMap,
 	onFavoriteToggle,
 	onDeleteSuccess,
 	getCache,
-	setCache,
 	sortBy,
 }) => {
 	const { user, token } = useContext(AuthContext);
@@ -28,9 +29,11 @@ const MyFavorite = ({
 	const [error, setError] = useState(null);
 	const [creatorNames, setCreatorNames] = useState({});
 
+	// [THÊM] State phân trang
+	const [currentPage, setCurrentPage] = useState(1);
+
 	const apiUrl = import.meta.env.VITE_API_URL;
 
-	// Vẫn dùng hook này để lấy COUNT (số lượng người thích)
 	const { favoriteCounts } = useBatchFavoriteData(favoriteBuilds, token);
 
 	const fetchCreatorNames = async builds => {
@@ -92,6 +95,11 @@ const MyFavorite = ({
 		fetchFavoriteBuilds();
 	}, [token, refreshKey, getCache, apiUrl]);
 
+	// [THÊM] Reset về trang 1
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm, selectedStarLevels, selectedRegions, sortBy]);
+
 	const filteredBuilds = useMemo(() => {
 		let result = favoriteBuilds;
 
@@ -135,14 +143,12 @@ const MyFavorite = ({
 			);
 		}
 
-		// --- LỌC KHU VỰC (MỚI) ---
+		// --- LỌC KHU VỰC ---
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				// Ưu tiên build.regions
 				if (Array.isArray(build.regions) && build.regions.length > 0) {
 					return build.regions.some(r => selectedRegions.includes(r));
 				}
-				// Fallback map
 				if (championNameToRegionsMap) {
 					const championName = build.championName || "";
 					const region = championNameToRegionsMap[championName];
@@ -160,19 +166,14 @@ const MyFavorite = ({
 			switch (sortBy) {
 				case "oldest":
 					return new Date(a.createdAt) - new Date(b.createdAt);
-
 				case "likes_desc":
 					return (b.like || 0) - (a.like || 0);
-
 				case "likes_asc":
 					return (a.like || 0) - (b.like || 0);
-
 				case "champion_asc":
 					return nameA.localeCompare(nameB);
-
 				case "champion_desc":
 					return nameB.localeCompare(nameA);
-
 				case "newest":
 				default:
 					return new Date(b.createdAt) - new Date(a.createdAt);
@@ -189,8 +190,15 @@ const MyFavorite = ({
 		sortBy,
 		creatorNames,
 	]);
+
+	// [THÊM] Logic phân trang
+	const totalPages = Math.ceil(filteredBuilds.length / ITEMS_PER_PAGE);
+	const currentBuilds = useMemo(() => {
+		const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+		return filteredBuilds.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+	}, [filteredBuilds, currentPage]);
+
 	const handleBuildUpdated = updatedBuild => {
-		// Ở trang Favorite, nếu isFavorited = false, ta loại bỏ nó khỏi list
 		if (!updatedBuild.isFavorited) {
 			setFavoriteBuilds(current =>
 				current.filter(b => b.id !== updatedBuild.id)
@@ -216,29 +224,51 @@ const MyFavorite = ({
 		);
 
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6'>
-			{filteredBuilds.map(build => (
-				<BuildSummary
-					key={build.id}
-					build={{
-						...build,
-						creatorName: creatorNames[build.creator],
-					}}
-					initialIsFavorited={true} // Luôn luôn true ở trang này
-					championsList={championsList}
-					relicsList={relicsList}
-					powersList={powersList}
-					runesList={runesList}
-					onBuildUpdate={handleBuildUpdated}
-					onBuildDelete={handleBuildDeleted}
-					onFavoriteToggle={onFavoriteToggle}
-					// Truyền count từ hook
-					initialLikeCount={favoriteCounts[build.id] || 0}
-					// [QUAN TRỌNG] Bật chế độ Favorite Page để kích hoạt tính năng xóa khỏi list khi bỏ tim
-					isFavoritePage={true}
-				/>
-			))}
-		</div>
+		<>
+			<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6'>
+				{currentBuilds.map(build => (
+					<BuildSummary
+						key={build.id}
+						build={{
+							...build,
+							creatorName: creatorNames[build.creator],
+						}}
+						initialIsFavorited={true}
+						championsList={championsList}
+						relicsList={relicsList}
+						powersList={powersList}
+						runesList={runesList}
+						onBuildUpdate={handleBuildUpdated}
+						onBuildDelete={handleBuildDeleted}
+						onFavoriteToggle={onFavoriteToggle}
+						initialLikeCount={favoriteCounts[build.id] || 0}
+						isFavoritePage={true}
+					/>
+				))}
+			</div>
+			{/* [THÊM] UI Phân trang */}
+			{totalPages > 1 && (
+				<div className='mt-4 flex justify-center items-center gap-2 md:gap-4'>
+					<Button
+						onClick={() => setCurrentPage(p => p - 1)}
+						disabled={currentPage === 1}
+						variant='outline'
+					>
+						Trang trước
+					</Button>
+					<span className='text-lg font-medium text-text-primary'>
+						{currentPage} / {totalPages}
+					</span>
+					<Button
+						onClick={() => setCurrentPage(p => p + 1)}
+						disabled={currentPage === totalPages}
+						variant='outline'
+					>
+						Trang sau
+					</Button>
+				</div>
+			)}
+		</>
 	);
 };
 

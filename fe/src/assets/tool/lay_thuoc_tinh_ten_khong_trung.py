@@ -73,8 +73,8 @@ def lay_thuoc_tinh_ten_khong_trung(duong_dan_tep_mot, duong_dan_tep_hai, xuat_fi
 
 # ———— CÁCH DÙNG ————
 if __name__ == "__main__":
-    file1 = 'relics-vi_vn.json'
-    file2 = 'relics-vi_vn1.json'
+    file1 = 'items-vi_vn.json'
+    file2 = 'items1-vi_vn.json'
 
     ket_qua = lay_thuoc_tinh_ten_khong_trung(
         duong_dan_tep_mot=file1,

@@ -1,9 +1,12 @@
 // src/pages/admin/championEditorForm.jsx
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import Button from "../common/button";
 import InputField from "../common/inputField";
 import { XCircle, Plus, Link2 } from "lucide-react";
 
+// ==========================================
+// COMPONENT CON: XỬ LÝ NHẬP MẢNG (ARRAY)
+// ==========================================
 const ArrayInputComponent = ({
 	label,
 	data = [],
@@ -13,8 +16,8 @@ const ArrayInputComponent = ({
 }) => {
 	const handleItemChange = (index, newValue) => {
 		const newData = [...data];
-		newData[index] = newValue.trim();
-		onChange(newData.filter(Boolean));
+		newData[index] = newValue;
+		onChange(newData);
 	};
 
 	const handleAddItem = () => {
@@ -32,7 +35,8 @@ const ArrayInputComponent = ({
 		e.stopPropagation();
 		try {
 			const dragged = JSON.parse(e.dataTransfer.getData("text/plain"));
-			if (dragged.name) handleItemChange(index, dragged.name);
+			// Khi Drop thì có thể trim() an toàn
+			if (dragged.name) handleItemChange(index, dragged.name.trim());
 		} catch (err) {
 			console.warn("Drag data không hợp lệ");
 		}
@@ -62,7 +66,9 @@ const ArrayInputComponent = ({
 					</p>
 				) : (
 					data.map((value, index) => {
-						const item = getItemData(value);
+						const safeValue = value || "";
+						const item = getItemData(safeValue.trim());
+
 						return (
 							<div
 								key={index}
@@ -83,6 +89,7 @@ const ArrayInputComponent = ({
 										</div>
 									)}
 
+									{/* Tooltip hiển thị mô tả item khi hover */}
 									{item.description && (
 										<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-80 p-3 bg-black text-white text-xs rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none border border-gray-600'>
 											<div className='font-bold text-yellow-400 mb-1'>
@@ -97,7 +104,7 @@ const ArrayInputComponent = ({
 								</div>
 
 								<InputField
-									value={value}
+									value={safeValue}
 									onChange={e => handleItemChange(index, e.target.value)}
 									placeholder={placeholder}
 									className='flex-1'
@@ -120,10 +127,36 @@ const ArrayInputComponent = ({
 	);
 };
 
+// ==========================================
+// COMPONENT CHÍNH: FORM EDITOR
+// ==========================================
 const ChampionEditorForm = memo(
 	({ champion, cachedData, onSave, onCancel, onDelete, isSaving }) => {
-		const [formData, setFormData] = useState(champion || {});
+		const [formData, setFormData] = useState({});
 
+		// ------------------------------------------------
+		// 1. XỬ LÝ DỮ LIỆU KHI LOAD FORM
+		// ------------------------------------------------
+		useEffect(() => {
+			if (champion) {
+				const processedData = { ...champion };
+
+				// Xử lý Description: Đổi "\n" trong database thành xuống dòng thật để hiển thị trong textarea
+				if (typeof processedData.description === "string") {
+					processedData.description = processedData.description
+						.replace(/\\\\n/g, "\n") // Xử lý trường hợp bị escape 2 lần (\\n)
+						.replace(/\\n/g, "\n"); // Xử lý trường hợp escape 1 lần (\n)
+				}
+
+				setFormData(processedData);
+			} else {
+				setFormData({});
+			}
+		}, [champion]);
+
+		// ------------------------------------------------
+		// CÁC HÀM XỬ LÝ INPUT
+		// ------------------------------------------------
 		const handleInputChange = e => {
 			const { name, value } = e.target;
 			setFormData(prev => ({ ...prev, [name]: value }));
@@ -163,11 +196,47 @@ const ChampionEditorForm = memo(
 			}));
 		};
 
+		// ------------------------------------------------
+		// 2. XỬ LÝ DỮ LIỆU KHI BẤM LƯU (SUBMIT)
+		// ------------------------------------------------
 		const handleSubmit = e => {
 			e.preventDefault();
-			onSave(formData);
+
+			const cleanData = { ...formData };
+
+			// A. Xử lý Description: Đổi xuống dòng thật thành "\n" để lưu vào JSON/DB
+			if (typeof cleanData.description === "string") {
+				cleanData.description = cleanData.description.replace(/\n/g, "\\n");
+			}
+
+			// B. Lọc dữ liệu rác cho các trường mảng (Array)
+			const arrayFields = [
+				"regions",
+				"tag",
+				"powerStars",
+				"bonusStars",
+				"adventurePowers",
+				"defaultItems",
+				"rune",
+				"startingDeck",
+			];
+			// Thêm các relic sets vào danh sách lọc
+			for (let i = 1; i <= 6; i++) arrayFields.push(`defaultRelicsSet${i}`);
+
+			arrayFields.forEach(field => {
+				if (Array.isArray(cleanData[field])) {
+					cleanData[field] = cleanData[field]
+						.map(item => (typeof item === "string" ? item.trim() : item)) // Xóa khoảng trắng thừa
+						.filter(item => item !== ""); // Loại bỏ item rỗng
+				}
+			});
+
+			onSave(cleanData);
 		};
 
+		// ------------------------------------------------
+		// CHUẨN BỊ DỮ LIỆU CACHE CHO AUTOCOMPLETE/IMAGE
+		// ------------------------------------------------
 		const dataLookup = {
 			powers: Object.fromEntries(
 				(cachedData.powers || []).map(p => [p.name, p])
@@ -179,8 +248,35 @@ const ChampionEditorForm = memo(
 			runes: Object.fromEntries((cachedData.runes || []).map(r => [r.name, r])),
 		};
 
+		// ------------------------------------------------
+		// RENDER GIAO DIỆN
+		// ------------------------------------------------
 		return (
 			<form onSubmit={handleSubmit} className='space-y-8'>
+				{/* ==================== NÚT HÀNH ĐỘNG ==================== */}
+				<div className='flex justify-between border-border sticky bg-surface-bg z-10'>
+					<div>
+						<label className='block font-semibold text-text-primary'>
+							Thông tin tướng
+						</label>
+					</div>
+					<div className='flex items-center gap-3'>
+						<Button type='button' variant='ghost' onClick={onCancel}>
+							Hủy
+						</Button>
+
+						{champion && !champion.isNew && (
+							<Button type='button' variant='danger' onClick={onDelete}>
+								Xóa tướng
+							</Button>
+						)}
+
+						<Button type='submit' variant='primary' disabled={isSaving}>
+							{isSaving ? "Đang lưu..." : champion?.isNew ? "Tạo mới" : "Lưu"}
+						</Button>
+					</div>
+				</div>
+
 				{/* ==================== 1. THÔNG TIN CƠ BẢN ==================== */}
 				<div className='grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 bg-surface-bg border border-border rounded-xl'>
 					<div className='space-y-5'>
@@ -191,7 +287,7 @@ const ChampionEditorForm = memo(
 							onChange={handleInputChange}
 							required
 							disabled={!formData.isNew}
-							placeholder='C056, TFT9_Jinx...'
+							placeholder='C056, C057,...'
 						/>
 						<InputField
 							label='Tên tướng'
@@ -208,7 +304,7 @@ const ChampionEditorForm = memo(
 								value={formData.cost || ""}
 								onChange={handleNumberChange}
 								min='1'
-								max='10'
+								max='15'
 							/>
 							<InputField
 								label='Sao tối đa'
@@ -243,24 +339,20 @@ const ChampionEditorForm = memo(
 				{/* ==================== 2. MÔ TẢ + VÙNG + VIDEO ==================== */}
 				<div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
 					<div className='xl:col-span-2 space-y-8'>
-						{/* MÔ TẢ CHI TIẾT – ĐÃ SỬA XUỐNG DÒNG HOÀN HẢO */}
-
 						<div>
-							<label className='block font-semibold text-text-primary mb-2'>
+							<label className='block font-semibold text-text-primary mb-3'>
 								Mô tả chi tiết
 							</label>
-
 							<textarea
 								name='description'
-								value={(formData.description || "")
-									.replace(/\\\\n/g, "\n")
-									.replace(/\\n/g, "\n")}
+								value={formData.description || ""}
 								onChange={handleInputChange}
 								className='w-full p-4 rounded-lg border border-border bg-surface-bg text-text-primary placeholder:text-text-secondary focus:border-primary-500 resize-none font-mono text-sm'
-								rows={12}
-								placeholder='Nhấn Enter để xuống dòng...'
+								rows={10}
+								placeholder='Nhập mô tả tại đây. Các dòng sẽ tự động được chuyển thành \n khi lưu.'
 							/>
 						</div>
+
 						<ArrayInputComponent
 							label='Vùng (Regions)'
 							data={formData.regions || []}
@@ -269,7 +361,6 @@ const ChampionEditorForm = memo(
 						/>
 					</div>
 
-					{/* VIDEO – CHỈ DÙNG videoLink */}
 					<div>
 						<label className='block font-semibold text-text-primary mb-2'>
 							Video giới thiệu
@@ -293,7 +384,7 @@ const ChampionEditorForm = memo(
 					</div>
 				</div>
 
-				{/* ==================== CÁC PHẦN CÒN LẠI GIỮ NGUYÊN ==================== */}
+				{/* ==================== 3. ASSETS ==================== */}
 				<div>
 					<h4 className='text-lg font-bold text-text-primary mb-4 flex items-center gap-2'>
 						<Link2 size={20} /> Assets (Ảnh)
@@ -319,7 +410,7 @@ const ChampionEditorForm = memo(
 												<img
 													src={asset[field]}
 													alt={field}
-													className='mt-2 w-full max-w-24 h-auto rounded border'
+													className='mt-2 h-16 w-auto rounded border object-contain bg-black/20'
 													onError={e => (e.target.style.display = "none")}
 												/>
 											)}
@@ -331,7 +422,7 @@ const ChampionEditorForm = memo(
 								<button
 									type='button'
 									onClick={() => handleRemoveAsset(index)}
-									className='text-red-500'
+									className='text-red-500 hover:text-red-700'
 								>
 									<XCircle size={22} />
 								</button>
@@ -343,6 +434,7 @@ const ChampionEditorForm = memo(
 					</Button>
 				</div>
 
+				{/* ==================== 4. CONFIG CHI TIẾT (ITEM/RELIC/POWER) ==================== */}
 				<div className='space-y-6'>
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<ArrayInputComponent
@@ -383,21 +475,6 @@ const ChampionEditorForm = memo(
 						onChange={d => handleArrayChange("rune", d)}
 						cachedData={dataLookup.runes}
 					/>
-				</div>
-
-				{/* NÚT HÀNH ĐỘNG */}
-				<div className='flex justify-end gap-4 pt-6 border-t border-border'>
-					<Button type='button' variant='ghost' onClick={onCancel}>
-						Hủy
-					</Button>
-					{champion && !champion.isNew && (
-						<Button type='button' variant='danger' onClick={onDelete}>
-							Xóa tướng
-						</Button>
-					)}
-					<Button type='submit' variant='primary' disabled={isSaving}>
-						{isSaving ? "Đang lưu..." : champion?.isNew ? "Tạo mới" : "Lưu"}
-					</Button>
 				</div>
 			</form>
 		);

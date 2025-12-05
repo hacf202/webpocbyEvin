@@ -137,22 +137,20 @@ export const AuthProvider = ({ children }) => {
 
 	const confirmSignUp = async (username, code, onSuccess, onError) => {
 		try {
+			// Chỉ gọi xác nhận, không gọi đăng nhập sau đó
 			await authService.confirmSignUp(username, code);
-			// Tự động đăng nhập sau khi xác nhận thành công
-			const data = await authService.initiateAuth(username, tempPassword);
-			const { IdToken, AccessToken } = data.AuthenticationResult;
-			handleLogin(IdToken, AccessToken);
-			onSuccess("Tài khoản đã được xác minh và đăng nhập thành công!");
+
+			// Xóa bỏ logic tự động đăng nhập ở đây (initiateAuth và handleLogin)
+			// const data = await authService.initiateAuth(username, tempPassword);
+			// const { IdToken, AccessToken } = data.AuthenticationResult;
+			// handleLogin(IdToken, AccessToken);
+
+			onSuccess("Xác minh thành công! Vui lòng đăng nhập.");
 		} catch (error) {
-			console.error("Lỗi xác nhận hoặc tự động đăng nhập:", error);
-			// Nếu tự động đăng nhập thất bại, vẫn thông báo xác nhận thành công
-			if (error.message.includes("Incorrect username or password")) {
-				onSuccess("Xác minh thành công! Vui lòng đăng nhập.");
-			} else {
-				onError(error.message);
-			}
+			console.error("Lỗi xác nhận:", error);
+			onError(error.message);
 		} finally {
-			setTempPassword(null); // Xóa mật khẩu tạm
+			setTempPassword(null); // Xóa mật khẩu tạm vì không còn dùng để auto-login
 		}
 	};
 

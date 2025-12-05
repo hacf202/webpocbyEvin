@@ -40,7 +40,7 @@ const NEW_CHAMPION_TEMPLATE = {
 			avatar: "",
 		},
 	],
-	videoLink: "", // Giờ đã có sẵn trong champion
+	videoLink: "",
 };
 
 const ITEMS_PER_PAGE = 20;
@@ -55,7 +55,7 @@ const MainContent = memo(
 		onSelectChampion,
 		selectedChampion,
 		onSaveChampion,
-		onCancel,
+		onCancel, // Đây là hàm kích hoạt modal xác nhận hủy
 		onDelete,
 		isSaving,
 		cachedData,
@@ -116,10 +116,9 @@ const MainContent = memo(
 				) : (
 					<ChampionEditorForm
 						champion={selectedChampion}
-						// Không cần truyền videoLinks riêng nữa
 						cachedData={cachedData}
 						onSave={onSaveChampion}
-						onCancel={onCancel}
+						onCancel={onCancel} // Truyền xuống Form
 						onDelete={onDelete}
 						isSaving={isSaving}
 					/>
@@ -146,9 +145,12 @@ function ChampionEditor() {
 	const [sortOrder, setSortOrder] = useState("name-asc");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [viewMode, setViewMode] = useState("list");
+
+	// STATE MODALS
 	const [isCloseConfirmModalOpen, setIsCloseConfirmModalOpen] = useState(false);
 	const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
 		useState(false);
+
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSaving, setIsSaving] = useState(false);
 	const [error, setError] = useState(null);
@@ -161,7 +163,7 @@ function ChampionEditor() {
 	const API_BASE_URL = import.meta.env.VITE_API_URL;
 	const navigate = useNavigate();
 
-	// === FETCH DATA (đã loại bỏ champion-videos) ===
+	// === FETCH DATA ===
 	const fetchAllData = useCallback(async () => {
 		try {
 			setIsLoading(true);
@@ -203,7 +205,7 @@ function ChampionEditor() {
 		fetchAllData();
 	}, [fetchAllData]);
 
-	// === FILTER & SORT (giữ nguyên) ===
+	// === FILTER & SORT ===
 	const filterOptions = useMemo(() => {
 		const regions = [...new Set(champions.flatMap(c => c.regions || []))]
 			.sort()
@@ -295,10 +297,10 @@ function ChampionEditor() {
 		setIsSaving(true);
 		try {
 			const token = localStorage.getItem("token");
-			const method = data.isNew ? "POST" : "PUT"; // Sửa: tạo mới dùng POST
-			const url = data.isNew
-				? `${API_BASE_URL}/api/champions`
-				: `${API_BASE_URL}/api/champions/${data.championID}`;
+
+			// CẬP NHẬT: Backend chỉ dùng PUT cho cả tạo mới và cập nhật
+			const method = "PUT";
+			const url = `${API_BASE_URL}/api/champions`;
 
 			const res = await fetch(url, {
 				method,
@@ -336,20 +338,22 @@ function ChampionEditor() {
 		}
 	};
 
+	// Xử lý khi bấm nút Hủy
 	const handleAttemptClose = () => {
-		if (
-			selectedChampion &&
-			JSON.stringify(selectedChampion) !==
-				JSON.stringify(
-					champions.find(c => c.championID === selectedChampion.championID) ||
-						NEW_CHAMPION_TEMPLATE
-				)
-		) {
-			setIsCloseConfirmModalOpen(true);
-		} else {
-			setViewMode("list");
-			setSelectedChampion(null);
+		// Kiểm tra nếu có thay đổi thì bật modal
+		if (selectedChampion) {
+			const original = selectedChampion.isNew
+				? NEW_CHAMPION_TEMPLATE
+				: champions.find(c => c.championID === selectedChampion.championID);
+
+			// So sánh đơn giản để xem có thay đổi không
+			if (JSON.stringify(selectedChampion) !== JSON.stringify(original)) {
+				setIsCloseConfirmModalOpen(true);
+				return;
+			}
 		}
+		// Nếu không có thay đổi, đóng luôn
+		handleConfirmClose();
 	};
 
 	const handleConfirmClose = () => {
@@ -476,7 +480,7 @@ function ChampionEditor() {
 						onSelectChampion={handleSelectChampion}
 						selectedChampion={selectedChampion}
 						onSaveChampion={handleSaveChampion}
-						onCancel={handleAttemptClose}
+						onCancel={handleAttemptClose} // Gắn hàm xử lý xác nhận đóng
 						onDelete={handleAttemptDelete}
 						isSaving={isSaving}
 						cachedData={cachedData}
@@ -509,25 +513,26 @@ function ChampionEditor() {
 				</div>
 			</div>
 
-			{/* Modal xác nhận đóng */}
+			{/* Modal xác nhận đóng/Hủy */}
 			<Modal
 				isOpen={isCloseConfirmModalOpen}
 				onClose={() => setIsCloseConfirmModalOpen(false)}
-				title='Xác nhận đóng'
+				title='Xác nhận Hủy'
 			>
 				<div className='text-text-secondary'>
 					<p className='mb-6'>
-						Bạn có chắc muốn đóng mà không lưu các thay đổi không?
+						Bạn có chắc chắn muốn hủy bỏ các thay đổi hiện tại? Mọi thay đổi
+						chưa lưu sẽ bị mất.
 					</p>
 					<div className='flex justify-end gap-3'>
 						<Button
 							onClick={() => setIsCloseConfirmModalOpen(false)}
 							variant='ghost'
 						>
-							Hủy
+							Tiếp tục chỉnh sửa
 						</Button>
-						<Button onClick={handleConfirmClose} variant='primary'>
-							Xác nhận
+						<Button onClick={handleConfirmClose} variant='danger'>
+							Xác nhận Hủy
 						</Button>
 					</div>
 				</div>

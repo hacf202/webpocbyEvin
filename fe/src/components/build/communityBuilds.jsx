@@ -4,6 +4,9 @@ import BuildSummary from "./buildSummary";
 import { useBatchFavoriteData } from "../../hooks/useBatchFavoriteData";
 import { removeAccents } from "../../utils/vietnameseUtils";
 import { AuthContext } from "../../context/AuthContext.jsx";
+import Button from "../common/button.jsx";
+
+const ITEMS_PER_PAGE = 24; // Số lượng item mỗi trang
 
 const CommunityBuilds = ({
 	searchTerm,
@@ -14,17 +17,14 @@ const CommunityBuilds = ({
 	powersList,
 	runesList,
 	refreshKey,
-	powerMap,
 	championNameToRegionsMap,
 	onEditSuccess,
 	onDeleteSuccess,
 	onFavoriteToggle,
 	getCache,
 	setCache,
-	// token, // Không nhận token từ props nữa
 	sortBy,
 }) => {
-	// [QUAN TRỌNG] Lấy token trực tiếp từ Context
 	const { token } = useContext(AuthContext);
 
 	const [communityBuilds, setCommunityBuilds] = useState([]);
@@ -32,9 +32,11 @@ const CommunityBuilds = ({
 	const [error, setError] = useState(null);
 	const [creatorNames, setCreatorNames] = useState({});
 
+	// [THÊM] State phân trang
+	const [currentPage, setCurrentPage] = useState(1);
+
 	const apiUrl = import.meta.env.VITE_API_URL;
 
-	// [QUAN TRỌNG] Hook lấy trạng thái tim hàng loạt
 	const { favoriteStatus, favoriteCounts } = useBatchFavoriteData(
 		communityBuilds,
 		token
@@ -95,10 +97,16 @@ const CommunityBuilds = ({
 
 		fetchCommunityBuilds();
 	}, [refreshKey, apiUrl, getCache, setCache]);
+
+	// [THÊM] Reset về trang 1 khi filter thay đổi
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm, selectedStarLevels, selectedRegions, sortBy]);
+
 	const filteredAndSortedBuilds = useMemo(() => {
 		let result = communityBuilds;
 
-		// --- 1. TÌM KIẾM (Giữ nguyên logic search đa năng) ---
+		// --- 1. TÌM KIẾM ---
 		if (searchTerm) {
 			const lowerTerm = removeAccents(searchTerm.toLowerCase());
 			result = result.filter(build => {
@@ -138,22 +146,17 @@ const CommunityBuilds = ({
 			);
 		}
 
-		// --- 3. LỌC KHU VỰC (LOGIC MỚI) ---
+		// --- 3. LỌC KHU VỰC ---
 		if (selectedRegions.length > 0) {
 			result = result.filter(build => {
-				// CÁCH 1: Dùng dữ liệu regions trực tiếp trong build (Ưu tiên)
 				if (Array.isArray(build.regions) && build.regions.length > 0) {
-					// Kiểm tra xem có bất kỳ region nào của build nằm trong danh sách đã chọn không
 					return build.regions.some(r => selectedRegions.includes(r));
 				}
-
-				// CÁCH 2: Fallback cho build cũ chưa có regions (Dùng Map)
 				if (championNameToRegionsMap) {
 					const championName = build.championName || "";
 					const region = championNameToRegionsMap[championName];
 					return selectedRegions.includes(region);
 				}
-
 				return false;
 			});
 		}
@@ -166,19 +169,14 @@ const CommunityBuilds = ({
 			switch (sortBy) {
 				case "oldest":
 					return new Date(a.createdAt) - new Date(b.createdAt);
-
-				case "likes_desc": // Lượt thích cao nhất
+				case "likes_desc":
 					return (b.like || 0) - (a.like || 0);
-
-				case "likes_asc": // Lượt thích thấp nhất
+				case "likes_asc":
 					return (a.like || 0) - (b.like || 0);
-
-				case "champion_asc": // Tên tướng A-Z
+				case "champion_asc":
 					return nameA.localeCompare(nameB);
-
-				case "champion_desc": // Tên tướng Z-A
+				case "champion_desc":
 					return nameB.localeCompare(nameA);
-
 				case "newest":
 				default:
 					return new Date(b.createdAt) - new Date(a.createdAt);
@@ -195,6 +193,24 @@ const CommunityBuilds = ({
 		sortBy,
 		creatorNames,
 	]);
+
+	// [THÊM] Logic cắt mảng để phân trang
+	const totalPages = Math.ceil(filteredAndSortedBuilds.length / ITEMS_PER_PAGE);
+	const currentBuilds = useMemo(() => {
+		const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+		return filteredAndSortedBuilds.slice(
+			startIndex,
+			startIndex + ITEMS_PER_PAGE
+		);
+	}, [filteredAndSortedBuilds, currentPage]);
+
+	const handlePageChange = newPage => {
+		if (newPage >= 1 && newPage <= totalPages) {
+			setCurrentPage(newPage);
+			// Cuộn lên đầu lưới khi chuyển trang
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
 
 	const handleBuildUpdated = updatedBuild => {
 		setCommunityBuilds(current =>
@@ -225,29 +241,52 @@ const CommunityBuilds = ({
 		);
 
 	return (
-		<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6'>
-			{filteredAndSortedBuilds.map(build => (
-				<BuildSummary
-					key={build.id}
-					build={{
-						...build,
-						creatorName: creatorNames[build.creator],
-					}}
-					championsList={championsList}
-					relicsList={relicsList}
-					powersList={powersList}
-					runesList={runesList}
-					onBuildUpdate={handleBuildUpdated}
-					onBuildDelete={handleBuildDeleted}
-					onFavoriteToggle={onFavoriteToggle}
-					// Truyền trạng thái và count từ hook
-					initialIsFavorited={!!favoriteStatus[build.id]}
-					initialLikeCount={favoriteCounts[build.id] || 0}
-					// Mặc định false, không reload khi like/favorite
-					isFavoritePage={false}
-				/>
-			))}
-		</div>
+		<>
+			<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6'>
+				{currentBuilds.map(build => (
+					<BuildSummary
+						key={build.id}
+						build={{
+							...build,
+							creatorName: creatorNames[build.creator],
+						}}
+						championsList={championsList}
+						relicsList={relicsList}
+						powersList={powersList}
+						runesList={runesList}
+						onBuildUpdate={handleBuildUpdated}
+						onBuildDelete={handleBuildDeleted}
+						onFavoriteToggle={onFavoriteToggle}
+						initialIsFavorited={!!favoriteStatus[build.id]}
+						initialLikeCount={favoriteCounts[build.id] || 0}
+						isFavoritePage={false}
+					/>
+				))}
+			</div>
+
+			{/* [THÊM] Giao diện Phân trang */}
+			{totalPages > 1 && (
+				<div className='mt-4 flex justify-center items-center gap-2 md:gap-4'>
+					<Button
+						onClick={() => setCurrentPage(p => p - 1)}
+						disabled={currentPage === 1}
+						variant='outline'
+					>
+						Trang trước
+					</Button>
+					<span className='text-lg font-medium text-text-primary'>
+						{currentPage} / {totalPages}
+					</span>
+					<Button
+						onClick={() => setCurrentPage(p => p + 1)}
+						disabled={currentPage === totalPages}
+						variant='outline'
+					>
+						Trang sau
+					</Button>
+				</div>
+			)}
+		</>
 	);
 };
 

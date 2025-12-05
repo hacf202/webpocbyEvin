@@ -1,5 +1,81 @@
 [
 	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0896.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0896-full.png",
+		"description": "Bắt Đầu Trận Đấu: Tạo 1 lá <link=card.self><style=AssociatedCard>Renekton</style></link> và 1 lá <style=Variable>CardRef</style> trong bộ bài của ngươi, sau đó ban tất cả vật phẩm của lá <style=Variable>CardRef</style> cho các anh hùng khác trên tay và trên bộ bài của ngươi.<br>",
+		"descriptionRaw": "Bắt Đầu Trận Đấu: Tạo 1 lá Renekton và 1 lá Nasus trong bộ bài của ngươi, sau đó ban tất cả vật phẩm của lá Azir cho các anh hùng khác trên tay và trên bộ bài của ngươi.",
+		"name": "Di Sản của Shurima",
+		"powerCode": "P0896",
+		"rarity": "HUYỀN THOẠI",
+		"type": ["Star Power"],
+		"rarityRef": "Legendary"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0899.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0899-full.png",
+		"description": "+2 Năng Lượng Khởi Điểm.<br>Khi ngươi triệu hồi bài quân thứ hai trong mỗi vòng đấu, ban +2|+2 cho đồng minh.",
+		"descriptionRaw": "+2 Năng Lượng Khởi Điểm.Khi ngươi triệu hồi bài quân thứ hai trong mỗi vòng đấu, ban +2|+2 cho đồng minh.",
+		"name": "Hoàng Đế Tấn Công II",
+		"powerCode": "P0899",
+		"rarity": "SỬ THI",
+		"type": ["Star Power"],
+		"rarityRef": "Epic"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0398.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0398-full.png",
+		"description": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá <link=card.self><style=AssociatedCard>Đĩa Mặt Trời Bị Chôn Vùi</style></link>. <link=vocab.Advance><style=Vocab>Đẩy nhanh</style></link> nó lên 1 vòng mỗi khi ngươi triệu hồi 1 bài quân hoặc 1 địa danh.<br>Khi ngươi dùng <link=vocab.SunDiscRestore><style=Vocab>Khôi Phục Đĩa Mặt Trời</style></link>, hồi đầy năng lượng bài phép của ngươi.",
+		"descriptionRaw": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá Đĩa Mặt Trời Bị Chôn Vùi. Đẩy nhanh nó lên 1 vòng mỗi khi ngươi triệu hồi 1 bài quân hoặc 1 địa danh.Khi ngươi dùng Khôi Phục Đĩa Mặt Trời, hồi đầy năng lượng của ngươi.",
+		"name": "Vinh Quang Của Sa Mạc II",
+		"powerCode": "P0398",
+		"rarity": "SỬ THI",
+		"rarityRef": "Epic"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0399.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0399-full.png",
+		"description": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá <link=card.self><style=AssociatedCard>Đĩa Mặt Trời Bị Chôn Vùi</style></link>. <link=vocab.Advance><style=Vocab>Đẩy nhanh</style></link> nó lên 1 vòng mỗi khi ngươi triệu hồi 1 bài quân.<br>",
+		"descriptionRaw": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá Đĩa Mặt Trời Bị Chôn Vùi. Đẩy nhanh nó lên 1 vòng mỗi khi ngươi triệu hồi 1 bài quân.",
+		"name": "Vinh Quang Của Sa Mạc",
+		"powerCode": "P0399",
+		"rarity": "THƯỜNG",
+		"type": ["Star Power"],
+		"rarityRef": "Common"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0900.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0900-full.png",
+		"description": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá <link=card.self><style=AssociatedCard>Nhóc Trượt Cát</style></link>.",
+		"descriptionRaw": "Bắt Đầu Trận Đấu: Triệu hồi 1 lá Nhóc Trượt Cát.",
+		"name": "Tiên Phong Sa Thạch",
+		"powerCode": "P0900",
+		"rarity": "THƯỜNG",
+		"type": ["Star Power", "General Power"],
+		"rarityRef": "Common"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0400.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0400-full.png",
+		"description": "+1 Năng Lượng Khởi Điểm.<br>Khi ngươi triệu hồi bài quân thứ hai trong mỗi vòng đấu, ban +1|+1 cho đồng minh.",
+		"descriptionRaw": "+1 Năng Lượng Khởi Điểm.Khi ngươi triệu hồi bài quân thứ hai trong mỗi vòng đấu, ban +1|+1 cho đồng minh.",
+		"name": "Hoàng Đế Tấn Công",
+		"powerCode": "P0400",
+		"rarity": "SỬ THI",
+		"type": ["Star Power"],
+		"rarityRef": "Epic"
+	},
+	{
+		"assetAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0910.png",
+		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_12_0/adventure/vi_vn/img/powers/P0910-full.png",
+		"description": "Khi ngươi sử dụng 1 Poro, tạo trên tay 1 Bánh Quy Đặc Biệt ngẫu nhiên hoặc giảm 1 tiêu hao của lá bài đó nếu đã có sẵn.<br>Mỗi trận đấu, khi ngươi dùng chiếc Bánh Quy thứ mười, biến đổi tất cả kẻ địch thành những Poro ngẫu nhiên. <style=Variable></style><br>",
+		"descriptionRaw": "Khi ngươi sử dụng 1 Poro, tạo trên tay 1 Bánh Quy Đặc Biệt ngẫu nhiên hoặc giảm 1 tiêu hao của lá bài đó nếu đã có sẵn.Mỗi trận đấu, khi ngươi dùng chiếc Bánh Quy thứ mười, biến đổi tất cả kẻ địch thành những Poro ngẫu nhiên. ",
+		"name": "Vụ Nổ Bánh Quy",
+		"powerCode": "P0910",
+		"rarity": "HUYỀN THOẠI",
+		"type": ["Star Power"],
+		"rarityRef": "Legendary"
+	},
+	{
 		"assetAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/powers/P0355.png",
 		"assetFullAbsolutePath": "https://dd.b.pvp.net/6_11_0/adventure/vi_vn/img/powers/P0355-full.png",
 		"description": "Ban +1 Năng lượng khởi điểm.<br>Tất cả Rồng đồng minh có <link=keyword.Fury><sprite name=Fury><style=Keyword>Cuồng Nộ</style></link>.<br>Bùa <link=keyword.Fury><sprite name=Fury><style=Keyword>Cuồng Nộ</style></link> của ngươi được ban cho tất cả Rồng đồng minh trên bàn đấu và trên tay.",

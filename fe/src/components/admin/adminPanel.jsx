@@ -52,11 +52,11 @@ const AdminPanel = () => {
 			path: "/admin",
 		},
 		{ id: "champion", label: "Quản lý Tướng", icon: BookOpen },
-		{ id: "power", label: "Quản lý Năng Lực", icon: Sparkles },
-		{ id: "relic", label: "Quản lý Di Vật", icon: ShieldCheck },
+		{ id: "power", label: "Quản lý Sức Mạnh", icon: Sparkles },
+		{ id: "relic", label: "Quản lý Cổ Vật", icon: ShieldCheck },
 		{ id: "item", label: "Quản lý Vật Phẩm", icon: Package },
 		{ id: "rune", label: "Quản lý Ngọc", icon: Gem },
-		{ id: "build", label: "Quản lý Build", icon: Library },
+		{ id: "build", label: "Quản lý Bộ Cổ Vật", icon: Library },
 	];
 
 	const navLinkClass = id =>

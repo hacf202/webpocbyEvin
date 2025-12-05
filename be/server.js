@@ -29,19 +29,31 @@ const requiredEnvVars = [
 	"COGNITO_APP_CLIENT_ID", //client id của app
 	"FRONTEND_URL", //domain fe
 ];
-const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]); //trả về 1 mảng mới missingEnvVars chứa các biến môi tường bị thiếu.
 if (missingEnvVars.length > 0) {
 	console.error("Lỗi: Thiếu các biến môi trường:", missingEnvVars.join(", "));
-	// Khi chạy local, chúng ta nên thoát
+
 	if (!process.env.VERCEL) {
-		process.exit(1);
+		process.exit(1); //nếu lỗi thiếu biến không phải trên vercel thì thoát.
 	}
 }
 
-const app = express();
+const app = express(); //khởi tạo backend
 
 // --- Middleware ---
 app.use(morgan("dev")); // Ghi log request ra console
+/*
+GET, PUT, POST, DELETE: Phương thức gọi (Method).
+
+/api/champions: Đường dẫn được gọi (URL).
+
+200: thành công trả về dữ liệu, 204: thành công không trả về dữ liệu, 304: Dữ kiệu không đổi dùng cache
+404: không tìm thấy, 500 lỗi server
+
+15.234 ms: Thời gian server xử lý yêu cầu (Response time).
+
+3405: Độ lớn của dữ liệu trả về (tính bằng bytes).
+*/
 
 // Cấu hình CORS
 const allowedOrigins = [
@@ -49,7 +61,7 @@ const allowedOrigins = [
 	"http://localhost:5173",
 	"https://guidepoc.vercel.app",
 	"https://www.pocguide.top",
-];
+]; //Mảng này chứa tất cả các tên miền (domain) được phép gọi API của bạn.
 app.use(
 	cors({
 		origin: function (origin, callback) {
@@ -62,9 +74,7 @@ app.use(
 	})
 );
 
-// Middleware để phân tích cú pháp JSON
-// ⚠️ Cảnh báo: Vercel miễn phí có giới hạn ~4.5MB. 50mb sẽ thất bại trên Vercel.
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "5mb" }));
 
 // --- API Routes ---
 
