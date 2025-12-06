@@ -35,7 +35,6 @@ const ArrayInputComponent = ({
 		e.stopPropagation();
 		try {
 			const dragged = JSON.parse(e.dataTransfer.getData("text/plain"));
-			// Khi Drop thì có thể trim() an toàn
 			if (dragged.name) handleItemChange(index, dragged.name.trim());
 		} catch (err) {
 			console.warn("Drag data không hợp lệ");
@@ -76,6 +75,10 @@ const ArrayInputComponent = ({
 								onDrop={e => handleDrop(e, index)}
 								onDragOver={handleDragOver}
 							>
+								{/* Lưu ý: Với các TAG text thuần (không có ảnh),
+                  phần này sẽ hiện dấu ? màu xám. 
+                  Nếu muốn ẩn đi cho Tag, có thể check thêm điều kiện cachedData rỗng.
+                */}
 								<div className='relative group flex-shrink-0'>
 									{item.assetAbsolutePath ? (
 										<img
@@ -89,7 +92,7 @@ const ArrayInputComponent = ({
 										</div>
 									)}
 
-									{/* Tooltip hiển thị mô tả item khi hover */}
+									{/* Tooltip */}
 									{item.description && (
 										<div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-80 p-3 bg-black text-white text-xs rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none border border-gray-600'>
 											<div className='font-bold text-yellow-400 mb-1'>
@@ -141,11 +144,11 @@ const ChampionEditorForm = memo(
 			if (champion) {
 				const processedData = { ...champion };
 
-				// Xử lý Description: Đổi "\n" trong database thành xuống dòng thật để hiển thị trong textarea
+				// Xử lý Description: Đổi "\n" trong database thành xuống dòng thật
 				if (typeof processedData.description === "string") {
 					processedData.description = processedData.description
-						.replace(/\\\\n/g, "\n") // Xử lý trường hợp bị escape 2 lần (\\n)
-						.replace(/\\n/g, "\n"); // Xử lý trường hợp escape 1 lần (\n)
+						.replace(/\\\\n/g, "\n")
+						.replace(/\\n/g, "\n");
 				}
 
 				setFormData(processedData);
@@ -204,7 +207,7 @@ const ChampionEditorForm = memo(
 
 			const cleanData = { ...formData };
 
-			// A. Xử lý Description: Đổi xuống dòng thật thành "\n" để lưu vào JSON/DB
+			// A. Xử lý Description: Đổi xuống dòng thật thành "\n"
 			if (typeof cleanData.description === "string") {
 				cleanData.description = cleanData.description.replace(/\n/g, "\\n");
 			}
@@ -212,7 +215,7 @@ const ChampionEditorForm = memo(
 			// B. Lọc dữ liệu rác cho các trường mảng (Array)
 			const arrayFields = [
 				"regions",
-				"tag",
+				"tag", // Đã có sẵn tag ở đây để xử lý lưu
 				"powerStars",
 				"bonusStars",
 				"adventurePowers",
@@ -220,14 +223,14 @@ const ChampionEditorForm = memo(
 				"rune",
 				"startingDeck",
 			];
-			// Thêm các relic sets vào danh sách lọc
+			// Thêm các relic sets
 			for (let i = 1; i <= 6; i++) arrayFields.push(`defaultRelicsSet${i}`);
 
 			arrayFields.forEach(field => {
 				if (Array.isArray(cleanData[field])) {
 					cleanData[field] = cleanData[field]
-						.map(item => (typeof item === "string" ? item.trim() : item)) // Xóa khoảng trắng thừa
-						.filter(item => item !== ""); // Loại bỏ item rỗng
+						.map(item => (typeof item === "string" ? item.trim() : item))
+						.filter(item => item !== "");
 				}
 			});
 
@@ -235,7 +238,7 @@ const ChampionEditorForm = memo(
 		};
 
 		// ------------------------------------------------
-		// CHUẨN BỊ DỮ LIỆU CACHE CHO AUTOCOMPLETE/IMAGE
+		// CHUẨN BỊ DỮ LIỆU CACHE
 		// ------------------------------------------------
 		const dataLookup = {
 			powers: Object.fromEntries(
@@ -336,7 +339,7 @@ const ChampionEditorForm = memo(
 					</div>
 				</div>
 
-				{/* ==================== 2. MÔ TẢ + VÙNG + VIDEO ==================== */}
+				{/* ==================== 2. MÔ TẢ + VÙNG + VIDEO + TAGS ==================== */}
 				<div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
 					<div className='xl:col-span-2 space-y-8'>
 						<div>
@@ -358,6 +361,15 @@ const ChampionEditorForm = memo(
 							data={formData.regions || []}
 							onChange={d => handleArrayChange("regions", d)}
 							cachedData={cachedData.regions || {}}
+						/>
+
+						{/* --- [THÊM MỚI] INPUT CHO TAGS --- */}
+						<ArrayInputComponent
+							label='Tags (Nhãn phân loại)'
+							data={formData.tag || []}
+							onChange={d => handleArrayChange("tag", d)}
+							placeholder='Nhập tag (VD: OTK, Control...)'
+							cachedData={{}}
 						/>
 					</div>
 
@@ -434,7 +446,7 @@ const ChampionEditorForm = memo(
 					</Button>
 				</div>
 
-				{/* ==================== 4. CONFIG CHI TIẾT (ITEM/RELIC/POWER) ==================== */}
+				{/* ==================== 4. CONFIG CHI TIẾT ==================== */}
 				<div className='space-y-6'>
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<ArrayInputComponent

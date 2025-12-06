@@ -173,36 +173,9 @@ const AdminPanel = () => {
 								Tổng quan nhanh về hệ thống.
 							</p>
 
-							<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12'>
-								<StatCard
-									title='Tổng số Tướng'
-									value={stats.champions}
-									icon={BookOpen}
-									colorClass='text-primary-500'
-								/>
-								<StatCard
-									title='Tổng số Builds'
-									value={stats.builds}
-									icon={Library}
-									colorClass='text-success'
-								/>
-								<StatCard
-									title='Tổng số Cổ Vật'
-									value={stats.relics}
-									icon={ShieldCheck}
-									colorClass='text-icon-star'
-								/>
-								<StatCard
-									title='Người dùng'
-									value={stats.users}
-									icon={Users}
-									colorClass='text-danger-500'
-								/>
-							</div>
-
 							<div>
 								<h3 className='text-xl font-semibold text-text-primary mb-6 font-primary'>
-									Chọn tab bên trái để quản lý
+									Chọn mục để quản lý
 								</h3>
 								<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
 									{navItems.slice(1).map(item => (
