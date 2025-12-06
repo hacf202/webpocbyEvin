@@ -363,7 +363,7 @@ const BuildSummary = ({
 						{build.rune?.length > 0 && (
 							<div>
 								<p className='text-text-primary font-semibold mb-1 text-xs sm:text-sm'>
-									Ngọc bổ trợ:
+									Ngọc:
 								</p>
 								<div className='flex flex-wrap gap-1.5 sm:gap-2'>
 									{build.rune.map((r, i) =>

@@ -173,12 +173,12 @@ function RuneList() {
 		<div>
 			<PageTitle
 				title='Danh sách ngọc'
-				description='POC GUIDE: Danh sách đầy đủ ngọc bổ trợ (Runes) Path of Champions: Common, Rare, Epic với hiệu ứng chi tiết, tier list S/A/B, combo mạnh nhất cho Jinx, LeBlanc, Swain, A.Sol... Lọc theo độ hiếm, tooltip mô tả + hướng dẫn chọn rune đánh boss Galio/A.Sol dễ dàng!'
+				description='POC GUIDE: Danh sách đầy đủ Ngọc (Runes) Path of Champions: Common, Rare, Epic với hiệu ứng chi tiết, tier list S/A/B, combo mạnh nhất cho Jinx, LeBlanc, Swain, A.Sol... Lọc theo độ hiếm, tooltip mô tả + hướng dẫn chọn rune đánh boss Galio/A.Sol dễ dàng!'
 				type='website'
 			/>
 			<div className='font-secondary'>
 				<h1 className='text-3xl font-bold mb-6 text-text-primary font-primary'>
-					Danh Sách Ngọc Bổ Trợ
+					Danh Sách Ngọc
 				</h1>
 
 				<div className='flex flex-col lg:flex-row gap-8'>
@@ -192,7 +192,7 @@ function RuneList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên ngọc bổ trợ...'
+										placeholder='Nhập tên Ngọc...'
 									/>
 									{searchInput && (
 										<button
@@ -265,7 +265,7 @@ function RuneList() {
 										value={searchInput}
 										onChange={e => setSearchInput(e.target.value)}
 										onKeyPress={e => e.key === "Enter" && handleSearch()}
-										placeholder='Nhập tên ngọc bổ trợ...'
+										placeholder='Nhập tên Ngọc...'
 									/>
 									{searchInput && (
 										<button
@@ -388,7 +388,7 @@ function RuneList() {
 								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 									<div>
 										<p className='font-semibold text-lg'>
-											Không tìm thấy ngọc bổ trợ nào phù hợp.
+											Không tìm thấy Ngọc nào phù hợp.
 										</p>
 										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 									</div>

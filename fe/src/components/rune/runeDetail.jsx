@@ -99,7 +99,7 @@ function RuneDetail() {
 	if (error || !rune) {
 		return (
 			<div className='p-6 sm:p-8 text-center text-danger-text-dark'>
-				<p className='text-xl font-semibold'>Không tìm thấy ngọc bổ trợ</p>
+				<p className='text-xl font-semibold'>Không tìm thấy Ngọc</p>
 				<p className='mt-2 text-sm opacity-80'>
 					{runeCode && `Mã: ${decodeURIComponent(runeCode)}`}
 				</p>
@@ -112,7 +112,7 @@ function RuneDetail() {
 		<div>
 			<PageTitle
 				title={rune.name}
-				description={`POC GUIDE: Hiệu ứng chi tiết ngọc bổ trợ ${rune.name} Path of Champions (Độ hiếm: ${rune.rarity}). Combo mạnh nhất với Ahri, Yasuo, Yone, Lillia... Hướng dẫn farm rune Epic + mẹo dùng đánh boss!`}
+				description={`POC GUIDE: Hiệu ứng chi tiết Ngọc ${rune.name} Path of Champions (Độ hiếm: ${rune.rarity}). Combo mạnh nhất với Ahri, Yasuo, Yone, Lillia... Hướng dẫn farm rune Epic + mẹo dùng đánh boss!`}
 				type='article'
 			/>
 

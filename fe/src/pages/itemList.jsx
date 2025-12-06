@@ -387,7 +387,7 @@ function ItemList() {
 								<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 									<div>
 										<p className='font-semibold text-lg'>
-											Không tìm thấy đồ vật nào phù hợp.
+											Không tìm thấy Vật Phẩm nào phù hợp.
 										</p>
 										<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 									</div>

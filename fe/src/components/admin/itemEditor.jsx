@@ -10,11 +10,11 @@ import { removeAccents } from "../../utils/vietnameseUtils";
 import SidePanel from "../common/sidePanel";
 import { Loader2 } from "lucide-react"; // <-- IMPORT
 
-// Cấu trúc đồ vật mới mặc định
+// Cấu trúc Vật Phẩm mới mặc định
 const NEW_ITEM_TEMPLATE = {
 	itemCode: Date.now().toString(),
 	isNew: true,
-	name: "Đồ Vật Mới",
+	name: "Vật Phẩm Mới",
 	rarity: "",
 	rarityRef: "",
 	description: "",
@@ -48,13 +48,13 @@ const ItemEditorForm = memo(
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
 					<div className='flex items-center gap-2 mb-2 sm:mb-0'>
 						<h3 className='text-xl font-bold text-text-primary font-primary'>
-							{item.isNew ? "Tạo Đồ Vật Mới" : `Chỉnh sửa: ${item.name}`}
+							{item.isNew ? "Tạo Vật Phẩm Mới" : `Chỉnh sửa: ${item.name}`}
 						</h3>
 					</div>
 					<div className='flex items-center gap-2 flex-wrap'>
 						{!item.isNew && (
 							<Button variant='danger' onClick={onDelete}>
-								Xóa Đồ Vật
+								Xóa Vật Phẩm
 							</Button>
 						)}
 						<Button variant='outline' onClick={onCancel}>
@@ -228,7 +228,7 @@ const MainContent = memo(
 							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 								<div>
 									<p className='font-semibold text-lg'>
-										Không tìm thấy đồ vật nào phù hợp.
+										Không tìm thấy Vật Phẩm nào phù hợp.
 									</p>
 									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 								</div>
@@ -350,7 +350,7 @@ function ItemEditor() {
 		return { rarities, sort };
 	}, [items]);
 
-	// Lọc và sắp xếp danh sách đồ vật
+	// Lọc và sắp xếp danh sách Vật Phẩm
 	const filteredItems = useMemo(() => {
 		let filtered = [...items];
 		if (searchTerm) {
@@ -452,7 +452,7 @@ function ItemEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: "Lưu đồ vật thành công!",
+				message: "Lưu Vật Phẩm thành công!",
 			});
 		} catch (e) {
 			setNotification({
@@ -505,7 +505,7 @@ function ItemEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: `Đã xóa đồ vật ${itemToDelete.name}.`,
+				message: `Đã xóa Vật Phẩm ${itemToDelete.name}.`,
 			});
 			setItems(prev => prev.filter(i => i.itemCode !== itemToDelete.itemCode));
 			setSelectedItemId(null);
@@ -579,8 +579,8 @@ function ItemEditor() {
 				{/* SidePanel */}
 				<div className='lg:w-1/5'>
 					<SidePanel
-						searchPlaceholder='Nhập tên đồ vật...'
-						addLabel='Thêm Đồ Vật Mới'
+						searchPlaceholder='Nhập tên Vật Phẩm...'
+						addLabel='Thêm Vật Phẩm Mới'
 						resetLabel='Đặt lại bộ lọc'
 						searchInput={searchInput}
 						onSearchInputChange={e => setSearchInput(e.target.value)}
@@ -622,12 +622,13 @@ function ItemEditor() {
 			<Modal
 				isOpen={isDeleteConfirmModalOpen}
 				onClose={() => setIsDeleteConfirmModalOpen(false)}
-				title='Xác nhận Xóa Đồ Vật'
+				title='Xác nhận Xóa Vật Phẩm'
 			>
 				<div className='text-text-secondary'>
 					<p className='mb-6'>
-						Bạn có thực sự muốn xóa đồ vật <strong>{itemToDelete?.name}</strong>
-						? Hành động này không thể hoàn tác.
+						Bạn có thực sự muốn xóa Vật Phẩm{" "}
+						<strong>{itemToDelete?.name}</strong>? Hành động này không thể hoàn
+						tác.
 					</p>
 					<div className='flex justify-end gap-3'>
 						<Button

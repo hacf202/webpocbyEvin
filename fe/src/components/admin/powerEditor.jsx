@@ -9,11 +9,11 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { removeAccents } from "../../utils/vietnameseUtils";
 import SidePanel from "../common/sidePanel";
 import { Loader2, XCircle, Plus } from "lucide-react"; // <-- IMPORT
-// Cấu trúc năng lực mới mặc định
+// Cấu trúc Sức Mạnh mới mặc định
 const NEW_POWER_TEMPLATE = {
 	powerCode: Date.now().toString(),
 	isNew: true,
-	name: "Năng Lực Mới",
+	name: "Sức Mạnh Mới",
 	rarity: "",
 	description: "",
 	descriptionRaw: "",
@@ -114,13 +114,13 @@ const PowerEditorForm = memo(
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
 					<div className='flex items-center gap-2 mb-2 sm:mb-0'>
 						<h3 className='text-xl font-bold text-text-primary font-primary'>
-							{power.isNew ? "Tạo Năng Lực Mới" : `Chỉnh sửa: ${power.name}`}
+							{power.isNew ? "Tạo Sức Mạnh Mới" : `Chỉnh sửa: ${power.name}`}
 						</h3>
 					</div>
 					<div className='flex items-center gap-2 flex-wrap'>
 						{!power.isNew && (
 							<Button variant='danger' onClick={onDelete}>
-								Xóa Năng Lực
+								Xóa Sức Mạnh
 							</Button>
 						)}
 						<Button variant='outline' onClick={onCancel}>
@@ -292,7 +292,7 @@ const MainContent = memo(
 							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 								<div>
 									<p className='font-semibold text-lg'>
-										Không tìm thấy năng lực nào phù hợp.
+										Không tìm thấy Sức Mạnh nào phù hợp.
 									</p>
 									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 								</div>
@@ -419,7 +419,7 @@ function PowerEditor() {
 		return { rarities, types, sort };
 	}, [powers]);
 
-	// Lọc và sắp xếp danh sách năng lực
+	// Lọc và sắp xếp danh sách Sức Mạnh
 	const filteredPowers = useMemo(() => {
 		let filtered = [...powers];
 		if (searchTerm) {
@@ -527,7 +527,7 @@ function PowerEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: "Lưu năng lực thành công!",
+				message: "Lưu Sức Mạnh thành công!",
 			});
 		} catch (e) {
 			setNotification({
@@ -581,7 +581,7 @@ function PowerEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: `Đã xóa năng lực ${powerToDelete.name}.`,
+				message: `Đã xóa Sức Mạnh ${powerToDelete.name}.`,
 			});
 			setPowers(prev =>
 				prev.filter(p => p.powerCode !== powerToDelete.powerCode)
@@ -664,8 +664,8 @@ function PowerEditor() {
 				{/* SidePanel */}
 				<div className='lg:w-1/5'>
 					<SidePanel
-						searchPlaceholder='Nhập tên năng lực...'
-						addLabel='Thêm Năng Lực Mới'
+						searchPlaceholder='Nhập tên sức mạnh...'
+						addLabel='Thêm Sức Mạnh Mới'
 						resetLabel='Đặt lại bộ lọc'
 						searchInput={searchInput}
 						onSearchInputChange={e => setSearchInput(e.target.value)}
@@ -707,11 +707,11 @@ function PowerEditor() {
 			<Modal
 				isOpen={isDeleteConfirmModalOpen}
 				onClose={() => setIsDeleteConfirmModalOpen(false)}
-				title='Xác nhận Xóa Năng Lực'
+				title='Xác nhận Xóa Sức Mạnh'
 			>
 				<div className='text-text-secondary'>
 					<p className='mb-6'>
-						Bạn có thực sự muốn xóa năng lực{" "}
+						Bạn có thực sự muốn xóa Sức Mạnh{" "}
 						<strong className='text-text-primary'>{powerToDelete?.name}</strong>
 						? Hành động này không thể hoàn tác.
 					</p>

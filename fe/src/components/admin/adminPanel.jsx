@@ -187,7 +187,7 @@ const AdminPanel = () => {
 									colorClass='text-success'
 								/>
 								<StatCard
-									title='Tổng số Di vật'
+									title='Tổng số Cổ Vật'
 									value={stats.relics}
 									icon={ShieldCheck}
 									colorClass='text-icon-star'
@@ -215,13 +215,6 @@ const AdminPanel = () => {
 											<span>{item.label}</span>
 										</button>
 									))}
-									<NavLink
-										to='/'
-										className='group flex items-center justify-center gap-3 px-6 py-4 bg-surface-bg text-text-primary font-semibold rounded-xl border border-border hover:bg-surface-hover hover:border-primary-500 hover:text-primary-500 transition-all duration-200 transform hover:scale-105 hover:shadow-md'
-									>
-										<ChevronLeft className='h-6 w-6 flex-shrink-0' />
-										<span>Về trang chủ</span>
-									</NavLink>
 								</div>
 							</div>
 						</>

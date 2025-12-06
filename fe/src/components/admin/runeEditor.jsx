@@ -9,11 +9,11 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { removeAccents } from "../../utils/vietnameseUtils";
 import SidePanel from "../common/sidePanel";
 import { Loader2, XCircle, Plus, ChevronLeft } from "lucide-react"; // <-- IMPORT
-// Cấu trúc ngọc bổ trợ mới mặc định
+// Cấu trúc Ngọc mới mặc định
 const NEW_RUNE_TEMPLATE = {
 	runeCode: Date.now().toString(),
 	isNew: true,
-	name: "Ngọc Bổ Trợ Mới",
+	name: "Ngọc Mới",
 	rarity: "",
 	description: "",
 	descriptionRaw: "",
@@ -110,7 +110,7 @@ const RuneEditorForm = memo(
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
 					<div className='flex items-center gap-2 mb-2 sm:mb-0'>
 						<h3 className='text-xl font-bold text-text-primary font-primary'>
-							{rune.isNew ? "Tạo Ngọc Bổ Trợ Mới" : `Chỉnh sửa: ${rune.name}`}
+							{rune.isNew ? "Tạo Ngọc Mới" : `Chỉnh sửa: ${rune.name}`}
 						</h3>
 					</div>
 					<div className='flex items-center gap-2 flex-wrap'>
@@ -290,7 +290,7 @@ const MainContent = memo(
 							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 								<div>
 									<p className='font-semibold text-lg'>
-										Không tìm thấy ngọc bổ trợ nào phù hợp.
+										Không tìm thấy Ngọc nào phù hợp.
 									</p>
 									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 								</div>
@@ -413,7 +413,7 @@ function RuneEditor() {
 		return { rarities, sort };
 	}, [runes]);
 
-	// Lọc và sắp xếp danh sách ngọc bổ trợ
+	// Lọc và sắp xếp danh sách Ngọc
 	const filteredRunes = useMemo(() => {
 		let filtered = [...runes];
 		if (searchTerm) {
@@ -515,7 +515,7 @@ function RuneEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: "Lưu ngọc bổ trợ thành công!",
+				message: "Lưu Ngọc thành công!",
 			});
 		} catch (e) {
 			setNotification({
@@ -568,7 +568,7 @@ function RuneEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: `Đã xóa ngọc bổ trợ ${runeToDelete.name}.`,
+				message: `Đã xóa Ngọc ${runeToDelete.name}.`,
 			});
 			setRunes(prev => prev.filter(r => r.runeCode !== runeToDelete.runeCode));
 			setSelectedRuneId(null);
@@ -642,8 +642,8 @@ function RuneEditor() {
 				{/* SidePanel */}
 				<div className='lg:w-1/5'>
 					<SidePanel
-						searchPlaceholder='Nhập tên ngọc bổ trợ...'
-						addLabel='Thêm Ngọc Bổ Trợ Mới'
+						searchPlaceholder='Nhập tên Ngọc...'
+						addLabel='Thêm Ngọc Mới'
 						resetLabel='Đặt lại bộ lọc'
 						searchInput={searchInput}
 						onSearchInputChange={e => setSearchInput(e.target.value)}
@@ -685,11 +685,11 @@ function RuneEditor() {
 			<Modal
 				isOpen={isDeleteConfirmModalOpen}
 				onClose={() => setIsDeleteConfirmModalOpen(false)}
-				title='Xác nhận Xóa Ngọc Bổ Trợ'
+				title='Xác nhận Xóa Ngọc'
 			>
 				<div className='text-text-secondary'>
 					<p className='mb-6'>
-						Bạn có thực sự muốn xóa ngọc bổ trợ{" "}
+						Bạn có thực sự muốn xóa Ngọc{" "}
 						<strong className='text-text-primary'>{runeToDelete?.name}</strong>?
 						Hành động này không thể hoàn tác.
 					</p>

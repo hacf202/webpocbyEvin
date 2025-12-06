@@ -10,11 +10,11 @@ import { removeAccents } from "../../utils/vietnameseUtils";
 import SidePanel from "../common/sidePanel";
 import { Loader2, ChevronLeft } from "lucide-react"; // <-- IMPORT
 
-// Cấu trúc di vật mới mặc định
+// Cấu trúc Cổ Vật mới mặc định
 const NEW_RELIC_TEMPLATE = {
 	relicCode: Date.now().toString(),
 	isNew: true,
-	name: "Di Vật Mới",
+	name: "Cổ Vật Mới",
 	rarity: "",
 	rarityRef: "",
 	description: "",
@@ -50,13 +50,13 @@ const RelicEditorForm = memo(
 				<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-4 border-b border-border'>
 					<div className='flex items-center gap-2 mb-2 sm:mb-0'>
 						<h3 className='text-xl font-bold text-text-primary font-primary'>
-							{relic.isNew ? "Tạo Di Vật Mới" : `Chỉnh sửa: ${relic.name}`}
+							{relic.isNew ? "Tạo Cổ Vật Mới" : `Chỉnh sửa: ${relic.name}`}
 						</h3>
 					</div>
 					<div className='flex items-center gap-2 flex-wrap'>
 						{!relic.isNew && (
 							<Button variant='danger' onClick={onDelete}>
-								Xóa Di Vật
+								Xóa Cổ Vật
 							</Button>
 						)}
 						<Button variant='outline' onClick={onCancel}>
@@ -245,7 +245,7 @@ const MainContent = memo(
 							<div className='flex items-center justify-center h-full min-h-[300px] text-center text-text-secondary'>
 								<div>
 									<p className='font-semibold text-lg'>
-										Không tìm thấy di vật nào phù hợp.
+										Không tìm thấy Cổ Vật nào phù hợp.
 									</p>
 									<p>Vui lòng thử lại với bộ lọc khác hoặc đặt lại bộ lọc.</p>
 								</div>
@@ -377,7 +377,7 @@ function RelicEditor() {
 		return { rarities, types, stacks, sort };
 	}, [relics]);
 
-	// Lọc và sắp xếp danh sách di vật
+	// Lọc và sắp xếp danh sách Cổ Vật
 	const filteredRelics = useMemo(() => {
 		let filtered = [...relics];
 		if (searchTerm) {
@@ -494,7 +494,7 @@ function RelicEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: "Lưu di vật thành công!",
+				message: "Lưu Cổ Vật thành công!",
 			});
 		} catch (e) {
 			setNotification({
@@ -548,7 +548,7 @@ function RelicEditor() {
 			setNotification({
 				isOpen: true,
 				title: "Thành Công",
-				message: `Đã xóa di vật ${relicToDelete.name}.`,
+				message: `Đã xóa Cổ Vật ${relicToDelete.name}.`,
 			});
 			setRelics(prev =>
 				prev.filter(r => r.relicCode !== relicToDelete.relicCode)
@@ -638,8 +638,8 @@ function RelicEditor() {
 				{/* SidePanel */}
 				<div className='lg:w-1/5'>
 					<SidePanel
-						searchPlaceholder='Nhập tên di vật...'
-						addLabel='Thêm Di Vật Mới'
+						searchPlaceholder='Nhập tên Cổ Vật...'
+						addLabel='Thêm Cổ Vật Mới'
 						resetLabel='Đặt lại bộ lọc'
 						searchInput={searchInput}
 						onSearchInputChange={e => setSearchInput(e.target.value)}
@@ -681,11 +681,11 @@ function RelicEditor() {
 			<Modal
 				isOpen={isDeleteConfirmModalOpen}
 				onClose={() => setIsDeleteConfirmModalOpen(false)}
-				title='Xác nhận Xóa Di Vật'
+				title='Xác nhận Xóa Cổ Vật'
 			>
 				<div className='text-text-secondary'>
 					<p className='mb-6'>
-						Bạn có thực sự muốn xóa di vật{" "}
+						Bạn có thực sự muốn xóa Cổ Vật{" "}
 						<strong className='text-text-primary'>{relicToDelete?.name}</strong>
 						? Hành động này không thể hoàn tác.
 					</p>

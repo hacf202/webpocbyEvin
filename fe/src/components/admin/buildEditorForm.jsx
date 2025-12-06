@@ -246,7 +246,7 @@ const BuildEditorForm = memo(
 					{/* Ngọc */}
 					<div className='p-4 border border-[var(--color-border)] rounded-lg bg-[var(--color-background)]'>
 						<h3 className='text-lg font-semibold text-[var(--color-text-link)] mb-4'>
-							3. Ngọc bổ trợ
+							3. Ngọc
 						</h3>
 						<ArrayInputComponent
 							label='Ngọc'

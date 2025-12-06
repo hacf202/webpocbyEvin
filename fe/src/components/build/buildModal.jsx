@@ -497,7 +497,7 @@ const BuildModal = ({
 						{isHoaLinhChampion && (
 							<div>
 								<label className='block text-sm font-medium text-text-secondary mb-2'>
-									Ngọc bổ trợ:
+									Ngọc:
 								</label>
 								<SearchableDropdown
 									options={runes}
@@ -506,7 +506,7 @@ const BuildModal = ({
 										setFormData(prev => ({ ...prev, rune: [v] }));
 										markChange();
 									}}
-									placeholder='Chọn ngọc bổ trợ...'
+									placeholder='Chọn Ngọc...'
 									loading={loadingRunes}
 								/>
 							</div>
